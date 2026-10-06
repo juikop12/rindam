@@ -101,6 +101,33 @@ class DatabaseSeeder extends Seeder
             'phone' => '081400000004',
         ]);
 
+        $opDodikjur = User::create([
+            'name' => 'Kapten Inf Darmawan (Operator Dodikjur)',
+            'email' => 'operator.dodikjur@rindam.mil.id',
+            'password' => Hash::make('password'),
+            'satdik_id' => $dodikjur->id,
+            'role_code' => 'operator_satdik',
+            'phone' => '081500000005',
+        ]);
+
+        $opDodiklatpur = User::create([
+            'name' => 'Lettu Inf Hendro (Operator Dodiklatpur)',
+            'email' => 'operator.dodiklatpur@rindam.mil.id',
+            'password' => Hash::make('password'),
+            'satdik_id' => $dodiklatpur->id,
+            'role_code' => 'operator_satdik',
+            'phone' => '081600000006',
+        ]);
+
+        $opBelanegara = User::create([
+            'name' => 'Kapten Czi Anwar (Operator Belanegara)',
+            'email' => 'operator.belanegara@rindam.mil.id',
+            'password' => Hash::make('password'),
+            'satdik_id' => $belanegara->id,
+            'role_code' => 'operator_satdik',
+            'phone' => '081700000007',
+        ]);
+
         // 3. Program Pendidikan & Kelas
         // Secaba
         $progSecaba = EducationProgram::create([

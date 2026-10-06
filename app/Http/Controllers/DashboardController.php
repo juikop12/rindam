@@ -15,7 +15,13 @@ class DashboardController extends Controller
      */
     public function index(Request $request)
     {
-        $satdikId = $request->get('satdik_id');
+        $currentUser = auth()->user();
+        if ($currentUser && !$currentUser->isPimpinan() && $currentUser->satdik_id) {
+            $satdikId = $currentUser->satdik_id;
+        } else {
+            $satdikId = $request->get('satdik_id');
+        }
+
         $satdiks = Satdik::where('is_active', true)->withCount('students')->get();
         $selectedSatdik = $satdikId ? Satdik::find($satdikId) : null;
 

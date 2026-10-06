@@ -57,10 +57,41 @@ class User extends Authenticatable
      */
     public function canAccessSatdik(?int $satdikId): bool
     {
-        if ($this->isPimpinan()) {
+        if ($this->isPimpinan() || $this->role_code === 'tim_zi') {
             return true;
         }
 
         return $this->satdik_id === $satdikId;
+    }
+
+    public function isOperator(): bool
+    {
+        return $this->role_code === 'operator_satdik';
+    }
+
+    public function isTimZi(): bool
+    {
+        return $this->role_code === 'tim_zi';
+    }
+
+    public function getRoleLabelAttribute(): string
+    {
+        return match ($this->role_code) {
+            'super_admin' => 'Super Administrator',
+            'pimpinan' => 'Komandan / Pimpinan Satuan',
+            'operator_satdik' => 'Operator Satdik',
+            'tim_zi' => 'Tim Pengawasan ZI Area 5',
+            'poliklinik' => 'Petugas Medis / Poliklinik',
+            default => strtoupper($this->role_code ?? 'PENGGUNA'),
+        };
+    }
+
+    public function getScopeLabelAttribute(): string
+    {
+        if ($this->isPimpinan() || empty($this->satdik_id)) {
+            return 'Seluruh Satdik (Pusat)';
+        }
+
+        return $this->satdik?->code ?? 'Satdik Terbatas';
     }
 }

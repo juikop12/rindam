@@ -86,15 +86,23 @@
                 </ul>
 
                 <div style="background:#FAFBF9; border:1px solid var(--line); border-radius:10px; padding:14px; margin-bottom:20px;">
-                    <label class="form-label" style="font-size:12px; text-transform:uppercase; letter-spacing:0.04em;">Pilih Satdik Acuan (Opsional):</label>
-                    <select id="templateSatdikSelect" class="form-control" style="font-size:13px;" onchange="updateTemplateDownloadUrls(this.value)">
-                        <option value="">Semua Satdik (Rindam III/Siliwangi)</option>
-                        @foreach($satdiks as $s)
-                            <option value="{{ $s->id }}" {{ $selectedSatdikId == $s->id ? 'selected' : '' }}>
-                                {{ $s->code }} — {{ $s->name }}
-                            </option>
-                        @endforeach
-                    </select>
+                    <label class="form-label" style="font-size:12px; text-transform:uppercase; letter-spacing:0.04em;">Pilih Satdik Acuan:</label>
+                    @if(auth()->check() && !auth()->user()->isPimpinan() && auth()->user()->satdik_id)
+                        <input type="hidden" id="templateSatdikSelect" value="{{ auth()->user()->satdik_id }}">
+                        <div style="font-weight:700; color:#0F172A; font-size:13px; display:flex; align-items:center; gap:6px;">
+                            <span class="ms" style="color:var(--green); font-size:18px;">lock</span>
+                            {{ auth()->user()->satdik?->code }} — {{ auth()->user()->satdik?->name }}
+                        </div>
+                    @else
+                        <select id="templateSatdikSelect" class="form-control" style="font-size:13px;" onchange="updateTemplateDownloadUrls(this.value)">
+                            <option value="">Semua Satdik (Rindam III/Siliwangi)</option>
+                            @foreach($satdiks as $s)
+                                <option value="{{ $s->id }}" {{ $selectedSatdikId == $s->id ? 'selected' : '' }}>
+                                    {{ $s->code }} — {{ $s->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    @endif
                 </div>
             </div>
 
@@ -134,15 +142,26 @@
                     <label class="form-label" for="satdik_id">
                         Satdik Tujuan Penginputan:
                     </label>
-                    <select name="satdik_id" id="satdik_id" class="form-control">
-                        <option value="">Otomatis (Sesuai Kolom KODE_SATDIK di Berkas Excel)</option>
-                        @foreach($satdiks as $s)
-                            <option value="{{ $s->id }}" {{ $selectedSatdikId == $s->id ? 'selected' : '' }}>
-                                {{ $s->code }} — {{ $s->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    <div class="form-hint">Jika dipilih spesifik, seluruh baris yang tidak mengisi kode satdik akan otomatis masuk ke Satdik ini.</div>
+                    @if(auth()->check() && !auth()->user()->isPimpinan() && auth()->user()->satdik_id)
+                        <input type="hidden" name="satdik_id" value="{{ auth()->user()->satdik_id }}">
+                        <div style="background:#F1F5F9; border:1.5px solid #CBD5E1; border-radius:8px; padding:10px 14px; font-weight:700; color:#0F172A; display:flex; align-items:center; justify-content:space-between;">
+                            <span>{{ auth()->user()->satdik?->code }} — {{ auth()->user()->satdik?->name }}</span>
+                            <span class="badge" style="background:#DCFCE7; color:#166534; font-size:11px; font-weight:800;">🔒 Terkunci (Wewenang Akun Anda)</span>
+                        </div>
+                        <div class="form-hint" style="color:var(--green); margin-top:5px;">
+                            Seluruh baris serdik dari berkas Excel otomatis disimpan dan terikat pada <b>{{ auth()->user()->satdik?->name }}</b>.
+                        </div>
+                    @else
+                        <select name="satdik_id" id="satdik_id" class="form-control">
+                            <option value="">Otomatis (Sesuai Kolom KODE_SATDIK di Berkas Excel)</option>
+                            @foreach($satdiks as $s)
+                                <option value="{{ $s->id }}" {{ $selectedSatdikId == $s->id ? 'selected' : '' }}>
+                                    {{ $s->code }} — {{ $s->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <div class="form-hint">Jika dipilih spesifik, seluruh baris yang tidak mengisi kode satdik akan otomatis masuk ke Satdik ini.</div>
+                    @endif
                 </div>
 
                 <!-- DRAG & DROP FILE ZONE -->

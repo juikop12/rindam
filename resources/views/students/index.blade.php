@@ -114,22 +114,34 @@
 </div>
 
 <!-- SATDIK NAVIGATION TABS -->
-<div class="satdik-nav">
-    <a href="{{ route('students.index', array_merge(request()->except(['satdik_id', 'page']))) }}" class="satdik-tab {{ empty($selectedSatdikId) ? 'active' : '' }}">
-        <span class="ms">domain</span> Semua Satdik
-        <span class="tab-badge" title="Siswa Aktif Terhitung">{{ $stats['overall_counted'] }} Aktif</span>
-    </a>
-
-    @foreach($satdiks as $satdik)
-        @php
-            $satdikCounted = $satdik->counted_students ?? $satdik->students()->whereIn('status', ['Aktif', 'Sakit', 'Dinas Luar'])->count();
-        @endphp
-        <a href="{{ route('students.index', array_merge(request()->except(['page']), ['satdik_id' => $satdik->id])) }}" class="satdik-tab {{ $selectedSatdikId == $satdik->id ? 'active' : '' }}">
-            <span class="ms">military_tech</span> {{ $satdik->code }}
-            <span class="tab-badge" title="Siswa Aktif Terhitung">{{ $satdikCounted }} Aktif</span>
+@if(auth()->check() && !auth()->user()->isPimpinan() && auth()->user()->satdik_id)
+    <div class="satdik-nav" style="margin-bottom:20px;">
+        <div class="satdik-tab active" style="cursor:default; background:var(--o800); color:var(--gold2); border-color:var(--gold); box-shadow:0 4px 12px rgba(29,42,22,0.15);">
+            <span class="ms" style="color:var(--gold);">lock</span> 
+            <span>SATDIK ANDA: <b>{{ auth()->user()->satdik?->code }}</b> — {{ auth()->user()->satdik?->name }}</span>
+            <span class="tab-badge" style="background:var(--gold); color:var(--o900); font-weight:800;">
+                🔒 Terkunci Sesuai Wewenang Akun
+            </span>
+        </div>
+    </div>
+@else
+    <div class="satdik-nav">
+        <a href="{{ route('students.index', array_merge(request()->except(['satdik_id', 'page']))) }}" class="satdik-tab {{ empty($selectedSatdikId) ? 'active' : '' }}">
+            <span class="ms">domain</span> Semua Satdik
+            <span class="tab-badge" title="Siswa Aktif Terhitung">{{ $stats['overall_counted'] }} Aktif</span>
         </a>
-    @endforeach
-</div>
+
+        @foreach($satdiks as $satdik)
+            @php
+                $satdikCounted = $satdik->counted_students ?? $satdik->students()->whereIn('status', ['Aktif', 'Sakit', 'Dinas Luar'])->count();
+            @endphp
+            <a href="{{ route('students.index', array_merge(request()->except(['page']), ['satdik_id' => $satdik->id])) }}" class="satdik-tab {{ $selectedSatdikId == $satdik->id ? 'active' : '' }}">
+                <span class="ms">military_tech</span> {{ $satdik->code }}
+                <span class="tab-badge" title="Siswa Aktif Terhitung">{{ $satdikCounted }} Aktif</span>
+            </a>
+        @endforeach
+    </div>
+@endif
 
 <!-- SECTION REKAPITULASI PROGRAM PENDIDIKAN -->
 <div style="background:#fff; border:1px solid var(--line); border-radius:12px; padding:18px 20px; margin-bottom:20px; box-shadow:var(--shadow-sm);">
@@ -621,14 +633,22 @@
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px;">
                         <div class="form-group" style="margin-bottom:0;">
                             <label class="form-label">Satuan Pendidikan (Satdik) <span style="color:var(--red);">*</span></label>
-                            <select name="satdik_id" id="create_satdik_id" class="form-control" required onchange="handleSatdikSelectChange(this.value, 'create')">
-                                <option value="">-- Pilih Satdik --</option>
-                                @foreach($satdiks as $s)
-                                    <option value="{{ $s->id }}" {{ $selectedSatdikId == $s->id ? 'selected' : '' }}>
-                                        {{ $s->code }} — {{ $s->name }}
-                                    </option>
-                                @endforeach
-                            </select>
+                            @if(auth()->check() && !auth()->user()->isPimpinan() && auth()->user()->satdik_id)
+                                <input type="hidden" name="satdik_id" id="create_satdik_id" value="{{ auth()->user()->satdik_id }}">
+                                <div style="background:#F1F5F9; border:1.5px solid #CBD5E1; border-radius:8px; padding:9px 13px; font-weight:700; color:#0F172A; display:flex; align-items:center; justify-content:space-between;">
+                                    <span style="font-size:13px;">{{ auth()->user()->satdik?->code }} — {{ auth()->user()->satdik?->name }}</span>
+                                    <span class="badge" style="background:#DCFCE7; color:#166534; font-size:11px; font-weight:800;">🔒 Terkunci (Satdik Anda)</span>
+                                </div>
+                            @else
+                                <select name="satdik_id" id="create_satdik_id" class="form-control" required onchange="handleSatdikSelectChange(this.value, 'create')">
+                                    <option value="">-- Pilih Satdik --</option>
+                                    @foreach($satdiks as $s)
+                                        <option value="{{ $s->id }}" {{ $selectedSatdikId == $s->id ? 'selected' : '' }}>
+                                            {{ $s->code }} — {{ $s->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            @endif
                         </div>
 
                         <div class="form-group" style="margin-bottom:0;">
@@ -865,11 +885,19 @@
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px;">
                         <div class="form-group" style="margin-bottom:0;">
                             <label class="form-label">Satuan Pendidikan (Satdik) <span style="color:var(--red);">*</span></label>
-                            <select name="satdik_id" id="edit_satdik_id" class="form-control" required onchange="handleSatdikSelectChange(this.value, 'edit')">
-                                @foreach($satdiks as $s)
-                                    <option value="{{ $s->id }}">{{ $s->code }} — {{ $s->name }}</option>
-                                @endforeach
-                            </select>
+                            @if(auth()->check() && !auth()->user()->isPimpinan() && auth()->user()->satdik_id)
+                                <input type="hidden" name="satdik_id" id="edit_satdik_id" value="{{ auth()->user()->satdik_id }}">
+                                <div style="background:#F1F5F9; border:1.5px solid #CBD5E1; border-radius:8px; padding:9px 13px; font-weight:700; color:#0F172A; display:flex; align-items:center; justify-content:space-between;">
+                                    <span style="font-size:13px;">{{ auth()->user()->satdik?->code }} — {{ auth()->user()->satdik?->name }}</span>
+                                    <span class="badge" style="background:#DCFCE7; color:#166534; font-size:11px; font-weight:800;">🔒 Terkunci (Satdik Anda)</span>
+                                </div>
+                            @else
+                                <select name="satdik_id" id="edit_satdik_id" class="form-control" required onchange="handleSatdikSelectChange(this.value, 'edit')">
+                                    @foreach($satdiks as $s)
+                                        <option value="{{ $s->id }}">{{ $s->code }} — {{ $s->name }}</option>
+                                    @endforeach
+                                </select>
+                            @endif
                         </div>
 
                         <div class="form-group" style="margin-bottom:0;">
@@ -1211,11 +1239,13 @@ function calcBmi(prefix) {
 
 // Modal open/close functions
 function openCreateStudentModal(defaultSatdikId = null, defaultProgramId = null) {
-    const sId = defaultSatdikId || '{{ $selectedSatdikId }}' || (allSatdiksData.length > 0 ? allSatdiksData[0].id : '');
+    const operatorSatdikId = '{{ (!auth()->user()?->isPimpinan() && auth()->user()?->satdik_id) ? auth()->user()->satdik_id : '' }}';
+    const sId = operatorSatdikId || defaultSatdikId || '{{ $selectedSatdikId }}' || (allSatdiksData.length > 0 ? allSatdiksData[0].id : '');
     const pId = defaultProgramId || '{{ $selectedProgramId }}' || '';
     
     if (sId) {
-        document.getElementById('create_satdik_id').value = sId;
+        const satdikEl = document.getElementById('create_satdik_id');
+        if (satdikEl) satdikEl.value = sId;
         handleSatdikSelectChange(sId, 'create', pId);
     }
     
@@ -1239,8 +1269,11 @@ function openEditStudentModal(btnOrData) {
     document.getElementById('edit_nosik_badge').textContent = 'NOSIK: ' + (s.nosik || '-');
     document.getElementById('edit_student_title').textContent = s.full_name;
     
-    document.getElementById('edit_satdik_id').value = s.satdik_id;
-    handleSatdikSelectChange(s.satdik_id, 'edit', s.education_program_id, s.classroom_id);
+    const operatorSatdikId = '{{ (!auth()->user()?->isPimpinan() && auth()->user()?->satdik_id) ? auth()->user()->satdik_id : '' }}';
+    const satdikId = operatorSatdikId || s.satdik_id;
+    const satdikEl = document.getElementById('edit_satdik_id');
+    if (satdikEl) satdikEl.value = satdikId;
+    handleSatdikSelectChange(satdikId, 'edit', s.education_program_id, s.classroom_id);
     
     document.getElementById('edit_full_name').value = s.full_name;
     document.getElementById('edit_student_rank').value = s.student_rank;

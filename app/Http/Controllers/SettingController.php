@@ -10,11 +10,21 @@ use Illuminate\Support\Facades\Cache;
 
 class SettingController extends Controller
 {
+    protected function authorizePimpinan()
+    {
+        $user = auth()->user();
+        if (!$user || !$user->isPimpinan()) {
+            abort(403, 'Akses Ditolak: Modul Pengaturan Sistem hanya dapat diakses oleh Komandan / Pimpinan Satuan.');
+        }
+    }
+
     /**
      * Tampilkan Halaman Pengaturan Sistem & Pejabat Pimpinan
      */
     public function index()
     {
+        $this->authorizePimpinan();
+
         $settings = SystemSetting::getAllKeyValues();
         $satdiks = Satdik::orderBy('id')->get();
 
@@ -26,6 +36,8 @@ class SettingController extends Controller
      */
     public function update(Request $request)
     {
+        $this->authorizePimpinan();
+
         $validated = $request->validate([
             // Identitas Satuan Pusat
             'institution_name' => ['required', 'string', 'max:150'],

@@ -129,6 +129,13 @@ class StudentHealthController extends Controller
      */
     public function show(Student $student)
     {
+        $currentUser = Auth::user();
+        if ($currentUser && !$currentUser->isPimpinan() && $currentUser->satdik_id) {
+            if ($student->satdik_id !== $currentUser->satdik_id) {
+                abort(403, 'Akses Ditolak: Anda hanya berwenang mengakses rekam medis serdik di Satuan Pendidikan Anda (' . ($currentUser->satdik->name ?? 'Satdik Anda') . ').');
+            }
+        }
+
         $student->load(['satdik', 'educationProgram', 'classroom', 'healthRecord']);
         
         $healthRecord = $student->healthRecord ?? $student->healthRecord()->create([
@@ -145,6 +152,13 @@ class StudentHealthController extends Controller
      */
     public function edit(Student $student)
     {
+        $currentUser = Auth::user();
+        if ($currentUser && !$currentUser->isPimpinan() && $currentUser->satdik_id) {
+            if ($student->satdik_id !== $currentUser->satdik_id) {
+                abort(403, 'Akses Ditolak: Anda hanya berwenang mengedit rekam medis serdik di Satuan Pendidikan Anda (' . ($currentUser->satdik->name ?? 'Satdik Anda') . ').');
+            }
+        }
+
         $student->load(['satdik', 'educationProgram', 'classroom', 'healthRecord']);
         
         $healthRecord = $student->healthRecord ?? $student->healthRecord()->create([
@@ -161,6 +175,13 @@ class StudentHealthController extends Controller
      */
     public function update(Request $request, Student $student)
     {
+        $currentUser = Auth::user();
+        if ($currentUser && !$currentUser->isPimpinan() && $currentUser->satdik_id) {
+            if ($student->satdik_id !== $currentUser->satdik_id) {
+                abort(403, 'Akses Ditolak: Anda hanya berwenang memperbarui rekam medis serdik di Satuan Pendidikan Anda (' . ($currentUser->satdik->name ?? 'Satdik Anda') . ').');
+            }
+        }
+
         $validated = $request->validate([
             'daily_health_status' => ['required', 'in:Siap Latih,Berobat Jalan,Rawat Inap Poliklinik,Rujuk Rumkit'],
             'stakes_grade' => ['nullable', 'string', 'max:50'],
