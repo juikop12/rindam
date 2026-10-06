@@ -45,19 +45,74 @@
                 </select>
             </div>
             
-            <!-- Desktop View (Buttons) -->
-            <div class="hidden md:flex flex-wrap items-center gap-3">
-                <a href="{{ route('dashboard') }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors border {{ is_null($selectedSatdik) ? 'bg-slate-100 text-slate-900 border-slate-300 shadow-sm' : 'bg-white text-slate-500 border-slate-200 hover:bg-slate-50' }}">
-                    <span class="ms text-[18px]">list</span>
-                    Semua Satdik
-                    <span class="px-2 py-0.5 rounded text-xs bg-slate-200 text-slate-700">{{ \App\Models\Student::withoutGlobalScopes()->count() }}</span>
-                </a>
-                @foreach($satdiks as $s)
-                    <a href="{{ route('dashboard', ['satdik_id' => $s->id]) }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors border {{ $selectedSatdik?->id === $s->id ? 'bg-slate-100 text-slate-900 border-slate-300 shadow-sm' : 'bg-white text-slate-500 border-slate-200 hover:bg-slate-50' }}">
-                        <span class="ms text-[18px]">filter_list</span>
-                        {{ $s->code }}
+            <!-- Desktop View (Beautiful Dropdown) -->
+            <div class="hidden md:block relative group z-30" x-data="{ open: false }">
+                <button @click="open = !open" @click.away="open = false" type="button" class="w-[280px] flex items-center justify-between px-4 py-3 bg-white border border-slate-200 hover:border-blue-300 rounded-xl shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-blue-100 group-hover:shadow-md">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-lg flex items-center justify-center {{ empty($selectedSatdik) ? 'bg-blue-50 text-blue-600' : 'bg-slate-100 text-slate-600' }}">
+                            <span class="ms text-[20px]">{{ empty($selectedSatdik) ? 'list' : 'account_balance' }}</span>
+                        </div>
+                        <div class="text-left">
+                            <div class="text-xs font-semibold text-slate-500 mb-0.5">Filter Satuan Pendidikan</div>
+                            <div class="text-sm font-bold text-slate-900 leading-none truncate w-[160px]">
+                                {{ $selectedSatdik ? $selectedSatdik->name : 'Semua Satdik' }}
+                            </div>
+                        </div>
+                    </div>
+                    <span class="ms text-slate-400 text-[20px] transition-transform duration-200" :class="open ? 'rotate-180' : ''">expand_more</span>
+                </button>
+
+                <div x-show="open" 
+                     x-transition:enter="transition ease-out duration-200"
+                     x-transition:enter-start="opacity-0 translate-y-2"
+                     x-transition:enter-end="opacity-100 translate-y-0"
+                     x-transition:leave="transition ease-in duration-150"
+                     x-transition:leave-start="opacity-100 translate-y-0"
+                     x-transition:leave-end="opacity-0 translate-y-2"
+                     style="display: none;"
+                     class="absolute top-full left-0 mt-2 w-[320px] bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden">
+                    
+                    <a href="{{ route('dashboard') }}" 
+                       class="flex items-center justify-between px-4 py-3 hover:bg-blue-50/50 transition-colors {{ empty($selectedSatdik) ? 'bg-blue-50/50' : '' }} border-b border-slate-50">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-lg flex items-center justify-center {{ empty($selectedSatdik) ? 'bg-blue-600 text-white shadow-sm' : 'bg-slate-100 text-slate-500' }}">
+                                <span class="ms text-[18px]">list</span>
+                            </div>
+                            <div>
+                                <div class="text-sm font-bold {{ empty($selectedSatdik) ? 'text-blue-900' : 'text-slate-700' }}">Semua Satdik</div>
+                                <div class="text-[11px] text-slate-500">Seluruh Rindam III/Siliwangi</div>
+                            </div>
+                        </div>
+                        @if(empty($selectedSatdik))
+                            <span class="ms text-blue-600 text-[20px]">check_circle</span>
+                        @else
+                            <span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 text-xs font-bold border border-slate-200">{{ \App\Models\Student::withoutGlobalScopes()->count() }} Total</span>
+                        @endif
                     </a>
-                @endforeach
+
+                    <div class="max-h-[320px] overflow-y-auto overscroll-contain">
+                        @foreach($satdiks as $satdik)
+                            @php
+                                $isActive = ($selectedSatdik?->id === $satdik->id);
+                            @endphp
+                            <a href="{{ route('dashboard', ['satdik_id' => $satdik->id]) }}" 
+                               class="flex items-center justify-between px-4 py-3 hover:bg-blue-50/50 transition-colors {{ $isActive ? 'bg-blue-50/50' : '' }} border-b border-slate-50 last:border-0">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-lg flex items-center justify-center {{ $isActive ? 'bg-blue-600 text-white shadow-sm' : 'bg-slate-100 text-slate-500' }}">
+                                        <span class="ms text-[18px]">account_balance</span>
+                                    </div>
+                                    <div class="min-w-0">
+                                        <div class="text-sm font-bold {{ $isActive ? 'text-blue-900' : 'text-slate-700' }} truncate">{{ $satdik->code }}</div>
+                                        <div class="text-[11px] text-slate-500 truncate">{{ $satdik->name }}</div>
+                                    </div>
+                                </div>
+                                @if($isActive)
+                                    <span class="ms text-blue-600 text-[20px]">check_circle</span>
+                                @endif
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
             </div>
         </div>
     @endif
@@ -79,25 +134,25 @@
             </div>
         </div>
 
-        <!-- Kesiapan Latihan -->
+        <!-- Kondisi Kesehatan -->
         <div class="bg-white border border-slate-200 rounded-xl p-4 md:p-5 shadow-sm flex flex-col justify-between">
             <div class="text-xs md:text-sm font-medium text-slate-500 mb-2 md:mb-4 flex items-center gap-2">
-                Kesiapan Latihan 
+                Kondisi Kesehatan 
                 <span class="ms text-sm text-slate-400 hidden sm:inline">fitness_center</span>
             </div>
             <div>
                 <div class="text-2xl md:text-3xl font-bold text-slate-900 mb-2">{{ $siapLatihPercent }}%</div>
                 <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-[10px] md:text-xs text-slate-500">
-                    <span class="bg-emerald-100 text-emerald-700 px-1.5 md:px-2 py-0.5 rounded font-semibold w-fit">+ {{ $siapLatih }} siap penuh</span>
+                    <span class="bg-emerald-100 text-emerald-700 px-1.5 md:px-2 py-0.5 rounded font-semibold w-fit">+ {{ $siapLatih }} sehat penuh</span>
                     <span class="hidden sm:inline">dari {{ $totalHealth }}</span>
                 </div>
             </div>
         </div>
 
-        <!-- Perawatan Medis -->
+        <!-- Sakit / Dirawat -->
         <div class="bg-white border border-slate-200 rounded-xl p-4 md:p-5 shadow-sm flex flex-col justify-between">
             <div class="text-xs md:text-sm font-medium text-slate-500 mb-2 md:mb-4 flex items-center gap-2">
-                Rawat Poliklinik 
+                Sakit / Dirawat 
                 <span class="ms text-sm text-slate-400 hidden sm:inline">medical_services</span>
             </div>
             <div>
@@ -215,7 +270,7 @@
                 <div class="p-4 border-b border-slate-200 hover:bg-slate-50 transition-colors last:border-b-0">
                     <div class="flex items-start justify-between mb-3">
                         <div>
-                            <div class="font-bold text-slate-900 text-base">{{ $student->full_name }}</div>
+                            <div class="font-bold text-slate-900 text-base"><span class="text-slate-400 font-medium mr-1.5">{{ $loop->iteration }}.</span>{{ $student->full_name }}</div>
                             <div class="text-xs font-mono text-slate-500 mt-1">{{ $student->nosik }}</div>
                         </div>
                         @php
@@ -238,9 +293,9 @@
                         </div>
                         <div>
                             <div class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Kesehatan</div>
-                            <div class="font-semibold text-slate-800 mt-0.5">{{ $student->healthRecord?->daily_health_status ?? '-' }}</div>
-                            <div class="text-xs text-amber-600 font-medium flex items-center gap-1 mt-0.5">
-                                <span class="ms text-[14px]">star</span> {{ Str::limit($student->healthRecord?->stakes_grade ?? '-', 10, '') }}
+                            <div class="font-semibold text-slate-800 mt-0.5">{{ $student->healthRecord?->daily_health_status == 'Siap Latih' ? 'Sehat' : ($student->healthRecord?->daily_health_status ?? '-') }}</div>
+                            <div class="text-xs text-amber-600 font-medium mt-0.5">
+                                {{ Str::limit($student->healthRecord?->stakes_grade ?? '-', 10, '') }}
                             </div>
                         </div>
                     </div>
@@ -266,6 +321,7 @@
             <table class="w-full text-left text-sm text-slate-600">
                 <thead class="bg-slate-50 text-slate-500 uppercase text-[11px] font-semibold tracking-wider">
                     <tr>
+                        <th class="px-5 py-3 border-b border-slate-200 text-center w-12">No</th>
                         <th class="px-5 py-3 border-b border-slate-200">Siswa</th>
                         <th class="px-5 py-3 border-b border-slate-200">Pendidikan</th>
                         <th class="px-5 py-3 border-b border-slate-200">Kompi / Ton</th>
@@ -278,6 +334,7 @@
                 <tbody class="divide-y divide-slate-100">
                     @forelse($recentStudents as $student)
                         <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-5 py-3 align-middle text-center font-medium text-slate-500">{{ $loop->iteration }}</td>
                             <td class="px-5 py-3 align-middle">
                                 <div class="font-semibold text-slate-900">{{ $student->full_name }}</div>
                                 <div class="text-xs font-mono text-slate-500 mt-0.5">{{ $student->nosik }}</div>
@@ -291,7 +348,7 @@
                                 <div class="text-xs text-slate-500 mt-0.5">{{ $student->platoon ?? '-' }}</div>
                             </td>
                             <td class="px-5 py-3 align-middle">
-                                <span class="text-slate-600 font-medium">{{ $student->healthRecord?->daily_health_status ?? 'Tidak ada' }}</span>
+                                <span class="text-slate-600 font-medium">{{ $student->healthRecord?->daily_health_status == 'Siap Latih' ? 'Sehat' : ($student->healthRecord?->daily_health_status ?? 'Tidak ada') }}</span>
                             </td>
                             <td class="px-5 py-3 align-middle">
                                 @php
@@ -306,8 +363,7 @@
                                 </span>
                             </td>
                             <td class="px-5 py-3 align-middle">
-                                <div class="flex items-center gap-1.5 text-amber-600 font-medium">
-                                    <span class="ms text-[16px] text-amber-400">star</span> 
+                                <div class="text-amber-600 font-medium">
                                     {{ Str::limit($student->healthRecord?->stakes_grade ?? '-', 8, '') }}
                                 </div>
                             </td>
@@ -324,7 +380,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="px-5 py-12 text-center text-slate-500">
+                            <td colspan="8" class="px-5 py-12 text-center text-slate-500">
                                 Belum ada data serdik yang terdaftar.
                             </td>
                         </tr>
