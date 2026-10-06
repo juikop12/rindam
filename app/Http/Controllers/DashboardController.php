@@ -114,6 +114,18 @@ class DashboardController extends Controller
         }
         $recentAuditLogs = $auditQuery->latest('accessed_at')->take(5)->get();
 
+        $bloodTypes = (clone $studentQuery)
+            ->selectRaw('blood_type, count(*) as total')
+            ->whereNotNull('blood_type')
+            ->groupBy('blood_type')
+            ->pluck('total', 'blood_type')->toArray();
+
+        $religions = (clone $studentQuery)
+            ->selectRaw('religion, count(*) as total')
+            ->whereNotNull('religion')
+            ->groupBy('religion')
+            ->pluck('total', 'religion')->toArray();
+
         // Data Grafik Analitik & Diagram Interaktif (Murni Data & Kesehatan Siswa)
         $chartData = [
             'health_status' => [
@@ -153,6 +165,14 @@ class DashboardController extends Controller
                     $totalHealth > 0 ? round(($stakesIII / $totalHealth) * 100, 1) : 0,
                     $totalHealth > 0 ? round(($stakesIV / $totalHealth) * 100, 1) : 0,
                 ],
+            ],
+            'blood_type' => [
+                'labels' => array_keys($bloodTypes),
+                'counts' => array_values($bloodTypes),
+            ],
+            'religion' => [
+                'labels' => array_keys($religions),
+                'counts' => array_values($religions),
             ],
         ];
 
