@@ -6,6 +6,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Pengolahan Data Siswa per Satdik') — SIPANDU-WBK</title>
 
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    <!-- Alpine.js for Interactive Sidebar -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
@@ -56,17 +61,17 @@
         }
 
         /* NAVBAR */
-        .topbar {
-            background: var(--o900);
-            color: #fff;
+        .app-topbar {
+            background: #ffffff;
+            color: #0f172a;
             height: 68px;
             padding: 0 32px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 2px solid var(--gold);
+            border-bottom: 1px solid #e2e8f0;
             position: sticky; top: 0; z-index: 100;
-            box-shadow: 0 4px 18px rgba(16,23,12,0.25);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
         .brand {
             display: flex; align-items: center; gap: 14px;
@@ -546,15 +551,15 @@
         .app-sidebar {
             width: var(--sidebar-collapsed-w);
             min-width: var(--sidebar-collapsed-w);
-            background: linear-gradient(180deg, #0B140B 0%, #142211 40%, #0E180E 100%);
-            color: #fff;
+            background: #ffffff;
+            color: #334155;
             position: fixed;
             top: 0; left: 0; bottom: 0;
             z-index: 1050;
             display: flex;
             flex-direction: column;
-            border-right: 1px solid rgba(201,162,39,0.22);
-            box-shadow: 4px 0 20px rgba(0,0,0,0.25);
+            border-right: 1px solid #e2e8f0;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.03);
             transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1), 
                         min-width 0.25s cubic-bezier(0.4, 0, 0.2, 1),
                         box-shadow 0.25s ease, 
@@ -596,7 +601,7 @@
         /* SIDEBAR HEADER / BRAND */
         .sidebar-header {
             padding: 16px 12px 14px;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
+            border-bottom: 1px solid #e2e8f0;
             position: relative;
             display: flex;
             flex-direction: column;
@@ -613,18 +618,18 @@
             align-items: center;
             gap: 12px;
             text-decoration: none;
-            color: #fff;
+            color: #0f172a;
             overflow: hidden;
             flex: 1;
         }
         .sidebar-logo {
             width: 44px; height: 44px;
             min-width: 44px;
-            background: linear-gradient(135deg, var(--gold2), #9E7D17);
+            background: #0f172a;
             border-radius: 12px;
             display: grid; place-items: center;
-            color: var(--o900);
-            box-shadow: 0 4px 12px rgba(201,162,39,0.35);
+            color: #ffffff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
             flex-shrink: 0;
             margin: 0 auto;
             transition: margin 0.2s ease;
@@ -655,10 +660,10 @@
             letter-spacing: -0.01em;
             line-height: 1.2;
         }
-        .sidebar-brand-title span { color: var(--gold2); }
+        .sidebar-brand-title span { color: #2563eb; }
         .sidebar-brand-sub {
             font-size: 10px;
-            color: var(--o200);
+            color: #64748b;
             text-transform: uppercase;
             letter-spacing: 0.08em;
             font-weight: 600;
@@ -666,9 +671,9 @@
         }
 
         .sidebar-pin-btn {
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.15);
-            color: rgba(255,255,255,0.6);
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            color: #94a3b8;
             border-radius: 8px;
             width: 28px; height: 28px;
             display: none;
@@ -678,14 +683,14 @@
             flex-shrink: 0;
         }
         .sidebar-pin-btn:hover {
-            background: rgba(201,162,39,0.25);
-            color: var(--gold2);
-            border-color: var(--gold);
+            background: #e2e8f0;
+            color: #0f172a;
+            border-color: #cbd5e1;
         }
         body.sidebar-pinned .sidebar-pin-btn {
-            color: var(--gold2);
-            background: rgba(201,162,39,0.2);
-            border-color: var(--gold);
+            color: #0f172a;
+            background: #f1f5f9;
+            border-color: #cbd5e1;
         }
         body.sidebar-pinned .sidebar-pin-btn,
         body:not(.sidebar-pinned) .app-sidebar:hover .sidebar-pin-btn {
@@ -693,13 +698,13 @@
         }
 
         .sidebar-wbk-badge {
-            background: rgba(201,162,39,0.12);
-            border: 1px solid rgba(201,162,39,0.3);
+            background: #fffbeb;
+            border: 1px solid #fde68a;
             padding: 4px 10px;
             border-radius: 6px;
             font-size: 10.5px;
             font-weight: 700;
-            color: var(--gold2);
+            color: #b45309;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -733,7 +738,7 @@
             height: 1px;
             padding: 0;
             margin: 8px 6px;
-            background: rgba(255,255,255,0.08);
+            background: #e2e8f0;
             overflow: hidden;
             transition: all 0.2s ease;
         }
@@ -741,7 +746,7 @@
         body:not(.sidebar-pinned) .app-sidebar:hover .sidebar-section-title {
             font-size: 10px;
             font-weight: 800;
-            color: rgba(255,255,255,0.4);
+            color: #94a3b8;
             text-transform: uppercase;
             letter-spacing: 0.12em;
             padding: 10px 10px 4px;
@@ -756,17 +761,26 @@
             justify-content: center;
             padding: 10px 0;
             border-radius: 10px;
-            color: rgba(255,255,255,0.78);
+            color: #64748b;
             text-decoration: none;
             font-weight: 600;
             font-size: 13.5px;
             transition: all 0.18s ease;
             position: relative;
         }
+        .sidebar-item:hover {
+            color: #0f172a;
+            background: #f1f5f9;
+        }
         body.sidebar-pinned .sidebar-item,
         body:not(.sidebar-pinned) .app-sidebar:hover .sidebar-item {
             justify-content: space-between;
             padding: 9px 12px;
+        }
+        body.sidebar-pinned .sidebar-item.active,
+        body:not(.sidebar-pinned) .app-sidebar:hover .sidebar-item.active {
+            background: #f8fafc;
+            color: #0f172a;
         }
 
         .sidebar-item-content {
@@ -783,9 +797,12 @@
 
         .sidebar-item-content .ms {
             font-size: 22px;
-            color: rgba(255,255,255,0.7);
+            color: #94a3b8;
             transition: color 0.18s ease, transform 0.18s ease;
             flex-shrink: 0;
+        }
+        .sidebar-item.active .sidebar-item-content .ms {
+            color: #0f172a;
         }
         .sidebar-item-text {
             white-space: nowrap;
@@ -801,21 +818,22 @@
         }
 
         .sidebar-item:hover {
-            background: rgba(255,255,255,0.08);
-            color: #fff;
+            background: #f1f5f9;
+            color: #0f172a;
         }
         .sidebar-item:hover .sidebar-item-content .ms {
-            color: var(--gold2);
+            color: #0f172a;
             transform: scale(1.08);
         }
-        .sidebar-item.active {
-            background: linear-gradient(90deg, rgba(201,162,39,0.25) 0%, rgba(201,162,39,0.08) 100%);
-            color: #fff;
-            border-left: 3.5px solid var(--gold);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.18);
+        body.sidebar-pinned .sidebar-item.active,
+        body:not(.sidebar-pinned) .app-sidebar:hover .sidebar-item.active {
+            background: #f8fafc;
+            color: #0f172a;
+            border-left: 3.5px solid #0f172a;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
         .sidebar-item.active .sidebar-item-content .ms {
-            color: var(--gold2);
+            color: #0f172a;
         }
 
         .sidebar-badge {
@@ -823,8 +841,8 @@
             font-weight: 700;
             padding: 2px 7px;
             border-radius: 999px;
-            background: rgba(255,255,255,0.12);
-            color: #fff;
+            background: #e2e8f0;
+            color: #475569;
             white-space: nowrap;
             opacity: 0;
             max-width: 0;
@@ -837,16 +855,16 @@
             max-width: 80px;
         }
         .sidebar-badge-gold {
-            background: var(--gold);
-            color: var(--o900);
+            background: #dbeafe;
+            color: #1e40af;
         }
         .sidebar-badge-green {
-            background: #2E7D32;
-            color: #fff;
+            background: #dcfce7;
+            color: #166534;
         }
         .sidebar-badge-blue {
-            background: #1565C0;
-            color: #fff;
+            background: #e0e7ff;
+            color: #3730a3;
         }
 
         /* SLEEK FLOATING TOOLTIP WHEN COLLAPSED */
@@ -856,8 +874,8 @@
             left: calc(100% + 12px);
             top: 50%;
             transform: translateY(-50%) translateX(-4px);
-            background: #0B140B;
-            color: #fff;
+            background: #0f172a;
+            color: #ffffff;
             padding: 6px 12px;
             border-radius: 6px;
             font-size: 12px;
@@ -866,8 +884,7 @@
             pointer-events: none;
             opacity: 0;
             transition: opacity 0.15s ease, transform 0.15s ease;
-            border: 1px solid rgba(201,162,39,0.35);
-            box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
             z-index: 1200;
         }
         body:not(.sidebar-pinned) .app-sidebar:not(:hover) .sidebar-item:hover::after {
@@ -878,8 +895,8 @@
         /* SIDEBAR FOOTER / USER CARD */
         .sidebar-footer {
             padding: 12px 10px;
-            border-top: 1px solid rgba(255,255,255,0.08);
-            background: rgba(0,0,0,0.2);
+            border-top: 1px solid #e2e8f0;
+            background: #f8fafc;
         }
         .sidebar-user-card {
             display: flex;
@@ -897,10 +914,10 @@
             width: 38px; height: 38px;
             min-width: 38px;
             border-radius: 10px;
-            background: linear-gradient(135deg, var(--o700), var(--o500));
-            border: 1.5px solid var(--gold);
+            background: #f1f5f9;
+            border: 1.5px solid #cbd5e1;
             display: grid; place-items: center;
-            font-size: 18px; color: #fff;
+            font-size: 18px; color: #64748b;
             flex-shrink: 0;
         }
         .sidebar-user-info {
@@ -919,14 +936,14 @@
         .sidebar-user-name {
             font-size: 13px;
             font-weight: 700;
-            color: #fff;
+            color: #0f172a;
             white-space: nowrap;
             text-overflow: ellipsis;
             overflow: hidden;
         }
         .sidebar-user-role {
             font-size: 11px;
-            color: var(--gold2);
+            color: #64748b;
             font-weight: 600;
             display: flex;
             align-items: center;
@@ -942,7 +959,7 @@
         }
         .sidebar-version-info {
             font-size: 10.5px;
-            color: rgba(255,255,255,0.4);
+            color: #94a3b8;
             margin-top: 8px;
             justify-content: space-between;
             display: none;
@@ -1088,281 +1105,272 @@
             .lan-badge { display: none; }
         }
     </style>
-</head>
-<body>
+</head><body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-hidden" 
+      x-data="{ 
+          sidebarPinned: localStorage.getItem('sipandu_sidebar_pinned') !== 'false',
+          sidebarHovered: false,
+          mobileSidebarOpen: false,
+          
+          togglePin() {
+              this.sidebarPinned = !this.sidebarPinned;
+              localStorage.setItem('sipandu_sidebar_pinned', this.sidebarPinned);
+          },
+          
+          get isSidebarExpanded() {
+              return this.sidebarPinned || this.sidebarHovered;
+          }
+      }">
 
-<div class="app-layout">
+<div class="flex h-screen w-full">
+    
     <!-- BACKDROP MOBILE -->
-    <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="toggleSidebar()"></div>
+    <div x-show="mobileSidebarOpen" 
+         x-transition.opacity.duration.300ms
+         @click="mobileSidebarOpen = false"
+         class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 lg:hidden" style="display: none;"></div>
 
     <!-- SIDEBAR -->
-    <aside class="app-sidebar" id="appSidebar">
-        <!-- BRAND -->
-        <div class="sidebar-header">
-            <div class="sidebar-header-row">
-                <a href="{{ route('dashboard') }}" class="sidebar-brand">
-                    <div class="sidebar-logo">
-                        <span class="ms">shield_person</span>
+    <aside @mouseenter="sidebarHovered = true" 
+           @mouseleave="sidebarHovered = false"
+           :class="{ 
+               'w-72': isSidebarExpanded, 
+               'w-20': !isSidebarExpanded,
+               'translate-x-0': mobileSidebarOpen,
+               '-translate-x-full lg:translate-x-0': !mobileSidebarOpen
+           }"
+           class="fixed inset-y-0 left-0 z-50 flex flex-col bg-white border-r border-slate-200 transition-all duration-300 ease-in-out lg:static lg:h-screen lg:shrink-0 shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
+        
+        <!-- BRAND HEADER -->
+        <div class="flex items-center justify-between h-20 px-4 border-b border-slate-100 shrink-0">
+            <a href="{{ route('dashboard') }}" class="flex items-center gap-3 overflow-hidden whitespace-nowrap outline-none">
+                <div class="flex items-center justify-center w-12 h-12 shrink-0 transition-transform duration-300" :class="!isSidebarExpanded ? 'mx-auto' : ''">
+                    <!-- USING THE NEW LOGO -->
+                    <img src="{{ asset('img/rindam-logo.png') }}" alt="Logo" class="w-11 h-11 object-contain drop-shadow-sm" onerror="this.outerHTML='<span class=\'ms text-[28px] text-slate-800\'>shield_person</span>'">
+                </div>
+                <div class="flex flex-col transition-opacity duration-300" :class="isSidebarExpanded ? 'opacity-100 w-auto' : 'opacity-0 w-0'">
+                    <div class="font-black text-lg text-slate-900 tracking-tight leading-tight font-['Montserrat']">
+                        SIPANDU<span class="text-blue-600">-WBK</span>
                     </div>
-                    <div class="sidebar-brand-text">
-                        <div class="sidebar-brand-title">SIPANDU<span>-WBK</span></div>
-                        <div class="sidebar-brand-sub">RINDAM III / SILIWANGI</div>
+                    <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-0.5">
+                        Rindam III/Slw
                     </div>
-                </a>
-                <button type="button" class="sidebar-pin-btn" id="sidebarPinBtn" onclick="toggleSidebarPin(event)" title="Kunci Sidebar Terbuka / Mode Otomatis Ciut">
-                    <span class="ms" id="pinIcon" style="font-size:16px;">keep_off</span>
-                </button>
-            </div>
-            <div class="sidebar-wbk-badge">
-                <span><span class="ms" style="font-size:14px; vertical-align:text-top;">verified</span> ZONA INTEGRITAS</span>
-                <span>WBK</span>
+                </div>
+            </a>
+            
+            <button @click="togglePin()" 
+                    class="hidden lg:flex items-center justify-center w-8 h-8 rounded-lg transition-colors duration-200"
+                    :class="sidebarPinned ? 'bg-slate-100 text-slate-900' : 'bg-transparent text-slate-400 hover:bg-slate-50 hover:text-slate-600'"
+                    x-show="isSidebarExpanded"
+                    :title="sidebarPinned ? 'Lepas Pin (Otomatis Ciut)' : 'Pin Sidebar (Tetap Lebar)'">
+                <span class="ms text-[18px]" x-text="sidebarPinned ? 'keep' : 'keep_off'"></span>
+            </button>
+        </div>
+
+        <div class="px-4 py-3 shrink-0" x-show="isSidebarExpanded" x-transition.opacity.duration.300ms>
+            <div class="flex items-center justify-between bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 text-amber-700">
+                <div class="flex items-center gap-2">
+                    <span class="ms text-[16px]">verified</span>
+                    <span class="text-[11px] font-bold uppercase tracking-wider">Zona Integritas</span>
+                </div>
+                <span class="text-[11px] font-black">WBK</span>
             </div>
         </div>
 
-        <!-- NAVIGATION -->
-        <nav class="sidebar-nav">
-            <div class="sidebar-section-title">PUSAT KOMANDO EKSEKUTIF</div>
-
-            <a href="{{ route('dashboard') }}" class="sidebar-item {{ request()->routeIs('dashboard') ? 'active' : '' }}" data-tooltip="Dashboard Utama">
-                <div class="sidebar-item-content">
-                    <span class="ms">dashboard</span>
-                    <span class="sidebar-item-text">Dashboard Utama</span>
-                </div>
-                <span class="sidebar-badge sidebar-badge-gold">Live</span>
-            </a>
-
-            <div class="sidebar-section-title" style="margin-top:10px;">PENGELOLAAN DATA & KESEHATAN</div>
+        <!-- NAVIGATION MENU -->
+        <nav class="flex-1 overflow-y-auto overflow-x-hidden p-3 flex flex-col gap-1 scrollbar-hide">
             
-            <a href="{{ route('students.index') }}" class="sidebar-item {{ request()->routeIs('students.index') || request()->routeIs('students.show') ? 'active' : '' }}" data-tooltip="Data Serdik">
-                <div class="sidebar-item-content">
-                    <span class="ms">groups</span>
-                    <span class="sidebar-item-text">Data Serdik</span>
+            <!-- SECTION TITLE -->
+            <div class="mt-4 mb-2 first:mt-0 transition-all duration-300" :class="isSidebarExpanded ? 'px-3' : 'px-0 text-center'">
+                <div x-show="!isSidebarExpanded" class="h-0.5 w-8 mx-auto bg-slate-200 rounded-full"></div>
+                <span x-show="isSidebarExpanded" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Pusat Komando</span>
+            </div>
+
+            <!-- MENU ITEM 1 -->
+            <a href="{{ route('dashboard') }}" 
+               class="group relative flex items-center p-3 rounded-xl transition-all duration-200 {{ request()->routeIs('dashboard') ? 'bg-slate-900 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900' }}"
+               :class="!isSidebarExpanded ? 'justify-center' : 'justify-between'">
+                
+                <div class="flex items-center gap-3">
+                    <span class="ms text-[24px] transition-transform duration-200 group-hover:scale-110 {{ request()->routeIs('dashboard') ? 'text-white' : 'text-slate-400 group-hover:text-slate-600' }}">dashboard</span>
+                    <span x-show="isSidebarExpanded" class="font-semibold text-[13.5px] whitespace-nowrap">Dashboard Utama</span>
                 </div>
-                <span class="sidebar-badge sidebar-badge-gold">{{ \App\Models\Student::count() }}</span>
+                
+                <span x-show="isSidebarExpanded" class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-blue-100 text-blue-700">Live</span>
+                
+                <!-- TOOLTIP FOR COLLAPSED -->
+                <div x-show="!isSidebarExpanded" class="absolute left-full ml-3 px-3 py-2 bg-slate-800 text-white text-xs font-semibold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50">
+                    Dashboard Utama
+                </div>
             </a>
 
-            <a href="{{ route('programs.index') }}" class="sidebar-item {{ request()->routeIs('programs.*') ? 'active' : '' }}" data-tooltip="Program Satdik">
-                <div class="sidebar-item-content">
-                    <span class="ms">school</span>
-                    <span class="sidebar-item-text">Program Satdik</span>
+            <!-- SECTION TITLE -->
+            <div class="mt-4 mb-2 transition-all duration-300" :class="isSidebarExpanded ? 'px-3' : 'px-0 text-center'">
+                <div x-show="!isSidebarExpanded" class="h-0.5 w-8 mx-auto bg-slate-200 rounded-full"></div>
+                <span x-show="isSidebarExpanded" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Data & Kesehatan</span>
+            </div>
+            
+            <a href="{{ route('students.index') }}" 
+               class="group relative flex items-center p-3 rounded-xl transition-all duration-200 {{ request()->routeIs('students.index') || request()->routeIs('students.show') ? 'bg-slate-900 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900' }}"
+               :class="!isSidebarExpanded ? 'justify-center' : 'justify-between'">
+                <div class="flex items-center gap-3">
+                    <span class="ms text-[24px] transition-transform duration-200 group-hover:scale-110 {{ request()->routeIs('students.index') || request()->routeIs('students.show') ? 'text-white' : 'text-slate-400 group-hover:text-slate-600' }}">groups</span>
+                    <span x-show="isSidebarExpanded" class="font-semibold text-[13.5px] whitespace-nowrap">Data Serdik</span>
                 </div>
-                <span class="sidebar-badge sidebar-badge-gold">TA 2026</span>
+                <span x-show="isSidebarExpanded" class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-slate-100 text-slate-600 {{ request()->routeIs('students.index') || request()->routeIs('students.show') ? 'bg-slate-700 text-slate-200' : '' }}">{{ \App\Models\Student::count() }}</span>
+                <div x-show="!isSidebarExpanded" class="absolute left-full ml-3 px-3 py-2 bg-slate-800 text-white text-xs font-semibold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50">Data Serdik</div>
             </a>
 
-            <a href="{{ route('health.index') }}" class="sidebar-item {{ request()->routeIs('health.*') ? 'active' : '' }}" data-tooltip="Kesehatan Serdik">
-                <div class="sidebar-item-content">
-                    <span class="ms">medical_services</span>
-                    <span class="sidebar-item-text">Kesehatan Serdik</span>
+            <a href="{{ route('programs.index') }}" 
+               class="group relative flex items-center p-3 rounded-xl transition-all duration-200 {{ request()->routeIs('programs.*') ? 'bg-slate-900 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900' }}"
+               :class="!isSidebarExpanded ? 'justify-center' : 'justify-between'">
+                <div class="flex items-center gap-3">
+                    <span class="ms text-[24px] transition-transform duration-200 group-hover:scale-110 {{ request()->routeIs('programs.*') ? 'text-white' : 'text-slate-400 group-hover:text-slate-600' }}">school</span>
+                    <span x-show="isSidebarExpanded" class="font-semibold text-[13.5px] whitespace-nowrap">Program Satdik</span>
                 </div>
-                <span class="sidebar-badge sidebar-badge-green">Poliklinik</span>
+                <div x-show="!isSidebarExpanded" class="absolute left-full ml-3 px-3 py-2 bg-slate-800 text-white text-xs font-semibold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50">Program Satdik</div>
             </a>
 
-            <a href="{{ route('students.import') }}" class="sidebar-item {{ request()->routeIs('students.import') ? 'active' : '' }}" data-tooltip="Input Format Excel">
-                <div class="sidebar-item-content">
-                    <span class="ms">upload_file</span>
-                    <span class="sidebar-item-text">Input Format Excel</span>
+            <a href="{{ route('health.index') }}" 
+               class="group relative flex items-center p-3 rounded-xl transition-all duration-200 {{ request()->routeIs('health.*') ? 'bg-slate-900 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900' }}"
+               :class="!isSidebarExpanded ? 'justify-center' : 'justify-between'">
+                <div class="flex items-center gap-3">
+                    <span class="ms text-[24px] transition-transform duration-200 group-hover:scale-110 {{ request()->routeIs('health.*') ? 'text-white' : 'text-slate-400 group-hover:text-slate-600' }}">medical_services</span>
+                    <span x-show="isSidebarExpanded" class="font-semibold text-[13.5px] whitespace-nowrap">Kesehatan Serdik</span>
                 </div>
-                <span class="sidebar-badge sidebar-badge-gold">Excel</span>
+                <span x-show="isSidebarExpanded" class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-emerald-100 text-emerald-700">Medis</span>
+                <div x-show="!isSidebarExpanded" class="absolute left-full ml-3 px-3 py-2 bg-slate-800 text-white text-xs font-semibold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50">Kesehatan Serdik</div>
             </a>
 
-            <div class="sidebar-section-title" style="margin-top:10px;">PENGAWASAN & ZI (AREA 5)</div>
-
-            <a href="{{ route('students.audit-logs') }}" class="sidebar-item {{ request()->routeIs('students.audit-logs') ? 'active' : '' }}" data-tooltip="Audit Trail SIPANDU">
-                <div class="sidebar-item-content">
-                    <span class="ms">policy</span>
-                    <span class="sidebar-item-text">Audit Trail Keamanan</span>
+            <!-- SECTION TITLE -->
+            <div class="mt-4 mb-2 transition-all duration-300" :class="isSidebarExpanded ? 'px-3' : 'px-0 text-center'">
+                <div x-show="!isSidebarExpanded" class="h-0.5 w-8 mx-auto bg-slate-200 rounded-full"></div>
+                <span x-show="isSidebarExpanded" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Sistem</span>
+            </div>
+            
+            <a href="{{ route('students.import') }}" 
+               class="group relative flex items-center p-3 rounded-xl transition-all duration-200 {{ request()->routeIs('students.import') ? 'bg-slate-900 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900' }}"
+               :class="!isSidebarExpanded ? 'justify-center' : 'justify-between'">
+                <div class="flex items-center gap-3">
+                    <span class="ms text-[24px] transition-transform duration-200 group-hover:scale-110 {{ request()->routeIs('students.import') ? 'text-white' : 'text-slate-400 group-hover:text-slate-600' }}">upload_file</span>
+                    <span x-show="isSidebarExpanded" class="font-semibold text-[13.5px] whitespace-nowrap">Input Data Excel</span>
                 </div>
-                <span class="sidebar-badge sidebar-badge-blue">SIPANDU</span>
+                <div x-show="!isSidebarExpanded" class="absolute left-full ml-3 px-3 py-2 bg-slate-800 text-white text-xs font-semibold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50">Input Data Excel</div>
             </a>
 
-            <div class="sidebar-section-title" style="margin-top:10px;">KONFIGURASI SISTEM</div>
-
-            <a href="{{ route('settings.index') }}" class="sidebar-item {{ request()->routeIs('settings.*') ? 'active' : '' }}" data-tooltip="Pejabat & Pengaturan">
-                <div class="sidebar-item-content">
-                    <span class="ms">manage_accounts</span>
-                    <span class="sidebar-item-text">Pejabat & Pengaturan</span>
+            <a href="{{ route('settings.index') }}" 
+               class="group relative flex items-center p-3 rounded-xl transition-all duration-200 {{ request()->routeIs('settings.*') ? 'bg-slate-900 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900' }}"
+               :class="!isSidebarExpanded ? 'justify-center' : 'justify-between'">
+                <div class="flex items-center gap-3">
+                    <span class="ms text-[24px] transition-transform duration-200 group-hover:scale-110 {{ request()->routeIs('settings.*') ? 'text-white' : 'text-slate-400 group-hover:text-slate-600' }}">settings</span>
+                    <span x-show="isSidebarExpanded" class="font-semibold text-[13.5px] whitespace-nowrap">Pengaturan</span>
                 </div>
-                <span class="sidebar-badge sidebar-badge-gold">Pimpinan</span>
+                <div x-show="!isSidebarExpanded" class="absolute left-full ml-3 px-3 py-2 bg-slate-800 text-white text-xs font-semibold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50">Pengaturan</div>
             </a>
+            
+            <a href="{{ route('students.audit-logs') }}" 
+               class="group relative flex items-center p-3 rounded-xl transition-all duration-200 {{ request()->routeIs('students.audit-logs') ? 'bg-slate-900 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900' }}"
+               :class="!isSidebarExpanded ? 'justify-center' : 'justify-between'">
+                <div class="flex items-center gap-3">
+                    <span class="ms text-[24px] transition-transform duration-200 group-hover:scale-110 {{ request()->routeIs('students.audit-logs') ? 'text-white' : 'text-slate-400 group-hover:text-slate-600' }}">policy</span>
+                    <span x-show="isSidebarExpanded" class="font-semibold text-[13.5px] whitespace-nowrap">Audit Log</span>
+                </div>
+                <div x-show="!isSidebarExpanded" class="absolute left-full ml-3 px-3 py-2 bg-slate-800 text-white text-xs font-semibold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50">Audit Log</div>
+            </a>
+
         </nav>
 
-        <!-- USER PROFILE FOOTER -->
-        <div class="sidebar-footer">
-            <div class="sidebar-user-card">
-                <div class="sidebar-user-avatar">
-                    <span class="ms">military_tech</span>
+        <!-- USER FOOTER -->
+        <div class="p-4 border-t border-slate-100 bg-slate-50 shrink-0">
+            <div class="flex items-center gap-3" :class="!isSidebarExpanded ? 'justify-center' : ''">
+                <div class="w-10 h-10 rounded-full bg-slate-200 border-2 border-white shadow-sm flex items-center justify-center shrink-0">
+                    <span class="ms text-slate-500 text-[20px]">military_tech</span>
                 </div>
-                <div class="sidebar-user-info">
-                    <div class="sidebar-user-name">{{ auth()->user()->name ?? \App\Models\SystemSetting::get('danrindam_name', 'Danrindam III/Siliwangi') }}</div>
-                    <div class="sidebar-user-role">
-                        <span class="dot-pulse"></span>
-                        <span>{{ strtoupper(auth()->user()->role_code ?? 'PIMPINAN') }}</span>
-                    </div>
+                <div class="flex flex-col overflow-hidden" x-show="isSidebarExpanded" x-transition.opacity.duration.300ms>
+                    <span class="text-sm font-bold text-slate-800 truncate">{{ auth()->user()->name ?? \App\Models\SystemSetting::get('danrindam_name', 'Danrindam III/Slw') }}</span>
+                    <span class="text-[11px] font-semibold text-slate-500">{{ strtoupper(auth()->user()->role_code ?? 'PIMPINAN') }}</span>
                 </div>
-            </div>
-            <div class="sidebar-version-info">
-                <span>SIPANDU-WBK v2.4</span>
-                <span>TNI-AD</span>
             </div>
         </div>
     </aside>
 
-    <!-- MAIN CONTENT WRAPPER -->
-    <div class="main-wrapper">
+    <!-- MAIN CONTENT -->
+    <div class="flex-1 flex flex-col h-screen overflow-hidden bg-slate-50">
+        
         <!-- TOPBAR -->
-        <header class="app-topbar">
-            <div class="topbar-left">
-                <button class="btn-sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle Sidebar" title="Buka / Ciutkan Sidebar (Auto-Collapse)">
-                    <span class="ms">menu</span>
+        <header class="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:px-8 shrink-0 z-30 shadow-sm">
+            <div class="flex items-center gap-4">
+                <!-- Mobile Menu Button -->
+                <button @click="mobileSidebarOpen = true" class="lg:hidden p-2 -ml-2 rounded-lg text-slate-500 hover:bg-slate-100">
+                    <span class="ms text-[26px]">menu</span>
                 </button>
-                <div class="breadcrumb-trail">
-                    <span>SIPANDU-WBK</span>
-                    <span class="ms" style="font-size:16px;">chevron_right</span>
-                    <span class="current">
+                
+                <!-- BREADCRUMB -->
+                <div class="hidden sm:flex items-center gap-2 text-sm font-medium">
+                    <span class="text-slate-400">SIPANDU-WBK</span>
+                    <span class="ms text-slate-300 text-[18px]">chevron_right</span>
+                    <span class="text-slate-800 font-bold">
                         @if(request()->routeIs('dashboard'))
-                            Pusat Komando & Dashboard Eksekutif
+                            Dashboard Eksekutif
                         @elseif(request()->routeIs('settings.*'))
-                            Pengaturan Sistem & Pejabat Pimpinan
+                            Pengaturan Sistem
                         @elseif(request()->routeIs('health.*'))
-                            Kesehatan & Rekam Medis Serdik
+                            Kesehatan Serdik
                         @elseif(request()->routeIs('students.import'))
-                            Penginputan Data Serdik Format Excel
+                            Impor Data Serdik
                         @elseif(request()->routeIs('students.audit-logs'))
-                            Audit Log Akses Data Pribadi (SIPANDU-WBK)
+                            Audit Log
                         @else
-                            Buku Induk & Data Serdik
+                            Buku Induk Data Serdik
                         @endif
                     </span>
                 </div>
             </div>
 
-            <div class="topbar-right">
-                <div class="lan-badge" title="Tersedia di Jaringan Lokal Wi-Fi">
-                    <span class="dot-pulse"></span>
-                    <span>Wi-Fi LAN: 192.168.100.20</span>
+            <div class="flex items-center gap-4 lg:gap-6">
+                <!-- LAN Indicator -->
+                <div class="hidden md:flex items-center gap-2 px-3 py-1.5 bg-emerald-50 border border-emerald-100 rounded-full text-emerald-700">
+                    <span class="relative flex h-2.5 w-2.5">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                    </span>
+                    <span class="text-xs font-bold tracking-wide">LAN AKTIF</span>
                 </div>
-                <button type="button" class="btn btn-gold btn-sm" onclick="if(typeof openCreateStudentModal === 'function') { openCreateStudentModal(); } else { window.location='{{ route('students.index', ['action' => 'create']) }}'; }">
-                    <span class="ms" style="font-size:16px;">add</span> Tambah Siswa
+                
+                <!-- Action Button -->
+                <button onclick="if(typeof openCreateStudentModal === 'function') { openCreateStudentModal(); } else { window.location='{{ route('students.index', ['action' => 'create']) }}'; }" 
+                        class="flex items-center gap-2 px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg font-semibold text-sm shadow-sm transition-colors duration-200">
+                    <span class="ms text-[20px]">add</span>
+                    <span class="hidden sm:block">Tambah Serdik</span>
                 </button>
             </div>
         </header>
 
-        <!-- MAIN CONTAINER -->
-        <main class="container">
+        <!-- MAIN SCROLLABLE AREA -->
+        <main class="flex-1 overflow-x-hidden overflow-y-auto p-4 lg:p-8">
+            
+            <!-- ALERTS -->
             @if(session('success'))
-                <div class="alert alert-success">
-                    <span class="ms" style="font-size:22px;">check_circle</span>
-                    <div>{{ session('success') }}</div>
+                <div class="mb-6 flex items-center gap-3 p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800">
+                    <span class="ms text-[24px] text-emerald-500">check_circle</span>
+                    <span class="font-medium">{{ session('success') }}</span>
                 </div>
             @endif
 
             @if(session('error'))
-                <div class="alert alert-danger" style="background:#FFEBEE; color:var(--red); border:1px solid #FFCDD2;">
-                    <span class="ms" style="font-size:22px;">error</span>
-                    <div>{{ session('error') }}</div>
+                <div class="mb-6 flex items-center gap-3 p-4 bg-red-50 border border-red-200 rounded-xl text-red-800">
+                    <span class="ms text-[24px] text-red-500">error</span>
+                    <span class="font-medium">{{ session('error') }}</span>
                 </div>
             @endif
 
+            <!-- YIELD CONTENT -->
             @yield('content')
+            
         </main>
     </div>
 </div>
 
 <script src="{{ asset('js/chart.umd.min.js') }}"></script>
-
-<script>
-    // State management for Sidebar Auto-Collapse
-    const SIDEBAR_STORAGE_KEY = 'sipandu_sidebar_pinned';
-
-    function initSidebar() {
-        // Default is AUTO-COLLAPSE (not pinned)
-        const isPinned = localStorage.getItem(SIDEBAR_STORAGE_KEY) === 'true';
-        if (isPinned) {
-            document.body.classList.add('sidebar-pinned');
-        } else {
-            document.body.classList.remove('sidebar-pinned');
-        }
-        updatePinIcon(isPinned);
-    }
-
-    function toggleSidebarPin(e) {
-        if (e) {
-            e.stopPropagation();
-            e.preventDefault();
-        }
-        const currentlyPinned = document.body.classList.contains('sidebar-pinned');
-        const nextState = !currentlyPinned;
-        
-        if (nextState) {
-            document.body.classList.add('sidebar-pinned');
-            localStorage.setItem(SIDEBAR_STORAGE_KEY, 'true');
-        } else {
-            document.body.classList.remove('sidebar-pinned');
-            localStorage.setItem(SIDEBAR_STORAGE_KEY, 'false');
-        }
-        updatePinIcon(nextState);
-    }
-
-    function updatePinIcon(isPinned) {
-        const pinIcon = document.getElementById('pinIcon');
-        const pinBtn = document.getElementById('sidebarPinBtn');
-        if (pinIcon && pinBtn) {
-            if (isPinned) {
-                pinIcon.textContent = 'keep';
-                pinBtn.title = 'Sidebar Terkunci Terbuka. Klik untuk beralih ke Mode Otomatis Ciut (Auto-Collapse)';
-                pinBtn.style.color = 'var(--gold2)';
-                pinBtn.style.background = 'rgba(201,162,39,0.2)';
-            } else {
-                pinIcon.textContent = 'keep_off';
-                pinBtn.title = 'Mode Otomatis Ciut Aktif (Menciut jika kursor menjauh). Klik untuk Mengunci Terbuka';
-                pinBtn.style.color = 'rgba(255,255,255,0.6)';
-                pinBtn.style.background = 'rgba(255,255,255,0.08)';
-            }
-        }
-    }
-
-    function toggleSidebar() {
-        if (window.innerWidth <= 992) {
-            const sidebar = document.getElementById('appSidebar');
-            const backdrop = document.getElementById('sidebarBackdrop');
-            if (sidebar) sidebar.classList.toggle('open');
-            if (backdrop) backdrop.classList.toggle('active');
-        } else {
-            // Pada desktop, klik tombol menu topbar beralih antara Pinned dan Auto-Collapse
-            toggleSidebarPin();
-        }
-    }
-
-    // Listener otomatis saat halaman dimuat
-    document.addEventListener('DOMContentLoaded', function() {
-        initSidebar();
-
-        // Di mobile: tutup sidebar otomatis saat mengklik link menu apa pun
-        const sidebarItems = document.querySelectorAll('.sidebar-item');
-        sidebarItems.forEach(item => {
-            item.addEventListener('click', function() {
-                if (window.innerWidth <= 992) {
-                    const sidebar = document.getElementById('appSidebar');
-                    const backdrop = document.getElementById('sidebarBackdrop');
-                    if (sidebar) sidebar.classList.remove('open');
-                    if (backdrop) backdrop.classList.remove('active');
-                }
-            });
-        });
-
-        // Di desktop: jika sidebar tidak dipin dan kursor meninggalkan area sidebar, pastikan menciut
-        const sidebar = document.getElementById('appSidebar');
-        const mainWrapper = document.querySelector('.main-wrapper');
-        if (mainWrapper && sidebar) {
-            mainWrapper.addEventListener('mouseenter', function() {
-                if (!document.body.classList.contains('sidebar-pinned')) {
-                    sidebar.classList.remove('is-hovered');
-                }
-            });
-        }
-    });
-</script>
-
 @yield('scripts')
 
 </body>
