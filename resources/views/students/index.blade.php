@@ -111,7 +111,7 @@
                 @endif
             </a>
 
-            <div class="max-h-[320px] overflow-y-auto overscroll-contain">
+            <div>
                 @foreach($satdiks as $satdik)
                     @php
                         $satdikCounted = $satdik->counted_students ?? $satdik->students()->whereIn('status', ['Aktif', 'Sakit', 'Dinas Luar'])->count();
@@ -125,7 +125,7 @@
                             </div>
                             <div class="min-w-0">
                                 <div class="text-sm font-bold {{ $isActive ? 'text-blue-900' : 'text-slate-700' }} truncate">{{ $satdik->code }}</div>
-                                <div class="text-[11px] text-slate-500 truncate max-w-[150px] sm:max-w-[180px]" title="{{ $satdik->name }}">{{ $satdik->name }}</div>
+                                <div class="text-[11px] text-slate-500 whitespace-normal leading-tight" title="{{ $satdik->name }}">{{ $satdik->name }}</div>
                             </div>
                         </div>
                         @if($isActive)

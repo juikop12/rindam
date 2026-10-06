@@ -40,7 +40,7 @@
                 </div>
                 <div class="text-left">
                     <div class="text-xs font-semibold text-slate-500 mb-0.5">Filter Satuan Pendidikan</div>
-                    <div class="text-sm font-bold text-slate-900 leading-none truncate w-[140px] sm:w-[160px]">
+                    <div class="text-sm font-bold text-slate-900 leading-none truncate w-[140px] sm:w-[160px] sm:w-[220px]">
                         {{ $selectedSatdik ? $selectedSatdik->name : 'Semua Satdik' }}
                     </div>
                 </div>
@@ -56,7 +56,7 @@
              x-transition:leave-start="opacity-100 translate-y-0"
              x-transition:leave-end="opacity-0 translate-y-2"
              style="display: none;"
-             class="absolute top-full left-0 mt-2 w-full sm:w-[320px] bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden">
+             class="absolute top-full left-0 mt-2 w-full sm:w-[380px] bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden">
             
             <a href="{{ route('health.index', array_merge(request()->except(['satdik_id', 'page']))) }}" 
                class="flex items-center justify-between px-4 py-3 hover:bg-blue-50/50 transition-colors {{ empty($selectedSatdikId) ? 'bg-blue-50/50' : '' }} border-b border-slate-50">
@@ -76,7 +76,7 @@
                 @endif
             </a>
 
-            <div class="max-h-[320px] overflow-y-auto overscroll-contain">
+            <div>
                 @foreach($satdiks as $satdik)
                     @php
                         $satdikCounted = $satdik->students()->whereIn('status', ['Aktif', 'Sakit', 'Dinas Luar'])->count();
@@ -90,7 +90,7 @@
                             </div>
                             <div class="min-w-0">
                                 <div class="text-sm font-bold {{ $isActive ? 'text-blue-900' : 'text-slate-700' }} truncate">{{ $satdik->code }}</div>
-                                <div class="text-[11px] text-slate-500 truncate max-w-[150px] sm:max-w-[180px]" title="{{ $satdik->name }}">{{ $satdik->name }}</div>
+                                <div class="text-[11px] text-slate-500 whitespace-normal leading-tight" title="{{ $satdik->name }}">{{ $satdik->name }}</div>
                             </div>
                         </div>
                         @if($isActive)

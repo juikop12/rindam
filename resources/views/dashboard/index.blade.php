@@ -35,26 +35,16 @@
     @else
         <!-- PIMPINAN / SUPER ADMIN: BISA MEMILIH SELURUH SATDIK -->
         <div class="mb-6">
-            <!-- Mobile View (Dropdown) -->
-            <div class="block md:hidden">
-                <select onchange="window.location.href=this.value" class="w-full bg-white border border-slate-300 text-slate-700 text-sm rounded-lg focus:ring-slate-900 focus:border-slate-900 block p-2.5">
-                    <option value="{{ route('dashboard') }}" {{ is_null($selectedSatdik) ? 'selected' : '' }}>Semua Satdik ({{ \App\Models\Student::withoutGlobalScopes()->count() }})</option>
-                    @foreach($satdiks as $s)
-                        <option value="{{ route('dashboard', ['satdik_id' => $s->id]) }}" {{ $selectedSatdik?->id === $s->id ? 'selected' : '' }}>{{ $s->code }}</option>
-                    @endforeach
-                </select>
-            </div>
-            
-            <!-- Desktop View (Beautiful Dropdown) -->
-            <div class="hidden md:block relative group z-30" x-data="{ open: false }">
-                <button @click="open = !open" @click.away="open = false" type="button" class="w-[280px] flex items-center justify-between px-4 py-3 bg-white border border-slate-200 hover:border-blue-300 rounded-xl shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-blue-100 group-hover:shadow-md">
+            <!-- Beautiful Dropdown (Mobile & Desktop) -->
+            <div class="relative group z-30" x-data="{ open: false }">
+                <button @click="open = !open" @click.away="open = false" type="button" class="w-full sm:w-[280px] flex items-center justify-between px-4 py-3 bg-white border border-slate-200 hover:border-blue-300 rounded-xl shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-blue-100 group-hover:shadow-md">
                     <div class="flex items-center gap-3">
                         <div class="w-9 h-9 rounded-lg flex items-center justify-center {{ empty($selectedSatdik) ? 'bg-blue-50 text-blue-600' : 'bg-slate-100 text-slate-600' }}">
                             <span class="ms text-[20px]">{{ empty($selectedSatdik) ? 'list' : 'account_balance' }}</span>
                         </div>
                         <div class="text-left">
                             <div class="text-xs font-semibold text-slate-500 mb-0.5">Filter Satuan Pendidikan</div>
-                            <div class="text-sm font-bold text-slate-900 leading-none truncate w-[160px]">
+                            <div class="text-sm font-bold text-slate-900 leading-none truncate w-[140px] sm:w-[160px]">
                                 {{ $selectedSatdik ? $selectedSatdik->name : 'Semua Satdik' }}
                             </div>
                         </div>
@@ -70,7 +60,7 @@
                      x-transition:leave-start="opacity-100 translate-y-0"
                      x-transition:leave-end="opacity-0 translate-y-2"
                      style="display: none;"
-                     class="absolute top-full left-0 mt-2 w-[320px] bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden">
+                     class="absolute top-full left-0 mt-2 w-full sm:w-[380px] bg-white rounded-xl shadow-xl border border-slate-100 overflow-hidden">
                     
                     <a href="{{ route('dashboard') }}" 
                        class="flex items-center justify-between px-4 py-3 hover:bg-blue-50/50 transition-colors {{ empty($selectedSatdik) ? 'bg-blue-50/50' : '' }} border-b border-slate-50">
@@ -90,7 +80,7 @@
                         @endif
                     </a>
 
-                    <div class="max-h-[320px] overflow-y-auto overscroll-contain">
+                    <div>
                         @foreach($satdiks as $satdik)
                             @php
                                 $isActive = ($selectedSatdik?->id === $satdik->id);
@@ -103,7 +93,7 @@
                                     </div>
                                     <div class="min-w-0">
                                         <div class="text-sm font-bold {{ $isActive ? 'text-blue-900' : 'text-slate-700' }} truncate">{{ $satdik->code }}</div>
-                                        <div class="text-[11px] text-slate-500 truncate">{{ $satdik->name }}</div>
+                                        <div class="text-[11px] text-slate-500 whitespace-normal leading-tight">{{ $satdik->name }}</div>
                                     </div>
                                 </div>
                                 @if($isActive)
