@@ -471,5 +471,8 @@ class DatabaseSeeder extends Seeder
                 'psychological_record' => $data['psychological_record'],
             ]);
         }
+
+        // 5. Buat Catatan Kesehatan Awal Siswa (Termasuk Rawat Inap & Rujuk Rumkit)
+        $this->call(StudentHealthRecordSeeder::class);
     }
 }
