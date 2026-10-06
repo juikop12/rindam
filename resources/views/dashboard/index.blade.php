@@ -223,12 +223,14 @@
         </div>
     </div>
 
-    <!-- SECONDARY LINKS (Audit Logs) -->
+    @if(auth()->user()?->isSuperAdmin())
+    <!-- SECONDARY LINKS (Audit Logs - Khusus Superadmin) -->
     <div class="flex justify-end">
         <a href="{{ route('students.audit-logs') }}" class="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors">
             Lihat Seluruh Audit Log Keamanan <span class="ms text-[18px]">arrow_forward</span>
         </a>
     </div>
+    @endif
 
 </div>
 @endsection

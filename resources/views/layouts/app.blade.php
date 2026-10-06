@@ -1283,8 +1283,6 @@
                 <span x-show="isSidebarExpanded" class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-rose-100 text-rose-800">Admin</span>
                 <div x-show="!isSidebarExpanded" class="absolute left-full ml-3 px-3 py-2 bg-slate-800 text-white text-xs font-semibold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50">Manajemen Akun</div>
             </a>
-            @endif
-            
             <a href="{{ route('students.audit-logs') }}" 
                class="group relative flex items-center p-3 rounded-xl transition-all duration-200 {{ request()->routeIs('students.audit-logs') ? 'bg-slate-900 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900' }}"
                :class="!isSidebarExpanded ? 'justify-center' : 'justify-between'">
@@ -1292,8 +1290,10 @@
                     <span class="ms text-[24px] transition-transform duration-200 group-hover:scale-110 {{ request()->routeIs('students.audit-logs') ? 'text-white' : 'text-slate-400 group-hover:text-slate-600' }}">policy</span>
                     <span x-show="isSidebarExpanded" class="font-semibold text-[13.5px] whitespace-nowrap">Audit Log</span>
                 </div>
+                <span x-show="isSidebarExpanded" class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-rose-100 text-rose-800">Admin</span>
                 <div x-show="!isSidebarExpanded" class="absolute left-full ml-3 px-3 py-2 bg-slate-800 text-white text-xs font-semibold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50">Audit Log</div>
             </a>
+            @endif
 
         </nav>
 

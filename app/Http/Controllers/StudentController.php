@@ -551,20 +551,18 @@ class StudentController extends Controller
     }
 
     /**
-     * Halaman Pemantauan Audit Trail Akses Data Pribadi (Pengawasan ZI Area 5)
+     * Halaman Pemantauan Audit Trail Akses Data Pribadi (Khusus Super Administrator)
      */
     public function auditLogs(Request $request)
     {
         $currentUser = Auth::user();
-        $query = StudentPersonalDataAccessLog::with(['student.satdik', 'accessedByUser']);
-
-        if ($currentUser && !$currentUser->isPimpinan() && $currentUser->satdik_id) {
-            $query->whereHas('student', function ($q) use ($currentUser) {
-                $q->where('satdik_id', $currentUser->satdik_id);
-            });
+        if (!$currentUser || !$currentUser->isSuperAdmin()) {
+            abort(403, 'Akses Ditolak: Modul Audit Log Keamanan Sistem hanya dapat diakses oleh Super Administrator.');
         }
 
-        $logs = $query->latest('accessed_at')->paginate(20);
+        $logs = StudentPersonalDataAccessLog::with(['student.satdik', 'accessedByUser'])
+            ->latest('accessed_at')
+            ->paginate(20);
 
         return view('students.audit_logs', compact('logs'));
     }

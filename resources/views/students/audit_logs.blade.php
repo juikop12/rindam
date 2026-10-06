@@ -19,7 +19,10 @@
 <!-- HEADER BANNER -->
 <div class="header-banner">
     <div>
-        <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px; flex-wrap:wrap;">
+            <span class="pdp-badge" style="background:#0F172A; color:#F8FAFC; border-color:#334155;">
+                <span class="ms" style="font-size:16px;">admin_panel_settings</span> OTORITAS SUPER ADMINISTRATOR
+            </span>
             <span class="pdp-badge">
                 <span class="ms" style="font-size:16px;">policy</span> ZI WBK AREA 5: PENGAWASAN
             </span>

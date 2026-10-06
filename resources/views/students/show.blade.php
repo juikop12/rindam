@@ -17,9 +17,11 @@
         <a href="{{ route('students.index', ['satdik_id' => $student->satdik_id]) }}" class="btn btn-outline btn-sm">
             <span class="ms">arrow_back</span> Kembali ke Daftar
         </a>
+        @if(auth()->user()?->isSuperAdmin())
         <a href="{{ route('students.audit-logs') }}" class="btn btn-outline btn-sm">
             <span class="ms">policy</span> Lihat Seluruh Audit Trail
         </a>
+        @endif
     </div>
 </div>
 
