@@ -474,5 +474,8 @@ class DatabaseSeeder extends Seeder
 
         // 5. Buat Catatan Kesehatan Awal Siswa (Termasuk Rawat Inap & Rujuk Rumkit)
         $this->call(StudentHealthRecordSeeder::class);
+
+        // 6. Buat 1000 Siswa Dummy
+        $this->call(StudentSeeder::class);
     }
 }
