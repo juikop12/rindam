@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 #[ScopedBy([SatdikScope::class])]
 class Student extends Model
@@ -17,6 +18,8 @@ class Student extends Model
     use HasFactory, SoftDeletes;
 
     protected $guarded = ['id'];
+
+    protected $appends = ['nosis'];
 
     protected function casts(): array
     {
@@ -72,6 +75,17 @@ class Student extends Model
             return $value;
         }
         return $this->classroom?->company ?? null;
+    }
+
+    /**
+     * Alias atribut nosis untuk mengakses kolom nosik
+     */
+    protected function nosis(): Attribute
+    {
+        return Attribute::make(
+            get: fn (mixed $value, array $attributes) => $attributes['nosik'] ?? null,
+            set: fn (?string $value) => ['nosik' => $value],
+        );
     }
 
     public function getPlatoonAttribute($value): ?string
