@@ -3,253 +3,294 @@
 @section('title', 'Rekam Medis: ' . $student->full_name . ' — SIPANDU-WBK')
 
 @section('content')
+<div class="px-2 py-4">
 
-<!-- BREADCRUMB -->
-<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;">
-    <div style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--muted);">
-        <a href="{{ route('health.index') }}" style="color:var(--o700); text-decoration:none; font-weight:600;">Kesehatan Serdik</a>
-        <span class="ms" style="font-size:16px;">chevron_right</span>
-        <a href="{{ route('health.index', ['satdik_id' => $student->satdik_id]) }}" style="color:var(--o700); text-decoration:none; font-weight:600;">{{ $student->satdik->code }}</a>
-        <span class="ms" style="font-size:16px;">chevron_right</span>
-        <span style="color:var(--text); font-weight:700;">Rekam Medis: {{ $student->nosik }}</span>
-    </div>
-    <div style="display:flex; gap:10px;">
-        <button onclick="window.print()" class="btn btn-outline btn-sm">
-            <span class="ms">print</span> Cetak Lembar Medis
-        </button>
-        <a href="{{ route('students.show', $student) }}" class="btn btn-outline btn-sm">
-            <span class="ms">badge</span> Lihat Data Pribadi
-        </a>
-        @if(auth()->user()?->canModifyData())
-            <a href="{{ route('health.edit', $student) }}" class="btn btn-gold btn-sm">
-                <span class="ms">edit</span> Perbarui Status Kesehatan
+    <!-- BREADCRUMB & TOP ACTIONS -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <div class="flex items-center gap-2 text-xs font-medium text-slate-500">
+            <a href="{{ route('health.index') }}" class="text-slate-600 hover:text-slate-900 font-semibold transition-colors">Kesehatan Serdik</a>
+            <span class="ms text-slate-400 text-[16px]">chevron_right</span>
+            <a href="{{ route('health.index', ['satdik_id' => $student->satdik_id]) }}" class="text-slate-600 hover:text-slate-900 font-semibold transition-colors">{{ $student->satdik->code }}</a>
+            <span class="ms text-slate-400 text-[16px]">chevron_right</span>
+            <span class="text-slate-900 font-bold">Rekam Medis: {{ $student->nosik }}</span>
+        </div>
+        
+        <div class="flex items-center gap-2.5">
+            <button onclick="window.print()" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 rounded-lg text-xs font-semibold shadow-sm transition-colors">
+                <span class="ms text-[18px]">print</span> Cetak Lembar Medis
+            </button>
+            <a href="{{ route('students.show', $student) }}" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 rounded-lg text-xs font-semibold shadow-sm transition-colors">
+                <span class="ms text-[18px]">badge</span> Lihat Data Pribadi
             </a>
-        @endif
-    </div>
-</div>
-
-<!-- PATIENT HEADER CARD -->
-<div class="card" style="margin-bottom:24px; border-left:5px solid #2E7D32;">
-    <div class="card-body" style="padding:24px 28px;">
-        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:20px;">
-            <div style="display:flex; align-items:center; gap:20px;">
-                <div style="width:72px; height:72px; border-radius:16px; background:linear-gradient(135deg, #1B5E20, #388E3C); color:#fff; display:grid; place-items:center; font-size:30px; font-weight:800;">
-                    <span class="ms">medical_information</span>
-                </div>
-                <div>
-                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px; flex-wrap:wrap;">
-                        <span class="badge badge-satdik">{{ $student->satdik->code }}</span>
-                        <span style="font-family:'Fira Code',monospace; font-size:12px; color:var(--muted);">NOSIK: {{ $student->nosik }}</span>
-                        
-                        @php $u = $student->unified_status; @endphp
-                        <span class="badge {{ $u['badge'] }}" title="{{ $student->is_counted ? 'Terhitung dalam Kuota Aktif' : 'Arsip (Tidak Terhitung)' }}">
-                            <span class="ms" style="font-size:13px;">{{ $u['icon'] }}</span> {{ $u['label'] }}
-                        </span>
-
-                        @if($healthRecord->daily_health_status == 'Siap Latih')
-                            <span class="badge badge-green"><span class="ms" style="font-size:13px;">check_circle</span> Siap Latih Penuh</span>
-                        @elseif($healthRecord->daily_health_status == 'Berobat Jalan')
-                            <span class="badge badge-amber"><span class="ms" style="font-size:13px;">healing</span> Berobat Jalan / Dispen</span>
-                        @elseif($healthRecord->daily_health_status == 'Rawat Inap Poliklinik')
-                            <span class="badge badge-red"><span class="ms" style="font-size:13px;">local_hospital</span> Rawat Inap Poliklinik</span>
-                        @else
-                            <span class="badge badge-blue"><span class="ms" style="font-size:13px;">emergency</span> Rujuk Rumah Sakit</span>
-                        @endif
-                    </div>
-                    <h1 style="margin:0 0 6px; font-family:'Montserrat',sans-serif; font-size:22px; font-weight:800; color:var(--o900);">
-                        {{ $student->full_name }}
-                    </h1>
-                    <div style="font-size:13px; color:var(--muted); display:flex; gap:16px; flex-wrap:wrap;">
-                        <span>Program: <b style="color:var(--o800);">{{ $student->educationProgram->name ?? 'Program Pendidikan' }}</b></span>
-                        <span>•</span>
-                        <span>Kodam/Kodim Asal: <b style="color:var(--o800);">{{ $student->origin_military_unit ?? '-' }}</b></span>
-                        <span>•</span>
-                        <span>Pangkat: <b>{{ $student->student_rank }}</b></span>
-                        <span>•</span>
-                        <span>Satdik: <b>{{ $student->satdik->name }}</b></span>
-                        <span>•</span>
-                        <span>Peleton: <b>{{ $student->classroom->name ?? 'Belum Ditentukan' }}</b></span>
-                    </div>
-                </div>
-            </div>
-
-            <div style="text-align:right;">
-                <div style="font-size:12px; color:var(--muted);">Pemeriksaan Terakhir:</div>
-                <div style="font-weight:700; font-size:14px; color:var(--o800);">
-                    {{ $healthRecord->last_examined_at ? $healthRecord->last_examined_at->translatedFormat('d F Y, H:i') . ' WIB' : 'Belum Pernah' }}
-                </div>
-                <div style="font-size:11.5px; color:var(--muted); margin-top:2px;">
-                    Oleh: {{ $healthRecord->examined_by ?? 'Dokter Satdik' }}
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div style="display:grid; grid-template-columns: 1fr 1fr; gap:24px; margin-bottom:24px;">
-
-    <!-- KARTU 1: TANDA VITAL & FISIK -->
-    <div class="card" style="margin-bottom:0;">
-        <div class="card-header" style="background:var(--o50);">
-            <h3 class="card-title">
-                <span class="ms" style="color:var(--green);">vital_signs</span> Tanda Vital & Antropometri
-            </h3>
-            <span class="badge badge-green">Fisik Standar TNI AD</span>
-        </div>
-        <div class="card-body">
-            <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; margin-bottom:16px;">
-                <div style="background:#F9FAF7; border:1px solid var(--line); border-radius:10px; padding:12px; text-align:center;">
-                    <div style="font-size:11px; color:var(--muted); text-transform:uppercase;">Tekanan Darah</div>
-                    <div style="font-family:'Montserrat',sans-serif; font-size:18px; font-weight:800; color:var(--o800); margin-top:2px;">
-                        {{ $healthRecord->blood_pressure ?? '120/80' }}
-                    </div>
-                    <div style="font-size:10px; color:var(--muted);">mmHg</div>
-                </div>
-
-                <div style="background:#F9FAF7; border:1px solid var(--line); border-radius:10px; padding:12px; text-align:center;">
-                    <div style="font-size:11px; color:var(--muted); text-transform:uppercase;">Denyut Nadi</div>
-                    <div style="font-family:'Montserrat',sans-serif; font-size:18px; font-weight:800; color:var(--green); margin-top:2px;">
-                        {{ $healthRecord->pulse_rate ?? '72' }}
-                    </div>
-                    <div style="font-size:10px; color:var(--muted);">bpm (Istirahat)</div>
-                </div>
-
-                <div style="background:#F9FAF7; border:1px solid var(--line); border-radius:10px; padding:12px; text-align:center;">
-                    <div style="font-size:11px; color:var(--muted); text-transform:uppercase;">Indeks Massa (BMI)</div>
-                    <div style="font-family:'Montserrat',sans-serif; font-size:18px; font-weight:800; color:var(--o800); margin-top:2px;">
-                        {{ $healthRecord->bmi ?? '22.0' }}
-                    </div>
-                    <div style="font-size:10px; color:var(--muted);">Ideal / Proporsional</div>
-                </div>
-            </div>
-
-            <table style="width:100%; border-collapse:collapse; font-size:13.5px;">
-                <tr style="border-bottom:1px solid #EEF2EB;">
-                    <td style="padding:9px 0; color:var(--muted); width:40%;">Tinggi Badan</td>
-                    <td style="padding:9px 0; font-weight:700;">{{ $healthRecord->height_cm ?? '-' }} cm</td>
-                </tr>
-                <tr style="border-bottom:1px solid #EEF2EB;">
-                    <td style="padding:9px 0; color:var(--muted);">Berat Badan</td>
-                    <td style="padding:9px 0; font-weight:700;">{{ $healthRecord->weight_kg ?? '-' }} kg</td>
-                </tr>
-                <tr style="border-bottom:1px solid #EEF2EB;">
-                    <td style="padding:9px 0; color:var(--muted);">Golongan Darah</td>
-                    <td style="padding:9px 0; font-weight:800; color:var(--red);">{{ $student->blood_type ?? '-' }}</td>
-                </tr>
-                <tr>
-                    <td style="padding:9px 0; color:var(--muted);">Kondisi Fisik</td>
-                    <td style="padding:9px 0; font-weight:700;">
-                        @php $b = $healthRecord->status_badge; @endphp
-                        <span class="badge {{ $b['class'] }}">
-                            <span class="ms" style="font-size:13px;">{{ $b['icon'] }}</span> {{ $b['label'] }}
-                        </span>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
-
-    <!-- KARTU 2: PELAYANAN & TINDAKAN POLIKLINIK SATDIK -->
-    <div class="card" style="margin-bottom:0; border:1.5px solid #81C784;">
-        <div class="card-header" style="background:#E8F5E9; border-bottom:1px solid #C8E6C9;">
-            <div style="display:flex; align-items:center; gap:8px;">
-                <span class="ms" style="color:#1B5E20;">local_hospital</span>
-                <div>
-                    <h3 class="card-title" style="color:#1B5E20; font-size:15px;">Pelayanan & Perawatan Medis Satdik</h3>
-                    <div style="font-size:11px; color:#2E7D32;">Status Rawat Inap & Rujukan Kesehatan Siswa</div>
-                </div>
-            </div>
             @if(auth()->user()?->canModifyData())
-            <a href="{{ route('health.edit', $student) }}" class="btn btn-outline btn-sm" style="background:#fff;">
-                <span class="ms">edit</span> Update Perawatan
+            <a href="{{ route('health.edit', $student) }}" class="inline-flex items-center gap-1.5 px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-semibold shadow-sm transition-colors">
+                <span class="ms text-[18px]">edit</span> Perbarui Status Kesehatan
             </a>
             @endif
         </div>
-        <div class="card-body">
-            <table style="width:100%; border-collapse:collapse; font-size:13.5px;">
-                <tr style="border-bottom:1px solid #EEF2EB;">
-                    <td style="padding:10px 0; color:var(--muted); width:45%;">Status Perawatan</td>
-                    <td style="padding:10px 0;">
-                        @php $u = $student->unified_status; @endphp
-                        <span class="badge {{ $u['badge'] }}">
-                            <span class="ms" style="font-size:13px;">{{ $u['icon'] }}</span> {{ $u['label'] }}
+    </div>
+
+    <!-- PATIENT HEADER CARD -->
+    <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm mb-6">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            <div class="flex items-start sm:items-center gap-4">
+                <!-- Medical Avatar / Icon -->
+                <div class="w-14 h-14 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center justify-center shrink-0">
+                    <span class="ms text-[28px]">medical_information</span>
+                </div>
+                
+                <div>
+                    <!-- Badges Row -->
+                    <div class="flex flex-wrap items-center gap-2 mb-2">
+                        <span class="px-2.5 py-0.5 rounded-md text-xs font-bold bg-slate-100 text-slate-700">
+                            {{ $student->satdik->code }}
                         </span>
-                    </td>
-                </tr>
-                <tr style="border-bottom:1px solid #EEF2EB;">
-                    <td style="padding:10px 0; color:var(--muted);">Fasilitas Kesehatan Satdik</td>
-                    <td style="padding:10px 0; font-weight:600;">Poliklinik Kesehatan Rindam</td>
-                </tr>
-                <tr style="border-bottom:1px solid #EEF2EB;">
-                    <td style="padding:10px 0; color:var(--muted);">Rumah Sakit Rujukan</td>
-                    <td style="padding:10px 0; font-weight:600;">
-                        {{ $healthRecord->referral_hospital ?: 'Rumkit Tk. II dr. Soedjono Magelang (Standby)' }}
-                    </td>
-                </tr>
-                <tr>
-                    <td style="padding:10px 0; color:var(--muted);">Tanggal Masuk Poliklinik</td>
-                    <td style="padding:10px 0; font-weight:600;">
-                        {{ $healthRecord->polyclinic_admission_date ? \Carbon\Carbon::parse($healthRecord->polyclinic_admission_date)->translatedFormat('d F Y') : 'Tidak sedang rawat inap' }}
-                    </td>
-                </tr>
-            </table>
+                        <span class="font-mono text-xs text-slate-500">
+                            NOSIK: {{ $student->nosik }}
+                        </span>
+                        
+                        @php $u = $student->unified_status; @endphp
+                        @php
+                            $bgClass = 'bg-slate-100 text-slate-700';
+                            if($student->status === 'Aktif') $bgClass = 'bg-indigo-50 text-indigo-700';
+                            if($student->status === 'Sakit') $bgClass = 'bg-rose-50 text-rose-700';
+                            if(in_array($student->status, ['Lulus', 'Selesai'])) $bgClass = 'bg-emerald-50 text-emerald-700';
+                            if(str_contains($student->status, 'DO')) $bgClass = 'bg-amber-50 text-amber-700';
+                        @endphp
+                        <span class="px-2.5 py-0.5 rounded-md text-xs font-semibold {{ $bgClass }}" title="{{ $student->is_counted ? 'Terhitung dalam Kuota Aktif' : 'Arsip (Tidak Terhitung)' }}">
+                            <span class="ms text-[13px] mr-0.5">{{ $u['icon'] }}</span> {{ $u['label'] }}
+                        </span>
+
+                        @if($healthRecord->daily_health_status == 'Siap Latih')
+                            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-semibold bg-emerald-50 text-emerald-700">
+                                <span class="ms text-[14px]">check_circle</span> Siap Latih Penuh
+                            </span>
+                        @elseif($healthRecord->daily_health_status == 'Berobat Jalan')
+                            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-semibold bg-amber-50 text-amber-700">
+                                <span class="ms text-[14px]">healing</span> Berobat Jalan / Dispen
+                            </span>
+                        @elseif($healthRecord->daily_health_status == 'Rawat Inap Poliklinik')
+                            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-semibold bg-rose-50 text-rose-700">
+                                <span class="ms text-[14px]">local_hospital</span> Rawat Inap Poliklinik
+                            </span>
+                        @else
+                            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-semibold bg-blue-50 text-blue-700">
+                                <span class="ms text-[14px]">emergency</span> Rujuk Rumah Sakit
+                            </span>
+                        @endif
+                    </div>
+                    
+                    <!-- Patient Name -->
+                    <h1 class="text-2xl font-bold text-slate-900 tracking-tight mb-2">
+                        {{ $student->full_name }}
+                    </h1>
+                    
+                    <!-- Meta info line -->
+                    <div class="text-xs text-slate-500 flex flex-wrap items-center gap-x-3 gap-y-1">
+                        <span>Program: <b class="text-slate-800">{{ $student->educationProgram->name ?? 'Program Pendidikan' }}</b></span>
+                        <span class="text-slate-300">•</span>
+                        <span>Kodam/Kodim Asal: <b class="text-slate-800">{{ $student->origin_military_unit ?? '-' }}</b></span>
+                        <span class="text-slate-300">•</span>
+                        <span>Pangkat: <b class="text-slate-800">{{ $student->student_rank }}</b></span>
+                        <span class="text-slate-300">•</span>
+                        <span>Satdik: <b class="text-slate-800">{{ $student->satdik->name }}</b></span>
+                        <span class="text-slate-300">•</span>
+                        <span>Peleton: <b class="text-slate-800">{{ $student->classroom->name ?? ($student->company ? $student->company . ' ' . $student->platoon : 'Belum Ditentukan') }}</b></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Examination Timestamp on the right -->
+            <div class="lg:text-right shrink-0 lg:border-l lg:border-slate-100 lg:pl-6">
+                <div class="text-xs text-slate-400 font-medium">Pemeriksaan Terakhir:</div>
+                <div class="text-sm font-bold text-slate-900 mt-0.5">
+                    {{ $healthRecord->last_examined_at ? $healthRecord->last_examined_at->translatedFormat('d F Y, H:i') . ' WIB' : 'Belum Pernah' }}
+                </div>
+                <div class="text-xs text-slate-500 mt-0.5">
+                    Oleh: <span class="font-semibold text-slate-700">{{ $healthRecord->examined_by ?? 'Dokter Satdik' }}</span>
+                </div>
+            </div>
         </div>
     </div>
 
-</div>
+    <!-- 2 MAIN CARDS -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
 
-<!-- KARTU 3: CATATAN ALERGI, REKAM MEDIS & KESWA -->
-<div class="card">
-    <div class="card-header">
-        <h3 class="card-title">
-            <span class="ms" style="color:var(--o700);">clinical_notes</span> Riwayat Alergi, Rekam Medis Khusus & Evaluasi Keswa
-        </h3>
-        <span class="badge badge-satdik">Poliklinik Satdik</span>
-    </div>
-    <div class="card-body">
-        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:18px;">
-            <div style="background:#FFF9C4; border:1px solid #FFF176; border-radius:12px; padding:16px;">
-                <div style="display:flex; align-items:center; gap:6px; font-weight:800; font-size:13px; color:#F57F17; margin-bottom:8px;">
-                    <span class="ms">warning</span> RIWAYAT ALERGI OBAT / MAKANAN
+        <!-- KARTU 1: TANDA VITAL & FISIK -->
+        <div class="bg-white border border-slate-200 rounded-xl shadow-sm p-6 flex flex-col justify-between">
+            <div>
+                <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
+                    <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                        <span class="ms text-emerald-600 text-[20px]">vital_signs</span>
+                        Tanda Vital & Antropometri
+                    </h3>
+                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                        Fisik Standar TNI AD
+                    </span>
                 </div>
-                <div style="font-size:13px; color:#5D4037; line-height:1.4;">
+
+                <!-- 3 Top Metric Tiles -->
+                <div class="grid grid-cols-3 gap-3 mb-6">
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-center">
+                        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Tekanan Darah</div>
+                        <div class="text-xl font-bold text-slate-900 mt-1">
+                            {{ $healthRecord->blood_pressure ?? '120/80' }}
+                        </div>
+                        <div class="text-[10px] text-slate-400 mt-0.5">mmHg</div>
+                    </div>
+
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-center">
+                        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Denyut Nadi</div>
+                        <div class="text-xl font-bold text-emerald-600 mt-1">
+                            {{ $healthRecord->pulse_rate ?? '72' }}
+                        </div>
+                        <div class="text-[10px] text-slate-400 mt-0.5">bpm (Istirahat)</div>
+                    </div>
+
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-center">
+                        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Indeks Massa (BMI)</div>
+                        <div class="text-xl font-bold text-slate-900 mt-1">
+                            {{ $healthRecord->bmi ?? '22.0' }}
+                        </div>
+                        <div class="text-[10px] text-slate-400 mt-0.5">Ideal / Proporsional</div>
+                    </div>
+                </div>
+
+                <!-- Detail List -->
+                <div class="divide-y divide-slate-100 text-xs">
+                    <div class="py-2.5 flex items-center justify-between">
+                        <span class="text-slate-500 font-medium">Tinggi Badan</span>
+                        <span class="font-bold text-slate-800">{{ $healthRecord->height_cm ?? '-' }} cm</span>
+                    </div>
+                    <div class="py-2.5 flex items-center justify-between">
+                        <span class="text-slate-500 font-medium">Berat Badan</span>
+                        <span class="font-bold text-slate-800">{{ $healthRecord->weight_kg ?? '-' }} kg</span>
+                    </div>
+                    <div class="py-2.5 flex items-center justify-between">
+                        <span class="text-slate-500 font-medium">Golongan Darah</span>
+                        <span class="font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded">{{ $student->blood_type ?? '-' }}</span>
+                    </div>
+                    <div class="py-2.5 flex items-center justify-between">
+                        <span class="text-slate-500 font-medium">Kondisi Fisik</span>
+                        <div>
+                            @php $b = $healthRecord->status_badge; @endphp
+                            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-xs font-semibold {{ $b['class'] }}">
+                                <span class="ms text-[13px]">{{ $b['icon'] }}</span> {{ $b['label'] }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- KARTU 2: PELAYANAN & TINDAKAN POLIKLINIK SATDIK -->
+        <div class="bg-white border border-slate-200 rounded-xl shadow-sm p-6 flex flex-col justify-between">
+            <div>
+                <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
+                    <div class="flex items-center gap-2">
+                        <span class="ms text-emerald-600 text-[20px]">local_hospital</span>
+                        <div>
+                            <h3 class="text-sm font-bold text-slate-900 leading-tight">Pelayanan & Perawatan Medis Satdik</h3>
+                            <div class="text-[11px] text-slate-400">Status Rawat Inap & Rujukan Kesehatan Siswa</div>
+                        </div>
+                    </div>
+                    @if(auth()->user()?->canModifyData())
+                    <a href="{{ route('health.edit', $student) }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shadow-sm transition-colors">
+                        <span class="ms text-[15px]">edit</span> Update Perawatan
+                    </a>
+                    @endif
+                </div>
+
+                <div class="divide-y divide-slate-100 text-xs">
+                    <div class="py-3 flex items-center justify-between">
+                        <span class="text-slate-500 font-medium">Status Perawatan</span>
+                        <div>
+                            @php $u = $student->unified_status; @endphp
+                            <span class="px-2.5 py-0.5 rounded text-xs font-semibold {{ $u['badge'] }}">
+                                <span class="ms text-[13px] mr-0.5">{{ $u['icon'] }}</span> {{ $u['label'] }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="py-3 flex items-center justify-between">
+                        <span class="text-slate-500 font-medium">Fasilitas Kesehatan Satdik</span>
+                        <span class="font-semibold text-slate-800">Poliklinik Kesehatan Rindam</span>
+                    </div>
+                    <div class="py-3 flex items-center justify-between">
+                        <span class="text-slate-500 font-medium">Rumah Sakit Rujukan</span>
+                        <span class="font-semibold text-slate-800 text-right max-w-[280px]">
+                            {{ $healthRecord->referral_hospital ?: 'Rumkit Tk. II dr. Soedjono Magelang (Standby)' }}
+                        </span>
+                    </div>
+                    <div class="py-3 flex items-center justify-between">
+                        <span class="text-slate-500 font-medium">Tanggal Masuk Poliklinik</span>
+                        <span class="font-semibold text-slate-800">
+                            {{ $healthRecord->polyclinic_admission_date ? \Carbon\Carbon::parse($healthRecord->polyclinic_admission_date)->translatedFormat('d F Y') : 'Tidak sedang rawat inap' }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- KARTU 3: CATATAN ALERGI, REKAM MEDIS & KESWA -->
+    <div class="bg-white border border-slate-200 rounded-xl shadow-sm p-6 mb-8">
+        <div class="flex items-center justify-between pb-4 mb-5 border-b border-slate-100">
+            <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <span class="ms text-slate-700 text-[20px]">clinical_notes</span>
+                Riwayat Alergi, Rekam Medis Khusus & Evaluasi Keswa
+            </h3>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700">
+                Poliklinik Satdik
+            </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Box 1: Alergi -->
+            <div class="bg-amber-50/60 border border-amber-200 rounded-xl p-4">
+                <div class="flex items-center gap-1.5 font-bold text-xs text-amber-900 uppercase tracking-wider mb-2">
+                    <span class="ms text-amber-600 text-[18px]">warning</span> RIWAYAT ALERGI OBAT / MAKANAN
+                </div>
+                <div class="text-xs text-amber-900/90 leading-relaxed">
                     {{ $healthRecord->allergies ?: 'Tidak ada riwayat alergi yang dilaporkan.' }}
                 </div>
             </div>
 
-            <div style="background:#E3F2FD; border:1px solid #90CAF9; border-radius:12px; padding:16px;">
-                <div style="display:flex; align-items:center; gap:6px; font-weight:800; font-size:13px; color:#1565C0; margin-bottom:8px;">
-                    <span class="ms">history_edu</span> RIWAYAT SAKIT & CEDERA
+            <!-- Box 2: Riwayat Sakit & Cedera -->
+            <div class="bg-blue-50/60 border border-blue-200 rounded-xl p-4">
+                <div class="flex items-center gap-1.5 font-bold text-xs text-blue-900 uppercase tracking-wider mb-2">
+                    <span class="ms text-blue-600 text-[18px]">history_edu</span> RIWAYAT SAKIT & CEDERA
                 </div>
-                <div style="font-size:13px; color:#1A237E; line-height:1.4;">
+                <div class="text-xs text-blue-900/90 leading-relaxed">
                     {{ $healthRecord->medical_history ?: 'Tidak memiliki catatan sakit keras / operasi terdahulu.' }}
                 </div>
             </div>
 
-            <div style="background:#F3E5F5; border:1px solid #CE93D8; border-radius:12px; padding:16px;">
-                <div style="display:flex; align-items:center; gap:6px; font-weight:800; font-size:13px; color:#6A1B9A; margin-bottom:8px;">
-                    <span class="ms">psychology</span> EVALUASI KESWA & BINTAL
+            <!-- Box 3: Evaluasi Keswa & Bintal -->
+            <div class="bg-purple-50/60 border border-purple-200 rounded-xl p-4">
+                <div class="flex items-center gap-1.5 font-bold text-xs text-purple-900 uppercase tracking-wider mb-2">
+                    <span class="ms text-purple-600 text-[18px]">psychology</span> EVALUASI KESWA & BINTAL
                 </div>
-                <div style="font-size:13px; color:#4A148C; line-height:1.4;">
+                <div class="text-xs text-purple-900/90 leading-relaxed">
                     {{ $healthRecord->psychological_record ?: 'Stakes Keswa Bintal Baik (B), mental stabil.' }}
                 </div>
             </div>
         </div>
 
         @if($healthRecord->doctor_notes)
-            <div style="margin-top:20px; background:#F7F9F4; border:1px solid var(--line); border-radius:12px; padding:16px;">
-                <div style="font-weight:800; font-size:13px; color:var(--o800); margin-bottom:4px; display:flex; align-items:center; gap:6px;">
-                    <span class="ms">stethoscope</span> Catatan Instruksi Dokter Poliklinik Satdik:
+            <div class="mt-5 bg-slate-50 border border-slate-200 rounded-xl p-4">
+                <div class="font-bold text-xs text-slate-900 mb-1 flex items-center gap-1.5">
+                    <span class="ms text-slate-600 text-[18px]">stethoscope</span> Catatan Instruksi Dokter Poliklinik Satdik:
                 </div>
-                <div style="font-size:13.5px; color:var(--text); line-height:1.5;">
+                <div class="text-xs text-slate-700 leading-relaxed">
                     {{ $healthRecord->doctor_notes }}
                 </div>
-                <div style="margin-top:8px; font-size:12px; color:var(--muted);">
-                    Penanggung Jawab Medis: <b>{{ $healthRecord->examined_by }}</b>
+                <div class="mt-2 text-[11px] text-slate-400">
+                    Penanggung Jawab Medis: <b class="text-slate-700">{{ $healthRecord->examined_by }}</b>
                 </div>
             </div>
         @endif
     </div>
-</div>
 
+</div>
 @endsection
