@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Paparan SIPANDU-WBK Rindam</title>
+<meta name="description" content="Bahan paparan rancangan proyek SIPANDU-WBK Rindam: SIM Binsat, E-Learning, E-Pustaka, Portal WBK.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@600;700;800;900&display=block" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,1,0&display=block" rel="stylesheet">
+<style>
+:root{
+  --o900:#141C0E; --o800:#22301A; --o700:#3D5229; --o600:#4E6635; --o500:#6B7F4A; --o200:#D3DCC2; --o100:#E9EEDF; --o50:#F3F6EC;
+  --gold:#C9A227; --gold2:#E6C766; --goldbg:#FBF5DF;
+  --bg:#F7F7F2; --text:#1D2516; --muted:#5E6A54; --line:#DEE2D2;
+  --red:#B23A2E; --amber:#D99A1E; --green:#2E7D32;
+}
+@page{size:1280px 720px;margin:0}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:'Inter',sans-serif;color:var(--text);-webkit-print-color-adjust:exact;print-color-adjust:exact;counter-reset:slide;font-size:15px;line-height:1.45}
+.ms{font-family:'Material Symbols Rounded';font-weight:normal;font-style:normal;line-height:1;letter-spacing:normal;text-transform:none;white-space:nowrap;direction:ltr;-webkit-font-feature-settings:'liga';font-feature-settings:'liga';font-variation-settings:'FILL' 1,'wght' 500;display:inline-block}
+
+/* ---------- slide base ---------- */
+.slide{width:1280px;height:720px;position:relative;overflow:hidden;break-after:page;page-break-after:always;background:var(--bg);counter-increment:slide;padding:50px 64px 76px}
+.slide:last-child{break-after:auto;page-break-after:auto}
+.slide::before{content:"";position:absolute;right:-120px;top:-120px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(201,162,39,.13),transparent 70%)}
+.topo{position:absolute;right:0;top:0;width:420px;height:260px;opacity:.35}
+.kicker{display:inline-flex;align-items:center;gap:10px;font:700 12px/1 'Inter';letter-spacing:.18em;text-transform:uppercase;color:var(--o600)}
+.kicker::before{content:"";width:28px;height:4px;border-radius:2px;background:var(--gold)}
+h2.t{font-family:'Montserrat';font-weight:800;font-size:34px;line-height:1.15;margin:10px 0 6px;color:var(--o800);letter-spacing:-.01em}
+.sub{color:var(--muted);font-size:16px;margin:0 0 22px;max-width:900px}
+.footer{position:absolute;left:64px;right:64px;bottom:24px;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
+.footer b{color:var(--o700)}
+.footer .num{font-weight:800;color:var(--o800);font-family:'Montserrat'}
+.footer .num::before{content:counter(slide, decimal-leading-zero)}
+
+/* ---------- components ---------- */
+.grid{display:grid;gap:18px}
+.g2{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(3,1fr)} .g4{grid-template-columns:repeat(4,1fr)} .g5{grid-template-columns:repeat(5,1fr)} .g6{grid-template-columns:repeat(6,1fr)}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px 20px;box-shadow:0 6px 18px rgba(34,48,26,.06);position:relative}
+.card h4{font-family:'Montserrat';font-size:17px;margin:10px 0 6px;color:var(--o800)}
+.card p{margin:0;color:var(--muted);font-size:13.5px}
+.ic{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,var(--o700),var(--o500));color:#fff;font-size:26px;box-shadow:0 6px 14px rgba(61,82,41,.3)}
+.ic.gold{background:linear-gradient(135deg,#B08A1A,var(--gold2));color:var(--o900)}
+.ic.sm{width:36px;height:36px;font-size:20px;border-radius:10px}
+.badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11.5px;font-weight:700;background:var(--o100);color:var(--o700)}
+.badge.gold{background:var(--goldbg);color:#8A6A0C}
+.badge.red{background:#F8E1DE;color:var(--red)} .badge.amber{background:#FCEFD3;color:#9A6A07} .badge.green{background:#DFF0E0;color:var(--green)}
+ul.clean{list-style:none;margin:0;padding:0}
+ul.clean li{position:relative;padding-left:18px;margin:5px 0;font-size:13.5px;color:#36402D}
+ul.clean li::before{content:"";position:absolute;left:2px;top:8px;width:7px;height:7px;border-radius:2px;background:var(--gold);transform:rotate(45deg)}
+table.tb{width:100%;border-collapse:separate;border-spacing:0;font-size:13px;background:#fff;border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+table.tb th{background:var(--o800);color:#fff;text-align:left;padding:10px 12px;font-weight:600;font-size:12.5px}
+table.tb td{padding:8px 12px;border-top:1px solid var(--line);vertical-align:top}
+table.tb tr:nth-child(even) td{background:var(--o50)}
+.num-big{font-family:'Montserrat';font-weight:900;font-size:44px;line-height:1;color:var(--o700)}
+.hl{color:var(--gold)}
+
+/* ---------- dark slides ---------- */
+.dark{background:var(--o900);color:#fff}
+.dark .footer{color:rgba(255,255,255,.6);border-color:rgba(255,255,255,.15)}
+.dark .footer b,.dark .footer .num{color:var(--gold2)}
+.cover{padding:0;background:#0d130a url('cover.jpg') right center/cover no-repeat}
+.cover .shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,15,7,.97) 0%,rgba(10,15,7,.88) 38%,rgba(10,15,7,.25) 70%,rgba(10,15,7,0) 100%)}
+.cover .inner{position:relative;padding:80px 72px;height:100%;display:flex;flex-direction:column;justify-content:center;max-width:780px}
+.cover .tag{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border:1px solid rgba(230,199,102,.5);border-radius:999px;color:var(--gold2);font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;width:max-content}
+.cover h1{font-family:'Montserrat';font-weight:900;font-size:76px;line-height:1;margin:26px 0 10px;letter-spacing:-.02em}
+.cover h1 span{background:linear-gradient(90deg,var(--gold),var(--gold2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.cover .lead{font-size:21px;line-height:1.4;color:rgba(255,255,255,.88);margin:0 0 28px;font-weight:500}
+.cover .meta{display:flex;gap:28px;font-size:14px;color:rgba(255,255,255,.7);border-top:1px solid rgba(255,255,255,.15);padding-top:20px}
+.cover .meta b{display:block;color:#fff;font-size:15px;margin-top:3px}
+.pill-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:30px}
+.pill-row span{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);padding:7px 13px;border-radius:10px;font-size:13px;color:#fff;display:inline-flex;gap:7px;align-items:center}
+.pill-row .ms{font-size:18px;color:var(--gold2)}
+
+/* ---------- specific ---------- */
+.agenda .item{display:flex;gap:18px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px}
+.agenda .n{font-family:'Montserrat';font-weight:900;font-size:40px;color:var(--o200);width:62px}
+.agenda .item h4{margin:0 0 4px;font-family:'Montserrat';font-size:19px;color:var(--o800)}
+.agenda .item p{margin:0;font-size:13.5px;color:var(--muted)}
+.binsat .card{padding:20px 22px}
+.binsat .card .no{position:absolute;right:18px;top:14px;font-family:'Montserrat';font-weight:900;font-size:40px;color:var(--o100)}
+.prob{display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-left:4px solid var(--red);border-radius:12px;padding:12px 16px;margin-bottom:10px}
+.prob .ms{color:var(--red);font-size:22px}
+.prob b{display:block;font-size:14.5px;color:var(--text)}
+.prob small{color:var(--muted);font-size:12.5px}
+.side-dark{background:linear-gradient(160deg,var(--o800),var(--o900));color:#fff;border-radius:18px;padding:26px;position:relative;overflow:hidden}
+.side-dark h3{font-family:'Montserrat';margin:12px 0 8px;font-size:22px}
+.side-dark p{color:rgba(255,255,255,.78);font-size:14px;margin:0 0 10px}
+.side-dark ul.clean li{color:rgba(255,255,255,.88)}
+.hub{display:flex;flex-direction:column;align-items:center}
+.hub .core{background:linear-gradient(135deg,var(--o800),var(--o600));color:#fff;border-radius:20px;padding:18px 34px;text-align:center;box-shadow:0 14px 30px rgba(34,48,26,.3)}
+.hub .core h3{margin:0;font-family:'Montserrat';font-size:30px;font-weight:900}
+.hub .core p{margin:4px 0 0;color:var(--gold2);font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
+.conn{width:2px;height:22px;background:var(--gold)}
+.pillar{background:#fff;border:1px solid var(--line);border-top:5px solid var(--o700);border-radius:14px;padding:18px;text-align:left}
+.pillar h4{margin:10px 0 6px;font-family:'Montserrat';font-size:16px;color:var(--o800)}
+.pillar ul.clean li{font-size:12.5px;margin:3px 0}
+.dashbar{margin-top:18px;background:var(--goldbg);border:1px dashed var(--gold);border-radius:14px;padding:14px 20px;display:flex;align-items:center;gap:14px;font-size:14.5px}
+.dashbar .ms{font-size:28px;color:#8A6A0C}
+.arch-row{display:flex;gap:12px;align-items:stretch}
+.arch-label{width:130px;flex:none;font-size:11.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--o600);display:flex;align-items:center}
+.chip{flex:1;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:13px;display:flex;align-items:center;gap:8px;font-weight:600}
+.chip .ms{color:var(--o600);font-size:20px}
+.mod{flex:1;background:linear-gradient(160deg,var(--o700),var(--o600));color:#fff;border-radius:14px;padding:14px;font-size:13px}
+.mod b{display:block;font-family:'Montserrat';font-size:15px;margin:6px 0 2px}
+.mod small{color:rgba(255,255,255,.75)}
+.mod .ms{color:var(--gold2);font-size:24px}
+.corebar{flex:1;background:var(--o900);color:#fff;border-radius:12px;padding:12px 16px;font-size:13.5px;display:flex;gap:18px;flex-wrap:wrap;align-items:center}
+.corebar span{display:inline-flex;gap:6px;align-items:center}
+.corebar .ms{color:var(--gold2);font-size:18px}
+.down{display:flex;justify-content:center;margin:4px 0 4px 142px;color:var(--gold);font-size:22px}
+.infra{flex:1;background:var(--o50);border:1px dashed var(--o500);border-radius:12px;padding:10px 12px;font-size:13px;display:flex;align-items:center;gap:8px;font-weight:600;color:var(--o800)}
+.infra .ms{font-size:20px;color:var(--o700)}
+.bincol{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 14px;overflow:hidden}
+.bincol .hd{display:flex;align-items:center;gap:10px;margin:-16px -14px 12px;padding:12px 14px;background:var(--o800);color:#fff}
+.bincol .hd .ms{color:var(--gold2);font-size:22px}
+.bincol .hd b{font-family:'Montserrat';font-size:14.5px}
+.bincol ul.clean li{font-size:12.3px;margin:6px 0}
+.wbar{height:8px;border-radius:4px;background:var(--o100);overflow:hidden;margin-top:4px}
+.wbar i{display:block;height:100%;background:linear-gradient(90deg,var(--o700),var(--gold))}
+.flow{display:flex;align-items:stretch;gap:0}
+.flow .st{flex:1;background:#fff;border:1px solid var(--line);padding:12px 12px 12px 22px;font-size:12.5px;position:relative;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 50%,calc(100% - 14px) 100%,0 100%,14px 50%);margin-right:-6px;min-height:74px;display:flex;flex-direction:column;justify-content:center}
+.flow .st:first-child{clip-path:polygon(0 0,calc(100% - 14px) 0,100% 50%,calc(100% - 14px) 100%,0 100%);padding-left:14px}
+.flow .st b{font-size:13px;color:var(--o800)}
+.flow .st:nth-child(odd){background:var(--o50)}
+.flow .st.g{background:var(--o700);color:#fff}.flow .st.g b{color:var(--gold2)}
+.feat{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.feat b{display:block;font-size:14px;color:var(--o800);margin-bottom:2px}
+.feat small{color:var(--muted);font-size:12.3px;line-height:1.35;display:block}
+.matrix td,.matrix th{text-align:center!important}
+.matrix td:first-child,.matrix th:first-child{text-align:left!important;font-weight:600}
+.y{color:var(--green);font-weight:800}.p{color:#9A6A07;font-weight:700}.n{color:#B8BDAE}
+.stack .layer{display:flex;align-items:center;gap:16px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin-bottom:10px}
+.stack .layer .lbl{width:150px;font-weight:800;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--o600)}
+.stack .layer .tech{display:flex;gap:8px;flex-wrap:wrap}
+.tech span{background:var(--o50);border:1px solid var(--o200);border-radius:8px;padding:5px 10px;font-size:13px;font-weight:600;color:var(--o800)}
+.tech span.k{background:var(--o800);color:#fff;border-color:var(--o800)}
+.cycle{position:relative;width:400px;height:400px;margin:0 auto}
+.cycle .ring{position:absolute;inset:60px;border-radius:50%;border:3px dashed var(--o200)}
+.cycle .center{position:absolute;inset:135px;border-radius:50%;background:linear-gradient(135deg,var(--o800),var(--o600));color:#fff;display:grid;place-items:center;text-align:center;font-family:'Montserrat';font-weight:800;font-size:18px;line-height:1.15;box-shadow:0 10px 26px rgba(34,48,26,.35)}
+.cycle .center small{display:block;color:var(--gold2);font-size:11px;letter-spacing:.1em;margin-top:4px;font-family:'Inter'}
+.cycle .node{position:absolute;width:126px;margin-left:-63px;margin-top:-30px;background:#fff;border:2px solid var(--o700);border-radius:12px;padding:8px;text-align:center;font-size:12.5px;font-weight:700;color:var(--o800);box-shadow:0 6px 14px rgba(0,0,0,.06)}
+.cycle .node small{display:block;font-weight:500;color:var(--muted);font-size:11px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;text-align:center}
+.kpi .num-big{font-size:38px}
+.kpi p{margin:6px 0 0;font-size:13px;color:var(--muted)}
+/* gantt */
+.gantt{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 18px;font-size:12.5px}
+.gantt .row{display:grid;grid-template-columns:290px repeat(9,1fr);align-items:center;min-height:38px;border-bottom:1px solid #EEF0E6;position:relative}
+.gantt .row:last-child{border-bottom:none}
+.gantt .hdr{font-weight:700;color:var(--o800);font-size:11.5px;min-height:46px}
+.gantt .hdr div{text-align:center;line-height:1.2}
+.gantt .hdr div small{display:block;color:var(--muted);font-weight:500;font-size:10.5px}
+.gantt .lbl{font-weight:600;color:var(--text);display:flex;align-items:center;gap:8px}
+.gantt .lbl .ms{font-size:18px;color:var(--o600)}
+.gantt .bar{height:22px;border-radius:7px;margin:0 3px;display:flex;align-items:center;padding:0 8px;color:#fff;font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden}
+.b1{background:linear-gradient(90deg,#B08A1A,var(--gold2));color:var(--o900)!important}
+.b2{background:linear-gradient(90deg,var(--o500),#8FA36A)}
+.b3{background:linear-gradient(90deg,var(--o800),var(--o600))}
+.b4{background:linear-gradient(90deg,#8C3B2E,#C2604F)}
+.b5{background:repeating-linear-gradient(45deg,#C9CFB8,#C9CFB8 6px,#DCE1CD 6px,#DCE1CD 12px);color:var(--o800)!important}
+.gantt .gridbg{position:absolute;inset:0;display:grid;grid-template-columns:290px repeat(9,1fr);pointer-events:none}
+.gantt .gridbg div{border-left:1px dashed #E4E7DA}
+.gantt .gridbg div:first-child{border:none}
+.dia{width:14px;height:14px;background:var(--red);transform:rotate(45deg);margin:auto;box-shadow:0 0 0 3px #fff,0 0 0 4px var(--red)}
+/* sprint cards */
+.wk{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;position:relative;overflow:hidden}
+.wk .w{font-family:'Montserrat';font-weight:900;font-size:13px;color:var(--gold);letter-spacing:.08em}
+.wk h4{margin:4px 0 2px;font-family:'Montserrat';font-size:15.5px;color:var(--o800);line-height:1.2}
+.wk .d{font-size:11.5px;color:var(--muted);margin-bottom:8px}
+.wk ul.clean li{font-size:12px;margin:3px 0}
+.wk .out{margin-top:8px;font-size:11.5px;background:var(--o50);border-radius:8px;padding:6px 8px;color:var(--o800)}
+.wk.dev{border-top:4px solid var(--o700)} .wk.pre{border-top:4px solid var(--gold)} .wk.fin{border-top:4px solid var(--red)}
+/* milestones */
+.mline{position:relative;margin:70px 10px 0;height:4px;background:linear-gradient(90deg,var(--gold),var(--o700),var(--red));border-radius:2px}
+.ms-wrap{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-top:-14px}
+.mst{text-align:center}
+.mst .dot{width:24px;height:24px;border-radius:50%;background:#fff;border:5px solid var(--o700);margin:0 auto 14px;box-shadow:0 0 0 5px var(--bg)}
+.mst.last .dot{border-color:var(--red)}
+.mst .date{font-family:'Montserrat';font-weight:800;color:var(--o800);font-size:15px}
+.mst .code{display:inline-block;background:var(--o800);color:var(--gold2);font-weight:800;font-size:11px;padding:2px 8px;border-radius:6px;margin:6px 0}
+.mst .card{text-align:left;padding:12px 14px;margin-top:8px}
+.mst .card b{font-size:13.5px;color:var(--o800);display:block}
+.mst .card small{font-size:12px;color:var(--muted)}
+.team{display:flex;gap:12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.team .q{margin-left:auto;font-family:'Montserrat';font-weight:900;font-size:20px;color:var(--o700)}
+.team b{font-size:13.5px;color:var(--o800);display:block}
+.team small{font-size:11.8px;color:var(--muted);display:block;line-height:1.3}
+.dec{display:flex;gap:16px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px 22px;align-items:flex-start}
+.dec .n{flex:none;width:44px;height:44px;border-radius:50%;background:var(--gold);color:var(--o900);display:grid;place-items:center;font-family:'Montserrat';font-weight:900;font-size:20px}
+.dec h4{margin:0 0 6px;font-family:'Montserrat';font-size:17px;color:var(--o800)}
+.dec p{margin:0;font-size:13.5px;color:var(--muted)}
+.dec .opt{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+
+<!-- ============ 1. COVER ============ -->
+<section class="slide cover dark" id="s-cover">
+  <div class="shade"></div>
+  <div class="inner">
+    <div class="tag"><span class="ms" style="font-size:16px">verified</span> Bahan Paparan Rancangan Proyek</div>
+    <h1>SIPANDU<span>-WBK</span></h1>
+    <p class="lead">Sistem Informasi Pembinaan Satuan Pendidikan Terpadu<br>berbasis Wilayah Bebas dari Korupsi</p>
+    <div class="pill-row">
+      <span><span class="ms">shield_person</span>SIM Binsat 6 Komponen</span>
+      <span><span class="ms">school</span>E-Learning</span>
+      <span><span class="ms">local_library</span>E-Pustaka</span>
+      <span><span class="ms">gavel</span>Portal Zona Integritas</span>
+    </div>
+    <div class="meta">
+      <div>Satuan<b>Resimen Induk Daerah Militer</b></div>
+      <div>Platform<b>Laravel · Web</b></div>
+      <div>Periode<b>Okt – Nov 2026</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2. AGENDA ============ -->
+<section class="slide agenda" id="s-agenda">
+  <div class="kicker">Agenda Paparan</div>
+  <h2 class="t">Pokok Bahasan</h2>
+  <p class="sub">Paparan ini menyajikan latar belakang, rancangan sistem, kerangka teknis, metodologi penelitian, serta rencana kerja 2 bulan.</p>
+  <div class="grid g2" style="gap:16px">
+    <div class="item"><div class="n">01</div><div><h4>Latar Belakang & Permasalahan</h4><p>6 komponen Binsat, kondisi saat ini, tuntutan Zona Integritas</p></div></div>
+    <div class="item"><div class="n">02</div><div><h4>Solusi & Ruang Lingkup</h4><p>Konsep SIPANDU-WBK, tujuan, manfaat, dukungan area ZI</p></div></div>
+    <div class="item"><div class="n">03</div><div><h4>Blueprint Sistem</h4><p>Arsitektur, modul Binsat, Indeks Kesiapan, LMS, E-Pustaka, Portal WBK</p></div></div>
+    <div class="item"><div class="n">04</div><div><h4>Kerangka Teknis & Keamanan</h4><p>Teknologi Laravel, hak akses berbasis peran, lapisan keamanan</p></div></div>
+    <div class="item"><div class="n">05</div><div><h4>Metodologi & Pengujian</h4><p>R&D model Scrum, instrumen penelitian, KPI keberhasilan</p></div></div>
+    <div class="item"><div class="n">06</div><div><h4>Timeline & Rencana Kerja</h4><p>Gantt 8 minggu, sprint, milestone, tim, risiko, keputusan</p></div></div>
+  </div>
+  <div class="footer"><span><b>SIPANDU-WBK</b> · Rindam</span><span class="num"></span></div>
+</section>
+
+<!-- ============ 3. BINSAT ============ -->
+<section class="slide binsat" id="s-binsat">
+  <div class="kicker">01 · Latar Belakang</div>
+  <h2 class="t">6 Komponen Pembinaan Satuan (Binsat)</h2>
+  <p class="sub">Kesiapan operasional satuan pendidikan ditentukan oleh enam komponen pembinaan yang harus dikelola, dipantau, dan dilaporkan secara berkelanjutan.</p>
+  <div class="grid g3">
+    <div class="card"><span class="no">1</span><div class="ic"><span class="ms">account_tree</span></div><h4>Pembinaan Organisasi</h4><p>Penataan struktur dan fungsi satuan agar sesuai dengan TOP (Tabel Organisasi dan Peralatan) yang berlaku.</p></div>
+    <div class="card"><span class="no">2</span><div class="ic"><span class="ms">groups</span></div><h4>Pembinaan Personel</h4><p>Pengelolaan kekuatan, pemenuhan jabatan, dan pemeliharaan moril prajurit.</p></div>
+    <div class="card"><span class="no">3</span><div class="ic"><span class="ms">inventory_2</span></div><h4>Pembinaan Materiil</h4><p>Perawatan, pemeliharaan, dan inventarisasi alutsista serta perlengkapan satuan.</p></div>
+    <div class="card"><span class="no">4</span><div class="ic"><span class="ms">apartment</span></div><h4>Pembinaan Fasilitas / Pangkalan</h4><p>Pemeliharaan pangkalan, perkantoran, perumahan prajurit, dan fasilitas pendukung kerja.</p></div>
+    <div class="card"><span class="no">5</span><div class="ic"><span class="ms">military_tech</span></div><h4>Pembinaan Latihan</h4><p>Latihan bertahap, bertingkat, dan berlanjut guna memelihara kesiapsiagaan operasional.</p></div>
+    <div class="card"><span class="no">6</span><div class="ic"><span class="ms">menu_book</span></div><h4>Pembinaan Doktrin / Piranti Lunak</h4><p>Penerapan dan pemahaman ketentuan, petunjuk, atau naskah dinas yang mengatur cara kerja satuan.</p></div>
+  </div>
+  <div class="footer"><span><b>SIPANDU-WBK</b> · Rindam</span><span class="num"></span></div>
+</section>
+
+<!-- ============ 4. PERMASALAHAN ============ -->
+<section class="slide" id="s-masalah">
+  <div class="kicker">01 · Latar Belakang</div>
+  <h2 class="t">Kondisi Saat Ini & Permasalahan</h2>
+  <p class="sub">Hasil observasi awal — akan divalidasi pada Minggu 1 melalui observasi, wawancara, dan studi dokumen.</p>
+  <div style="display:grid;grid-template-columns:1fr 380px;gap:24px">
+    <div>
+      <div class="prob"><span class="ms">folder_off</span><div><b>Data Binsat tersebar di berkas fisik & Excel tiap seksi</b><small>Sulit direkap, rawan hilang, data tidak sinkron</small></div></div>
+      <div class="prob"><span class="ms">schedule</span><div><b>Laporan kesiapan disusun manual menjelang pemeriksaan</b><small>Memakan waktu, tidak real-time</small></div></div>
+      <div class="prob"><span class="ms">print</span><div><b>Hanjar & naskah doktrin masih berbentuk cetak</b><small>Biaya cetak tinggi, versi naskah tidak terkontrol</small></div></div>
+      <div class="prob"><span class="ms">edit_note</span><div><b>Evaluasi belajar siswa dilakukan manual</b><small>Rekap nilai lambat, potensi kesalahan input</small></div></div>
+      <div class="prob"><span class="ms">book</span><div><b>Koleksi perpustakaan belum terdigitalisasi</b><small>Akses terbatas pada jam dan lokasi tertentu</small></div></div>
+      <div class="prob" style="margin-bottom:0"><span class="ms">report</span><div><b>Pengaduan & survei kepuasan belum terpusat</b><small>Bukti dukung penilaian Zona Integritas lemah</small></div></div>
+    </div>
+    <div class="side-dark">
+      <div class="ic gold"><span class="ms">gavel</span></div>
+      <h3>Tuntutan Zona Integritas menuju WBK</h3>
+      <p>PermenPAN-RB No. 90 Tahun 2021 mensyaratkan instansi membangun ZI melalui 6 area perubahan, termasuk:</p>
+      <ul class="clean">
+        <li>Inovasi pelayanan berbasis TI</li>
+        <li>Keterbukaan informasi publik</li>
+        <li>Sarana pengaduan & whistleblowing</li>
+        <li>Survei kepuasan (IPAK & IPKP)</li>
+        <li>Penguatan akuntabilitas kinerja</li>
+      </ul>
+      <p style="margin-top:14px;color:var(--gold2);font-weight:600">→ Dibutuhkan satu platform digital terpadu.</p>
+    </div>
+  </div>
+  <div class="footer"><span><b>SIPANDU-WBK</b> · Rindam</span><span class="num"></span></div>
+</section>
+
+<!-- ============ 5. SOLUSI ============ -->
+<section class="slide" id="s-solusi">
+  <div class="kicker">02 · Solusi</div>
+  <h2 class="t">SIPANDU-WBK: Satu Platform, Lima Pilar</h2>
+  <p class="sub">Integrasi pengelolaan satuan, pendidikan, literasi, dan integritas dalam satu aplikasi web berbasis Laravel.</p>
+  <div class="hub">
+    <div class="core"><h3>SIPANDU-WBK</h3><p>Siap Operasional · Cerdas · Bersih</p></div>
+    <div class="conn"></div>
+  </div>
+  <div class="grid g4" style="gap:14px">
+    <div class="pillar"><div class="ic"><span class="ms">shield_person</span></div><h4>SIM Binsat</h4><ul class="clean"><li>6 komponen pembinaan</li><li>Laporan otomatis PDF/Excel</li><li>QR materiil & aset</li></ul></div>
+    <div class="pillar"><div class="ic"><span class="ms">school</span></div><h4>E-Learning (LMS)</h4><ul class="clean"><li>Kelas, materi, hanjar</li><li>Ujian daring & nilai otomatis</li><li>Rapor & sertifikat QR</li></ul></div>
+    <div class="pillar"><div class="ic"><span class="ms">local_library</span></div><h4>E-Pustaka</h4><ul class="clean"><li>Katalog & e-book reader</li><li>Sirkulasi buku fisik</li><li>Watermark & anti-unduh</li></ul></div>
+    <div class="pillar"><div class="ic"><span class="ms">gavel</span></div><h4>Portal WBK</h4><ul class="clean"><li>Pengaduan / WBS bertiket</li><li>Survei SKM, IPAK, IPKP</li><li>Lapor gratifikasi & PPID</li></ul></div>
+  </div>
+  <div class="dashbar"><span class="ms">monitoring</span><div><b>Pilar ke-5 — Dashboard Pimpinan:</b> Indeks Kesiapan Binsat real-time, statistik pendidikan & literasi, kinerja pelayanan WBK sebagai dasar pengambilan keputusan.</div></div>
+  <div class="footer"><span><b>SIPANDU-WBK</b> · Rindam</span><span class="num"></span></div>
+</section>
+
+<!-- ============ 6. TUJUAN & MANFAAT ============ -->
+<section class="slide" id="s-tujuan">
+  <div class="kicker">02 · Solusi</div>
+  <h2 class="t">Tujuan & Manfaat</h2>
+  <p class="sub">Sasaran yang terukur bagi pimpinan, pelaksana, pendidik, siswa, dan masyarakat.</p>
+  <div style="display:grid;grid-template-columns:1fr 1.15fr;gap:24px">
+    <div>
+      <div class="feat" style="margin-bottom:10px"><div class="ic sm">1</div><div><b>SIM Binsat terukur</b><small>Mengelola 6 komponen dengan Indeks Kesiapan Binsat otomatis</small></div></div>
+      <div class="feat" style="margin-bottom:10px"><div class="ic sm">2</div><div><b>Pendidikan & literasi digital</b><small>LMS dan E-Pustaka terintegrasi dengan data personel/siswa</small></div></div>
+      <div class="feat" style="margin-bottom:10px"><div class="ic sm">3</div><div><b>Mendukung Zona Integritas</b><small>Pengaduan, survei, gratifikasi, dan keterbukaan informasi</small></div></div>
+      <div class="feat"><div class="ic sm">4</div><div><b>Kualitas teruji</b><small>Diukur dengan ISO/IEC 25010 & System Usability Scale (SUS)</small></div></div>
+    </div>
+    <table class="tb">
+      <tr><th style="width:36%">Pihak</th><th>Manfaat</th></tr>
+      <tr><td><b>Pimpinan</b></td><td>Dashboard kesiapan real-time untuk keputusan</td></tr>
+      <tr><td><b>Seksi / Staf</b></td><td>Input data cepat, laporan otomatis</td></tr>
+      <tr><td><b>Gadik</b></td><td>Distribusi materi, ujian & penilaian daring</td></tr>
+      <tr><td><b>Siswa / Serdik</b></td><td>Akses hanjar, materi, e-book kapan saja</td></tr>
+      <tr><td><b>Tim Zona Integritas</b></td><td>Bukti dukung digital 6 area perubahan</td></tr>
+      <tr><td><b>Masyarakat</b></td><td>Informasi publik & pengaduan transparan</td></tr>
+      <tr><td><b>Akademik</b></td><td>Referensi SI satuan pendidikan militer</td></tr>
+    </table>
+  </div>
+  <div class="footer"><span><b>SIPANDU-WBK</b> · Rindam</span><span class="num"></span></div>
+</section>
+
+<!-- ============ 7. ZONA INTEGRITAS ============ -->
+<section class="slide" id="s-zi">
+  <div class="kicker">02 · Solusi</div>
+  <h2 class="t">Dukungan terhadap 6 Area Perubahan Zona Integritas</h2>
+  <p class="sub">Setiap fitur dirancang agar langsung menjadi bukti dukung Lembar Kerja Evaluasi ZI (PermenPAN-RB No. 90/2021).</p>
+  <div class="grid g3" style="gap:16px">
+    <div class="card"><div class="ic gold sm"><span class="ms">published_with_changes</span></div><h4>1. Manajemen Perubahan</h4><p>Agenda & dokumentasi kegiatan ZI, etalase inovasi pelayanan.</p></div>
+    <div class="card"><div class="ic gold sm"><span class="ms">rule</span></div><h4>2. Penataan Tatalaksana</h4><p>SOP digital, e-office, keterbukaan informasi publik (PPID).</p></div>
+    <div class="card"><div class="ic gold sm"><span class="ms">badge</span></div><h4>3. Penataan Sistem Manajemen SDM</h4><p>Modul personel, rekam diklat & latihan, data moril.</p></div>
+    <div class="card"><div class="ic gold sm"><span class="ms">query_stats</span></div><h4>4. Penguatan Akuntabilitas</h4><p>Dashboard kinerja, laporan otomatis, Indeks Kesiapan Binsat.</p></div>
+    <div class="card"><div class="ic gold sm"><span class="ms">policy</span></div><h4>5. Penguatan Pengawasan</h4><p>Whistleblowing System, lapor gratifikasi, audit log seluruh aktivitas.</p></div>
+    <div class="card"><div class="ic gold sm"><span class="ms">support_agent</span></div><h4>6. Kualitas Pelayanan Publik</h4><p>Standar & maklumat pelayanan, Survei Kepuasan, pengaduan ber-SLA.</p></div>
+  </div>
+  <div class="dashbar" style="margin-top:16px"><span class="ms">insights</span><div><b>Komponen hasil:</b> Indeks Persepsi Anti Korupsi (IPAK) & Indeks Persepsi Kualitas Pelayanan (IPKP) dikumpulkan langsung melalui modul survei.</div></div>
+  <div class="footer"><span><b>SIPANDU-WBK</b> · Rindam</span><span class="num"></span></div>
+</section>
+
+<!-- ============ 8. ARSITEKTUR ============ -->
+<section class="slide" id="s-arsitektur">
+  <div class="kicker">03 · Blueprint Sistem</div>
+  <h2 class="t">Arsitektur Sistem</h2>
+  <p class="sub">Pola <b>Modular Monolith</b> — satu aplikasi Laravel dengan pemisahan per domain.</p>
+  <div style="display:grid;grid-template-columns:1fr 290px;gap:22px">
+    <div>
+      <div class="arch-row"><div class="arch-label">Pengguna</div>
+        <div class="chip"><span class="ms">public</span>Publik</div><div class="chip"><span class="ms">stars</span>Pimpinan & Staf</div><div class="chip"><span class="ms">co_present</span>Gadik</div><div class="chip"><span class="ms">person</span>Siswa</div><div class="chip"><span class="ms">local_library</span>Pustakawan</div>
+      </div>
+      <div class="down"><span class="ms">keyboard_double_arrow_down</span></div>
+      <div class="arch-row"><div class="arch-label">Aplikasi Laravel</div>
+        <div class="mod"><span class="ms">language</span><b>Portal WBK</b><small>Blade + Livewire</small></div>
+        <div class="mod"><span class="ms">dashboard</span><b>Panel Staf</b><small>Filament</small></div>
+        <div class="mod"><span class="ms">school</span><b>E-Learning</b><small>Livewire</small></div>
+        <div class="mod"><span class="ms">auto_stories</span><b>E-Pustaka</b><small>Livewire + PDF.js</small></div>
+        <div class="mod"><span class="ms">api</span><b>REST API</b><small>Sanctum</small></div>
+      </div>
+      <div class="down"><span class="ms">keyboard_double_arrow_down</span></div>
+      <div class="arch-row"><div class="arch-label">Core Service</div>
+        <div class="corebar"><span><span class="ms">lock</span>Auth & 2FA</span><span><span class="ms">admin_panel_settings</span>RBAC</span><span><span class="ms">history</span>Audit Log</span><span><span class="ms">notifications</span>Notifikasi</span><span><span class="ms">description</span>Laporan PDF/Excel</span><span><span class="ms">speed</span>Mesin Indeks Binsat</span></div>
+      </div>
+      <div class="down"><span class="ms">keyboard_double_arrow_down</span></div>
+      <div class="arch-row"><div class="arch-label">Infrastruktur</div>
+        <div class="infra"><span class="ms">database</span>MySQL / MariaDB</div><div class="infra"><span class="ms">memory</span>Redis</div><div class="infra"><span class="ms">folder_special</span>Storage Privat</div><div class="infra"><span class="ms">mail</span>SMTP</div><div class="infra"><span class="ms">backup</span>Backup Harian</div>
+      </div>
+    </div>
+    <div class="side-dark">
+      <div class="ic gold"><span class="ms">lightbulb</span></div>
+      <h3>Mengapa Modular Monolith?</h3>
+      <ul class="clean">
+        <li>Cocok untuk tim kecil & tenggat 2 bulan</li>
+        <li>Satu kali deploy, mudah dipelihara admin satuan</li>
+        <li>Kode tetap rapi per domain (Binsat, Pendidikan, Pustaka, WBK)</li>
+        <li>Dapat dipecah menjadi layanan terpisah di masa depan</li>
+        <li>REST API siap untuk PWA / aplikasi mobile</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer"><span><b>SIPANDU-WBK</b> · Rindam</span><span class="num"></span></div>
+</section>
+
+<!-- ============ 9. MODUL BINSAT ============ -->
+<section class="slide" id="s-modbinsat">
+  <div class="kicker">03 · Blueprint Sistem</div>
+  <h2 class="t">Modul SIM Binsat — Fitur per Komponen</h2>
+  <p class="sub">Setiap komponen memiliki pencatatan, monitoring, approval, dan laporan otomatis.</p>
+  <div class="grid g6" style="gap:12px">
+    <div class="bincol"><div class="hd"><span class="ms">account_tree</span><b>Organisasi</b></div><ul class="clean"><li>Data satuan (struktur pohon)</li><li>TOP / DSPP jabatan</li><li>Struktur riil vs TOP</li><li>Analisis gap otomatis</li><li>Bagan organisasi</li><li>Arsip SK organisasi</li></ul></div>
+    <div class="bincol"><div class="hd"><span class="ms">groups</span><b>Personel</b></div><ul class="clean"><li>Data personel (impor Excel)</li><li>Kekuatan DSPP vs Nyata</li><li>Jabatan kosong / Plt</li><li>Riwayat pangkat & jabatan</li><li>Kesiapan harian</li><li>Survei & pembinaan moril</li></ul></div>
+    <div class="bincol"><div class="hd"><span class="ms">inventory_2</span><b>Materiil</b></div><ul class="clean"><li>Inventaris per kategori</li><li>Kondisi B / RR / RB</li><li>Jadwal harwat</li><li>Mutasi + approval</li><li>Label QR per item</li><li>Rekap kesiapan materiil</li></ul></div>
+    <div class="bincol"><div class="hd"><span class="ms">apartment</span><b>Fasilitas</b></div><ul class="clean"><li>Gedung, kelas, barak, lapangan</li><li>Kondisi & kapasitas</li><li>Rumah dinas & penghuni</li><li>Tiket perbaikan</li><li>Booking ruang / lapangan</li><li>Dokumentasi foto</li></ul></div>
+    <div class="bincol"><div class="hd"><span class="ms">military_tech</span><b>Latihan</b></div><ul class="clean"><li>Program tahunan → mingguan</li><li>Jenis latihan</li><li>Jadwal, peserta, pelatih</li><li>Hasil (menembak, Garjas)</li><li>% terlaksana vs rencana</li><li>Dokumentasi</li></ul></div>
+    <div class="bincol"><div class="hd"><span class="ms">menu_book</span><b>Doktrin</b></div><ul class="clean"><li>Repositori naskah dinas</li><li>Versi & status berlaku</li><li>Klasifikasi akses</li><li>Jadwal sosialisasi</li><li>Tes pemahaman</li><li>Bukti baca naskah</li></ul></div>
+  </div>
+  <div class="dashbar" style="margin-top:16px"><span class="ms">lock</span><div>Data berklasifikasi <b>RAHASIA tidak disimpan</b> di sistem. Data senjata/munisi dapat dibatasi hanya rekap jumlah sesuai kebijakan satuan.</div></div>
+  <div class="footer"><span><b>SIPANDU-WBK</b> · Rindam</span><span class="num"></span></div>
+</section>
+
+<!-- ============ 10. INDEKS BINSAT ============ -->
+<section class="slide" id="s-indeks">
+  <div class="kicker">03 · Fitur Unggulan</div>
+  <h2 class="t">Indeks Kesiapan Binsat</h2>
+  <p class="sub">Skor 0–100 per komponen dihitung otomatis dari data, digabung dengan bobot yang <b>dapat dikonfigurasi</b> sesuai ketentuan resmi.</p>
+  <div style="display:grid;grid-template-columns:1.25fr 1fr;gap:24px;align-items:start">
+    <table class="tb">
+      <tr><th style="width:22%">Komponen</th><th>Rumus Awal (Draf)</th><th style="width:20%">Bobot</th></tr>
+      <tr><td><b>Organisasi</b></td><td>Jabatan terbentuk ÷ Jabatan TOP</td><td>15%<div class="wbar"><i style="width:60%"></i></div></td></tr>
+      <tr><td><b>Personel</b></td><td>60% Pemenuhan + 20% Kesiapan + 20% Moril</td><td>20%<div class="wbar"><i style="width:80%"></i></div></td></tr>
+      <tr><td><b>Materiil</b></td><td>(B×1 + RR×0,5 + RB×0) ÷ Total item</td><td>20%<div class="wbar"><i style="width:80%"></i></div></td></tr>
+      <tr><td><b>Fasilitas</b></td><td>(B×1 + RR×0,5 + RB×0) ÷ Total fasilitas</td><td>15%<div class="wbar"><i style="width:60%"></i></div></td></tr>
+      <tr><td><b>Latihan</b></td><td>70% Terlaksana/Rencana + 30% Rata-rata nilai</td><td>20%<div class="wbar"><i style="width:80%"></i></div></td></tr>
+      <tr><td><b>Doktrin</b></td><td>50% Naskah mutakhir + 50% Tes pemahaman</td><td>10%<div class="wbar"><i style="width:40%"></i></div></td></tr>
+    </table>
+    <div class="card" style="padding:16px 18px">
+      <div style="display:flex;justify-content:space-between;align-items:center"><b style="font-family:Montserrat;color:var(--o800)">Ilustrasi Dashboard</b><span class="badge amber">CUKUP SIAP</span></div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <svg width="210" height="140" viewBox="0 0 240 150">
+          <defs><linearGradient id="gg" x1="0" x2="1"><stop offset="0" stop-color="#B23A2E"/><stop offset=".5" stop-color="#D99A1E"/><stop offset="1" stop-color="#2E7D32"/></linearGradient></defs>
+          <path d="M20 125 A100 100 0 0 1 220 125" fill="none" stroke="#E9EEDF" stroke-width="20" stroke-linecap="round"/>
+          <path d="M20 125 A100 100 0 0 1 220 125" fill="none" stroke="url(#gg)" stroke-width="20" stroke-linecap="round" stroke-dasharray="255.7 400"/>
+          <text x="120" y="112" text-anchor="middle" font-family="Montserrat" font-weight="900" font-size="40" fill="#22301A">81,4</text>
+          <text x="120" y="138" text-anchor="middle" font-family="Inter" font-size="12" fill="#5E6A54">Indeks Kesiapan</text>
+        </svg>
+        <svg width="190" height="190" viewBox="0 0 300 300">
+          <g fill="none" stroke="#DEE2D2" stroke-width="1.5">
+            <polygon points="150,40 245.3,95 245.3,205 150,260 54.7,205 54.7,95"/>
+            <polygon points="150,76.7 213.5,113.3 213.5,186.7 150,223.3 86.5,186.7 86.5,113.3"/>
+            <polygon points="150,113.3 181.8,131.7 181.8,168.3 150,186.7 118.2,168.3 118.2,131.7"/>
+            <line x1="150" y1="150" x2="150" y2="40"/><line x1="150" y1="150" x2="245.3" y2="95"/><line x1="150" y1="150" x2="245.3" y2="205"/><line x1="150" y1="150" x2="150" y2="260"/><line x1="150" y1="150" x2="54.7" y2="205"/><line x1="150" y1="150" x2="54.7" y2="95"/>
+          </g>
+          <polygon points="150,53.2 227.2,105.5 222.4,191.8 150,229.2 69,196.8 64.3,100.5" fill="rgba(61,82,41,.35)" stroke="#3D5229" stroke-width="3"/>
+          <g font-family="Inter" font-size="15" font-weight="700" fill="#22301A" text-anchor="middle">
+            <text x="150" y="28">Org 88</text><text x="262" y="88">Pers 81</text><text x="262" y="222">Mat 76</text><text x="150" y="284">Fas 72</text><text x="40" y="222">Lat 85</text><text x="40" y="88">Dok 90</text>
+          </g>
+        </svg>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">
+        <span class="badge green">≥ 85 SIAP</span><span class="badge amber">70–84,9 CUKUP SIAP</span><span class="badge red">&lt; 70 KURANG SIAP</span>
+      </div>
+      <p style="font-size:12.5px;color:var(--muted);margin:10px 0 0">Indeks = Σ (Skor Komponen × Bobot). Dashboard menampilkan gauge, radar, tren bulanan, dan daftar titik lemah.</p>
+    </div>
+  </div>
+  <div class="footer"><span><b>SIPANDU-WBK</b> · Rindam</span><span class="num"></span></div>
+</section>
+
+<!-- ============ 11. E-LEARNING ============ -->
+<section class="slide" id="s-lms">
+  <div class="kicker">03 · Blueprint Sistem</div>
+  <h2 class="t">E-Learning (Learning Management System)</h2>
+  <p class="sub">Model <b>blended learning</b> — tatap muka di kelas/lapangan dipadukan dengan materi dan evaluasi daring.</p>
+  <div class="grid g4" style="gap:12px">
+    <div class="feat"><div class="ic sm"><span class="ms">workspaces</span></div><div><b>Program & Kelas</b><small>Diktukba, Diktukta, Dikjur; angkatan, kelas/peleton</small></div></div>
+    <div class="feat"><div class="ic sm"><span class="ms">auto_stories</span></div><div><b>Mapel & Materi</b><small>PDF/hanjar, video, tautan, dibuka bertahap</small></div></div>
+    <div class="feat"><div class="ic sm"><span class="ms">quiz</span></div><div><b>Bank Soal</b><small>PG, benar/salah, esai; impor dari Excel</small></div></div>
+    <div class="feat"><div class="ic sm"><span class="ms">timer</span></div><div><b>Kuis & Ujian</b><small>Token, timer, acak soal, autosave, nilai otomatis</small></div></div>
+    <div class="feat"><div class="ic sm"><span class="ms">assignment</span></div><div><b>Tugas</b><small>Unggah berkas, tenggat, umpan balik gadik</small></div></div>
+    <div class="feat"><div class="ic sm"><span class="ms">how_to_reg</span></div><div><b>Presensi</b><small>Presensi daring per sesi pembelajaran</small></div></div>
+    <div class="feat"><div class="ic sm"><span class="ms">grading</span></div><div><b>Nilai & Rapor</b><small>Bobot nilai, rapor otomatis, peringkat</small></div></div>
+    <div class="feat"><div class="ic sm"><span class="ms">workspace_premium</span></div><div><b>Sertifikat</b><small>PDF dengan QR verifikasi keaslian</small></div></div>
+  </div>
+  <h3 style="font-family:Montserrat;color:var(--o800);font-size:17px;margin:22px 0 10px">Alur Ujian Daring</h3>
+  <div class="flow">
+    <div class="st"><b>1. Susun Ujian</b>Gadik pilih soal dari bank soal</div>
+    <div class="st"><b>2. Atur</b>Jadwal, durasi, acak soal</div>
+    <div class="st"><b>3. Publikasi</b>Ke kelas / peleton</div>
+    <div class="st"><b>4. Kerjakan</b>Siswa masuk dengan token</div>
+    <div class="st"><b>5. Autosave</b>Jawaban tersimpan tiap 30 dtk</div>
+    <div class="st"><b>6. Penilaian</b>PG otomatis, esai dikoreksi</div>
+    <div class="st g"><b>7. Rapor</b>Nilai masuk rapor siswa</div>
+  </div>
+  <div class="footer"><span><b>SIPANDU-WBK</b> · Rindam</span><span class="num"></span></div>
+</section>
+
+<!-- ============ 12. E-PUSTAKA ============ -->
+<section class="slide" id="s-pustaka">
+  <div class="kicker">03 · Blueprint Sistem</div>
+  <h2 class="t">E-Pustaka (Perpustakaan Digital)</h2>
+  <p class="sub">Koleksi fisik & digital dalam satu katalog — hanjar dari E-Pustaka dapat langsung dipasang sebagai materi kelas di E-Learning.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px">
+    <div class="grid g2" style="gap:12px">
+      <div class="feat"><div class="ic sm"><span class="ms">manage_search</span></div><div><b>Katalog & Pencarian</b><small>Judul, pengarang, ISBN, kategori, lokasi rak</small></div></div>
+      <div class="feat"><div class="ic sm"><span class="ms">chrome_reader_mode</span></div><div><b>E-Book Reader</b><small>PDF.js tanpa unduh + watermark nama/NRP</small></div></div>
+      <div class="feat"><div class="ic sm"><span class="ms">qr_code_2</span></div><div><b>Koleksi Fisik</b><small>Eksemplar ber-barcode / QR</small></div></div>
+      <div class="feat"><div class="ic sm"><span class="ms">sync_alt</span></div><div><b>Sirkulasi</b><small>Pinjam, kembali, perpanjang, reservasi, sanksi</small></div></div>
+      <div class="feat"><div class="ic sm"><span class="ms">badge</span></div><div><b>Keanggotaan</b><small>Otomatis dari data personel & siswa</small></div></div>
+      <div class="feat"><div class="ic sm"><span class="ms">bookmark</span></div><div><b>Fitur Pembaca</b><small>Bookmark, riwayat baca, favorit</small></div></div>
+      <div class="feat"><div class="ic sm"><span class="ms">bar_chart</span></div><div><b>Statistik</b><small>Buku terpopuler, pembaca teraktif</small></div></div>
+      <div class="feat"><div class="ic sm"><span class="ms">add_shopping_cart</span></div><div><b>Usulan Buku</b><small>Usulan pengadaan dari gadik & siswa</small></div></div>
+    </div>
+    <div class="card">
+      <b style="font-family:Montserrat;color:var(--o800);font-size:16px">Alur Peminjaman Buku Fisik</b>
+      <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px">
+        <div class="feat" style="padding:9px 12px"><span class="badge">1</span><div><b>Cari di katalog</b><small>Cek ketersediaan; jika kosong → reservasi antrean</small></div></div>
+        <div class="feat" style="padding:9px 12px"><span class="badge">2</span><div><b>Scan kartu & barcode buku</b><small>Pustakawan mencatat transaksi pinjam (tenggat 7 hari)</small></div></div>
+        <div class="feat" style="padding:9px 12px"><span class="badge">3</span><div><b>Notifikasi H-1</b><small>Pengingat otomatis sebelum jatuh tempo</small></div></div>
+        <div class="feat" style="padding:9px 12px"><span class="badge">4</span><div><b>Pengembalian</b><small>Scan; keterlambatan otomatis dicatat sanksi</small></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span><b>SIPANDU-WBK</b> · Rindam</span><span class="num"></span></div>
+</section>
+
+<!-- ============ 13. PORTAL WBK ============ -->
+<section class="slide" id="s-portal">
+  <div class="kicker">03 · Blueprint Sistem</div>
+  <h2 class="t">Portal WBK & Alur Pengaduan</h2>
+  <p class="sub">Wajah publik satuan: transparan, mudah diakses, dan setiap pengaduan terlacak hingga tuntas.</p>
+  <div style="display:grid;grid-template-columns:340px 1fr;gap:24px">
+    <div class="card">
+      <b style="font-family:Montserrat;color:var(--o800);font-size:16px">Fitur Portal Publik</b>
+      <ul class="clean" style="margin-top:10px">
+        <li>Beranda, profil, struktur & pejabat</li>
+        <li>Berita, agenda, galeri</li>
+        <li>Standar & maklumat pelayanan</li>
+        <li>Informasi publik (PPID)</li>
+        <li>Pengaduan / WBS (bisa anonim)</li>
+        <li>Lapor gratifikasi</li>
+        <li>Survei SKM, IPAK, IPKP + hasil</li>
+        <li>Etalase inovasi, FAQ, kontak</li>
+        <li>Katalog E-Pustaka publik</li>
+      </ul>
+    </div>
+    <div>
+      <div class="flow" style="margin-bottom:16px">
+        <div class="st"><b>Kirim</b>Pelapor isi form + bukti</div>
+        <div class="st"><b>Tiket</b>Nomor tiket & kode akses</div>
+        <div class="st"><b>Verifikasi</b>Tim ZI ≤ 3 hari kerja</div>
+        <div class="st"><b>Disposisi</b>Pimpinan ke unit terkait</div>
+        <div class="st"><b>Tindak Lanjut</b>≤ 14 hari kerja</div>
+        <div class="st g"><b>Selesai</b>Tanggapan ke pelapor</div>
+      </div>
+      <div class="grid g3" style="gap:12px">
+        <div class="card"><div class="ic sm"><span class="ms">visibility_off</span></div><h4 style="font-size:15px">Anonim & Aman</h4><p>Identitas pelapor dapat disembunyikan; kode akses di-hash.</p></div>
+        <div class="card"><div class="ic sm"><span class="ms">track_changes</span></div><h4 style="font-size:15px">Lacak Status</h4><p>Pelapor memantau progres dengan nomor tiket.</p></div>
+        <div class="card"><div class="ic sm"><span class="ms">alarm</span></div><h4 style="font-size:15px">Peringatan SLA</h4><p>Pengaduan melewati batas waktu ditandai merah.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span><b>SIPANDU-WBK</b> · Rindam</span><span class="num"></span></div>
+</section>
+
+<!-- ============ 14. HAK AKSES ============ -->
+<section class="slide" id="s-akses">
+  <div class="kicker">04 · Kerangka Teknis</div>
+  <h2 class="t">Aktor & Hak Akses (RBAC)</h2>
+  <p class="sub">Prinsip <b>need-to-know</b>: setiap pengguna hanya melihat data sesuai peran dan satuannya.</p>
+  <table class="tb matrix">
+    <tr><th>Modul</th><th>Super Admin</th><th>Pimpinan</th><th>Operator Binsat</th><th>Gadik</th><th>Siswa</th><th>Pustakawan</th><th>Tim ZI</th><th>Publik</th></tr>
+    <tr><td>Pengguna & Role</td><td class="y">Kelola</td><td class="p">Lihat</td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td class="n">—</td></tr>
+    <tr><td>Binsat 6 Komponen</td><td class="y">Kelola</td><td class="y">Lihat + Setujui</td><td class="y">Kelola seksinya</td><td class="p">Lihat doktrin</td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td class="n">—</td></tr>
+    <tr><td>Dashboard Indeks</td><td class="y">Lihat</td><td class="y">Lihat</td><td class="p">Seksinya</td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td class="n">—</td></tr>
+    <tr><td>E-Learning</td><td class="y">Kelola</td><td class="p">Lihat</td><td class="n">—</td><td class="y">Kelola kelas</td><td class="y">Belajar & ujian</td><td class="n">—</td><td class="n">—</td><td class="n">—</td></tr>
+    <tr><td>E-Pustaka</td><td class="y">Kelola</td><td class="p">Baca</td><td class="p">Baca</td><td class="p">Baca + usul</td><td class="p">Baca</td><td class="y">Kelola</td><td class="p">Baca</td><td class="p">Katalog</td></tr>
+    <tr><td>Konten Portal</td><td class="y">Kelola</td><td class="p">Lihat</td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td class="y">Kelola</td><td class="p">Lihat</td></tr>
+    <tr><td>Pengaduan / Gratifikasi</td><td class="p">Lihat</td><td class="y">Disposisi</td><td class="n">—</td><td class="p">Lapor</td><td class="p">Lapor</td><td class="p">Lapor</td><td class="y">Kelola</td><td class="p">Lapor</td></tr>
+    <tr><td>Audit Log</td><td class="y">Lihat</td><td class="y">Lihat</td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td class="p">Lihat</td><td class="n">—</td></tr>
+  </table>
+  <div class="footer"><span><b>SIPANDU-WBK</b> · Rindam</span><span class="num"></span></div>
+</section>
+
+<!-- ============ 15. TEKNOLOGI ============ -->
+<section class="slide stack" id="s-teknologi">
+  <div class="kicker">04 · Kerangka Teknis</div>
+  <h2 class="t">Technology Stack</h2>
+  <p class="sub">Teknologi open-source, matang, dan sesuai lingkungan pengembangan <b>Laragon</b> yang sudah digunakan.</p>
+  <div class="layer"><div class="lbl">Backend</div><div class="tech"><span class="k">Laravel 12/13</span><span class="k">PHP 8.3+</span><span>Eloquent ORM</span><span>Queue & Scheduler</span><span>Sanctum API</span></div></div>
+  <div class="layer"><div class="lbl">Antarmuka</div><div class="tech"><span class="k">Filament v4</span><span class="k">Livewire 3</span><span>Alpine.js</span><span>Tailwind CSS</span><span>ApexCharts</span><span>PDF.js</span></div></div>
+  <div class="layer"><div class="lbl">Data</div><div class="tech"><span class="k">MySQL 8 / MariaDB</span><span>Redis</span><span>Laravel Scout</span><span>Storage Privat</span></div></div>
+  <div class="layer"><div class="lbl">Package Kunci</div><div class="tech"><span>spatie/permission</span><span>spatie/activitylog</span><span>spatie/medialibrary</span><span>spatie/backup</span><span>filament-shield</span><span>maatwebsite/excel</span><span>dompdf</span><span>simple-qrcode</span></div></div>
+  <div class="layer"><div class="lbl">Kualitas</div><div class="tech"><span>Pest</span><span>Laravel Pint (PSR-12)</span><span>Larastan</span><span>GitHub Actions CI</span><span>OWASP ZAP</span><span>k6</span></div></div>
+  <div class="layer"><div class="lbl">Server</div><div class="tech"><span>Ubuntu LTS</span><span>Nginx</span><span>PHP-FPM</span><span>Supervisor</span><span>HTTPS / TLS</span><span>Laragon (dev)</span></div></div>
+  <div class="footer"><span><b>SIPANDU-WBK</b> · Rindam</span><span class="num"></span></div>
+</section>
+
+<!-- ============ 16. KEAMANAN ============ -->
+<section class="slide" id="s-keamanan">
+  <div class="kicker">04 · Kerangka Teknis</div>
+  <h2 class="t">Blueprint Keamanan Berlapis</h2>
+  <p class="sub">Dirancang untuk lingkungan militer dan selaras dengan UU No. 27/2022 tentang Pelindungan Data Pribadi.</p>
+  <div class="grid g4" style="gap:14px">
+    <div class="card"><div class="ic"><span class="ms">lan</span></div><h4>Jaringan</h4><p>HTTPS/TLS, firewall; Panel Staf hanya via intranet/VPN.</p></div>
+    <div class="card"><div class="ic"><span class="ms">password</span></div><h4>Autentikasi</h4><p>Password kuat, 2FA (TOTP), kunci akun setelah 5x gagal.</p></div>
+    <div class="card"><div class="ic"><span class="ms">admin_panel_settings</span></div><h4>Otorisasi</h4><p>RBAC + Policy per model, filter data per satuan.</p></div>
+    <div class="card"><div class="ic"><span class="ms">enhanced_encryption</span></div><h4>Data</h4><p>Enkripsi kolom sensitif, hash kode akses, nama file acak.</p></div>
+    <div class="card"><div class="ic"><span class="ms">bug_report</span></div><h4>Aplikasi</h4><p>Proteksi CSRF, XSS, SQLi; validasi file; rate limit & CAPTCHA.</p></div>
+    <div class="card"><div class="ic"><span class="ms">branding_watermark</span></div><h4>Konten Digital</h4><p>Reader tanpa unduh, watermark dinamis, signed URL berbatas waktu.</p></div>
+    <div class="card"><div class="ic"><span class="ms">manage_history</span></div><h4>Pengawasan</h4><p>Audit log semua perubahan, log login, alert aktivitas mencurigakan.</p></div>
+    <div class="card"><div class="ic"><span class="ms">cloud_sync</span></div><h4>Ketersediaan</h4><p>Backup harian terenkripsi, retensi 30 hari, uji restore bulanan.</p></div>
+  </div>
+  <div class="footer"><span><b>SIPANDU-WBK</b> · Rindam</span><span class="num"></span></div>
+</section>
+
+<!-- ============ 17. METODOLOGI ============ -->
+<section class="slide" id="s-metode">
+  <div class="kicker">05 · Metodologi Penelitian</div>
+  <h2 class="t">Research & Development dengan Model Scrum</h2>
+  <p class="sub">Pengembangan iteratif dengan sprint 1 minggu — setiap Jumat hasil didemokan kepada Product Owner.</p>
+  <div style="display:grid;grid-template-columns:430px 1fr;gap:22px;align-items:center">
+    <div class="cycle">
+      <div class="ring"></div>
+      <div class="center"><div>SPRINT<br>1 MINGGU<small>× 5 SPRINT</small></div></div>
+      <div class="node" style="left:200px;top:40px">Sprint Planning<small>Senin</small></div>
+      <div class="node" style="left:355px;top:150px">Development<small>Senin–Jumat</small></div>
+      <div class="node" style="left:325px;top:320px">Daily Scrum<small>15 menit</small></div>
+      <div class="node" style="left:75px;top:320px">Sprint Review<small>Demo Jumat</small></div>
+      <div class="node" style="left:45px;top:150px">Retrospective<small>Evaluasi</small></div>
+    </div>
+    <div>
+      <table class="tb" style="margin-bottom:14px">
+        <tr><th>Teknik Pengumpulan Data</th><th>Sasaran</th></tr>
+        <tr><td><b>Observasi</b></td><td>Proses kerja seksi Pers, Log, Ops/Diklat, Perpustakaan</td></tr>
+        <tr><td><b>Wawancara</b></td><td>Pejabat staf, Gadik, Pustakawan, Tim ZI, siswa</td></tr>
+        <tr><td><b>Studi Dokumen</b></td><td>TOP/DSPP, format laporan, kurikulum, LKE ZI</td></tr>
+        <tr><td><b>Kuesioner</b></td><td>Pengguna akhir (pra & pasca implementasi)</td></tr>
+      </table>
+      <div class="grid g4" style="gap:10px">
+        <div class="kpi" style="padding:12px"><div class="num-big" style="font-size:28px">10–15</div><p>Pejabat/Staf</p></div>
+        <div class="kpi" style="padding:12px"><div class="num-big" style="font-size:28px">10–20</div><p>Gadik</p></div>
+        <div class="kpi" style="padding:12px"><div class="num-big" style="font-size:28px">30–50</div><p>Siswa/Serdik</p></div>
+        <div class="kpi" style="padding:12px"><div class="num-big" style="font-size:28px">3–5</div><p>Pustakawan & ZI</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span><b>SIPANDU-WBK</b> · Rindam</span><span class="num"></span></div>
+</section>
+
+<!-- ============ 18. PENGUJIAN & KPI ============ -->
+<section class="slide" id="s-kpi">
+  <div class="kicker">05 · Pengujian</div>
+  <h2 class="t">Rencana Pengujian & Indikator Keberhasilan</h2>
+  <p class="sub">Kualitas diukur secara objektif sebelum aplikasi dinyatakan siap digunakan.</p>
+  <div class="grid g5" style="gap:12px;margin-bottom:20px">
+    <div class="kpi"><div class="num-big">≥95%</div><p>Skenario black-box lulus</p></div>
+    <div class="kpi"><div class="num-big">≥68</div><p>Skor SUS (ideal ≥ 80)</p></div>
+    <div class="kpi"><div class="num-big">≥81%</div><p>Kelayakan ISO 25010<br>(Sangat Layak)</p></div>
+    <div class="kpi"><div class="num-big">0</div><p>Kerentanan High / Critical OWASP</p></div>
+    <div class="kpi"><div class="num-big">&lt;5<span style="font-size:20px"> mnt</span></div><p>Penyusunan laporan Binsat</p></div>
+  </div>
+  <table class="tb">
+    <tr><th>Jenis Uji</th><th>Waktu</th><th>Pelaksana</th><th>Alat / Metode</th></tr>
+    <tr><td><b>Unit & Feature Test</b></td><td>Setiap sprint</td><td>Developer</td><td>Pest / PHPUnit</td></tr>
+    <tr><td><b>Black-Box Test</b></td><td>Akhir setiap sprint</td><td>QA</td><td>Lembar skenario uji</td></tr>
+    <tr><td><b>Performance Test</b></td><td>Minggu 8</td><td>Developer</td><td>k6 / JMeter — 200 user ujian serentak</td></tr>
+    <tr><td><b>Security Test</b></td><td>Minggu 8</td><td>Developer</td><td>OWASP ZAP + checklist OWASP Top 10</td></tr>
+    <tr><td><b>UAT & Kuesioner</b></td><td>Minggu 8</td><td>Pengguna kunci & peneliti</td><td>Lembar UAT, SUS, ISO/IEC 25010</td></tr>
+  </table>
+  <div class="footer"><span><b>SIPANDU-WBK</b> · Rindam</span><span class="num"></span></div>
+</section>
+
+<!-- ============ 19. GANTT ============ -->
+<section class="slide" id="s-gantt">
+  <div class="kicker">06 · Timeline</div>
+  <h2 class="t">Jadwal Pelaksanaan 2 Bulan</h2>
+  <p class="sub" style="margin-bottom:14px">5 Oktober – 27 November 2026 · 8 minggu / 40 hari kerja + 1 minggu pendampingan opsional</p>
+  <div class="gantt">
+    <div class="row hdr" style="position:relative">
+      <div style="text-align:left">Kegiatan</div>
+      <div>M1<small>5–9 Okt</small></div><div>M2<small>12–16 Okt</small></div><div>M3<small>19–23 Okt</small></div><div>M4<small>26–30 Okt</small></div><div>M5<small>2–6 Nov</small></div><div>M6<small>9–13 Nov</small></div><div>M7<small>16–20 Nov</small></div><div>M8<small>23–27 Nov</small></div><div>M9<small>30 Nov–4 Des</small></div>
+    </div>
+    <div style="position:relative">
+      <div class="gridbg"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+      <div class="row"><div class="lbl"><span class="ms">search</span>Analisis Kebutuhan</div><div class="bar b1" style="grid-column:2/3">SRS & Backlog</div></div>
+      <div class="row"><div class="lbl"><span class="ms">design_services</span>Desain Sistem & Setup</div><div class="bar b2" style="grid-column:3/4">ERD · Mockup</div></div>
+      <div class="row"><div class="lbl"><span class="ms">code</span>Sprint 1 · Core + Portal WBK</div><div class="bar b3" style="grid-column:4/5">Sprint 1</div></div>
+      <div class="row"><div class="lbl"><span class="ms">code</span>Sprint 2 · Organisasi, Personel, Materiil</div><div class="bar b3" style="grid-column:5/6">Sprint 2</div></div>
+      <div class="row"><div class="lbl"><span class="ms">code</span>Sprint 3 · Fasilitas, Latihan, Doktrin</div><div class="bar b3" style="grid-column:6/7">Sprint 3</div></div>
+      <div class="row"><div class="lbl"><span class="ms">code</span>Sprint 4 · E-Learning</div><div class="bar b3" style="grid-column:7/8">Sprint 4</div></div>
+      <div class="row"><div class="lbl"><span class="ms">code</span>Sprint 5 · E-Pustaka + WBK lanjutan</div><div class="bar b3" style="grid-column:8/9">Sprint 5</div></div>
+      <div class="row"><div class="lbl"><span class="ms">verified</span>Uji · UAT · Deploy · Pelatihan</div><div class="bar b4" style="grid-column:9/10">Go-Live</div></div>
+      <div class="row"><div class="lbl"><span class="ms">article</span>Dokumentasi Penelitian</div><div class="bar b1" style="grid-column:2/10;height:12px;opacity:.75"></div></div>
+      <div class="row"><div class="lbl"><span class="ms">support</span>Hypercare (opsional)</div><div class="bar b5" style="grid-column:10/11">Pendampingan</div></div>
+      <div class="row"><div class="lbl"><span class="ms">flag</span>Milestone</div><div style="grid-column:2/3"><div class="dia"></div></div><div style="grid-column:3/4"><div class="dia"></div></div><div style="grid-column:6/7"><div class="dia"></div></div><div style="grid-column:8/9"><div class="dia"></div></div><div style="grid-column:9/10"><div class="dia"></div></div></div>
+    </div>
+  </div>
+  <div class="footer"><span><b>SIPANDU-WBK</b> · Rindam</span><span class="num"></span></div>
+</section>
+
+<!-- ============ 20. RINCIAN SPRINT ============ -->
+<section class="slide" id="s-sprint">
+  <div class="kicker">06 · Timeline</div>
+  <h2 class="t">Rincian Kegiatan per Minggu</h2>
+  <p class="sub" style="margin-bottom:14px">Setiap minggu menghasilkan keluaran yang dapat didemokan dan diuji.</p>
+  <div class="grid g4" style="gap:12px">
+    <div class="wk pre"><div class="w">MINGGU 1</div><h4>Analisis Kebutuhan</h4><div class="d">5–9 Okt 2026</div><ul class="clean"><li>Kick-off & observasi</li><li>Wawancara & studi dokumen</li><li>Validasi rumus indeks</li></ul><div class="out"><b>Output:</b> SRS & Backlog</div></div>
+    <div class="wk pre"><div class="w">MINGGU 2</div><h4>Desain & Setup</h4><div class="d">12–16 Okt 2026</div><ul class="clean"><li>ERD & data dictionary</li><li>Mockup UI (Figma)</li><li>Repo, CI, staging</li></ul><div class="out"><b>Output:</b> Desain disetujui</div></div>
+    <div class="wk dev"><div class="w">MINGGU 3 · SPRINT 1</div><h4>Core + Portal WBK</h4><div class="d">19–23 Okt 2026</div><ul class="clean"><li>Login, 2FA, RBAC, audit log</li><li>Master data satuan</li><li>Portal publik ZI</li></ul><div class="out"><b>Output:</b> Portal WBK online</div></div>
+    <div class="wk dev"><div class="w">MINGGU 4 · SPRINT 2</div><h4>Organisasi · Personel · Materiil</h4><div class="d">26–30 Okt 2026</div><ul class="clean"><li>TOP/DSPP & gap</li><li>Kekuatan & moril personel</li><li>Inventaris, harwat, QR</li></ul><div class="out"><b>Output:</b> 3 komponen + laporan</div></div>
+    <div class="wk dev"><div class="w">MINGGU 5 · SPRINT 3</div><h4>Fasilitas · Latihan · Doktrin</h4><div class="d">2–6 Nov 2026</div><ul class="clean"><li>Aset & tiket perbaikan</li><li>Program & hasil latihan</li><li>Indeks & Dashboard</li></ul><div class="out"><b>Output:</b> SIM Binsat lengkap</div></div>
+    <div class="wk dev"><div class="w">MINGGU 6 · SPRINT 4</div><h4>E-Learning</h4><div class="d">9–13 Nov 2026</div><ul class="clean"><li>Kelas, mapel, materi</li><li>Bank soal & ujian daring</li><li>Nilai, rapor, sertifikat</li></ul><div class="out"><b>Output:</b> LMS siap ujian</div></div>
+    <div class="wk dev"><div class="w">MINGGU 7 · SPRINT 5</div><h4>E-Pustaka + WBK Lanjutan</h4><div class="d">16–20 Nov 2026</div><ul class="clean"><li>Katalog, reader, sirkulasi</li><li>Pengaduan, gratifikasi, survei</li><li>Notifikasi & hardening</li></ul><div class="out"><b>Output:</b> Feature Freeze</div></div>
+    <div class="wk fin"><div class="w">MINGGU 8</div><h4>Uji · UAT · Go-Live</h4><div class="d">23–27 Nov 2026</div><ul class="clean"><li>Performance & security test</li><li>UAT, migrasi data, deploy</li><li>Pelatihan & serah terima</li></ul><div class="out"><b>Output:</b> Aplikasi produksi</div></div>
+  </div>
+  <div class="footer"><span><b>SIPANDU-WBK</b> · Rindam</span><span class="num"></span></div>
+</section>
+
+<!-- ============ 21. MILESTONE ============ -->
+<section class="slide" id="s-milestone">
+  <div class="kicker">06 · Timeline</div>
+  <h2 class="t">Milestone Proyek</h2>
+  <p class="sub">Titik kendali yang menjadi dasar persetujuan Product Owner dan laporan kepada pimpinan.</p>
+  <div class="mline"></div>
+  <div class="ms-wrap">
+    <div class="mst"><div class="dot"></div><div class="date">9 Okt</div><span class="code">M1</span><div class="card"><b>SRS & Backlog</b><small>Ditandatangani Product Owner</small></div></div>
+    <div class="mst"><div class="dot"></div><div class="date">16 Okt</div><span class="code">M2</span><div class="card"><b>Desain Disetujui</b><small>Mockup & ERD final, staging aktif</small></div></div>
+    <div class="mst"><div class="dot"></div><div class="date">23 Okt</div><span class="code">M2.5</span><div class="card"><b>Portal WBK Online</b><small>Konten ZI dapat dikelola</small></div></div>
+    <div class="mst"><div class="dot"></div><div class="date">6 Nov</div><span class="code">M2.7</span><div class="card"><b>SIM Binsat Lengkap</b><small>Indeks tampil dari data riil</small></div></div>
+    <div class="mst"><div class="dot"></div><div class="date">20 Nov</div><span class="code">M3</span><div class="card"><b>Feature Freeze</b><small>Semua backlog prioritas utama selesai</small></div></div>
+    <div class="mst last"><div class="dot"></div><div class="date">27 Nov</div><span class="code">M4</span><div class="card"><b>Go-Live & Serah Terima</b><small>BA UAT, black-box ≥ 95%</small></div></div>
+  </div>
+  <div class="dashbar" style="margin-top:30px"><span class="ms">event_repeat</span><div><b>Ritme mingguan:</b> Sprint Planning Senin 08.00 · Daily Scrum 15 menit · Sprint Review (demo) Jumat 13.30 · Retrospective Jumat 15.00 · Laporan 1 halaman ke pimpinan setiap Jumat.</div></div>
+  <div class="footer"><span><b>SIPANDU-WBK</b> · Rindam</span><span class="num"></span></div>
+</section>
+
+<!-- ============ 22. TIM & RISIKO ============ -->
+<section class="slide" id="s-tim">
+  <div class="kicker">06 · Rencana Kerja</div>
+  <h2 class="t">Tim Proyek & Manajemen Risiko</h2>
+  <p class="sub">Kolaborasi tim pengembang dengan narahubung dari setiap seksi satuan.</p>
+  <div style="display:grid;grid-template-columns:400px 1fr;gap:22px">
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div class="team"><div class="ic sm gold"><span class="ms">star</span></div><div><b>Product Owner</b><small>Pejabat Rindam · prioritas & persetujuan</small></div><span class="q">1</span></div>
+      <div class="team"><div class="ic sm"><span class="ms">manage_accounts</span></div><div><b>Project Manager / Scrum Master</b><small>Jadwal, koordinasi, laporan</small></div><span class="q">1</span></div>
+      <div class="team"><div class="ic sm"><span class="ms">analytics</span></div><div><b>System Analyst / Peneliti</b><small>Kebutuhan, dokumentasi, instrumen</small></div><span class="q">1</span></div>
+      <div class="team"><div class="ic sm"><span class="ms">terminal</span></div><div><b>Backend Developer</b><small>Laravel, database, Filament</small></div><span class="q">2</span></div>
+      <div class="team"><div class="ic sm"><span class="ms">palette</span></div><div><b>Frontend / UI Developer</b><small>Portal, LMS, Reader</small></div><span class="q">1</span></div>
+      <div class="team"><div class="ic sm"><span class="ms">fact_check</span></div><div><b>QA / Tester</b><small>Skenario uji & regresi</small></div><span class="q">1</span></div>
+      <div class="team"><div class="ic sm"><span class="ms">diversity_3</span></div><div><b>Narahubung Seksi</b><small>Pers, Log, Ops, Perpus, Tim ZI</small></div><span class="q">5</span></div>
+    </div>
+    <table class="tb">
+      <tr><th>Risiko Utama</th><th style="width:14%">Level</th><th>Mitigasi</th></tr>
+      <tr><td>Data riil terlambat diserahkan</td><td><span class="badge red">Tinggi</span></td><td>Minta sejak Minggu 1, template impor Excel, data dummy</td></tr>
+      <tr><td>Perubahan kebutuhan di tengah sprint</td><td><span class="badge red">Tinggi</span></td><td>Masuk backlog sprint berikutnya; satu Product Owner</td></tr>
+      <tr><td>Kesibukan dinas narahubung</td><td><span class="badge amber">Sedang</span></td><td>Jadwal UAT disepakati awal; tunjuk wakil</td></tr>
+      <tr><td>Klasifikasi keamanan data belum jelas</td><td><span class="badge red">Tinggi</span></td><td>Kebijakan klasifikasi ditetapkan Minggu 1</td></tr>
+      <tr><td>Server/jaringan belum siap</td><td><span class="badge red">Tinggi</span></td><td>Ajukan kebutuhan server Minggu 2; staging cadangan</td></tr>
+      <tr><td>Jaringan saat ujian serentak</td><td><span class="badge amber">Sedang</span></td><td>Load test, ujian bergelombang, mode intranet</td></tr>
+      <tr><td>Literasi digital pengguna beragam</td><td><span class="badge amber">Sedang</span></td><td>UI sederhana, pelatihan per peran, video tutorial</td></tr>
+    </table>
+  </div>
+  <div class="footer"><span><b>SIPANDU-WBK</b> · Rindam</span><span class="num"></span></div>
+</section>
+
+<!-- ============ 23. DELIVERABLE & ROADMAP ============ -->
+<section class="slide" id="s-deliverable">
+  <div class="kicker">06 · Rencana Kerja</div>
+  <h2 class="t">Keluaran Proyek & Pengembangan Lanjutan</h2>
+  <p class="sub">Seluruh keluaran diserahterimakan kepada satuan pada akhir Minggu 8.</p>
+  <div style="display:grid;grid-template-columns:1.1fr 1fr;gap:24px">
+    <div class="grid g2" style="gap:10px">
+      <div class="feat"><div class="ic sm"><span class="ms">web</span></div><div><b>Aplikasi Produksi</b><small>SIPANDU-WBK siap digunakan</small></div></div>
+      <div class="feat"><div class="ic sm"><span class="ms">code_blocks</span></div><div><b>Kode Sumber</b><small>Repositori + riwayat Git</small></div></div>
+      <div class="feat"><div class="ic sm"><span class="ms">article</span></div><div><b>Dokumen Penelitian</b><small>BAB I – V lengkap</small></div></div>
+      <div class="feat"><div class="ic sm"><span class="ms">schema</span></div><div><b>SRS, Blueprint, ERD</b><small>Dokumen desain sistem</small></div></div>
+      <div class="feat"><div class="ic sm"><span class="ms">lab_profile</span></div><div><b>Laporan Pengujian</b><small>Black-box, performa, keamanan, SUS</small></div></div>
+      <div class="feat"><div class="ic sm"><span class="ms">menu_book</span></div><div><b>Manual Pengguna</b><small>Per peran + video tutorial</small></div></div>
+      <div class="feat"><div class="ic sm"><span class="ms">dns</span></div><div><b>Manual Admin</b><small>Deployment & pemeliharaan</small></div></div>
+      <div class="feat"><div class="ic sm"><span class="ms">draw</span></div><div><b>Berita Acara</b><small>UAT & serah terima</small></div></div>
+    </div>
+    <div class="side-dark">
+      <div class="ic gold"><span class="ms">rocket_launch</span></div>
+      <h3>Roadmap Pasca 2 Bulan</h3>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-top:10px">
+        <div><span class="badge gold">v1.1</span> <span style="color:#fff;font-size:14px">PWA (aplikasi ponsel) & notifikasi WhatsApp</span></div>
+        <div><span class="badge gold">v1.2</span> <span style="color:#fff;font-size:14px">Forum diskusi & gamifikasi belajar</span></div>
+        <div><span class="badge gold">v1.3</span> <span style="color:#fff;font-size:14px">Single Sign-On dengan sistem Kodam (jika diizinkan)</span></div>
+        <div><span class="badge gold">v2.0</span> <span style="color:#fff;font-size:14px">Analitik prediktif: kelulusan siswa & kerusakan materiil</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"><span><b>SIPANDU-WBK</b> · Rindam</span><span class="num"></span></div>
+</section>
+
+<!-- ============ 24. KEPUTUSAN ============ -->
+<section class="slide" id="s-keputusan">
+  <div class="kicker">Tindak Lanjut</div>
+  <h2 class="t">Keputusan yang Dibutuhkan dari Pimpinan</h2>
+  <p class="sub">Empat hal berikut diperlukan sebelum kick-off Senin, 5 Oktober 2026.</p>
+  <div class="grid g2" style="gap:16px">
+    <div class="dec"><div class="n">1</div><div><h4>Penetapan Product Owner & Narahubung</h4><p>Pejabat penanggung jawab prioritas dan persetujuan, serta narahubung dari seksi Pers, Log, Ops/Diklat, Perpustakaan, dan Tim ZI.</p></div></div>
+    <div class="dec"><div class="n">2</div><div><h4>Validasi Indikator Indeks Binsat</h4><p>Rumus dan bobot 6 komponen disesuaikan dengan ketentuan resmi Binsat yang berlaku di satuan.</p></div></div>
+    <div class="dec"><div class="n">3</div><div><h4>Kebijakan Klasifikasi & Akses Data</h4><p>Batas data yang boleh disimpan; data RAHASIA tidak masuk sistem.</p><div class="opt"><span class="badge">Biasa</span><span class="badge gold">Terbatas</span><span class="badge red">Rahasia — dikecualikan</span></div></div></div>
+    <div class="dec"><div class="n">4</div><div><h4>Lokasi Server & Akses Jaringan</h4><p>Server satuan / data center Kodam / cloud pemerintah; Panel Staf hanya intranet atau juga internet.</p><div class="opt"><span class="badge">Intranet + VPN</span><span class="badge">Internet + 2FA</span></div></div></div>
+  </div>
+  <div class="footer"><span><b>SIPANDU-WBK</b> · Rindam</span><span class="num"></span></div>
+</section>
+
+<!-- ============ 25. PENUTUP ============ -->
+<section class="slide cover dark" id="s-penutup">
+  <div class="shade"></div>
+  <div class="inner">
+    <div class="tag"><span class="ms" style="font-size:16px">military_tech</span> Penutup</div>
+    <h1 style="font-size:68px">Terima <span>Kasih</span></h1>
+    <p class="lead">Satuan pendidikan yang <b style="color:var(--gold2)">siap operasional</b>, <b style="color:var(--gold2)">cerdas</b> dalam pembelajaran, dan <b style="color:var(--gold2)">bersih</b> dari korupsi.</p>
+    <div class="meta">
+      <div>Sesi<b>Diskusi & Tanya Jawab</b></div>
+      <div>Kick-off<b>Senin, 5 Oktober 2026</b></div>
+      <div>Go-Live<b>Jumat, 27 November 2026</b></div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

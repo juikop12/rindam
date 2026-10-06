@@ -1,0 +1,4525 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Naskah Komprehensif SIPANDU-WBK</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Montserrat:wght@600;700;800;900&display=block" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,1,0&display=block" rel="stylesheet">
+<script src="mermaid.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'neutral',
+      themeVariables: {
+        primaryColor: '#E9EEDF',
+        primaryTextColor: '#1D2516',
+        primaryBorderColor: '#3D5229',
+        lineColor: '#3D5229',
+        secondaryColor: '#FBF5DF',
+        tertiaryColor: '#F3F6EC'
+      },
+      flowchart: { htmlLabels: true, curve: 'basis' },
+      sequence: { actorFontSize: 12, messageFontSize: 11 }
+    });
+  });
+</script>
+<style>
+:root {
+  --o900: #141C0E;
+  --o800: #22301A;
+  --o700: #3D5229;
+  --o600: #4E6635;
+  --o500: #6B7F4A;
+  --o200: #D3DCC2;
+  --o100: #E9EEDF;
+  --o50: #F7F9F2;
+  --gold: #C9A227;
+  --gold2: #E6C766;
+  --goldbg: #FBF5DF;
+  --text: #20261D;
+  --muted: #5A6650;
+  --line: #D8DDCF;
+  --red: #B23A2E;
+  --green: #2E7D32;
+}
+
+@page {
+  size: A4;
+  margin: 22mm 18mm 20mm 20mm;
+}
+
+@page:left {
+  margin: 22mm 18mm 20mm 20mm;
+}
+
+@page:right {
+  margin: 22mm 18mm 20mm 20mm;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Merriweather', serif;
+  font-size: 10.5pt;
+  line-height: 1.7;
+  color: var(--text);
+  background: #fff;
+  margin: 0;
+  padding: 0;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.ms {
+  font-family: 'Material Symbols Rounded';
+  font-weight: normal;
+  font-style: normal;
+  line-height: 1;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+h1, h2, h3, h4, h5, h6, .sans {
+  font-family: 'Montserrat', 'Inter', sans-serif;
+  color: var(--o800);
+  line-height: 1.3;
+  page-break-after: avoid;
+  break-after: avoid;
+}
+
+h1 {
+  font-size: 19pt;
+  font-weight: 800;
+  border-bottom: 2px solid var(--o700);
+  padding-bottom: 6px;
+  margin-top: 26pt;
+  margin-bottom: 14pt;
+}
+
+h2 {
+  font-size: 14.5pt;
+  font-weight: 700;
+  color: var(--o700);
+  margin-top: 20pt;
+  margin-bottom: 10pt;
+  border-left: 4px solid var(--gold);
+  padding-left: 10px;
+}
+
+h3 {
+  font-size: 12pt;
+  font-weight: 700;
+  color: var(--o800);
+  margin-top: 15pt;
+  margin-bottom: 8pt;
+}
+
+h4 {
+  font-size: 11pt;
+  font-weight: 700;
+  color: var(--o600);
+  margin-top: 12pt;
+  margin-bottom: 6pt;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 10pt;
+  text-align: justify;
+}
+
+ul, ol {
+  margin-top: 0;
+  margin-bottom: 10pt;
+  padding-left: 20px;
+}
+
+li {
+  margin-bottom: 4pt;
+}
+
+.page-break {
+  page-break-after: always;
+  break-after: page;
+}
+
+/* COVER PAGE */
+.cover-page {
+  height: 250mm;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  page-break-after: always;
+  break-after: page;
+  padding: 10mm 5mm;
+  text-align: center;
+}
+
+.cover-badge {
+  display: inline-block;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 10pt;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: var(--o800);
+  padding: 6px 18px;
+  border-radius: 999px;
+  margin-bottom: 20px;
+}
+
+.cover-title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+  font-size: 32pt;
+  line-height: 1.1;
+  color: var(--o900);
+  margin: 15px 0 10px;
+  letter-spacing: -0.02em;
+}
+
+.cover-title span {
+  color: var(--gold);
+}
+
+.cover-sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 13pt;
+  font-weight: 600;
+  color: var(--o700);
+  line-height: 1.45;
+  max-width: 650px;
+  margin: 0 auto 30px;
+}
+
+.cover-art {
+  width: 100%;
+  max-height: 240px;
+  object-fit: cover;
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(20,28,14,0.18);
+  margin: 10px auto;
+  border: 1px solid var(--line);
+}
+
+.cover-pills {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 15px auto 25px;
+}
+
+.cover-pill {
+  font-family: 'Inter', sans-serif;
+  font-size: 8.5pt;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 6px;
+  background: var(--o50);
+  border: 1px solid var(--o200);
+  color: var(--o800);
+}
+
+.cover-meta {
+  border-top: 2px solid var(--o700);
+  padding-top: 15px;
+  font-family: 'Inter', sans-serif;
+  font-size: 9.5pt;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.cover-meta div b {
+  display: block;
+  font-size: 11pt;
+  color: var(--o800);
+  margin-top: 3px;
+}
+
+/* VALIDATION SHEET */
+.validation-sheet {
+  padding: 10mm 5mm;
+  page-break-after: always;
+  break-after: page;
+}
+
+.val-title {
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15pt;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--o800);
+  border-bottom: 2px solid var(--line);
+  padding-bottom: 8px;
+  margin-bottom: 25px;
+}
+
+.sig-box-wrapper {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+  page-break-inside: avoid;
+}
+
+.sig-box {
+  width: 45%;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 9.5pt;
+}
+
+.sig-space {
+  height: 70px;
+}
+
+.sig-line {
+  border-bottom: 1px solid #000;
+  display: inline-block;
+  width: 80%;
+  margin-bottom: 4px;
+}
+
+/* PART HEADER BAND */
+.part-header-band {
+  background: linear-gradient(135deg, var(--o800), var(--o700));
+  color: #fff;
+  padding: 16px 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  page-break-after: avoid;
+  break-after: avoid;
+}
+
+.part-tag {
+  font-family: 'Inter', sans-serif;
+  font-size: 8pt;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--gold2);
+  text-transform: uppercase;
+}
+
+.part-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16pt;
+  font-weight: 800;
+  color: #fff;
+  margin: 5px 0 0;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+/* TABLES */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Inter', sans-serif;
+  font-size: 9pt;
+  margin: 14pt 0;
+  page-break-inside: avoid;
+  background: #fff;
+}
+
+table th {
+  background: var(--o800);
+  color: #fff;
+  font-weight: 700;
+  text-align: left;
+  padding: 7px 10px;
+  border: 1px solid var(--o800);
+}
+
+table td {
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  vertical-align: top;
+}
+
+table tr:nth-child(even) td {
+  background: var(--o50);
+}
+
+/* CALLOUTS */
+.callout {
+  font-family: 'Inter', sans-serif;
+  font-size: 9.5pt;
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin: 12pt 0;
+  border-left: 4px solid var(--o700);
+  background: var(--o50);
+  page-break-inside: avoid;
+}
+
+.callout b {
+  display: block;
+  font-size: 9pt;
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+
+.callout-note {
+  border-color: var(--o600);
+  background: var(--o50);
+}
+.callout-note b { color: var(--o700); }
+
+.callout-important {
+  border-color: var(--gold);
+  background: var(--goldbg);
+}
+.callout-important b { color: #8A6A0C; }
+
+.callout-warning {
+  border-color: var(--red);
+  background: #FDF2F0;
+}
+.callout-warning b { color: var(--red); }
+
+.callout-tip {
+  border-color: var(--green);
+  background: #F1F8F2;
+}
+.callout-tip b { color: var(--green); }
+
+/* CODE BLOCKS */
+pre {
+  background: #1B2416;
+  color: #EDF2E8;
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 8.5pt;
+  padding: 10px 14px;
+  border-radius: 8px;
+  overflow-x: auto;
+  line-height: 1.45;
+  margin: 10pt 0;
+  page-break-inside: avoid;
+}
+
+code {
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 9pt;
+  background: var(--o100);
+  color: var(--o900);
+  padding: 2px 5px;
+  border-radius: 4px;
+}
+
+pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+}
+
+/* MERMAID BOX */
+.mermaid-box {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px;
+  margin: 14pt 0;
+  text-align: center;
+  page-break-inside: avoid;
+}
+
+.mermaid {
+  margin: 0 auto;
+}
+
+/* HR */
+hr {
+  border: none;
+  border-top: 1px solid var(--line);
+  margin: 20pt 0;
+}
+
+/* BADGES IN TEXT */
+.badge {
+  display: inline-block;
+  font-family: 'Inter', sans-serif;
+  font-size: 8pt;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: var(--o100);
+  color: var(--o800);
+}
+
+/* SUMMARY STATS GRID */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 14pt 0;
+}
+
+.stat-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  background: var(--o50);
+}
+
+.stat-card .val {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 18pt;
+  font-weight: 800;
+  color: var(--o700);
+}
+
+.stat-card .lbl {
+  font-family: 'Inter', sans-serif;
+  font-size: 8pt;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+</style>
+</head>
+<body>
+
+<!-- HALAMAN SAMPUL (COVER) -->
+<div class="cover-page">
+  <div>
+    <div class="cover-badge">NASKAH DOKUMEN KOMPREHENSIF PROYEK</div>
+    <div class="cover-title">SIPANDU<span>-WBK</span></div>
+    <div class="cover-sub">
+      SISTEM INFORMASI PEMBINAAN SATUAN PENDIDIKAN TERPADU<br>
+      BERBASIS WILAYAH BEBAS DARI KORUPSI (WBK)<br>
+      DENGAN INTEGRASI E-LEARNING DAN PERPUSTAKAAN DIGITAL
+    </div>
+    
+    <img src="cover.jpg" class="cover-art" alt="Cover Artwork">
+
+    <div class="cover-pills">
+      <span class="cover-pill">6 Komponen Binsat</span>
+      <span class="cover-pill">Indeks Kesiapan Satuan</span>
+      <span class="cover-pill">E-Learning & Ujian Daring</span>
+      <span class="cover-pill">E-Pustaka Terintegrasi</span>
+      <span class="cover-pill">Portal ZI & WBS Bertiket</span>
+      <span class="cover-pill">Laravel & Filament</span>
+    </div>
+  </div>
+
+  <div class="cover-meta">
+    <div>
+      INSTANSI PELAKSANA
+      <b>Resimen Induk Daerah Militer (Rindam)</b>
+    </div>
+    <div>
+      KERANGKA PENGEMBANGAN
+      <b>Scrum 8 Minggu (Okt – Nov 2026)</b>
+    </div>
+    <div>
+      STATUS DOKUMEN
+      <b>Rancangan & Blueprint v1.0</b>
+    </div>
+  </div>
+</div>
+
+<!-- HALAMAN PENGESAHAN -->
+<div class="validation-sheet">
+  <div class="val-title">LEMBAR PENGESAHAN DOKUMEN PROYEK</div>
+  <p style="text-align:center; font-family:'Inter',sans-serif; font-size:10pt; max-width:600px; margin:0 auto 20px;">
+    Rancangan Bangun Sistem Informasi Pembinaan Satuan Pendidikan Terpadu Berbasis Wilayah Bebas dari Korupsi (SIPANDU-WBK) beserta Blueprint Teknis dan Timeline Pelaksanaan 2 Bulan ini telah disusun dan disepakati untuk dijadikan pedoman teknis pelaksanaan proyek.
+  </p>
+
+  <table style="width:90%; margin:20px auto 40px; font-size:9.5pt;">
+    <tr><td style="width:30%; font-weight:bold;">Nama Program</td><td>Sistem Informasi Pembinaan Satuan Pendidikan Terpadu (SIPANDU-WBK)</td></tr>
+    <tr><td style="font-weight:bold;">Sub-Sistem</td><td>SIM Binsat (6 Komponen), E-Learning (LMS), E-Pustaka, Portal Zona Integritas</td></tr>
+    <tr><td style="font-weight:bold;">Basis Teknologi</td><td>Laravel, Filament Admin, Livewire 3, MySQL/MariaDB, Laragon Dev</td></tr>
+    <tr><td style="font-weight:bold;">Durasi Proyek</td><td>8 Minggu / 40 Hari Kerja (05 Oktober 2026 – 27 November 2026)</td></tr>
+    <tr><td style="font-weight:bold;">Sasaran Akhir</td><td>Aplikasi Teruji (Blackbox ≥ 95%, SUS ≥ 68) dan Siap Dioperasikan (Go-Live)</td></tr>
+  </table>
+
+  <div class="sig-box-wrapper">
+    <div class="sig-box">
+      Mengetahui,<br>
+      <b>Product Owner / Pejabat Satuan</b><br>
+      <div class="sig-space"></div>
+      <div class="sig-line"></div><br>
+      Pangkat / Korps / NRP
+    </div>
+    <div class="sig-box">
+      Disusun oleh,<br>
+      <b>Project Manager / Tim Pengembang</b><br>
+      <div class="sig-space"></div>
+      <div class="sig-line"></div><br>
+      Lead System Architect
+    </div>
+  </div>
+</div>
+
+<!-- KATA PENGANTAR / RINGKASAN EKSEKUTIF -->
+<div class="validation-sheet">
+  <h2>Ringkasan Eksekutif</h2>
+  <p>
+    Kesiapan operasional satuan pendidikan militer (seperti Rindam) bertumpu pada keberhasilan <b>6 Komponen Pembinaan Satuan (Binsat)</b>: Organisasi, Personel, Materiil, Fasilitas/Pangkalan, Latihan, dan Doktrin/Piranti Lunak. Di era transformasi digital dan tuntutan reformasi birokrasi, satuan juga diwajibkan membangun <b>Zona Integritas (ZI) menuju Wilayah Bebas dari Korupsi (WBK)</b> sebagaimana diamanatkan dalam PermenPAN-RB No. 90 Tahun 2021.
+  </p>
+  <p>
+    Selama ini, pengelolaan data Binsat dilakukan secara terpisah oleh masing-masing seksi (Pers, Log, Ops/Diklat), distribusi bahan ajar (hanjar) dan evaluasi belajar siswa masih konvensional, koleksi pustaka belum terdigitalisasi, serta sarana pengaduan dan keterbukaan informasi belum terpadu.
+  </p>
+  <p>
+    <b>SIPANDU-WBK</b> hadir sebagai solusi terpadu satu atap (single platform) berbasis framework <b>Laravel</b> yang menyatukan lima pilar fungsional:
+  </p>
+  <ol>
+    <li><b>SIM Binsat 6 Komponen:</b> Digitalisasi pencatatan, pemantauan riil vs TOP, jadwal pemeliharaan alat, aset pangkalan, kalender latihan, dan repositori naskah doktrin. Dilengkapi fitur unggulan <b>Indeks Kesiapan Binsat</b> (skor otomatis 0–100).</li>
+    <li><b>E-Learning (LMS):</b> Pembelajaran model <i>blended learning</i>, distribusi hanjar digital, bank soal, kuis & ujian daring ber-timer dengan penilaian otomatis, presensi, rapor, dan sertifikat ber-QR Code.</li>
+    <li><b>E-Pustaka (Digital Library):</b> Katalog koleksi fisik dan e-book dengan viewer interaktif (PDF.js) anti-unduh dilengkapi watermark dinamis (nama/NRP pembaca), serta sirkulasi barcode.</li>
+    <li><b>Portal Zona Integritas (WBK):</b> Keterbukaan informasi publik, standar & maklumat pelayanan, Whistleblowing System (WBS) bertiket dengan pelacakan status dan alarm SLA tindak lanjut, pelaporan gratifikasi, serta Survei Kepuasan Masyarakat (SKM, IPAK, IPKP).</li>
+    <li><b>Dashboard Pimpinan (Executive Command):</b> Instrumen visual untuk Danrindam dan para Komandan/Kepala Seksi untuk melihat radar kesiapan Binsat, statistik siswa, dan kinerja kepuasan publik secara seketika (real-time).</li>
+  </ol>
+  <p>
+    Dokumen ini menghimpun seluruh perencanaan sistem secara utuh: Dokumen Penelitian Ilmiah (BAB I–V), Blueprint dan Arsitektur Sistem, Kerangka Kerja Teknis, serta Timeline Rencana Kerja 2 Bulan (Scrum 5 Sprint) dari Kick-off 05 Oktober 2026 hingga Go-Live 27 November 2026.
+  </p>
+</div>
+
+<!-- KONTEN GABUNGAN EMPAT DOKUMEN -->
+
+    <div class="document-part">
+      <div class="part-header-band">
+        <span class="part-tag">SIPANDU-WBK · DOKUMENTASI PROYEK</span>
+        <h1 class="part-title">BAGIAN I: DOKUMEN PENELITIAN</h1>
+      </div>
+      <div class="part-content">
+        <h1 id="dokumen-penelitian">DOKUMEN PENELITIAN</h1>
+<h2 id="rancang-bangun-sistem-informasi-pembinaan-satuan-pendidikan-terpadu-berbasis-wilayah-bebas-dari-korupsi-sipandu-wbk-dengan-integrasi-e-learning-dan-perpustakaan-digital-menggunakan-framework-laravel">Rancang Bangun Sistem Informasi Pembinaan Satuan Pendidikan Terpadu Berbasis Wilayah Bebas dari Korupsi (SIPANDU-WBK) dengan Integrasi E-Learning dan Perpustakaan Digital Menggunakan Framework Laravel</h2>
+<h3 id="studi-kasus-resimen-induk-daerah-militer-rindam">Studi Kasus: Resimen Induk Daerah Militer (Rindam)</h3>
+<hr />
+<h2 id="bab-i-pendahuluan">BAB I — PENDAHULUAN</h2>
+<h3 id="11-latar-belakang">1.1 Latar Belakang</h3>
+<p>Rindam sebagai satuan pendidikan di jajaran Kodam memiliki tugas pokok menyelenggarakan pendidikan pertama, pendidikan pembentukan, dan pendidikan kejuruan bagi prajurit. Agar tugas pokok tersebut terlaksana optimal, satuan wajib melaksanakan <strong>Pembinaan Satuan (Binsat)</strong> yang mencakup enam komponen:</p>
+<ol>
+<li><strong>Pembinaan Organisasi</strong> — penataan struktur dan fungsi satuan sesuai TOP (Tabel Organisasi dan Peralatan).</li>
+<li><strong>Pembinaan Personel</strong> — pengelolaan kekuatan, pemenuhan jabatan, dan pemeliharaan moril prajurit.</li>
+<li><strong>Pembinaan Materiil</strong> — perawatan, pemeliharaan, dan inventarisasi alutsista serta perlengkapan satuan.</li>
+<li><strong>Pembinaan Fasilitas/Pangkalan</strong> — pemeliharaan pangkalan, perkantoran, perumahan, dan fasilitas pendukung.</li>
+<li><strong>Pembinaan Latihan</strong> — latihan bertahap, bertingkat, dan berlanjut guna memelihara kesiapsiagaan.</li>
+<li><strong>Pembinaan Doktrin/Piranti Lunak</strong> — penerapan dan pemahaman ketentuan, petunjuk, dan naskah dinas.</li>
+</ol>
+<p>Di sisi lain, pemerintah mendorong setiap instansi membangun <strong>Zona Integritas (ZI) menuju Wilayah Bebas dari Korupsi (WBK)</strong> dan Wilayah Birokrasi Bersih dan Melayani (WBBM) sebagaimana diatur dalam PermenPAN-RB No. 90 Tahun 2021. Salah satu syarat penilaian ZI adalah tersedianya <strong>inovasi pelayanan berbasis teknologi informasi</strong>, transparansi informasi, sarana pengaduan, dan survei kepuasan masyarakat.</p>
+<p>Hasil observasi awal (perlu divalidasi pada Minggu 1) menunjukkan permasalahan umum sebagai berikut:</p>
+<table>
+<thead>
+<tr>
+<th>No</th>
+<th>Permasalahan</th>
+<th>Dampak</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Data Binsat tersebar di berkas fisik dan file Excel masing-masing seksi</td>
+<td>Sulit direkap, rawan hilang, data tidak sinkron</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Laporan kesiapan satuan disusun manual menjelang pemeriksaan/Wasrik</td>
+<td>Memakan waktu, tidak <em>real-time</em></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Distribusi hanjar (bahan ajar) dan naskah doktrin masih berbentuk cetak</td>
+<td>Biaya cetak tinggi, versi naskah tidak terkontrol</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Evaluasi belajar siswa dilakukan manual</td>
+<td>Rekap nilai lambat, potensi kesalahan input</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Koleksi perpustakaan belum terdigitalisasi</td>
+<td>Akses terbatas pada jam dan lokasi tertentu</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Sarana pengaduan dan survei kepuasan belum terpusat</td>
+<td>Bukti dukung penilaian ZI/WBK lemah</td>
+</tr>
+</tbody>
+</table>
+<p>Berdasarkan kondisi tersebut diperlukan suatu sistem informasi terpadu yang mampu <strong>mendigitalkan enam komponen Binsat, menyediakan e-learning dan perpustakaan digital, serta mendukung pembangunan Zona Integritas menuju WBK</strong>.</p>
+<h3 id="12-rumusan-masalah">1.2 Rumusan Masalah</h3>
+<ol>
+<li>Bagaimana merancang sistem informasi yang mampu mengelola data enam komponen Binsat secara terpusat dan terukur?</li>
+<li>Bagaimana mengintegrasikan e-learning dan perpustakaan digital ke dalam satu platform satuan pendidikan?</li>
+<li>Bagaimana sistem dapat mendukung pemenuhan indikator Zona Integritas menuju WBK (transparansi, akuntabilitas, pengawasan, dan kualitas pelayanan)?</li>
+<li>Bagaimana tingkat kualitas dan penerimaan pengguna (<em>usability</em>) terhadap sistem yang dibangun?</li>
+</ol>
+<h3 id="13-tujuan-penelitian">1.3 Tujuan Penelitian</h3>
+<ol>
+<li>Membangun modul SIM Binsat yang mencakup enam komponen pembinaan dengan <strong>Indeks Kesiapan Binsat</strong> otomatis.</li>
+<li>Membangun modul E-Learning (LMS) dan E-Pustaka yang terintegrasi dengan data personel/siswa.</li>
+<li>Membangun Portal WBK yang menyediakan layanan pengaduan, survei kepuasan, lapor gratifikasi, dan keterbukaan informasi.</li>
+<li>Mengukur kualitas sistem berdasarkan ISO/IEC 25010 dan tingkat <em>usability</em> menggunakan <em>System Usability Scale</em> (SUS).</li>
+</ol>
+<h3 id="14-manfaat-penelitian">1.4 Manfaat Penelitian</h3>
+<table>
+<thead>
+<tr>
+<th>Pihak</th>
+<th>Manfaat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Pimpinan (Danrindam &amp; Staf)</strong></td>
+<td>Dashboard kesiapan satuan <em>real-time</em> sebagai dasar pengambilan keputusan</td>
+</tr>
+<tr>
+<td><strong>Seksi/Staf Pelaksana</strong></td>
+<td>Pengelolaan data lebih cepat, laporan otomatis (PDF/Excel)</td>
+</tr>
+<tr>
+<td><strong>Gadik (Tenaga Pendidik)</strong></td>
+<td>Distribusi materi, ujian, dan penilaian secara daring</td>
+</tr>
+<tr>
+<td><strong>Siswa/Serdik</strong></td>
+<td>Akses hanjar, materi, dan e-book kapan saja</td>
+</tr>
+<tr>
+<td><strong>Tim Zona Integritas</strong></td>
+<td>Bukti dukung digital untuk 6 area perubahan ZI</td>
+</tr>
+<tr>
+<td><strong>Masyarakat</strong></td>
+<td>Akses informasi publik dan saluran pengaduan yang transparan</td>
+</tr>
+<tr>
+<td><strong>Akademik</strong></td>
+<td>Referensi pengembangan sistem informasi di lingkungan satuan pendidikan militer</td>
+</tr>
+</tbody>
+</table>
+<h3 id="15-batasan-masalah">1.5 Batasan Masalah</h3>
+<ol>
+<li>Sistem dibangun berbasis web menggunakan <strong>Laravel (versi stabil terbaru), PHP 8.3+, dan MySQL/MariaDB</strong>.</li>
+<li>Data yang dikelola adalah data <strong>berklasifikasi biasa/terbatas</strong>; data berklasifikasi <strong>rahasia</strong> tidak disimpan di sistem.</li>
+<li>Modul Binsat bersifat pencatatan, monitoring, dan pelaporan — tidak menggantikan sistem resmi TNI AD yang sudah ada (mis. aplikasi personel/logistik pusat), namun dapat menyiapkan format ekspor.</li>
+<li>E-Learning mencakup materi, kuis/ujian pilihan ganda &amp; esai, tugas, dan penilaian; tidak mencakup <em>video conference</em> bawaan (dapat ditautkan ke layanan eksternal).</li>
+<li>E-Pustaka mencakup katalog, e-book/PDF <em>viewer</em> (tanpa unduh), dan sirkulasi buku fisik.</li>
+<li>Waktu pengembangan <strong>± 8 minggu</strong> (5 Oktober – 27 November 2026).</li>
+</ol>
+<hr />
+<h2 id="bab-ii-landasan-teori">BAB II — LANDASAN TEORI</h2>
+<h3 id="21-pembinaan-satuan-binsat">2.1 Pembinaan Satuan (Binsat)</h3>
+<p>Binsat adalah segala usaha, pekerjaan, dan kegiatan yang berhubungan dengan perencanaan, pengorganisasian, pelaksanaan, dan pengawasan terhadap satuan agar selalu dalam kondisi siap operasional. Pengukuran Binsat dilakukan melalui enam komponen (Organisasi, Personel, Materiil, Fasilitas/Pangkalan, Latihan, Doktrin/Piranti Lunak). <em>(Rujukan resmi disesuaikan dengan Peraturan Kasad / Bujuk tentang Binsat yang berlaku di satuan.)</em></p>
+<h3 id="22-zona-integritas-menuju-wbkwbbm">2.2 Zona Integritas menuju WBK/WBBM</h3>
+<p>Berdasarkan <strong>PermenPAN-RB No. 90 Tahun 2021</strong>, pembangunan ZI dilakukan melalui <strong>6 area perubahan</strong> (komponen pengungkit):</p>
+<table>
+<thead>
+<tr>
+<th>Area Perubahan ZI</th>
+<th>Dukungan Fitur Sistem</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Manajemen Perubahan</td>
+<td>Agenda &amp; dokumentasi kegiatan ZI, publikasi inovasi</td>
+</tr>
+<tr>
+<td>2. Penataan Tatalaksana</td>
+<td>SOP digital, e-office, keterbukaan informasi publik</td>
+</tr>
+<tr>
+<td>3. Penataan Sistem Manajemen SDM</td>
+<td>Modul Personel, rekam diklat, penilaian kinerja</td>
+</tr>
+<tr>
+<td>4. Penguatan Akuntabilitas</td>
+<td>Dashboard kinerja, laporan otomatis, Indeks Binsat</td>
+</tr>
+<tr>
+<td>5. Penguatan Pengawasan</td>
+<td>Lapor gratifikasi, Whistleblowing System (WBS), audit log</td>
+</tr>
+<tr>
+<td>6. Peningkatan Kualitas Pelayanan Publik</td>
+<td>Standar &amp; maklumat pelayanan, Survei Kepuasan Masyarakat (SKM), pengaduan</td>
+</tr>
+</tbody>
+</table>
+<p>Indikator hasil (komponen hasil): <strong>Indeks Persepsi Anti Korupsi (IPAK)</strong> dan <strong>Indeks Persepsi Kualitas Pelayanan (IPKP)</strong> — keduanya dapat dikumpulkan melalui modul survei.</p>
+<h3 id="23-sistem-informasi-manajemen">2.3 Sistem Informasi Manajemen</h3>
+<p>Sistem informasi manajemen adalah sistem yang mengumpulkan, memproses, menyimpan, dan menyajikan informasi untuk mendukung fungsi operasional, manajerial, dan pengambilan keputusan dalam organisasi.</p>
+<h3 id="24-e-learning-dan-learning-management-system-lms">2.4 E-Learning dan Learning Management System (LMS)</h3>
+<p>E-learning adalah pembelajaran yang memanfaatkan teknologi elektronik. LMS adalah perangkat lunak untuk administrasi, dokumentasi, pelacakan, pelaporan, dan penyampaian materi pembelajaran. Model yang digunakan adalah <strong>blended learning</strong>: tatap muka di kelas/lapangan dikombinasikan dengan materi dan evaluasi daring.</p>
+<h3 id="25-perpustakaan-digital">2.5 Perpustakaan Digital</h3>
+<p>Perpustakaan digital adalah perpustakaan yang koleksinya disimpan dalam format digital dan dapat diakses melalui jaringan. Mengacu pada <strong>UU No. 43 Tahun 2007 tentang Perpustakaan</strong>, perpustakaan khusus (termasuk di instansi militer) berfungsi mendukung pendidikan dan penelitian di lingkungannya.</p>
+<h3 id="26-framework-laravel">2.6 Framework Laravel</h3>
+<p>Laravel adalah framework PHP <em>open-source</em> dengan pola <strong>MVC (Model–View–Controller)</strong>. Keunggulan: Eloquent ORM, migrasi basis data, sistem autentikasi/otorisasi bawaan, <em>queue</em>, <em>scheduler</em>, proteksi CSRF/XSS/SQL Injection, serta ekosistem paket yang luas (Filament, Livewire, Spatie).</p>
+<h3 id="27-role-based-access-control-rbac">2.7 Role-Based Access Control (RBAC)</h3>
+<p>RBAC adalah model kontrol akses yang memberikan hak akses berdasarkan peran (<em>role</em>) pengguna. Sangat penting di lingkungan militer karena prinsip <strong>need-to-know</strong>.</p>
+<h3 id="28-metode-scrum">2.8 Metode Scrum</h3>
+<p>Scrum adalah kerangka kerja Agile yang membagi pengembangan menjadi iterasi pendek (<em>sprint</em>) dengan <em>deliverable</em> yang dapat diuji di setiap akhir sprint. Artefak: <em>Product Backlog</em>, <em>Sprint Backlog</em>, <em>Increment</em>. Seremoni: <em>Sprint Planning</em>, <em>Daily Scrum</em>, <em>Sprint Review</em>, <em>Sprint Retrospective</em>.</p>
+<h3 id="29-isoiec-25010">2.9 ISO/IEC 25010</h3>
+<p>Standar kualitas perangkat lunak dengan karakteristik: <em>Functional Suitability, Performance Efficiency, Compatibility, Usability, Reliability, Security, Maintainability, Portability</em>.</p>
+<h3 id="210-system-usability-scale-sus">2.10 System Usability Scale (SUS)</h3>
+<p>Kuesioner 10 butir skala Likert 1–5 untuk mengukur <em>usability</em>. Skor 0–100; skor <strong>≥ 68</strong> dikategorikan <em>acceptable</em> (di atas rata-rata), <strong>≥ 80,3</strong> kategori <em>Excellent</em> (Grade A).</p>
+<h3 id="211-regulasi-pendukung">2.11 Regulasi Pendukung</h3>
+<ul>
+<li>UU No. 14 Tahun 2008 tentang Keterbukaan Informasi Publik</li>
+<li>UU No. 27 Tahun 2022 tentang Pelindungan Data Pribadi</li>
+<li>Perpres No. 95 Tahun 2018 tentang Sistem Pemerintahan Berbasis Elektronik (SPBE)</li>
+<li>PermenPAN-RB No. 90 Tahun 2021 tentang Pembangunan dan Evaluasi ZI menuju WBK/WBBM</li>
+<li>UU No. 43 Tahun 2007 tentang Perpustakaan</li>
+<li>Ketentuan internal TNI AD tentang Binsat, pengamanan informasi, dan penggunaan TI (disesuaikan)</li>
+</ul>
+<h3 id="212-penelitian-terdahulu-template-diisi-pada-minggu-1">2.12 Penelitian Terdahulu (Template — diisi pada Minggu 1)</h3>
+<table>
+<thead>
+<tr>
+<th>No</th>
+<th>Peneliti/Tahun</th>
+<th>Judul</th>
+<th>Metode</th>
+<th>Hasil</th>
+<th>Perbedaan dengan Penelitian Ini</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>…</td>
+<td>Sistem informasi inventaris/ materiil satuan</td>
+<td>…</td>
+<td>…</td>
+<td>Belum mencakup 6 komponen Binsat</td>
+</tr>
+<tr>
+<td>2</td>
+<td>…</td>
+<td>LMS berbasis Laravel/Moodle di lembaga diklat</td>
+<td>…</td>
+<td>…</td>
+<td>Tidak terintegrasi data satuan</td>
+</tr>
+<tr>
+<td>3</td>
+<td>…</td>
+<td>Website Zona Integritas instansi pemerintah</td>
+<td>…</td>
+<td>…</td>
+<td>Hanya portal informasi, tanpa SIM</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Kebaruan (<em>novelty</em>) penelitian ini: <strong>integrasi SIM Binsat 6 komponen + LMS + Perpustakaan Digital + Portal WBK dalam satu platform</strong>, dilengkapi <strong>Indeks Kesiapan Binsat</strong> otomatis.</p>
+</blockquote>
+<hr />
+<h2 id="bab-iii-metodologi-penelitian">BAB III — METODOLOGI PENELITIAN</h2>
+<h3 id="31-jenis-penelitian">3.1 Jenis Penelitian</h3>
+<p><strong>Research and Development (R&amp;D)</strong> — menghasilkan produk perangkat lunak dan menguji kelayakannya.</p>
+<h3 id="32-model-pengembangan-scrum-sprint-1-minggu">3.2 Model Pengembangan: Scrum (Sprint 1 Minggu)</h3>
+<div class="mermaid-box"><pre class="mermaid">
+flowchart LR
+    A[Analisis Kebutuhan] --> B[Desain Sistem]
+    B --> C[Product Backlog]
+    C --> D[Sprint Planning]
+    D --> E[Development 1 Minggu]
+    E --> F[Sprint Review dan Demo]
+    F --> G{Backlog selesai?}
+    G -- Belum --> D
+    G -- Sudah --> H[Pengujian dan UAT]
+    H --> I[Deployment dan Pelatihan]
+    I --> J[Evaluasi SUS dan ISO 25010]
+</pre></div>
+
+<h3 id="33-lokasi-dan-waktu">3.3 Lokasi dan Waktu</h3>
+<ul>
+<li><strong>Lokasi</strong>: Rindam (Markas, Dodik, Perpustakaan, dan seksi-seksi staf terkait)</li>
+<li><strong>Waktu</strong>: 5 Oktober – 27 November 2026 (8 minggu) + 1 minggu pendampingan opsional</li>
+</ul>
+<h3 id="34-teknik-pengumpulan-data">3.4 Teknik Pengumpulan Data</h3>
+<table>
+<thead>
+<tr>
+<th>Teknik</th>
+<th>Sasaran</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Observasi</strong></td>
+<td>Proses kerja seksi Pers, Log, Ops/Diklat, Perpustakaan, Tim ZI</td>
+<td>Peta proses bisnis berjalan (<em>as-is</em>)</td>
+</tr>
+<tr>
+<td><strong>Wawancara</strong></td>
+<td>Pejabat staf, Gadik, Pustakawan, Tim ZI, perwakilan siswa</td>
+<td>Daftar kebutuhan &amp; permasalahan</td>
+</tr>
+<tr>
+<td><strong>Studi Dokumen</strong></td>
+<td>TOP/DSPP, format laporan Binsat, kurikulum, hanjar, lembar kerja ZI</td>
+<td>Struktur data &amp; format laporan</td>
+</tr>
+<tr>
+<td><strong>Kuesioner</strong></td>
+<td>Pengguna akhir (pra &amp; pasca implementasi)</td>
+<td>Data SUS &amp; ISO 25010</td>
+</tr>
+<tr>
+<td><strong>Studi Pustaka</strong></td>
+<td>Jurnal, buku, regulasi</td>
+<td>Landasan teori</td>
+</tr>
+</tbody>
+</table>
+<h3 id="35-responden">3.5 Responden</h3>
+<table>
+<thead>
+<tr>
+<th>Kelompok</th>
+<th>Jumlah (estimasi)</th>
+<th>Teknik Sampling</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pejabat/Staf pengelola Binsat</td>
+<td>10–15 orang</td>
+<td><em>Purposive</em></td>
+</tr>
+<tr>
+<td>Gadik</td>
+<td>10–20 orang</td>
+<td><em>Purposive</em></td>
+</tr>
+<tr>
+<td>Siswa/Serdik</td>
+<td>30–50 orang</td>
+<td><em>Random sampling</em></td>
+</tr>
+<tr>
+<td>Pustakawan &amp; Tim ZI</td>
+<td>3–5 orang</td>
+<td><em>Total sampling</em></td>
+</tr>
+</tbody>
+</table>
+<h3 id="36-instrumen-penelitian">3.6 Instrumen Penelitian</h3>
+<ol>
+<li>Pedoman wawancara (Lampiran A)</li>
+<li>Lembar <em>black-box testing</em> per modul</li>
+<li>Kuesioner SUS (Lampiran B)</li>
+<li>Kuesioner ISO/IEC 25010 (skala Likert 1–5)</li>
+<li>Lembar <em>User Acceptance Test</em> (UAT) dengan tanda tangan pengguna kunci</li>
+</ol>
+<h3 id="37-teknik-analisis-data">3.7 Teknik Analisis Data</h3>
+<p><strong>a. Black-Box Testing</strong></p>
+<pre><code>Persentase keberhasilan = (Jumlah skenario lulus / Total skenario) × 100%
+Target: ≥ 95% skenario lulus sebelum go-live, 100% untuk skenario kritis
+</code></pre>
+<p><strong>b. System Usability Scale</strong></p>
+<pre><code>Butir ganjil  : skor = nilai responden − 1
+Butir genap   : skor = 5 − nilai responden
+Skor SUS      = (Σ skor 10 butir) × 2,5
+Rata-rata SUS = Σ skor SUS responden / jumlah responden
+Target: ≥ 68 (Acceptable), ideal ≥ 80,3 (Excellent)
+</code></pre>
+<p><strong>c. ISO/IEC 25010 (Likert)</strong></p>
+<pre><code>Persentase kelayakan = (Skor aktual / Skor ideal) × 100%
+81–100% Sangat Layak | 61–80% Layak | 41–60% Cukup | 21–40% Kurang | 0–20% Tidak Layak
+</code></pre>
+<p><strong>d. Performance Testing</strong><br />
+- Waktu muat halaman ≤ 3 detik (jaringan LAN/intranet)<br />
+- Mampu melayani ≥ 200 pengguna konkuren (ujian serentak) — diuji dengan <em>k6</em> / <em>Apache JMeter</em></p>
+<p><strong>e. Security Testing</strong><br />
+- Checklist <strong>OWASP Top 10</strong> dan pemindaian dengan <em>OWASP ZAP</em></p>
+<hr />
+<h2 id="bab-iv-analisis-dan-perancangan-ringkasan">BAB IV — ANALISIS DAN PERANCANGAN (RINGKASAN)</h2>
+<blockquote>
+<p>Detail lengkap lihat <a href="02_Blueprint_Sistem.md">02_Blueprint_Sistem.md</a>.</p>
+</blockquote>
+<h3 id="41-analisis-sistem-berjalan-as-is">4.1 Analisis Sistem Berjalan (<em>As-Is</em>)</h3>
+<div class="mermaid-box"><pre class="mermaid">
+flowchart TD
+    S1[Seksi mencatat data di buku/Excel] --> S2[Rekap manual tiap bulan]
+    S2 --> S3[Laporan dicetak dan diserahkan ke pimpinan]
+    S3 --> S4[Pimpinan menunggu laporan untuk keputusan]
+    G1[Gadik mencetak hanjar] --> G2[Ujian kertas]
+    G2 --> G3[Koreksi dan rekap nilai manual]
+    P1[Pengaduan lisan/kotak saran] --> P2[Tidak terdokumentasi dan sulit ditindaklanjuti]
+</pre></div>
+
+<h3 id="42-sistem-usulan-to-be">4.2 Sistem Usulan (<em>To-Be</em>)</h3>
+<div class="mermaid-box"><pre class="mermaid">
+flowchart TD
+    U[Pengguna sesuai Role] --> SYS((SIPANDU-WBK))
+    SYS --> B[SIM Binsat 6 Komponen]
+    SYS --> L[E-Learning]
+    SYS --> P[E-Pustaka]
+    SYS --> W[Portal WBK]
+    B --> D[Dashboard dan Indeks Kesiapan Binsat]
+    L --> D
+    P --> D
+    W --> D
+    D --> R[Laporan otomatis PDF/Excel]
+</pre></div>
+
+<h3 id="43-identifikasi-aktor">4.3 Identifikasi Aktor</h3>
+<table>
+<thead>
+<tr>
+<th>Aktor</th>
+<th>Deskripsi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Super Admin</td>
+<td>Pengelola teknis sistem (pengguna, role, konfigurasi, backup)</td>
+</tr>
+<tr>
+<td>Pimpinan</td>
+<td>Danrindam/Wadan/Kepala Staf — melihat dashboard &amp; laporan, memberi disposisi</td>
+</tr>
+<tr>
+<td>Operator Binsat</td>
+<td>Staf seksi (Pers, Log, Ops/Diklat, dll.) — mengelola data per komponen</td>
+</tr>
+<tr>
+<td>Gadik</td>
+<td>Membuat kelas, materi, kuis/ujian, tugas, memberi nilai</td>
+</tr>
+<tr>
+<td>Siswa/Serdik</td>
+<td>Mengikuti pembelajaran, ujian, membaca e-pustaka</td>
+</tr>
+<tr>
+<td>Pustakawan</td>
+<td>Mengelola katalog, e-book, sirkulasi</td>
+</tr>
+<tr>
+<td>Tim ZI/WBK</td>
+<td>Mengelola pengaduan, gratifikasi, survei, konten transparansi</td>
+</tr>
+<tr>
+<td>Publik</td>
+<td>Mengakses portal, mengirim pengaduan, mengisi survei</td>
+</tr>
+</tbody>
+</table>
+<h3 id="44-kebutuhan-fungsional-ringkas">4.4 Kebutuhan Fungsional (Ringkas)</h3>
+<table>
+<thead>
+<tr>
+<th>Kode</th>
+<th>Kebutuhan</th>
+<th>Prioritas</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F-01</td>
+<td>Login, logout, reset password, 2FA untuk role admin/pimpinan</td>
+<td>Must</td>
+</tr>
+<tr>
+<td>F-02</td>
+<td>Manajemen pengguna, role, dan permission</td>
+<td>Must</td>
+</tr>
+<tr>
+<td>F-03</td>
+<td>Pembinaan Organisasi: data TOP/DSPP, struktur jabatan, perbandingan riil vs TOP</td>
+<td>Must</td>
+</tr>
+<tr>
+<td>F-04</td>
+<td>Pembinaan Personel: data personel, kekuatan, pemenuhan jabatan, moril, mutasi</td>
+<td>Must</td>
+</tr>
+<tr>
+<td>F-05</td>
+<td>Pembinaan Materiil: inventaris, kondisi, jadwal pemeliharaan, mutasi barang</td>
+<td>Must</td>
+</tr>
+<tr>
+<td>F-06</td>
+<td>Pembinaan Fasilitas: data gedung, rumah dinas, kondisi, permintaan perbaikan</td>
+<td>Must</td>
+</tr>
+<tr>
+<td>F-07</td>
+<td>Pembinaan Latihan: program, jadwal, peserta, hasil/evaluasi latihan</td>
+<td>Must</td>
+</tr>
+<tr>
+<td>F-08</td>
+<td>Pembinaan Doktrin: repositori naskah, versi, sosialisasi, tes pemahaman</td>
+<td>Must</td>
+</tr>
+<tr>
+<td>F-09</td>
+<td>Indeks Kesiapan Binsat &amp; dashboard pimpinan</td>
+<td>Must</td>
+</tr>
+<tr>
+<td>F-10</td>
+<td>E-Learning: kelas, materi, kuis/ujian, tugas, nilai, sertifikat</td>
+<td>Must</td>
+</tr>
+<tr>
+<td>F-11</td>
+<td>E-Pustaka: katalog, e-book viewer, peminjaman, pengembalian, denda/sanksi</td>
+<td>Must</td>
+</tr>
+<tr>
+<td>F-12</td>
+<td>Portal WBK: profil, berita, standar &amp; maklumat pelayanan, info publik</td>
+<td>Must</td>
+</tr>
+<tr>
+<td>F-13</td>
+<td>Pengaduan/WBS dengan nomor tiket &amp; pelacakan status</td>
+<td>Must</td>
+</tr>
+<tr>
+<td>F-14</td>
+<td>Survei Kepuasan Masyarakat (SKM), IPAK, IPKP</td>
+<td>Must</td>
+</tr>
+<tr>
+<td>F-15</td>
+<td>Lapor gratifikasi</td>
+<td>Should</td>
+</tr>
+<tr>
+<td>F-16</td>
+<td>Notifikasi (in-app &amp; email)</td>
+<td>Should</td>
+</tr>
+<tr>
+<td>F-17</td>
+<td>Ekspor laporan PDF/Excel</td>
+<td>Must</td>
+</tr>
+<tr>
+<td>F-18</td>
+<td>Audit log seluruh aktivitas</td>
+<td>Must</td>
+</tr>
+<tr>
+<td>F-19</td>
+<td>Forum diskusi kelas</td>
+<td>Could</td>
+</tr>
+<tr>
+<td>F-20</td>
+<td>Aplikasi mobile / PWA</td>
+<td>Could</td>
+</tr>
+</tbody>
+</table>
+<h3 id="45-kebutuhan-non-fungsional">4.5 Kebutuhan Non-Fungsional</h3>
+<table>
+<thead>
+<tr>
+<th>Aspek</th>
+<th>Kebutuhan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Keamanan</td>
+<td>HTTPS, hash password (bcrypt/argon2), 2FA, RBAC, proteksi CSRF/XSS/SQLi, rate limiting, audit log</td>
+</tr>
+<tr>
+<td>Kerahasiaan</td>
+<td>Data sensitif personel dienkripsi; pengaduan WBS dapat anonim</td>
+</tr>
+<tr>
+<td>Kinerja</td>
+<td>Halaman ≤ 3 detik; ujian serentak ≥ 200 pengguna</td>
+</tr>
+<tr>
+<td>Ketersediaan</td>
+<td>Uptime ≥ 99% jam kerja; backup harian otomatis</td>
+</tr>
+<tr>
+<td>Usability</td>
+<td>Responsif (desktop, tablet, ponsel), skor SUS ≥ 68</td>
+</tr>
+<tr>
+<td>Maintainability</td>
+<td>Kode mengikuti PSR-12, terdokumentasi, <em>automated test</em> untuk modul kritis</td>
+</tr>
+<tr>
+<td>Portabilitas</td>
+<td>Dapat berjalan di server Linux/Windows (Laragon untuk pengembangan)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="bab-v-rencana-pengujian-indikator-keberhasilan">BAB V — RENCANA PENGUJIAN &amp; INDIKATOR KEBERHASILAN</h2>
+<h3 id="51-rencana-pengujian">5.1 Rencana Pengujian</h3>
+<table>
+<thead>
+<tr>
+<th>Jenis Uji</th>
+<th>Waktu</th>
+<th>Pelaksana</th>
+<th>Alat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Unit &amp; Feature Test</td>
+<td>Setiap sprint</td>
+<td>Developer</td>
+<td>Pest/PHPUnit</td>
+</tr>
+<tr>
+<td>Black-Box Test</td>
+<td>Akhir setiap sprint</td>
+<td>QA</td>
+<td>Lembar uji</td>
+</tr>
+<tr>
+<td>Integration Test</td>
+<td>Minggu 7</td>
+<td>QA + Developer</td>
+<td>Pest, manual</td>
+</tr>
+<tr>
+<td>Performance Test</td>
+<td>Minggu 8</td>
+<td>Developer</td>
+<td>k6 / JMeter</td>
+</tr>
+<tr>
+<td>Security Test</td>
+<td>Minggu 8</td>
+<td>Developer</td>
+<td>OWASP ZAP, checklist</td>
+</tr>
+<tr>
+<td>UAT</td>
+<td>Minggu 8</td>
+<td>Pengguna kunci</td>
+<td>Lembar UAT</td>
+</tr>
+<tr>
+<td>SUS &amp; ISO 25010</td>
+<td>Minggu 8 (pasca pelatihan)</td>
+<td>Peneliti</td>
+<td>Kuesioner</td>
+</tr>
+</tbody>
+</table>
+<h3 id="52-key-performance-indicator-kpi-proyek">5.2 Key Performance Indicator (KPI) Proyek</h3>
+<table>
+<thead>
+<tr>
+<th>KPI</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Modul selesai sesuai backlog <em>Must</em></td>
+<td>100%</td>
+</tr>
+<tr>
+<td>Skenario black-box lulus</td>
+<td>≥ 95%</td>
+</tr>
+<tr>
+<td>Skor SUS</td>
+<td>≥ 68 (target ideal ≥ 80)</td>
+</tr>
+<tr>
+<td>Kelayakan ISO 25010</td>
+<td>≥ 81% (Sangat Layak)</td>
+</tr>
+<tr>
+<td>Waktu penyusunan laporan Binsat</td>
+<td>Turun dari hitungan hari menjadi &lt; 5 menit (otomatis)</td>
+</tr>
+<tr>
+<td>Pengguna terlatih</td>
+<td>100% operator, gadik, pustakawan, tim ZI</td>
+</tr>
+<tr>
+<td>Kerentanan <em>High/Critical</em> OWASP</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="daftar-pustaka-format-apa-dilengkapi-peneliti">DAFTAR PUSTAKA (Format APA — dilengkapi peneliti)</h2>
+<ol>
+<li>Kementerian PAN-RB. (2021). <em>Peraturan Menteri PAN-RB Nomor 90 Tahun 2021 tentang Pembangunan dan Evaluasi Zona Integritas menuju WBK dan WBBM di Instansi Pemerintah</em>.</li>
+<li>Republik Indonesia. (2008). <em>Undang-Undang Nomor 14 Tahun 2008 tentang Keterbukaan Informasi Publik</em>.</li>
+<li>Republik Indonesia. (2022). <em>Undang-Undang Nomor 27 Tahun 2022 tentang Pelindungan Data Pribadi</em>.</li>
+<li>Republik Indonesia. (2018). <em>Peraturan Presiden Nomor 95 Tahun 2018 tentang SPBE</em>.</li>
+<li>Republik Indonesia. (2007). <em>Undang-Undang Nomor 43 Tahun 2007 tentang Perpustakaan</em>.</li>
+<li>Schwaber, K., &amp; Sutherland, J. (2020). <em>The Scrum Guide</em>.</li>
+<li>Brooke, J. (1996). SUS: A "quick and dirty" usability scale. <em>Usability Evaluation in Industry</em>.</li>
+<li>ISO/IEC. (2011). <em>ISO/IEC 25010: Systems and software Quality Requirements and Evaluation (SQuaRE)</em>.</li>
+<li>Sommerville, I. (2016). <em>Software Engineering</em> (10th ed.). Pearson.</li>
+<li>Pressman, R. S., &amp; Maxim, B. R. (2019). <em>Software Engineering: A Practitioner's Approach</em> (9th ed.). McGraw-Hill.</li>
+<li>Dokumentasi resmi Laravel — https://laravel.com/docs</li>
+<li><em>(Tambahkan naskah Binsat TNI AD dan jurnal terkait)</em></li>
+</ol>
+<hr />
+<h2 id="lampiran-a-pedoman-wawancara-ringkas">LAMPIRAN A — Pedoman Wawancara (Ringkas)</h2>
+<p><strong>Untuk Pejabat/Staf Binsat</strong><br />
+1. Bagaimana proses pencatatan data [organisasi/personel/materiil/fasilitas/latihan/doktrin] saat ini?<br />
+2. Format laporan apa saja yang wajib dibuat, berkala berapa, dan ditujukan kepada siapa?<br />
+3. Kendala terbesar dalam pengumpulan dan penyajian data?<br />
+4. Indikator apa yang digunakan untuk menilai kesiapan tiap komponen?<br />
+5. Data apa yang bersifat terbatas/rahasia dan siapa saja yang boleh mengaksesnya?</p>
+<p><strong>Untuk Gadik</strong><br />
+1. Bagaimana distribusi hanjar dan pelaksanaan evaluasi saat ini?<br />
+2. Jenis soal apa yang paling sering digunakan?<br />
+3. Apakah siswa memiliki akses perangkat (komputer lab/ponsel) dan jaringan?</p>
+<p><strong>Untuk Pustakawan</strong><br />
+1. Jumlah dan jenis koleksi? Sudah ada katalog digital?<br />
+2. Bagaimana alur peminjaman dan pengembalian saat ini?</p>
+<p><strong>Untuk Tim ZI</strong><br />
+1. Bukti dukung apa yang paling sulit dipenuhi pada lembar kerja evaluasi ZI?<br />
+2. Bagaimana mekanisme pengaduan &amp; survei kepuasan saat ini?</p>
+<h2 id="lampiran-b-kuesioner-sus">LAMPIRAN B — Kuesioner SUS</h2>
+<table>
+<thead>
+<tr>
+<th>No</th>
+<th>Pernyataan</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Saya berpikir akan sering menggunakan sistem ini</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Saya merasa sistem ini terlalu rumit</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Saya merasa sistem ini mudah digunakan</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Saya membutuhkan bantuan teknisi untuk dapat menggunakan sistem ini</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td>Saya merasa fitur-fitur sistem ini terintegrasi dengan baik</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td>Saya merasa banyak hal yang tidak konsisten pada sistem ini</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>7</td>
+<td>Saya merasa orang lain akan cepat memahami cara menggunakan sistem ini</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>8</td>
+<td>Saya merasa sistem ini membingungkan</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>9</td>
+<td>Saya merasa percaya diri menggunakan sistem ini</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>10</td>
+<td>Saya perlu belajar banyak hal sebelum dapat menggunakan sistem ini</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><em>Keterangan: 1 = Sangat Tidak Setuju, 5 = Sangat Setuju</em></p>
+      </div>
+    </div>
+    <div class="page-break"></div>
+    
+
+    <div class="document-part">
+      <div class="part-header-band">
+        <span class="part-tag">SIPANDU-WBK · DOKUMENTASI PROYEK</span>
+        <h1 class="part-title">BAGIAN II: BLUEPRINT & ARSITEKTUR SISTEM</h1>
+      </div>
+      <div class="part-content">
+        <h1 id="blueprint-sistem-sipandu-wbk-rindam">BLUEPRINT SISTEM — SIPANDU-WBK RINDAM</h1>
+<blockquote>
+<p>Dokumen ini adalah cetak biru (blueprint) fungsional &amp; teknis. Struktur data dan indikator Binsat bersifat <strong>draf awal</strong> dan wajib divalidasi bersama pejabat terkait pada Minggu 1–2.</p>
+</blockquote>
+<hr />
+<h2 id="1-visi-produk">1. Visi Produk</h2>
+<blockquote>
+<p><strong>"Satu platform digital untuk satuan pendidikan yang siap operasional, cerdas dalam pembelajaran, dan bersih dari korupsi."</strong></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Sasaran</th>
+<th>Ukuran</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kesiapan satuan terukur</td>
+<td>Indeks Kesiapan Binsat tersedia <em>real-time</em></td>
+</tr>
+<tr>
+<td>Pembelajaran modern</td>
+<td>100% mata pelajaran memiliki materi &amp; evaluasi daring</td>
+</tr>
+<tr>
+<td>Literasi meningkat</td>
+<td>Seluruh hanjar &amp; naskah doktrin terdigitalisasi</td>
+</tr>
+<tr>
+<td>Integritas &amp; pelayanan</td>
+<td>Seluruh pengaduan memiliki nomor tiket &amp; batas waktu tindak lanjut</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="2-arsitektur-tingkat-tinggi">2. Arsitektur Tingkat Tinggi</h2>
+<div class="mermaid-box"><pre class="mermaid">
+flowchart TB
+    subgraph Client["Lapisan Pengguna"]
+        PUB[Publik - Browser]
+        STF[Staf / Pimpinan]
+        GDK[Gadik]
+        SIS[Siswa / Serdik]
+    end
+
+    subgraph App["Aplikasi Laravel - Monolith Modular"]
+        PORTAL["Portal WBK - Blade + Livewire"]
+        PANEL["Panel Admin - Filament"]
+        LMS["E-Learning - Livewire"]
+        LIB["E-Pustaka - Livewire + PDF.js"]
+        API["REST API - Sanctum, untuk PWA/mobile"]
+        CORE["Core: Auth, RBAC, Audit Log, Notifikasi, Laporan"]
+    end
+
+    subgraph Infra["Infrastruktur"]
+        DB[(MySQL / MariaDB)]
+        REDIS[(Redis - cache, queue, session)]
+        STORE[(Storage - dokumen, e-book, video)]
+        MAIL[SMTP Mail]
+        BKP[(Backup Harian)]
+    end
+
+    PUB --> PORTAL
+    STF --> PANEL
+    GDK --> LMS
+    GDK --> PANEL
+    SIS --> LMS
+    SIS --> LIB
+    PORTAL --> CORE
+    PANEL --> CORE
+    LMS --> CORE
+    LIB --> CORE
+    API --> CORE
+    CORE --> DB
+    CORE --> REDIS
+    CORE --> STORE
+    CORE --> MAIL
+    DB --> BKP
+    STORE --> BKP
+</pre></div>
+
+<p><strong>Pola arsitektur</strong>: <em>Modular Monolith</em> — satu aplikasi Laravel dengan pemisahan per domain (modul). Dipilih karena cocok untuk tim kecil &amp; tenggat 2 bulan, mudah di-deploy, namun tetap rapi dan dapat dipecah di masa depan.</p>
+<hr />
+<h2 id="3-peta-modul">3. Peta Modul</h2>
+<div class="mermaid-box"><pre class="mermaid">
+mindmap
+  root((SIPANDU-WBK))
+    Portal WBK
+      Profil Satuan
+      Berita dan Agenda
+      Standar dan Maklumat Pelayanan
+      Informasi Publik
+      Pengaduan WBS
+      Survei SKM IPAK IPKP
+      Lapor Gratifikasi
+      Galeri dan FAQ
+    SIM Binsat
+      Organisasi
+      Personel
+      Materiil
+      Fasilitas Pangkalan
+      Latihan
+      Doktrin Piranti Lunak
+      Indeks Kesiapan
+    E-Learning
+      Program Pendidikan
+      Kelas dan Mapel
+      Materi dan Hanjar
+      Kuis dan Ujian
+      Tugas
+      Nilai dan Rapor
+      Sertifikat
+    E-Pustaka
+      Katalog
+      E-Book Reader
+      Sirkulasi
+      Anggota
+      Statistik
+    Sistem
+      Pengguna dan Role
+      Audit Log
+      Notifikasi
+      Pengaturan
+      Backup
+</pre></div>
+
+<hr />
+<h2 id="4-aktor-matriks-hak-akses">4. Aktor &amp; Matriks Hak Akses</h2>
+<p><strong>Keterangan</strong>: C = Create, R = Read, U = Update, D = Delete, A = Approve, — = tanpa akses</p>
+<table>
+<thead>
+<tr>
+<th>Modul</th>
+<th style="text-align: center;">Super Admin</th>
+<th style="text-align: center;">Pimpinan</th>
+<th style="text-align: center;">Operator Binsat</th>
+<th style="text-align: center;">Gadik</th>
+<th style="text-align: center;">Siswa</th>
+<th style="text-align: center;">Pustakawan</th>
+<th style="text-align: center;">Tim ZI</th>
+<th style="text-align: center;">Publik</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pengguna &amp; Role</td>
+<td style="text-align: center;">CRUD</td>
+<td style="text-align: center;">R</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+</tr>
+<tr>
+<td>Binsat (6 komponen)</td>
+<td style="text-align: center;">CRUD</td>
+<td style="text-align: center;">R, A</td>
+<td style="text-align: center;">CRU*</td>
+<td style="text-align: center;">R**</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+</tr>
+<tr>
+<td>Dashboard Indeks Binsat</td>
+<td style="text-align: center;">R</td>
+<td style="text-align: center;">R</td>
+<td style="text-align: center;">R*</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+</tr>
+<tr>
+<td>E-Learning (kelola)</td>
+<td style="text-align: center;">CRUD</td>
+<td style="text-align: center;">R</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">CRUD</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+</tr>
+<tr>
+<td>E-Learning (belajar)</td>
+<td style="text-align: center;">R</td>
+<td style="text-align: center;">R</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">R</td>
+<td style="text-align: center;">R, C***</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+</tr>
+<tr>
+<td>E-Pustaka (kelola)</td>
+<td style="text-align: center;">CRUD</td>
+<td style="text-align: center;">R</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">C (usul)</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">CRUD</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+</tr>
+<tr>
+<td>E-Pustaka (baca/pinjam)</td>
+<td style="text-align: center;">R</td>
+<td style="text-align: center;">R</td>
+<td style="text-align: center;">R</td>
+<td style="text-align: center;">R</td>
+<td style="text-align: center;">R</td>
+<td style="text-align: center;">R</td>
+<td style="text-align: center;">R</td>
+<td style="text-align: center;">R (katalog)</td>
+</tr>
+<tr>
+<td>Konten Portal</td>
+<td style="text-align: center;">CRUD</td>
+<td style="text-align: center;">R</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">CRUD</td>
+<td style="text-align: center;">R</td>
+</tr>
+<tr>
+<td>Pengaduan / Gratifikasi</td>
+<td style="text-align: center;">R</td>
+<td style="text-align: center;">R, A</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">C</td>
+<td style="text-align: center;">C</td>
+<td style="text-align: center;">C</td>
+<td style="text-align: center;">CRUD, A</td>
+<td style="text-align: center;">C</td>
+</tr>
+<tr>
+<td>Survei</td>
+<td style="text-align: center;">CRUD</td>
+<td style="text-align: center;">R</td>
+<td style="text-align: center;">C</td>
+<td style="text-align: center;">C</td>
+<td style="text-align: center;">C</td>
+<td style="text-align: center;">C</td>
+<td style="text-align: center;">CRUD</td>
+<td style="text-align: center;">C</td>
+</tr>
+<tr>
+<td>Audit Log</td>
+<td style="text-align: center;">R</td>
+<td style="text-align: center;">R</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">R</td>
+<td style="text-align: center;">—</td>
+</tr>
+</tbody>
+</table>
+<p>* Hanya komponen sesuai seksinya (mis. Staf Pers → Personel) · ** Gadik membaca doktrin &amp; jadwal latihan · *** Siswa mengirim jawaban &amp; tugas</p>
+<hr />
+<h2 id="5-rincian-modul">5. Rincian Modul</h2>
+<h3 id="51-portal-wbk-publik">5.1 Portal WBK (Publik)</h3>
+<table>
+<thead>
+<tr>
+<th>Fitur</th>
+<th>Deskripsi</th>
+<th>Area ZI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Beranda</td>
+<td>Hero, statistik layanan, berita terbaru, banner "Zona Integritas"</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Profil</td>
+<td>Sejarah, visi-misi, struktur organisasi, pejabat</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Berita &amp; Agenda</td>
+<td>Kegiatan satuan, agenda ZI</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Standar Pelayanan</td>
+<td>Persyaratan, prosedur, waktu, biaya (Rp0), produk layanan</td>
+<td>6</td>
+</tr>
+<tr>
+<td>Maklumat Pelayanan</td>
+<td>Janji layanan pimpinan</td>
+<td>6</td>
+</tr>
+<tr>
+<td>Informasi Publik (PPID)</td>
+<td>Info berkala, serta-merta, setiap saat; permohonan informasi</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Pengaduan / WBS</td>
+<td>Form pengaduan (bisa anonim), nomor tiket, lacak status</td>
+<td>5, 6</td>
+</tr>
+<tr>
+<td>Lapor Gratifikasi</td>
+<td>Form pelaporan penerimaan/penolakan gratifikasi</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Survei</td>
+<td>SKM (9 unsur), IPAK, IPKP — hasil ditampilkan publik</td>
+<td>6</td>
+</tr>
+<tr>
+<td>Inovasi</td>
+<td>Etalase inovasi pelayanan</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Galeri, FAQ, Kontak</td>
+<td>—</td>
+<td>6</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Alur Pengaduan (WBS)</strong></p>
+<div class="mermaid-box"><pre class="mermaid">
+sequenceDiagram
+    actor P as Pelapor
+    participant S as Sistem
+    participant Z as Tim ZI
+    participant K as Pimpinan
+    P->>S: Kirim pengaduan + bukti (opsional anonim)
+    S-->>P: Nomor tiket + kode akses
+    S->>Z: Notifikasi pengaduan baru
+    Z->>S: Verifikasi (Valid / Tidak Valid)
+    alt Valid
+        Z->>K: Ajukan untuk disposisi
+        K->>S: Disposisi ke unit terkait
+        S->>Z: Unit tindak lanjut + laporan
+        Z->>S: Status Selesai + tanggapan
+    else Tidak Valid
+        Z->>S: Status Ditolak + alasan
+    end
+    P->>S: Lacak tiket
+    S-->>P: Status & tanggapan
+</pre></div>
+
+<p>SLA: verifikasi ≤ 3 hari kerja, tindak lanjut ≤ 14 hari kerja (dapat dikonfigurasi). Sistem memberi tanda merah jika melewati SLA.</p>
+<hr />
+<h3 id="52-sim-binsat-6-komponen">5.2 SIM Binsat — 6 Komponen</h3>
+<h4 id="521-pembinaan-organisasi">5.2.1 Pembinaan Organisasi</h4>
+<table>
+<thead>
+<tr>
+<th>Fitur</th>
+<th>Data / Fungsi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Data Satuan &amp; Sub-satuan</td>
+<td>Rindam → Dodik/Depo/Detasemen → Seksi/Urusan (struktur pohon)</td>
+</tr>
+<tr>
+<td>TOP/DSPP</td>
+<td>Daftar jabatan menurut TOP: nama jabatan, pangkat, korps, jumlah</td>
+</tr>
+<tr>
+<td>Struktur Riil</td>
+<td>Jabatan yang terisi vs TOP → otomatis hitung <em>gap</em></td>
+</tr>
+<tr>
+<td>Bagan Organisasi</td>
+<td>Org-chart otomatis dari data</td>
+</tr>
+<tr>
+<td>Dokumen Organisasi</td>
+<td>Surat keputusan pembentukan/perubahan organisasi</td>
+</tr>
+</tbody>
+</table>
+<h4 id="522-pembinaan-personel">5.2.2 Pembinaan Personel</h4>
+<table>
+<thead>
+<tr>
+<th>Fitur</th>
+<th>Data / Fungsi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Data Personel</td>
+<td>NRP, nama, pangkat, korps, jabatan, satuan, TMT, pendidikan, kontak (data sensitif terenkripsi)</td>
+</tr>
+<tr>
+<td>Kekuatan Personel</td>
+<td>Rekap per satuan/pangkat/golongan: DSPP vs Nyata (+/−)</td>
+</tr>
+<tr>
+<td>Pemenuhan Jabatan</td>
+<td>Jabatan kosong, rangkap, Plt</td>
+</tr>
+<tr>
+<td>Riwayat</td>
+<td>Pangkat, jabatan, pendidikan, penugasan, tanda jasa</td>
+</tr>
+<tr>
+<td>Kesiapan Harian</td>
+<td>Hadir, dinas luar, cuti, sakit, pendidikan</td>
+</tr>
+<tr>
+<td>Moril Prajurit</td>
+<td>Survei moril berkala, kegiatan pembinaan mental/olahraga, penghargaan &amp; hukuman</td>
+</tr>
+<tr>
+<td>Laporan</td>
+<td>Lapsat personel, kekuatan bulanan (PDF/Excel)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="523-pembinaan-materiil">5.2.3 Pembinaan Materiil</h4>
+<table>
+<thead>
+<tr>
+<th>Fitur</th>
+<th>Data / Fungsi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Inventaris</td>
+<td>Kode, nama, kategori (senjata, munisi*, ranmor, alkom, alins/alongins, perlengkapan), nomor seri, satuan pemegang</td>
+</tr>
+<tr>
+<td>Kondisi</td>
+<td>B (Baik), RR (Rusak Ringan), RB (Rusak Berat)</td>
+</tr>
+<tr>
+<td>Pemeliharaan</td>
+<td>Jadwal harwat (harian/mingguan/bulanan), riwayat, petugas, biaya</td>
+</tr>
+<tr>
+<td>Mutasi Materiil</td>
+<td>Penerimaan, distribusi, penghapusan (dengan approval)</td>
+</tr>
+<tr>
+<td>QR Code</td>
+<td>Label QR per item → scan untuk lihat detail &amp; kondisi</td>
+</tr>
+<tr>
+<td>Laporan</td>
+<td>Rekap kondisi &amp; kesiapan materiil per kategori</td>
+</tr>
+</tbody>
+</table>
+<p>* Data munisi/senjata yang rinci dan berklasifikasi dapat dibatasi hanya rekap jumlah sesuai kebijakan satuan.</p>
+<h4 id="524-pembinaan-fasilitas-pangkalan">5.2.4 Pembinaan Fasilitas / Pangkalan</h4>
+<table>
+<thead>
+<tr>
+<th>Fitur</th>
+<th>Data / Fungsi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Aset Fasilitas</td>
+<td>Gedung kantor, kelas, barak, rumah dinas, lapangan, lapangan tembak, sarana ibadah/olahraga</td>
+</tr>
+<tr>
+<td>Kondisi &amp; Kapasitas</td>
+<td>Kondisi B/RR/RB, luas, kapasitas, foto</td>
+</tr>
+<tr>
+<td>Rumah Dinas</td>
+<td>Penghuni, SIP (Surat Izin Penghunian), masa berlaku</td>
+</tr>
+<tr>
+<td>Permintaan Perbaikan</td>
+<td>Tiket kerusakan → verifikasi → pengerjaan → selesai</td>
+</tr>
+<tr>
+<td>Pemakaian Fasilitas</td>
+<td>Peminjaman ruang/lapangan dengan kalender (cegah bentrok jadwal)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="525-pembinaan-latihan">5.2.5 Pembinaan Latihan</h4>
+<table>
+<thead>
+<tr>
+<th>Fitur</th>
+<th>Data / Fungsi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Program Latihan</td>
+<td>Program tahunan → bulanan → mingguan (bertahap, bertingkat, berlanjut)</td>
+</tr>
+<tr>
+<td>Jenis Latihan</td>
+<td>Latihan perorangan, satuan, menembak, jasmani (UTJ), Garjas, dsb.</td>
+</tr>
+<tr>
+<td>Jadwal &amp; Peserta</td>
+<td>Kalender, peserta, pelatih, lokasi (terhubung modul Fasilitas)</td>
+</tr>
+<tr>
+<td>Hasil Latihan</td>
+<td>Nilai per peserta (mis. nilai menembak, Garjas A/B), dokumentasi</td>
+</tr>
+<tr>
+<td>Evaluasi</td>
+<td>% program terlaksana vs rencana, rata-rata hasil</td>
+</tr>
+</tbody>
+</table>
+<h4 id="526-pembinaan-doktrin-piranti-lunak">5.2.6 Pembinaan Doktrin / Piranti Lunak</h4>
+<table>
+<thead>
+<tr>
+<th>Fitur</th>
+<th>Data / Fungsi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Repositori Naskah</td>
+<td>Bujuk, Bujukmin, Juknis, Protap, SOP, Hanjar — dengan nomor, tahun, status berlaku</td>
+</tr>
+<tr>
+<td>Versi Naskah</td>
+<td>Riwayat revisi; naskah lama otomatis ditandai "Dicabut/Tidak Berlaku"</td>
+</tr>
+<tr>
+<td>Klasifikasi Akses</td>
+<td>Biasa / Terbatas (Rahasia <strong>tidak</strong> diunggah)</td>
+</tr>
+<tr>
+<td>Sosialisasi</td>
+<td>Jadwal sosialisasi + daftar hadir</td>
+</tr>
+<tr>
+<td>Tes Pemahaman</td>
+<td>Kuis pemahaman naskah (memakai mesin kuis E-Learning)</td>
+</tr>
+<tr>
+<td>Bukti Baca</td>
+<td>Tercatat siapa yang telah membaca naskah wajib</td>
+</tr>
+</tbody>
+</table>
+<h4 id="527-indeks-kesiapan-binsat-fitur-unggulan">5.2.7 Indeks Kesiapan Binsat (Fitur Unggulan)</h4>
+<p>Setiap komponen menghasilkan skor 0–100 yang dihitung otomatis. <strong>Bobot &amp; rumus dapat dikonfigurasi</strong> oleh Super Admin agar sesuai ketentuan resmi.</p>
+<table>
+<thead>
+<tr>
+<th>Komponen</th>
+<th>Rumus Awal (Draf)</th>
+<th style="text-align: center;">Bobot Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Organisasi</td>
+<td>(Jabatan terbentuk sesuai TOP / Jabatan TOP) × 100</td>
+<td style="text-align: center;">15%</td>
+</tr>
+<tr>
+<td>Personel</td>
+<td>60% × Pemenuhan jabatan + 20% × Kesiapan harian + 20% × Indeks moril</td>
+<td style="text-align: center;">20%</td>
+</tr>
+<tr>
+<td>Materiil</td>
+<td>((B × 1) + (RR × 0,5) + (RB × 0)) / Total item × 100</td>
+<td style="text-align: center;">20%</td>
+</tr>
+<tr>
+<td>Fasilitas</td>
+<td>((B × 1) + (RR × 0,5) + (RB × 0)) / Total fasilitas × 100</td>
+<td style="text-align: center;">15%</td>
+</tr>
+<tr>
+<td>Latihan</td>
+<td>70% × (Latihan terlaksana / Rencana) + 30% × Rata-rata nilai</td>
+<td style="text-align: center;">20%</td>
+</tr>
+<tr>
+<td>Doktrin</td>
+<td>50% × Naskah mutakhir + 50% × Rata-rata tes pemahaman</td>
+<td style="text-align: center;">10%</td>
+</tr>
+</tbody>
+</table>
+<pre><code>Indeks Kesiapan Binsat = Σ (Skor Komponen × Bobot)
+
+≥ 85      : SIAP           (hijau)
+70 – 84,9 : CUKUP SIAP     (kuning)
+&lt; 70      : KURANG SIAP    (merah)
+</code></pre>
+<p>Dashboard menampilkan: <em>gauge</em> indeks total, <em>radar chart</em> 6 komponen, tren bulanan, dan daftar "titik lemah" yang perlu ditindaklanjuti.</p>
+<hr />
+<h3 id="53-e-learning-lms">5.3 E-Learning (LMS)</h3>
+<table>
+<thead>
+<tr>
+<th>Fitur</th>
+<th>Deskripsi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Program Pendidikan</td>
+<td>Mis. Diktukba, Diktukta, Dikjur, Bela Negara — angkatan, periode</td>
+</tr>
+<tr>
+<td>Kelas / Peleton</td>
+<td>Siswa dikelompokkan per kelas/peleton</td>
+</tr>
+<tr>
+<td>Mata Pelajaran</td>
+<td>Kurikulum, jam pelajaran (JP), gadik pengampu</td>
+</tr>
+<tr>
+<td>Materi</td>
+<td>PDF/hanjar (ditautkan dari E-Pustaka), video, tautan, teks; dibuka bertahap (<em>drip</em>)</td>
+</tr>
+<tr>
+<td>Bank Soal</td>
+<td>Pilihan ganda, benar/salah, esai; kategori &amp; tingkat kesulitan</td>
+</tr>
+<tr>
+<td>Kuis &amp; Ujian</td>
+<td>Acak soal &amp; opsi, timer, batas percobaan, mode ujian layar penuh, penilaian otomatis</td>
+</tr>
+<tr>
+<td>Tugas</td>
+<td>Unggah berkas, tenggat, penilaian &amp; umpan balik</td>
+</tr>
+<tr>
+<td>Presensi</td>
+<td>Presensi daring per sesi</td>
+</tr>
+<tr>
+<td>Nilai &amp; Rapor</td>
+<td>Bobot nilai (tugas, kuis, UTS, UAS, praktik), rapor otomatis, ranking</td>
+</tr>
+<tr>
+<td>Progres</td>
+<td>Persentase penyelesaian materi per siswa</td>
+</tr>
+<tr>
+<td>Sertifikat</td>
+<td>Sertifikat PDF dengan QR verifikasi</td>
+</tr>
+<tr>
+<td>Forum</td>
+<td>Diskusi per mapel (opsional)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Alur Ujian Daring</strong></p>
+<div class="mermaid-box"><pre class="mermaid">
+flowchart LR
+    A[Gadik buat ujian dari Bank Soal] --> B[Atur jadwal, durasi, acak soal]
+    B --> C[Publikasi ke kelas]
+    C --> D[Siswa mulai ujian - token]
+    D --> E[Jawaban autosave tiap 30 detik]
+    E --> F{Waktu habis / Submit}
+    F --> G[Nilai PG otomatis]
+    G --> H[Gadik koreksi esai]
+    H --> I[Nilai masuk rapor]
+</pre></div>
+
+<hr />
+<h3 id="54-e-pustaka-digital-library">5.4 E-Pustaka (Digital Library)</h3>
+<table>
+<thead>
+<tr>
+<th>Fitur</th>
+<th>Deskripsi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Katalog</td>
+<td>Judul, pengarang, penerbit, tahun, ISBN, kategori (DDC sederhana), sampul, lokasi rak</td>
+</tr>
+<tr>
+<td>Koleksi Digital</td>
+<td>E-book/PDF/hanjar dibaca di <em>viewer</em> (PDF.js) <strong>tanpa tombol unduh</strong>, watermark nama &amp; NRP pembaca</td>
+</tr>
+<tr>
+<td>Koleksi Fisik</td>
+<td>Eksemplar dengan barcode/QR</td>
+</tr>
+<tr>
+<td>Sirkulasi</td>
+<td>Pinjam, kembali, perpanjang, reservasi, denda/sanksi keterlambatan</td>
+</tr>
+<tr>
+<td>Keanggotaan</td>
+<td>Otomatis dari data personel &amp; siswa; kartu anggota digital</td>
+</tr>
+<tr>
+<td>Pencarian</td>
+<td>Pencarian <em>full-text</em> (judul, pengarang, kata kunci)</td>
+</tr>
+<tr>
+<td>Fitur Pembaca</td>
+<td>Bookmark, riwayat baca, koleksi favorit</td>
+</tr>
+<tr>
+<td>Statistik</td>
+<td>Buku terpopuler, pembaca teraktif, kunjungan</td>
+</tr>
+<tr>
+<td>Usulan Buku</td>
+<td>Gadik/siswa mengusulkan pengadaan koleksi</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Alur Peminjaman Buku Fisik</strong></p>
+<div class="mermaid-box"><pre class="mermaid">
+flowchart LR
+    A[Anggota cari buku di katalog] --> B{Tersedia?}
+    B -- Ya --> C[Datang ke perpustakaan / reservasi]
+    B -- Tidak --> R[Reservasi antrean]
+    C --> D[Pustakawan scan kartu + barcode buku]
+    D --> E[Transaksi pinjam - tenggat 7 hari]
+    E --> F[Notifikasi H-1 jatuh tempo]
+    F --> G[Pengembalian - scan]
+    G --> H{Terlambat?}
+    H -- Ya --> I[Catat sanksi]
+    H -- Tidak --> J[Selesai]
+</pre></div>
+
+<hr />
+<h3 id="55-modul-sistem">5.5 Modul Sistem</h3>
+<ul>
+<li><strong>Manajemen Pengguna &amp; Role</strong> (Spatie Permission)</li>
+<li><strong>Audit Log</strong> — mencatat siapa, kapan, data apa, nilai lama &amp; baru (Spatie Activitylog) — bukti penguatan pengawasan ZI</li>
+<li><strong>Notifikasi</strong> — in-app, email (opsional WhatsApp gateway)</li>
+<li><strong>Pengaturan</strong> — identitas satuan, logo, bobot indeks Binsat, SLA pengaduan</li>
+<li><strong>Backup</strong> — otomatis harian (database + file), retensi 30 hari</li>
+</ul>
+<hr />
+<h2 id="6-rancangan-basis-data-erd">6. Rancangan Basis Data (ERD)</h2>
+<h3 id="61-core-organisasi-personel">6.1 Core, Organisasi &amp; Personel</h3>
+<div class="mermaid-box"><pre class="mermaid">
+erDiagram
+    USERS ||--o| PERSONNEL : "terhubung"
+    USERS ||--o| STUDENTS : "terhubung"
+    UNITS ||--o{ UNITS : "induk"
+    UNITS ||--o{ TOP_POSITIONS : "memiliki"
+    TOP_POSITIONS ||--o{ PERSONNEL_ASSIGNMENTS : "diisi"
+    PERSONNEL ||--o{ PERSONNEL_ASSIGNMENTS : "menjabat"
+    PERSONNEL ||--o{ PERSONNEL_HISTORIES : "riwayat"
+    PERSONNEL ||--o{ DAILY_READINESS : "kesiapan"
+    RANKS ||--o{ PERSONNEL : "pangkat"
+
+    USERS {
+        bigint id PK
+        string name
+        string username
+        string email
+        string password
+        boolean two_factor_enabled
+        timestamp last_login_at
+    }
+    UNITS {
+        bigint id PK
+        bigint parent_id FK
+        string code
+        string name
+        string type
+    }
+    TOP_POSITIONS {
+        bigint id PK
+        bigint unit_id FK
+        string title
+        string rank_required
+        string corps
+        int quota
+    }
+    PERSONNEL {
+        bigint id PK
+        bigint user_id FK
+        string nrp
+        string name
+        bigint rank_id FK
+        string corps
+        bigint unit_id FK
+        date tmt_service
+        text sensitive_data_encrypted
+    }
+    PERSONNEL_ASSIGNMENTS {
+        bigint id PK
+        bigint personnel_id FK
+        bigint top_position_id FK
+        string type
+        date start_date
+        date end_date
+    }
+    DAILY_READINESS {
+        bigint id PK
+        bigint personnel_id FK
+        date date
+        string status
+    }
+</pre></div>
+
+<h3 id="62-materiil-fasilitas">6.2 Materiil &amp; Fasilitas</h3>
+<div class="mermaid-box"><pre class="mermaid">
+erDiagram
+    MATERIEL_CATEGORIES ||--o{ MATERIELS : "kategori"
+    UNITS ||--o{ MATERIELS : "pemegang"
+    MATERIELS ||--o{ MAINTENANCES : "harwat"
+    MATERIELS ||--o{ MATERIEL_MUTATIONS : "mutasi"
+    FACILITIES ||--o{ REPAIR_REQUESTS : "perbaikan"
+    FACILITIES ||--o{ FACILITY_BOOKINGS : "pemakaian"
+    FACILITIES ||--o{ HOUSING_OCCUPANCIES : "penghuni"
+    PERSONNEL ||--o{ HOUSING_OCCUPANCIES : "menghuni"
+
+    MATERIELS {
+        bigint id PK
+        bigint category_id FK
+        bigint unit_id FK
+        string code
+        string name
+        string serial_number
+        string condition
+        string qr_token
+    }
+    MAINTENANCES {
+        bigint id PK
+        bigint materiel_id FK
+        date scheduled_at
+        date done_at
+        string type
+        text notes
+    }
+    FACILITIES {
+        bigint id PK
+        string name
+        string type
+        decimal area_m2
+        int capacity
+        string condition
+    }
+    REPAIR_REQUESTS {
+        bigint id PK
+        bigint facility_id FK
+        string status
+        text description
+    }
+</pre></div>
+
+<h3 id="63-latihan-doktrin">6.3 Latihan &amp; Doktrin</h3>
+<div class="mermaid-box"><pre class="mermaid">
+erDiagram
+    TRAINING_PROGRAMS ||--o{ TRAINING_SESSIONS : "jadwal"
+    TRAINING_SESSIONS ||--o{ TRAINING_PARTICIPANTS : "peserta"
+    PERSONNEL ||--o{ TRAINING_PARTICIPANTS : "ikut"
+    DOCTRINES ||--o{ DOCTRINE_VERSIONS : "versi"
+    DOCTRINES ||--o{ DOCTRINE_READS : "dibaca"
+    DOCTRINES ||--o{ DOCTRINE_SOCIALIZATIONS : "sosialisasi"
+
+    TRAINING_PROGRAMS {
+        bigint id PK
+        string name
+        string level
+        int year
+        int month
+    }
+    TRAINING_SESSIONS {
+        bigint id PK
+        bigint program_id FK
+        bigint facility_id FK
+        datetime start_at
+        string status
+    }
+    TRAINING_PARTICIPANTS {
+        bigint id PK
+        bigint session_id FK
+        bigint personnel_id FK
+        decimal score
+        string result
+    }
+    DOCTRINES {
+        bigint id PK
+        string number
+        string title
+        string type
+        string classification
+        string status
+    }
+</pre></div>
+
+<h3 id="64-e-learning">6.4 E-Learning</h3>
+<div class="mermaid-box"><pre class="mermaid">
+erDiagram
+    EDU_PROGRAMS ||--o{ CLASSROOMS : "kelas"
+    CLASSROOMS ||--o{ STUDENTS : "anggota"
+    CLASSROOMS ||--o{ COURSES : "mapel"
+    COURSES ||--o{ LESSONS : "materi"
+    COURSES ||--o{ ASSESSMENTS : "evaluasi"
+    QUESTION_BANKS ||--o{ QUESTIONS : "soal"
+    ASSESSMENTS }o--o{ QUESTIONS : "memakai"
+    ASSESSMENTS ||--o{ ATTEMPTS : "dikerjakan"
+    STUDENTS ||--o{ ATTEMPTS : "mengerjakan"
+    ATTEMPTS ||--o{ ANSWERS : "jawaban"
+    STUDENTS ||--o{ LESSON_PROGRESS : "progres"
+
+    COURSES {
+        bigint id PK
+        bigint classroom_id FK
+        bigint teacher_id FK
+        string name
+        int credit_hours
+    }
+    LESSONS {
+        bigint id PK
+        bigint course_id FK
+        string title
+        string type
+        bigint library_item_id FK
+        datetime available_at
+    }
+    ASSESSMENTS {
+        bigint id PK
+        bigint course_id FK
+        string type
+        int duration_minutes
+        datetime start_at
+        datetime end_at
+        boolean shuffle
+    }
+    ATTEMPTS {
+        bigint id PK
+        bigint assessment_id FK
+        bigint student_id FK
+        decimal score
+        datetime submitted_at
+    }
+</pre></div>
+
+<h3 id="65-e-pustaka-wbk">6.5 E-Pustaka &amp; WBK</h3>
+<div class="mermaid-box"><pre class="mermaid">
+erDiagram
+    LIBRARY_ITEMS ||--o{ LIBRARY_COPIES : "eksemplar"
+    LIBRARY_COPIES ||--o{ LOANS : "dipinjam"
+    USERS ||--o{ LOANS : "meminjam"
+    LIBRARY_ITEMS ||--o{ READING_LOGS : "dibaca"
+    COMPLAINTS ||--o{ COMPLAINT_RESPONSES : "tindak lanjut"
+    SURVEYS ||--o{ SURVEY_QUESTIONS : "unsur"
+    SURVEYS ||--o{ SURVEY_RESPONSES : "jawaban"
+
+    LIBRARY_ITEMS {
+        bigint id PK
+        string title
+        string author
+        string isbn
+        string category
+        string format
+        string file_path
+    }
+    LOANS {
+        bigint id PK
+        bigint copy_id FK
+        bigint user_id FK
+        date borrowed_at
+        date due_at
+        date returned_at
+    }
+    COMPLAINTS {
+        bigint id PK
+        string ticket_no
+        string access_code_hash
+        boolean is_anonymous
+        string category
+        string status
+        datetime sla_due_at
+    }
+    SURVEYS {
+        bigint id PK
+        string type
+        string period
+    }
+</pre></div>
+
+<p>Tabel pendukung: <code>posts</code>, <code>pages</code>, <code>agendas</code>, <code>galleries</code>, <code>gratification_reports</code>, <code>public_info_requests</code>, <code>notifications</code>, <code>activity_log</code>, <code>settings</code>, <code>media</code>.</p>
+<hr />
+<h2 id="7-sitemap-struktur-menu">7. Sitemap / Struktur Menu</h2>
+<pre><code>PUBLIK  (domain utama)
+├── /                     Beranda
+├── /profil               Sejarah, Visi-Misi, Struktur, Pejabat
+├── /berita               Berita &amp; Agenda
+├── /zona-integritas      Program ZI, Inovasi, Maklumat, Standar Pelayanan
+├── /informasi-publik     PPID
+├── /pengaduan            Form + Lacak Tiket
+├── /gratifikasi          Form Lapor Gratifikasi
+├── /survei               SKM / IPAK / IPKP + Hasil
+├── /pustaka              Katalog Publik (judul &amp; ketersediaan)
+└── /login
+
+PANEL STAF  (/panel — Filament)
+├── Dashboard Pimpinan (Indeks Binsat, statistik)
+├── Binsat
+│   ├── Organisasi   ├── Personel   ├── Materiil
+│   ├── Fasilitas    ├── Latihan    └── Doktrin
+├── Pendidikan (Program, Kelas, Siswa, Gadik)
+├── Perpustakaan (Katalog, Eksemplar, Sirkulasi, Anggota)
+├── Zona Integritas (Konten Portal, Pengaduan, Gratifikasi, Survei)
+├── Laporan
+└── Sistem (Pengguna, Role, Audit Log, Pengaturan, Backup)
+
+E-LEARNING  (/belajar — Livewire, ramah mobile)
+├── Beranda Siswa (jadwal, tugas tenggat, progres)
+├── Kelas Saya → Mapel → Materi / Kuis / Tugas
+├── Nilai &amp; Sertifikat
+└── Pustaka Digital (Reader)
+</code></pre>
+<hr />
+<h2 id="8-panduan-desain-uiux">8. Panduan Desain UI/UX</h2>
+<table>
+<thead>
+<tr>
+<th>Elemen</th>
+<th>Ketentuan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Warna Primer</td>
+<td>Hijau Tentara <code>#3D5229</code> / Olive gelap <code>#2B3A1E</code></td>
+</tr>
+<tr>
+<td>Warna Aksen</td>
+<td>Emas <code>#C9A227</code> (identitas militer &amp; prestasi)</td>
+</tr>
+<tr>
+<td>Netral</td>
+<td><code>#F5F5F0</code> (terang), <code>#1A1F16</code> (mode gelap)</td>
+</tr>
+<tr>
+<td>Status</td>
+<td>Hijau <code>#2E7D32</code> Siap · Kuning <code>#F9A825</code> Cukup · Merah <code>#C62828</code> Kurang</td>
+</tr>
+<tr>
+<td>Tipografi</td>
+<td><strong>Inter</strong> (UI) &amp; <strong>Poppins/Montserrat</strong> (judul)</td>
+</tr>
+<tr>
+<td>Gaya</td>
+<td>Bersih, formal, <em>card-based</em>, mode terang &amp; gelap, ikon Heroicons</td>
+</tr>
+<tr>
+<td>Aksesibilitas</td>
+<td>Kontras WCAG AA, ukuran font ≥ 14px, navigasi keyboard</td>
+</tr>
+<tr>
+<td>Responsif</td>
+<td>Mobile-first untuk E-Learning &amp; Portal; desktop-first untuk Panel Staf</td>
+</tr>
+</tbody>
+</table>
+<p>Wireframe/mockup dibuat pada Minggu 2 (Figma) untuk: Beranda Portal, Dashboard Pimpinan, Form Binsat, Halaman Kelas, Halaman Ujian, Reader E-Book.</p>
+<hr />
+<h2 id="9-blueprint-keamanan">9. Blueprint Keamanan</h2>
+<table>
+<thead>
+<tr>
+<th>Lapisan</th>
+<th>Kontrol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Jaringan</td>
+<td>HTTPS/TLS, firewall, Panel Staf idealnya hanya dapat diakses dari <strong>intranet/VPN</strong></td>
+</tr>
+<tr>
+<td>Autentikasi</td>
+<td>Password kuat, 2FA (TOTP) untuk admin/pimpinan/operator, kunci akun setelah 5x gagal</td>
+</tr>
+<tr>
+<td>Otorisasi</td>
+<td>RBAC + <em>Policy</em> Laravel per model; filter data per satuan (<em>row-level</em>)</td>
+</tr>
+<tr>
+<td>Data</td>
+<td>Enkripsi kolom sensitif (<code>encrypted</code> cast), hash kode akses pengaduan, nama file acak</td>
+</tr>
+<tr>
+<td>Aplikasi</td>
+<td>CSRF, XSS escaping (Blade), Eloquent (anti SQLi), validasi tipe/ukuran file, <em>rate limiting</em> form publik, CAPTCHA</td>
+</tr>
+<tr>
+<td>Konten Digital</td>
+<td>Reader tanpa unduh, watermark dinamis, URL bertanda tangan (<em>signed URL</em>) berbatas waktu</td>
+</tr>
+<tr>
+<td>Pengawasan</td>
+<td>Audit log seluruh perubahan data, log login, alert aktivitas mencurigakan</td>
+</tr>
+<tr>
+<td>Ketersediaan</td>
+<td>Backup harian terenkripsi, uji restore bulanan</td>
+</tr>
+<tr>
+<td>Kepatuhan</td>
+<td>UU PDP: persetujuan, minimisasi data, hak akses data pribadi</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="10-topologi-deployment">10. Topologi Deployment</h2>
+<div class="mermaid-box"><pre class="mermaid">
+flowchart LR
+    I((Internet)) --> FW[Firewall / Reverse Proxy - Nginx]
+    FW --> WEB["App Server - PHP-FPM 8.3 + Laravel"]
+    LAN((Intranet Satuan)) --> FW
+    WEB --> DB[(MySQL 8 / MariaDB)]
+    WEB --> R[(Redis)]
+    WEB --> Q[Queue Worker - Supervisor]
+    WEB --> FS[(Storage)]
+    DB --> B[(Backup Server / NAS)]
+    FS --> B
+</pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Lingkungan</th>
+<th>Keterangan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Local</strong></td>
+<td>Laragon (Windows) — developer</td>
+</tr>
+<tr>
+<td><strong>Staging</strong></td>
+<td>Server uji untuk demo sprint &amp; UAT</td>
+</tr>
+<tr>
+<td><strong>Production</strong></td>
+<td>Server satuan / data center Kodam / cloud pemerintah (sesuai kebijakan)</td>
+</tr>
+</tbody>
+</table>
+<p>Spesifikasi minimum server production: 4 vCPU, 8 GB RAM, 200 GB SSD (+ storage tambahan untuk video/e-book), Ubuntu Server 22.04/24.04 LTS.</p>
+      </div>
+    </div>
+    <div class="page-break"></div>
+    
+
+    <div class="document-part">
+      <div class="part-header-band">
+        <span class="part-tag">SIPANDU-WBK · DOKUMENTASI PROYEK</span>
+        <h1 class="part-title">BAGIAN III: PETA RELASI ENTITAS BASIS DATA (ERD MAP)</h1>
+      </div>
+      <div class="part-content">
+        <h1 id="peta-relasi-entitas-basis-data-erd-map-sipandu-wbk-rindam">PETA RELASI ENTITAS BASIS DATA (ERD MAP) — SIPANDU-WBK RINDAM</h1>
+<blockquote>
+<p><strong>Sistem Informasi Pembinaan Satuan Pendidikan Terpadu berbasis Wilayah Bebas dari Korupsi</strong><br />
+Dokumen ini memetakan seluruh arsitektur basis data relasional (<em>Relational Database Management System</em> - MySQL 8/MariaDB 10.6+) yang mencakup <strong>5 Kluster Domain</strong>, <strong>45 Tabel Entitas</strong>, hubungan kardinalitas, kamus data (<em>data dictionary</em>), serta integrasi lintas modul.</p>
+</blockquote>
+<hr />
+<h2 id="1-peta-kluster-basis-data-5-domain-arsitektur">1. Peta Kluster Basis Data (5 Domain Arsitektur)</h2>
+<p>Sistem SIPANDU-WBK dirancang dengan konsep <em>Modular Monolith</em>. Basis data terbagi dalam 5 kluster logis yang saling terhubung melalui relasi kunci asing (<em>Foreign Key</em>):</p>
+<div class="mermaid-box"><pre class="mermaid">
+flowchart TB
+    subgraph C1["1. CORE & KEAMANAN"]
+        U[(users)]
+        R[(roles & permissions)]
+        AL[(activity_log)]
+        NOT[(notifications)]
+        SET[(system_settings)]
+    end
+
+    subgraph C2["2. SIM BINSAT 6 KOMPONEN"]
+        ORG["Organisasi: units, top_positions"]
+        PERS["Personel: personnel, ranks, assignments, readiness, morale"]
+        MAT["Materiil: materiels, categories, maintenances, mutations"]
+        FAS["Fasilitas: facilities, repairs, housing, bookings"]
+        LAT["Latihan: training_programs, sessions, participants"]
+        DOK["Doktrin: doctrines, versions, reads, socializations"]
+        IND["Indeks: readiness_weights, readiness_logs"]
+    end
+
+    subgraph C3["3. E-LEARNING (LMS)"]
+        EDU["Pendidikan: edu_programs, classrooms, students"]
+        CRS["Pembelajaran: courses, lessons, progress"]
+        EXM["Evaluasi: question_banks, questions, assessments, attempts, answers"]
+        GRD["Hasil: assignments, submissions, report_cards, certificates"]
+    end
+
+    subgraph C4["4. E-PUSTAKA (DIGITAL LIBRARY)"]
+        CAT["Katalog: library_items, library_categories"]
+        CIR["Sirkulasi: library_copies, library_loans, fines, reservations"]
+        LOG["Literasi: reading_logs, book_proposals"]
+    end
+
+    subgraph C5["5. PORTAL WBK & ZONA INTEGRITAS"]
+        WBS["WBS: complaints, complaint_actions"]
+        GRAT["Integritas: gratification_reports, public_info_requests"]
+        SRV["Survei: surveys, survey_questions, survey_responses"]
+        CMS["Publikasi: portal_posts, service_standards, galleries"]
+    end
+
+    %% Integrasi Lintas Kluster
+    U --> PERS
+    U --> EDU
+    U --> CIR
+    U --> WBS
+    U --> GRAT
+    U --> AL
+
+    ORG --> PERS
+    ORG --> MAT
+    ORG --> FAS
+    ORG --> LAT
+
+    FAS -.-> LAT
+    FAS -.-> EDU
+    PERS -.-> LAT
+    PERS -.-> EDU
+
+    CAT -.-> CRS
+    CAT -.-> DOK
+    EXM -.-> DOK
+
+    ORG --> IND
+    PERS --> IND
+    MAT --> IND
+    FAS --> IND
+    LAT --> IND
+    DOK --> IND
+</pre></div>
+
+<hr />
+<h2 id="2-diagram-erd-global-lintas-domain">2. Diagram ERD Global Lintas Domain</h2>
+<p>Diagram di bawah ini menggambarkan relasi entitas utama dari kelima modul yang saling mengunci (<em>cross-domain foreign keys</em>):</p>
+<div class="mermaid-box"><pre class="mermaid">
+erDiagram
+    %% CORE RELATIONS
+    USERS ||--o| PERSONNEL : "memiliki profil"
+    USERS ||--o| STUDENTS : "memiliki akun siswa"
+    USERS ||--o{ LIBRARY_LOANS : "meminjam buku"
+    USERS ||--o{ COMPLAINT_ACTIONS : "menindaklanjuti"
+    USERS ||--o{ GRATIFICATION_REPORTS : "melaporkan"
+    USERS ||--o{ DOCTRINE_READS : "mencatat baca"
+
+    %% BINSAT - ORGANISASI & PERSONEL
+    UNITS ||--o{ UNITS : "sub-satuan"
+    UNITS ||--o{ TOP_POSITIONS : "daftar jabatan TOP"
+    UNITS ||--o{ PERSONNEL : "penempatan satuan"
+    UNITS ||--o{ MATERIELS : "satuan pemegang"
+    UNITS ||--o{ FACILITIES : "lokasi pangkalan"
+    UNITS ||--o{ TRAINING_PROGRAMS : "program latihan"
+    UNITS ||--o{ READINESS_CALCULATION_LOGS : "indeks Binsat"
+
+    RANKS ||--o{ PERSONNEL : "tingkat kepangkatan"
+    TOP_POSITIONS ||--o{ PERSONNEL_ASSIGNMENTS : "posisi jabatan"
+    PERSONNEL ||--o{ PERSONNEL_ASSIGNMENTS : "riwayat penempatan"
+    PERSONNEL ||--o{ PERSONNEL_HISTORIES : "rekam jejak"
+    PERSONNEL ||--o{ DAILY_READINESS : "kesiapan harian"
+    PERSONNEL ||--o{ HOUSING_OCCUPANCIES : "menghuni rumdis"
+    PERSONNEL ||--o{ TRAINING_PARTICIPANTS : "mengikuti latihan"
+    PERSONNEL ||--o{ COURSES : "gadik pengampu"
+
+    %% BINSAT - MATERIIL & FASILITAS
+    MATERIEL_CATEGORIES ||--o{ MATERIELS : "kategori bekal/alutsista"
+    MATERIELS ||--o{ MATERIEL_MAINTENANCES : "riwayat harwat"
+    MATERIELS ||--o{ MATERIEL_MUTATIONS : "riwayat mutasi/distribusi"
+    FACILITIES ||--o{ FACILITY_REPAIR_REQUESTS : "permohonan perbaikan"
+    FACILITIES ||--o{ FACILITY_BOOKINGS : "jadwal pemakaian"
+    FACILITIES ||--o{ HOUSING_OCCUPANCIES : "hunian rumah dinas"
+    FACILITIES ||--o{ TRAINING_SESSIONS : "lapangan/sarana latihan"
+
+    %% BINSAT - LATIHAN & DOKTRIN
+    TRAINING_PROGRAMS ||--o{ TRAINING_SESSIONS : "jadwal latihan"
+    TRAINING_SESSIONS ||--o{ TRAINING_PARTICIPANTS : "rekap nilai peserta"
+    DOCTRINES ||--o{ DOCTRINE_VERSIONS : "riwayat revisi naskah"
+    DOCTRINES ||--o{ DOCTRINE_READS : "bukti baca naskah"
+    DOCTRINES ||--o{ DOCTRINE_SOCIALIZATIONS : "sosialisasi naskah"
+    ASSESSMENTS ||--o{ DOCTRINES : "evaluasi pemahaman doktrin"
+
+    %% E-LEARNING
+    EDU_PROGRAMS ||--o{ CLASSROOMS : "rombongan belajar/peleton"
+    CLASSROOMS ||--o{ STUDENTS : "daftar serdik/siswa"
+    CLASSROOMS ||--o{ COURSES : "kurikulum mapel"
+    COURSES ||--o{ LESSONS : "materi/hanjar"
+    LIBRARY_ITEMS ||--o{ LESSONS : "tautan sumber hanjar"
+    COURSES ||--o{ ASSESSMENTS : "kuis dan ujian"
+    QUESTION_BANKS ||--o{ QUESTIONS : "bank soal"
+    QUESTIONS ||--o{ QUESTION_OPTIONS : "opsi pilihan ganda"
+    ASSESSMENTS ||--o{ EXAM_ATTEMPTS : "sesi pengerjaan"
+    STUDENTS ||--o{ EXAM_ATTEMPTS : "mengerjakan ujian"
+    EXAM_ATTEMPTS ||--o{ EXAM_ANSWERS : "lembar jawaban"
+    COURSES ||--o{ ASSIGNMENTS : "tugas terstruktur"
+    ASSIGNMENTS ||--o{ ASSIGNMENT_SUBMISSIONS : "unggah tugas siswa"
+    STUDENTS ||--o{ STUDENT_REPORT_CARDS : "rapor hasil didik"
+    STUDENTS ||--o{ CERTIFICATES : "ijazah/sertifikat digital"
+
+    %% E-PUSTAKA
+    LIBRARY_CATEGORIES ||--o{ LIBRARY_ITEMS : "klasifikasi DDC"
+    LIBRARY_ITEMS ||--o{ LIBRARY_COPIES : "eksemplar fisik"
+    LIBRARY_COPIES ||--o{ LIBRARY_LOANS : "transaksi peminjaman"
+    LIBRARY_LOANS ||--o| LIBRARY_FINES : "denda/sanksi keterlambatan"
+    LIBRARY_ITEMS ||--o{ LIBRARY_READING_LOGS : "riwayat baca digital"
+    LIBRARY_ITEMS ||--o{ LIBRARY_BOOK_RESERVATIONS : "antrean reservasi"
+
+    %% WBK & ZONA INTEGRITAS
+    COMPLAINTS ||--o{ COMPLAINT_ACTIONS : "tindak lanjut pengaduan/WBS"
+    SURVEYS ||--o{ SURVEY_QUESTIONS : "indikator kepuasan"
+    SURVEYS ||--o{ SURVEY_RESPONSES : "data responden SKM/IPAK/IPKP"
+</pre></div>
+
+<hr />
+<h2 id="3-rincian-kamus-data-per-kluster-data-dictionary">3. Rincian Kamus Data Per Kluster (Data Dictionary)</h2>
+<h3 id="31-kluster-1-core-keamanan-sistem">3.1 Kluster 1: Core &amp; Keamanan Sistem</h3>
+<table>
+<thead>
+<tr>
+<th>Tabel</th>
+<th>Kolom Utama</th>
+<th>Tipe Data</th>
+<th>Keterangan Relasi / Atribut</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>users</code></strong></td>
+<td><code>id</code> (PK)<br><code>name</code><br><code>username</code> (Unique)<br><code>email</code> (Unique)<br><code>password</code><br><code>phone</code><br><code>role_type</code><br><code>two_factor_secret</code><br><code>two_factor_confirmed_at</code><br><code>is_active</code><br><code>last_login_at</code></td>
+<td>BIGINT UNSIGNED<br>VARCHAR(150)<br>VARCHAR(50)<br>VARCHAR(100)<br>VARCHAR(255)<br>VARCHAR(25)<br>ENUM<br>TEXT<br>TIMESTAMP<br>BOOLEAN<br>TIMESTAMP</td>
+<td>Akun akses terpusat seluruh role (Super Admin, Danrindam, Staf Binsat, Gadik, Siswa, Pustakawan, Tim ZI, Publik Terdaftar). Dilengkapi 2FA TOTP.</td>
+</tr>
+<tr>
+<td><strong><code>roles</code></strong></td>
+<td><code>id</code> (PK)<br><code>name</code><br><code>guard_name</code></td>
+<td>BIGINT UNSIGNED<br>VARCHAR(50)<br>VARCHAR(50)</td>
+<td>Manajemen Peran Spatie Permission (<code>super_admin</code>, <code>pimpinan</code>, <code>operator_binsat</code>, <code>gadik</code>, <code>siswa</code>, <code>pustakawan</code>, <code>tim_zi</code>, <code>publik</code>).</td>
+</tr>
+<tr>
+<td><strong><code>permissions</code></strong></td>
+<td><code>id</code> (PK)<br><code>name</code><br><code>guard_name</code></td>
+<td>BIGINT UNSIGNED<br>VARCHAR(100)<br>VARCHAR(50)</td>
+<td>Hak akses spesifik granular (contoh: <code>create_personnel</code>, <code>approve_mutation</code>, <code>view_readiness_index</code>).</td>
+</tr>
+<tr>
+<td><strong><code>activity_log</code></strong></td>
+<td><code>id</code> (PK)<br><code>log_name</code><br><code>description</code><br><code>subject_type</code><br><code>subject_id</code><br><code>causer_type</code><br><code>causer_id</code> (FK)<br><code>properties</code><br><code>created_at</code></td>
+<td>BIGINT UNSIGNED<br>VARCHAR(50)<br>TEXT<br>VARCHAR(100)<br>BIGINT UNSIGNED<br>VARCHAR(100)<br>BIGINT UNSIGNED<br>JSON<br>TIMESTAMP</td>
+<td>Jejak audit digital tak terhapuskan (<em>immutable audit trail</em>) untuk pemenuhan Area 5 ZI (Penguatan Pengawasan).</td>
+</tr>
+<tr>
+<td><strong><code>system_settings</code></strong></td>
+<td><code>id</code> (PK)<br><code>key</code> (Unique)<br><code>value</code><br><code>group</code><br><code>description</code></td>
+<td>BIGINT UNSIGNED<br>VARCHAR(100)<br>TEXT<br>VARCHAR(50)<br>VARCHAR(255)</td>
+<td>Konfigurasi sistem: batas SLA pengaduan, bobot Indeks Binsat, watermark viewer, informasi identitas satuan.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="32-kluster-2-sim-binsat-6-komponen">3.2 Kluster 2: SIM Binsat 6 Komponen</h3>
+<h4 id="a-pembinaan-organisasi-personel">A. Pembinaan Organisasi &amp; Personel</h4>
+<table>
+<thead>
+<tr>
+<th>Tabel</th>
+<th>Kolom Utama</th>
+<th>Tipe Data</th>
+<th>Keterangan Relasi / Atribut</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>units</code></strong></td>
+<td><code>id</code> (PK)<br><code>parent_id</code> (FK nullable)<br><code>code</code> (Unique)<br><code>name</code><br><code>type</code><br><code>level</code><br><code>is_active</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>VARCHAR(30)<br>VARCHAR(150)<br>ENUM<br>TINYINT<br>BOOLEAN</td>
+<td>Pohon struktur satuan (Rindam → Dodikjur/Dodiklatpur/Depo Pendidikan → Seksi/Urusan). Self-referencing ke <code>parent_id</code>.</td>
+</tr>
+<tr>
+<td><strong><code>top_positions</code></strong></td>
+<td><code>id</code> (PK)<br><code>unit_id</code> (FK)<br><code>position_name</code><br><code>rank_required</code><br><code>corps_required</code><br><code>quota_top</code><br><code>notes</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>VARCHAR(150)<br>VARCHAR(50)<br>VARCHAR(30)<br>INT UNSIGNED<br>TEXT</td>
+<td>Daftar formasi jabatan resmi menurut TOP/DSPP yang disahkan pimpinan TNI AD.</td>
+</tr>
+<tr>
+<td><strong><code>ranks</code></strong></td>
+<td><code>id</code> (PK)<br><code>code</code><br><code>name</code><br><code>category</code><br><code>order_level</code></td>
+<td>BIGINT UNSIGNED<br>VARCHAR(20)<br>VARCHAR(100)<br>ENUM<br>TINYINT</td>
+<td>Standar kepangkatan militer (Pamen, Pama, Bintara Tinggi, Bintara, Tamtama, PNS).</td>
+</tr>
+<tr>
+<td><strong><code>personnel</code></strong></td>
+<td><code>id</code> (PK)<br><code>user_id</code> (FK nullable)<br><code>nrp</code> (Unique)<br><code>full_name</code><br><code>rank_id</code> (FK)<br><code>corps</code><br><code>unit_id</code> (FK)<br><code>birth_date</code><br><code>tmt_service</code><br><code>tmt_rank</code><br><code>sensitive_data_encrypted</code><br><code>photo_path</code><br><code>status</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>VARCHAR(30)<br>VARCHAR(150)<br>BIGINT UNSIGNED<br>VARCHAR(30)<br>BIGINT UNSIGNED<br>DATE<br>DATE<br>DATE<br>TEXT<br>VARCHAR(255)<br>ENUM</td>
+<td>Master data prajurit/pegawai organik. Data rahasia/sensitif (NIK, riwayat kesehatan, gaji) dienkripsi dengan AES-256 (<code>encrypted</code> cast).</td>
+</tr>
+<tr>
+<td><strong><code>personnel_assignments</code></strong></td>
+<td><code>id</code> (PK)<br><code>personnel_id</code> (FK)<br><code>top_position_id</code> (FK)<br><code>assignment_type</code><br><code>sk_number</code><br><code>start_date</code><br><code>end_date</code><br><code>is_current</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>ENUM<br>VARCHAR(100)<br>DATE<br>DATE nullable<br>BOOLEAN</td>
+<td>Riwayat pemenuhan formasi jabatan. Menghitung otomatis kesesuaian Nyata vs TOP dan jabatan kosong/rangkap.</td>
+</tr>
+<tr>
+<td><strong><code>daily_readiness</code></strong></td>
+<td><code>id</code> (PK)<br><code>personnel_id</code> (FK)<br><code>unit_id</code> (FK)<br><code>date</code><br><code>status</code><br><code>notes</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>DATE<br>ENUM<br>VARCHAR(255)</td>
+<td>Kesiapan harian prajurit: <code>Hadir</code>, <code>Dinas Luar</code>, <code>Cuti</code>, <code>Sakit</code>, <code>Pendidikan</code>, <code>Tanpa Keterangan</code>. Dihitung setiap apel pagi.</td>
+</tr>
+<tr>
+<td><strong><code>morale_records</code></strong></td>
+<td><code>id</code> (PK)<br><code>unit_id</code> (FK)<br><code>period</code><br><code>activity_type</code><br><code>participant_count</code><br><code>morale_score</code><br><code>documentation_path</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>VARCHAR(7)<br>ENUM<br>INT UNSIGNED<br>DECIMAL(5,2)<br>VARCHAR(255)</td>
+<td>Pembinaan moril prajurit: kegiatan ibadah/bintal, olahraga gabungan, rekam penghargaan &amp; penegakan disiplin.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="b-pembinaan-materiil-fasilitas-pangkalan">B. Pembinaan Materiil &amp; Fasilitas Pangkalan</h4>
+<table>
+<thead>
+<tr>
+<th>Tabel</th>
+<th>Kolom Utama</th>
+<th>Tipe Data</th>
+<th>Keterangan Relasi / Atribut</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>materiel_categories</code></strong></td>
+<td><code>id</code> (PK)<br><code>code</code><br><code>name</code><br><code>type</code><br><code>description</code></td>
+<td>BIGINT UNSIGNED<br>VARCHAR(20)<br>VARCHAR(100)<br>ENUM<br>TEXT</td>
+<td>Klasifikasi bekal/logistik: <code>Senjata</code>, <code>Munisi</code>, <code>Kendaraan Bermotor</code>, <code>Alat Komunikasi</code>, <code>Alins/Alongins</code>, <code>Perlengkapan Perorangan</code>.</td>
+</tr>
+<tr>
+<td><strong><code>materiels</code></strong></td>
+<td><code>id</code> (PK)<br><code>category_id</code> (FK)<br><code>unit_id</code> (FK)<br><code>code</code> (Unique)<br><code>name</code><br><code>serial_number</code><br><code>acquisition_year</code><br><code>condition</code><br><code>is_operational</code><br><code>qr_code_token</code><br><code>notes</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>VARCHAR(50)<br>VARCHAR(150)<br>VARCHAR(100)<br>YEAR<br>ENUM('B','RR','RB')<br>BOOLEAN<br>VARCHAR(64)<br>TEXT</td>
+<td>Inventaris materiil. Dilengkapi kode token QR untuk pemindaian fisik dan kondisi kesiapan operasional.</td>
+</tr>
+<tr>
+<td><strong><code>materiel_maintenances</code></strong></td>
+<td><code>id</code> (PK)<br><code>materiel_id</code> (FK)<br><code>scheduled_date</code><br><code>completed_date</code><br><code>maintenance_type</code><br><code>technician_name</code><br><code>cost</code><br><code>condition_after</code><br><code>notes</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>DATE<br>DATE nullable<br>VARCHAR(100)<br>VARCHAR(100)<br>DECIMAL(14,2)<br>ENUM('B','RR','RB')<br>TEXT</td>
+<td>Rekam pemeliharaan dan perawatan (Harwat) terjadwal maupun insidentil.</td>
+</tr>
+<tr>
+<td><strong><code>materiel_mutations</code></strong></td>
+<td><code>id</code> (PK)<br><code>materiel_id</code> (FK)<br><code>from_unit_id</code> (FK)<br><code>to_unit_id</code> (FK)<br><code>sk_number</code><br><code>mutation_date</code><br><code>status</code><br><code>approved_by</code> (FK)</td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>VARCHAR(100)<br>DATE<br>ENUM<br>BIGINT UNSIGNED</td>
+<td>Riwayat penerimaan, pergeseran logistik antar-seksi/dodik, hingga penghapusan bekal.</td>
+</tr>
+<tr>
+<td><strong><code>facilities</code></strong></td>
+<td><code>id</code> (PK)<br><code>unit_id</code> (FK)<br><code>code</code> (Unique)<br><code>name</code><br><code>facility_type</code><br><code>area_m2</code><br><code>capacity</code><br><code>condition</code><br><code>photo_path</code><br><code>address</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>VARCHAR(50)<br>VARCHAR(150)<br>ENUM<br>DECIMAL(10,2)<br>INT UNSIGNED<br>ENUM('B','RR','RB')<br>VARCHAR(255)<br>TEXT</td>
+<td>Pangkalan militer: Markas Komando, barak serdik, kelas belajar, rumah dinas prajurit, lapangan tembak, lapangan upacara.</td>
+</tr>
+<tr>
+<td><strong><code>facility_repair_requests</code></strong></td>
+<td><code>id</code> (PK)<br><code>facility_id</code> (FK)<br><code>reported_by</code> (FK)<br><code>description</code><br><code>photo_damage_path</code><br><code>urgency</code><br><code>status</code><br><code>cost_estimate</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>TEXT<br>VARCHAR(255)<br>ENUM<br>ENUM<br>DECIMAL(14,2)</td>
+<td>Tiket kerusakan fasilitas fisik: diajukan → diverifikasi Pejabat Logistik → dikerjakan Staf Fasjas → diselesaikan.</td>
+</tr>
+<tr>
+<td><strong><code>housing_occupancies</code></strong></td>
+<td><code>id</code> (PK)<br><code>facility_id</code> (FK)<br><code>personnel_id</code> (FK)<br><code>sip_number</code><br><code>start_date</code><br><code>end_date</code><br><code>status</code><br><code>family_count</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>VARCHAR(100)<br>DATE<br>DATE nullable<br>ENUM<br>TINYINT</td>
+<td>Tertib penghunian Rumah Dinas (Rumdis) berbasis Surat Izin Penghunian (SIP) resmi.</td>
+</tr>
+<tr>
+<td><strong><code>facility_bookings</code></strong></td>
+<td><code>id</code> (PK)<br><code>facility_id</code> (FK)<br><code>booked_by</code> (FK)<br><code>purpose</code><br><code>start_time</code><br><code>end_time</code><br><code>status</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>VARCHAR(200)<br>DATETIME<br>DATETIME<br>ENUM</td>
+<td>Peminjaman fasilitas umum/kelas/lapangan dengan kalender bentrok jadwal otomatis.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="c-pembinaan-latihan-doktrin-dan-indeks-kesiapan">C. Pembinaan Latihan, Doktrin, dan Indeks Kesiapan</h4>
+<table>
+<thead>
+<tr>
+<th>Tabel</th>
+<th>Kolom Utama</th>
+<th>Tipe Data</th>
+<th>Keterangan Relasi / Atribut</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>training_programs</code></strong></td>
+<td><code>id</code> (PK)<br><code>unit_id</code> (FK)<br><code>name</code><br><code>level</code><br><code>year</code><br><code>quarter</code><br><code>target_participants</code><br><code>description</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>VARCHAR(150)<br>ENUM<br>YEAR<br>TINYINT<br>INT UNSIGNED<br>TEXT</td>
+<td>Rencana program latihan (Renlat) bertahap, bertingkat, berlanjut: Latihan Perorangan Dasar (Latorsar), UTJ, Menembak, Garjas.</td>
+</tr>
+<tr>
+<td><strong><code>training_sessions</code></strong></td>
+<td><code>id</code> (PK)<br><code>program_id</code> (FK)<br><code>facility_id</code> (FK)<br><code>instructor_personnel_id</code> (FK)<br><code>title</code><br><code>start_at</code><br><code>end_at</code><br><code>status</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>VARCHAR(150)<br>DATETIME<br>DATETIME<br>ENUM</td>
+<td>Pelaksanaan sesi latihan terhubung ke modul Fasilitas (lokasi) dan Personel (pelatih).</td>
+</tr>
+<tr>
+<td><strong><code>training_participants</code></strong></td>
+<td><code>id</code> (PK)<br><code>session_id</code> (FK)<br><code>personnel_id</code> (FK)<br><code>attendance</code><br><code>theory_score</code><br><code>practice_score</code><br><code>final_score</code><br><code>result</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>BOOLEAN<br>DECIMAL(5,2)<br>DECIMAL(5,2)<br>DECIMAL(5,2)<br>ENUM('Lulus','TidakLulus')</td>
+<td>Penilaian kemampuan perorangan hasil latihan fisik, taktik, dan ketangkasan militer.</td>
+</tr>
+<tr>
+<td><strong><code>doctrines</code></strong></td>
+<td><code>id</code> (PK)<br><code>document_number</code><br><code>title</code><br><code>doctrine_type</code><br><code>classification</code><br><code>year</code><br><code>issuing_authority</code><br><code>status</code><br><code>assessment_id</code> (FK nullable)</td>
+<td>BIGINT UNSIGNED<br>VARCHAR(100)<br>VARCHAR(200)<br>ENUM<br>ENUM('Biasa','Terbatas')<br>YEAR<br>VARCHAR(100)<br>ENUM('Berlaku','Dicabut')<br>BIGINT UNSIGNED</td>
+<td>Repositori Doktrin, Bujuk, Juknis, Protap, dan SOP dinas. Terhubung ke kuis evaluasi LMS untuk uji pemahaman.</td>
+</tr>
+<tr>
+<td><strong><code>doctrine_versions</code></strong></td>
+<td><code>id</code> (PK)<br><code>doctrine_id</code> (FK)<br><code>version_number</code><br><code>revision_notes</code><br><code>file_path</code><br><code>effective_date</code><br><code>uploaded_by</code> (FK)</td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>VARCHAR(20)<br>TEXT<br>VARCHAR(255)<br>DATE<br>BIGINT UNSIGNED</td>
+<td>Riwayat amandemen naskah dinas agar prajurit selalu mengacu pada versi naskah terbitan mutakhir.</td>
+</tr>
+<tr>
+<td><strong><code>doctrine_reads</code></strong></td>
+<td><code>id</code> (PK)<br><code>doctrine_id</code> (FK)<br><code>user_id</code> (FK)<br><code>read_at</code><br><code>duration_seconds</code><br><code>ip_address</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>TIMESTAMP<br>INT UNSIGNED<br>VARCHAR(45)</td>
+<td>Bukti kepatuhan literasi doktrin militer oleh segenap prajurit.</td>
+</tr>
+<tr>
+<td><strong><code>readiness_weight_configs</code></strong></td>
+<td><code>id</code> (PK)<br><code>component_name</code> (Unique)<br><code>weight_percentage</code><br><code>formula_code</code><br><code>is_active</code></td>
+<td>BIGINT UNSIGNED<br>VARCHAR(50)<br>DECIMAL(5,2)<br>VARCHAR(100)<br>BOOLEAN</td>
+<td>Konfigurasi bobot komponen Binsat (Organisasi 15%, Pers 20%, Mat 20%, Fas 15%, Lat 20%, Dok 10%).</td>
+</tr>
+<tr>
+<td><strong><code>readiness_calculation_logs</code></strong></td>
+<td><code>id</code> (PK)<br><code>unit_id</code> (FK)<br><code>period_date</code><br><code>org_score</code><br><code>pers_score</code><br><code>mat_score</code><br><code>fas_score</code><br><code>lat_score</code><br><code>dok_score</code><br><code>total_index</code><br><code>status</code><br><code>calculated_at</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>DATE<br>DECIMAL(5,2)<br>DECIMAL(5,2)<br>DECIMAL(5,2)<br>DECIMAL(5,2)<br>DECIMAL(5,2)<br>DECIMAL(5,2)<br>DECIMAL(5,2)<br>ENUM('SIAP','CUKUP','KURANG')<br>TIMESTAMP</td>
+<td>Arsip rekam nilai Indeks Kesiapan Satuan untuk tren visual radar chart dan laporan wasrik.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="33-kluster-3-e-learning-learning-management-system">3.3 Kluster 3: E-Learning (Learning Management System)</h3>
+<table>
+<thead>
+<tr>
+<th>Tabel</th>
+<th>Kolom Utama</th>
+<th>Tipe Data</th>
+<th>Keterangan Relasi / Atribut</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>education_programs</code></strong></td>
+<td><code>id</code> (PK)<br><code>code</code> (Unique)<br><code>name</code><br><code>category</code><br><code>batch_number</code><br><code>year</code><br><code>start_date</code><br><code>end_date</code><br><code>is_active</code></td>
+<td>BIGINT UNSIGNED<br>VARCHAR(30)<br>VARCHAR(150)<br>ENUM<br>VARCHAR(20)<br>YEAR<br>DATE<br>DATE<br>BOOLEAN</td>
+<td>Program pendidikan resmi: Diktukba, Diktukta, Dikjur Ba/Ta, Pendidikan Bela Negara, dsb.</td>
+</tr>
+<tr>
+<td><strong><code>classrooms</code></strong></td>
+<td><code>id</code> (PK)<br><code>program_id</code> (FK)<br><code>code</code> (Unique)<br><code>name</code><br><code>platoon_name</code><br><code>commander_personnel_id</code> (FK)<br><code>capacity</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>VARCHAR(30)<br>VARCHAR(100)<br>VARCHAR(50)<br>BIGINT UNSIGNED<br>INT UNSIGNED</td>
+<td>Rombongan belajar per kelas / kompi / peleton serdik dengan Komandan Peleton pengasuh.</td>
+</tr>
+<tr>
+<td><strong><code>students</code></strong></td>
+<td><code>id</code> (PK)<br><code>user_id</code> (FK nullable)<br><code>classroom_id</code> (FK)<br><code>nosik</code> (Unique)<br><code>full_name</code><br><code>rank</code><br><code>origin_unit</code><br><code>status</code><br><code>photo_path</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>VARCHAR(30)<br>VARCHAR(150)<br>VARCHAR(50)<br>VARCHAR(100)<br>ENUM<br>VARCHAR(255)</td>
+<td>Data induk serdik/siswa siswa pendidikan. Terhubung ke akun pengguna untuk login LMS.</td>
+</tr>
+<tr>
+<td><strong><code>courses</code></strong></td>
+<td><code>id</code> (PK)<br><code>classroom_id</code> (FK)<br><code>instructor_personnel_id</code> (FK)<br><code>code</code><br><code>name</code><br><code>credit_hours_jp</code><br><code>passing_grade</code><br><code>description</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>VARCHAR(30)<br>VARCHAR(150)<br>INT UNSIGNED<br>DECIMAL(5,2)<br>TEXT</td>
+<td>Mata Pelajaran (Mapel) yang diajarkan oleh Gadik pengampu.</td>
+</tr>
+<tr>
+<td><strong><code>lessons</code></strong></td>
+<td><code>id</code> (PK)<br><code>course_id</code> (FK)<br><code>library_item_id</code> (FK nullable)<br><code>title</code><br><code>lesson_type</code><br><code>file_path</code><br><code>content_text</code><br><code>drip_available_at</code><br><code>order_no</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>VARCHAR(200)<br>ENUM<br>VARCHAR(255)<br>LONGTEXT<br>DATETIME nullable<br>TINYINT</td>
+<td>Bahan ajar per pertemuan. Terintegrasi ke E-Pustaka (<code>library_item_id</code>) untuk hanjar digital.</td>
+</tr>
+<tr>
+<td><strong><code>lesson_progresses</code></strong></td>
+<td><code>id</code> (PK)<br><code>lesson_id</code> (FK)<br><code>student_id</code> (FK)<br><code>is_completed</code><br><code>completed_at</code><br><code>last_page_read</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>BOOLEAN<br>TIMESTAMP nullable<br>INT UNSIGNED</td>
+<td>Pemantauan tingkat kepatuhan membaca materi oleh siswa secara individual.</td>
+</tr>
+<tr>
+<td><strong><code>question_banks</code></strong></td>
+<td><code>id</code> (PK)<br><code>course_id</code> (FK)<br><code>title</code><br><code>created_by</code> (FK)</td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>VARCHAR(150)<br>BIGINT UNSIGNED</td>
+<td>Wadah bank soal ujian untuk memudahkan pengacakan dan penggunaan berulang.</td>
+</tr>
+<tr>
+<td><strong><code>questions</code></strong></td>
+<td><code>id</code> (PK)<br><code>bank_id</code> (FK)<br><code>question_text</code><br><code>question_type</code><br><code>points</code><br><code>explanation</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>TEXT<br>ENUM<br>DECIMAL(5,2)<br>TEXT</td>
+<td>Soal evaluasi: Pilihan Ganda (PG), Benar/Salah, atau Esai Uraian.</td>
+</tr>
+<tr>
+<td><strong><code>question_options</code></strong></td>
+<td><code>id</code> (PK)<br><code>question_id</code> (FK)<br><code>option_label</code><br><code>option_text</code><br><code>is_correct</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>CHAR(1)<br>TEXT<br>BOOLEAN</td>
+<td>Pilihan jawaban A, B, C, D, E untuk jenis soal pilihan ganda.</td>
+</tr>
+<tr>
+<td><strong><code>assessments</code></strong></td>
+<td><code>id</code> (PK)<br><code>course_id</code> (FK)<br><code>title</code><br><code>assessment_type</code><br><code>duration_minutes</code><br><code>start_time</code><br><code>end_time</code><br><code>shuffle_questions</code><br><code>passing_grade</code><br><code>is_published</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>VARCHAR(150)<br>ENUM<br>INT UNSIGNED<br>DATETIME<br>DATETIME<br>BOOLEAN<br>DECIMAL(5,2)<br>BOOLEAN</td>
+<td>Ujian terikat waktu: Kuis harian, UTS, UAS, Ujian Ulang (Remedial), atau Uji Doktrin.</td>
+</tr>
+<tr>
+<td><strong><code>exam_attempts</code></strong></td>
+<td><code>id</code> (PK)<br><code>assessment_id</code> (FK)<br><code>student_id</code> (FK)<br><code>token_used</code><br><code>started_at</code><br><code>submitted_at</code><br><code>total_score</code><br><code>is_passed</code><br><code>status</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>VARCHAR(20)<br>DATETIME<br>DATETIME nullable<br>DECIMAL(5,2)<br>BOOLEAN<br>ENUM</td>
+<td>Sesi pengerjaan ujian siswa dengan validasi token dan batas waktu otomatis (<em>timeout</em>).</td>
+</tr>
+<tr>
+<td><strong><code>exam_answers</code></strong></td>
+<td><code>id</code> (PK)<br><code>attempt_id</code> (FK)<br><code>question_id</code> (FK)<br><code>selected_option_id</code> (FK nullable)<br><code>essay_text</code><br><code>score_awarded</code><br><code>is_reviewed</code><br><code>reviewed_by</code> (FK)</td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>TEXT<br>DECIMAL(5,2)<br>BOOLEAN<br>BIGINT UNSIGNED</td>
+<td>Lembar jawaban autosave per butir soal. PG dinilai otomatis, esai dikoreksi manual Gadik.</td>
+</tr>
+<tr>
+<td><strong><code>assignments</code></strong></td>
+<td><code>id</code> (PK)<br><code>course_id</code> (FK)<br><code>title</code><br><code>instructions</code><br><code>attachment_path</code><br><code>due_date</code><br><code>max_score</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>VARCHAR(200)<br>TEXT<br>VARCHAR(255)<br>DATETIME<br>DECIMAL(5,2)</td>
+<td>Lembar tugas mandiri atau kelompok dari Gadik kepada serdik.</td>
+</tr>
+<tr>
+<td><strong><code>assignment_submissions</code></strong></td>
+<td><code>id</code> (PK)<br><code>assignment_id</code> (FK)<br><code>student_id</code> (FK)<br><code>file_path</code><br><code>notes</code><br><code>submitted_at</code><br><code>score</code><br><code>feedback</code><br><code>graded_by</code> (FK)</td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>VARCHAR(255)<br>TEXT<br>DATETIME<br>DECIMAL(5,2)<br>TEXT<br>BIGINT UNSIGNED</td>
+<td>Berkas tugas yang dikirim serdik beserta nilai dan catatan evaluasi dari Gadik.</td>
+</tr>
+<tr>
+<td><strong><code>student_report_cards</code></strong></td>
+<td><code>id</code> (PK)<br><code>classroom_id</code> (FK)<br><code>student_id</code> (FK)<br><code>theory_gpa</code><br><code>practice_gpa</code><br><code>attitude_score</code><br><code>final_gpa</code><br><code>ranking</code><br><code>issued_at</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>DECIMAL(5,2)<br>DECIMAL(5,2)<br>DECIMAL(5,2)<br>DECIMAL(5,2)<br>INT UNSIGNED<br>DATE</td>
+<td>Rapor hasil didik lengkap (Triratna Teladan: Tanggon, Tanggap, Trengginas).</td>
+</tr>
+<tr>
+<td><strong><code>certificates</code></strong></td>
+<td><code>id</code> (PK)<br><code>student_id</code> (FK)<br><code>program_id</code> (FK)<br><code>certificate_number</code><br><code>qr_hash</code><br><code>pdf_path</code><br><code>issue_date</code><br><code>is_valid</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>VARCHAR(100)<br>VARCHAR(64)<br>VARCHAR(255)<br>DATE<br>BOOLEAN</td>
+<td>Ijazah / Sertifikat kelulusan elektronik dengan QR Code verifikasi integritas publik.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="34-kluster-4-e-pustaka-digital-library">3.4 Kluster 4: E-Pustaka (Digital Library)</h3>
+<table>
+<thead>
+<tr>
+<th>Tabel</th>
+<th>Kolom Utama</th>
+<th>Tipe Data</th>
+<th>Keterangan Relasi / Atribut</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>library_categories</code></strong></td>
+<td><code>id</code> (PK)<br><code>ddc_code</code><br><code>name</code><br><code>description</code></td>
+<td>BIGINT UNSIGNED<br>VARCHAR(20)<br>VARCHAR(100)<br>TEXT</td>
+<td>Pengelompokan klasifikasi buku berdasarkan sistem DDC (Dewey Decimal Classification) militer.</td>
+</tr>
+<tr>
+<td><strong><code>library_items</code></strong></td>
+<td><code>id</code> (PK)<br><code>category_id</code> (FK)<br><code>title</code><br><code>author</code><br><code>publisher</code><br><code>publish_year</code><br><code>isbn</code><br><code>format_type</code><br><code>total_copies</code><br><code>available_copies</code><br><code>digital_file_path</code><br><code>cover_path</code><br><code>shelf_location</code><br><code>description</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>VARCHAR(200)<br>VARCHAR(150)<br>VARCHAR(150)<br>YEAR<br>VARCHAR(30)<br>ENUM<br>INT UNSIGNED<br>INT UNSIGNED<br>VARCHAR(255)<br>VARCHAR(255)<br>VARCHAR(50)<br>TEXT</td>
+<td>Katalog koleksi induk. Format bisa <code>Buku Cetak</code>, <code>E-Book</code>, <code>Hanjar Militer</code>, atau <code>Jurnal Ilmiah</code>. Berkas digital disimpan di private storage.</td>
+</tr>
+<tr>
+<td><strong><code>library_copies</code></strong></td>
+<td><code>id</code> (PK)<br><code>library_item_id</code> (FK)<br><code>barcode_rfid</code> (Unique)<br><code>copy_number</code><br><code>condition</code><br><code>status</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>VARCHAR(50)<br>INT UNSIGNED<br>ENUM('Baik','Rusak','Hilang')<br>ENUM('Tersedia','Dipinjam','Perawatan')</td>
+<td>Eksemplar buku fisik dengan nomor barcode/RFID individual untuk sirkulasi cepat di meja perpustakaan.</td>
+</tr>
+<tr>
+<td><strong><code>library_loans</code></strong></td>
+<td><code>id</code> (PK)<br><code>copy_id</code> (FK)<br><code>user_id</code> (FK)<br><code>borrow_date</code><br><code>due_date</code><br><code>return_date</code><br><code>status</code><br><code>processed_by</code> (FK)</td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>DATE<br>DATE<br>DATE nullable<br>ENUM('Dipinjam','Kembali','Terlambat','Hilang')<br>BIGINT UNSIGNED</td>
+<td>Transaksi peminjaman buku fisik (standar pinjam 7 hari dengan notifikasi pengingat H-1).</td>
+</tr>
+<tr>
+<td><strong><code>library_fines</code></strong></td>
+<td><code>id</code> (PK)<br><code>loan_id</code> (FK)<br><code>late_days</code><br><code>fine_amount</code><br><code>disciplinary_notes</code><br><code>is_settled</code><br><code>settled_at</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>INT UNSIGNED<br>DECIMAL(10,2)<br>VARCHAR(255)<br>BOOLEAN<br>TIMESTAMP nullable</td>
+<td>Sanksi/denda keterlambatan pengembalian buku fisik (denda materiil atau sanksi disiplin satuan).</td>
+</tr>
+<tr>
+<td><strong><code>library_reading_logs</code></strong></td>
+<td><code>id</code> (PK)<br><code>library_item_id</code> (FK)<br><code>user_id</code> (FK)<br><code>read_at</code><br><code>duration_minutes</code><br><code>pages_viewed</code><br><code>ip_address</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>TIMESTAMP<br>INT UNSIGNED<br>INT UNSIGNED<br>VARCHAR(45)</td>
+<td>Statistik pembaca buku digital untuk pemeringkatan buku terfavorit dan pembaca teraktif.</td>
+</tr>
+<tr>
+<td><strong><code>library_book_reservations</code></strong></td>
+<td><code>id</code> (PK)<br><code>library_item_id</code> (FK)<br><code>user_id</code> (FK)<br><code>reservation_date</code><br><code>status</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>DATETIME<br>ENUM('Antre','Tersedia','Kedaluwarsa','Batal')</td>
+<td>Antrean reservasi buku fisik apabila seluruh eksemplar sedang berada di tangan peminjam lain.</td>
+</tr>
+<tr>
+<td><strong><code>library_book_proposals</code></strong></td>
+<td><code>id</code> (PK)<br><code>proposed_by</code> (FK)<br><code>title</code><br><code>author</code><br><code>publisher</code><br><code>reason</code><br><code>status</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>VARCHAR(200)<br>VARCHAR(150)<br>VARCHAR(150)<br>TEXT<br>ENUM</td>
+<td>Usulan penambahan literatur baru dari Gadik dan serdik untuk pengadaan seksi perpustakaan.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="35-kluster-5-portal-wbk-pengawasan-integritas">3.5 Kluster 5: Portal WBK &amp; Pengawasan Integritas</h3>
+<table>
+<thead>
+<tr>
+<th>Tabel</th>
+<th>Kolom Utama</th>
+<th>Tipe Data</th>
+<th>Keterangan Relasi / Atribut</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>complaints</code></strong></td>
+<td><code>id</code> (PK)<br><code>ticket_number</code> (Unique)<br><code>access_code_hash</code><br><code>reporter_name</code><br><code>reporter_contact</code><br><code>is_anonymous</code><br><code>category</code><br><code>title</code><br><code>description</code><br><code>evidence_file_path</code><br><code>status</code><br><code>sla_due_at</code><br><code>is_overdue</code><br><code>created_at</code></td>
+<td>BIGINT UNSIGNED<br>VARCHAR(30)<br>VARCHAR(255)<br>VARCHAR(100) nullable<br>VARCHAR(100) nullable<br>BOOLEAN<br>ENUM<br>VARCHAR(200)<br>TEXT<br>VARCHAR(255)<br>ENUM<br>DATETIME<br>BOOLEAN<br>TIMESTAMP</td>
+<td>Whistleblowing System (WBS) &amp; Pengaduan Masyarakat. Mendukung mode anonim, kode akses di-hash bcrypt, pelacakan ber-SLA.</td>
+</tr>
+<tr>
+<td><strong><code>complaint_actions</code></strong></td>
+<td><code>id</code> (PK)<br><code>complaint_id</code> (FK)<br><code>action_by</code> (FK)<br><code>action_type</code><br><code>response_text</code><br><code>internal_notes</code><br><code>attachment_path</code><br><code>created_at</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>ENUM<br>TEXT nullable<br>TEXT nullable<br>VARCHAR(255)<br>TIMESTAMP</td>
+<td>Buku rekam tindak lanjut pengaduan: Verifikasi Tim ZI, Disposisi Komandan, Tindak Lanjut Seksi, Tanggapan Publik.</td>
+</tr>
+<tr>
+<td><strong><code>gratification_reports</code></strong></td>
+<td><code>id</code> (PK)<br><code>reporter_user_id</code> (FK)<br><code>event_date</code><br><code>report_type</code><br><code>item_description</code><br><code>estimated_value</code><br><code>giver_identity</code><br><code>chronology</code><br><code>evidence_path</code><br><code>status</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>DATE<br>ENUM('Penerimaan','Penolakan')<br>TEXT<br>DECIMAL(14,2)<br>VARCHAR(150)<br>TEXT<br>VARCHAR(255)<br>ENUM</td>
+<td>Pelaporan penerimaan atau penolakan gratifikasi oleh prajurit/pegawai (Komponen Pengawasan ZI Area 5).</td>
+</tr>
+<tr>
+<td><strong><code>public_info_requests</code></strong></td>
+<td><code>id</code> (PK)<br><code>request_number</code> (Unique)<br><code>applicant_name</code><br><code>nik</code><br><code>email</code><br><code>phone</code><br><code>requested_info</code><br><code>purpose</code><br><code>status</code><br><code>completed_at</code></td>
+<td>BIGINT UNSIGNED<br>VARCHAR(30)<br>VARCHAR(100)<br>VARCHAR(20)<br>VARCHAR(100)<br>VARCHAR(25)<br>TEXT<br>TEXT<br>ENUM<br>TIMESTAMP nullable</td>
+<td>Layanan Pejabat Pengelola Informasi dan Dokumentasi (PPID) sesuai UU Keterbukaan Informasi Publik No. 14/2008.</td>
+</tr>
+<tr>
+<td><strong><code>surveys</code></strong></td>
+<td><code>id</code> (PK)<br><code>title</code><br><code>survey_type</code><br><code>year</code><br><code>quarter</code><br><code>is_active</code><br><code>description</code></td>
+<td>BIGINT UNSIGNED<br>VARCHAR(150)<br>ENUM('SKM','IPAK','IPKP')<br>YEAR<br>TINYINT<br>BOOLEAN<br>TEXT</td>
+<td>Survei resmi: Survei Kepuasan Masyarakat (SKM PermenPAN-RB 14/2017), Indeks Persepsi Anti Korupsi (IPAK), &amp; IPKP.</td>
+</tr>
+<tr>
+<td><strong><code>survey_questions</code></strong></td>
+<td><code>id</code> (PK)<br><code>survey_id</code> (FK)<br><code>code</code><br><code>question_text</code><br><code>domain_element</code><br><code>order_no</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>VARCHAR(10)<br>TEXT<br>VARCHAR(100)<br>TINYINT</td>
+<td>9 Butir Unsur SKM (Persyaratan, Prosedur, Waktu, Biaya, Produk, Kompetensi, Perilaku, Sarpras, Pengaduan).</td>
+</tr>
+<tr>
+<td><strong><code>survey_responses</code></strong></td>
+<td><code>id</code> (PK)<br><code>survey_id</code> (FK)<br><code>respondent_type</code><br><code>answers_json</code><br><code>calculated_score</code><br><code>submitted_at</code><br><code>ip_address</code></td>
+<td>BIGINT UNSIGNED<br>BIGINT UNSIGNED<br>ENUM<br>JSON<br>DECIMAL(5,2)<br>TIMESTAMP<br>VARCHAR(45)</td>
+<td>Data isian responden dengan perhitungan otomatis nilai interval kepuasan (A = Sangat Baik, B = Baik, C = Kurang).</td>
+</tr>
+<tr>
+<td><strong><code>portal_posts</code></strong></td>
+<td><code>id</code> (PK)<br><code>title</code><br><code>slug</code> (Unique)<br><code>category</code><br><code>content</code><br><code>featured_image</code><br><code>author_id</code> (FK)<br><code>published_at</code><br><code>view_count</code></td>
+<td>BIGINT UNSIGNED<br>VARCHAR(200)<br>VARCHAR(200)<br>ENUM<br>LONGTEXT<br>VARCHAR(255)<br>BIGINT UNSIGNED<br>DATETIME nullable<br>INT UNSIGNED</td>
+<td>CMS Berita kegiatan satuan, pengumuman pendidikan, dokumentasi sosialisasi ZI, dan artikel wawasan kebangsaan.</td>
+</tr>
+<tr>
+<td><strong><code>portal_service_standards</code></strong></td>
+<td><code>id</code> (PK)<br><code>service_name</code><br><code>requirements</code><br><code>procedure</code><br><code>time_sla</code><br><code>fee</code><br><code>output_product</code><br><code>complaint_channel</code></td>
+<td>BIGINT UNSIGNED<br>VARCHAR(150)<br>TEXT<br>TEXT<br>VARCHAR(100)<br>VARCHAR(50)<br>VARCHAR(150)<br>TEXT</td>
+<td>Publikasi resmi Standar Pelayanan Publik satuan (Persyaratan, Biaya Rp 0,-, Waktu Selesai, Jaminan Layanan).</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="4-matriks-integritas-kunci-asing-antar-domain-cross-domain-foreign-keys">4. Matriks Integritas Kunci Asing Antar-Domain (Cross-Domain Foreign Keys)</h2>
+<p>Tabel berikut menunjukkan bagaimana entitas dari satu domain menjadi fondasi bagi domain lainnya:</p>
+<table>
+<thead>
+<tr>
+<th>Entitas Sumber</th>
+<th>Kolom Kunci Asing (FK)</th>
+<th>Entitas Target</th>
+<th>Kegunaan Bisnis</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>personnel</code></td>
+<td><code>user_id</code></td>
+<td><code>users(id)</code></td>
+<td>Prajurit dapat login ke sistem untuk membaca doktrin, cek kesiapan, pinjam buku, atau lapor gratifikasi.</td>
+</tr>
+<tr>
+<td><code>students</code></td>
+<td><code>user_id</code></td>
+<td><code>users(id)</code></td>
+<td>Serdik login ke portal E-Learning untuk mengikuti ujian, membaca materi, dan mengecek rapor.</td>
+</tr>
+<tr>
+<td><code>personnel</code></td>
+<td><code>rank_id</code></td>
+<td><code>ranks(id)</code></td>
+<td>Menstandarkan kepangkatan untuk perhitungan pemenuhan formasi jabatan TOP.</td>
+</tr>
+<tr>
+<td><code>top_positions</code></td>
+<td><code>unit_id</code></td>
+<td><code>units(id)</code></td>
+<td>Struktur formasi jabatan melekat pada hierarki satuan organisasi.</td>
+</tr>
+<tr>
+<td><code>materiels</code></td>
+<td><code>unit_id</code></td>
+<td><code>units(id)</code></td>
+<td>Akuntabilitas penanggung jawab satuan pemegang logistik dan alutsista.</td>
+</tr>
+<tr>
+<td><code>facilities</code></td>
+<td><code>unit_id</code></td>
+<td><code>units(id)</code></td>
+<td>Pemeliharaan pangkalan dan aset fisik di bawah kendali seksi/dodik terkait.</td>
+</tr>
+<tr>
+<td><code>lessons</code></td>
+<td><code>library_item_id</code></td>
+<td><code>library_items(id)</code></td>
+<td><strong>Integrasi LMS &amp; E-Pustaka</strong>: Bahan ajar di kelas langsung mengambil rujukan naskah digital ber-watermark.</td>
+</tr>
+<tr>
+<td><code>doctrines</code></td>
+<td><code>assessment_id</code></td>
+<td><code>assessments(id)</code></td>
+<td><strong>Integrasi Binsat &amp; LMS</strong>: Naskah doktrin yang diwajibkan langsung memiliki kuis evaluasi pemahaman di LMS.</td>
+</tr>
+<tr>
+<td><code>training_sessions</code></td>
+<td><code>facility_id</code></td>
+<td><code>facilities(id)</code></td>
+<td><strong>Integrasi Latihan &amp; Fasilitas</strong>: Penjadwalan latihan lapangan mengunci ketersediaan fasilitas agar tidak bentrok.</td>
+</tr>
+<tr>
+<td><code>library_loans</code></td>
+<td><code>user_id</code></td>
+<td><code>users(id)</code></td>
+<td>Prajurit dan siswa dapat meminjam buku fisik dengan akun terpadu satuan.</td>
+</tr>
+<tr>
+<td><code>complaints</code></td>
+<td>-</td>
+<td><code>users(id)</code> (opsional)</td>
+<td>Pengaduan dapat disampaikan oleh publik (anonim) atau prajurit internal terautentikasi.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="5-standar-normalisasi-optimasi-kinerja">5. Standar Normalisasi &amp; Optimasi Kinerja</h2>
+<ol>
+<li><strong>Bentuk Normalisasi</strong>: Skema didesain pada <strong>Third Normal Form (3NF)</strong> untuk mencegah redundansi data dan inkonsistensi saat operasi <em>update</em> atau <em>delete</em>.</li>
+<li><strong>Indeks Performa (Database Indexing)</strong>:</li>
+<li>Index pada seluruh kolom <em>Foreign Key</em> (<code>*_id</code>).</li>
+<li>Unique Index pada kolom identitas utama: <code>users(email, username)</code>, <code>personnel(nrp)</code>, <code>students(nosik)</code>, <code>materiels(code)</code>, <code>complaints(ticket_number)</code>.</li>
+<li>Composite Index untuk kueri frekuensi tinggi:<ul>
+<li><code>daily_readiness(unit_id, date)</code></li>
+<li><code>exam_attempts(assessment_id, student_id)</code></li>
+<li><code>library_loans(user_id, status)</code></li>
+<li><code>complaints(status, sla_due_at)</code></li>
+</ul>
+</li>
+<li><strong>Penyimpanan Data Aman (Security At-Rest)</strong>:</li>
+<li>Kolom rahasia di tabel <code>personnel</code> dan <code>survey_responses</code> menggunakan <em>Laravel Eloquent Encrypted Cast</em> (AES-256-CBC).</li>
+<li>Seluruh berkas PDF, naskah doktrin berklasifikasi terbatas, dan e-book disimpan di direktori <code>storage/app/private/</code> yang tidak dapat diakses langsung via URL web, melainkan hanya melalui <em>Signed URL Controller</em> dengan verifikasi hak akses dan watermark dinamis.</li>
+</ol>
+      </div>
+    </div>
+    <div class="page-break"></div>
+    
+
+    <div class="document-part">
+      <div class="part-header-band">
+        <span class="part-tag">SIPANDU-WBK · DOKUMENTASI PROYEK</span>
+        <h1 class="part-title">BAGIAN IV: KERANGKA KERJA TEKNIS</h1>
+      </div>
+      <div class="part-content">
+        <h1 id="kerangka-kerja-teknis-sipandu-wbk-rindam">KERANGKA KERJA TEKNIS — SIPANDU-WBK RINDAM</h1>
+<hr />
+<h2 id="1-technology-stack">1. Technology Stack</h2>
+<table>
+<thead>
+<tr>
+<th>Lapisan</th>
+<th>Teknologi</th>
+<th>Alasan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bahasa</td>
+<td><strong>PHP 8.3+</strong></td>
+<td>Performa &amp; fitur modern (enum, readonly, typed property)</td>
+</tr>
+<tr>
+<td>Framework</td>
+<td><strong>Laravel (versi stabil terbaru, 12.x/13.x)</strong></td>
+<td>Ekosistem matang, keamanan bawaan, produktif</td>
+</tr>
+<tr>
+<td>Panel Admin</td>
+<td><strong>Filament</strong> (v4)</td>
+<td>CRUD, tabel, form, filter, dashboard widget, MFA — hemat ±40% waktu pengembangan back-office</td>
+</tr>
+<tr>
+<td>UI Interaktif</td>
+<td><strong>Livewire 3 + Alpine.js</strong></td>
+<td>Interaktif tanpa SPA terpisah; satu bahasa (PHP)</td>
+</tr>
+<tr>
+<td>Styling</td>
+<td>Tailwind CSS (bawaan Laravel/Filament) + tema kustom</td>
+<td>Konsisten dengan Filament</td>
+</tr>
+<tr>
+<td>Grafik</td>
+<td>ApexCharts / Chart.js</td>
+<td>Gauge, radar, tren Indeks Binsat</td>
+</tr>
+<tr>
+<td>PDF Reader</td>
+<td><strong>PDF.js</strong></td>
+<td>Baca e-book tanpa unduh + watermark</td>
+</tr>
+<tr>
+<td>Database</td>
+<td><strong>MySQL 8 / MariaDB 10.6+</strong></td>
+<td>Tersedia di Laragon &amp; server produksi</td>
+</tr>
+<tr>
+<td>Cache/Queue</td>
+<td>Redis (produksi), <code>database</code> driver (lokal)</td>
+<td>Antrean email, notifikasi, ekspor laporan</td>
+</tr>
+<tr>
+<td>Pencarian</td>
+<td>Laravel Scout (driver <code>database</code>; opsi Meilisearch)</td>
+<td>Pencarian katalog &amp; naskah</td>
+</tr>
+<tr>
+<td>Build Tool</td>
+<td>Vite</td>
+<td>Bawaan Laravel</td>
+</tr>
+<tr>
+<td>Testing</td>
+<td><strong>Pest</strong> + Laravel Dusk (opsional)</td>
+<td>Unit, feature, browser test</td>
+</tr>
+<tr>
+<td>Dev Env</td>
+<td><strong>Laragon</strong> (Windows)</td>
+<td>Sudah digunakan</td>
+</tr>
+<tr>
+<td>Server</td>
+<td>Nginx + PHP-FPM + Supervisor, Ubuntu LTS</td>
+<td>Standar produksi</td>
+</tr>
+<tr>
+<td>VCS</td>
+<td>Git + GitHub/GitLab (repositori <strong>private</strong>)</td>
+<td>Kolaborasi &amp; CI</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="2-daftar-package">2. Daftar Package</h2>
+<h3 id="21-production">2.1 Production</h3>
+<table>
+<thead>
+<tr>
+<th>Package</th>
+<th>Fungsi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>filament/filament</code></td>
+<td>Panel staf/admin</td>
+</tr>
+<tr>
+<td><code>bezhansalleh/filament-shield</code></td>
+<td>UI manajemen role &amp; permission untuk Filament</td>
+</tr>
+<tr>
+<td><code>spatie/laravel-permission</code></td>
+<td>RBAC</td>
+</tr>
+<tr>
+<td><code>spatie/laravel-activitylog</code></td>
+<td>Audit log (bukti pengawasan ZI)</td>
+</tr>
+<tr>
+<td><code>spatie/laravel-medialibrary</code></td>
+<td>Manajemen file (foto, dokumen, e-book)</td>
+</tr>
+<tr>
+<td><code>spatie/laravel-backup</code></td>
+<td>Backup database + file terjadwal</td>
+</tr>
+<tr>
+<td><code>maatwebsite/excel</code></td>
+<td>Impor/ekspor Excel (impor data personel awal, laporan)</td>
+</tr>
+<tr>
+<td><code>barryvdh/laravel-dompdf</code></td>
+<td>Cetak laporan, rapor, sertifikat PDF</td>
+</tr>
+<tr>
+<td><code>simplesoftwareio/simple-qrcode</code></td>
+<td>QR materiil, kartu anggota, verifikasi sertifikat</td>
+</tr>
+<tr>
+<td><code>laravel/sanctum</code></td>
+<td>Autentikasi API (PWA/mobile di masa depan)</td>
+</tr>
+<tr>
+<td><code>laravel/scout</code></td>
+<td>Pencarian <em>full-text</em></td>
+</tr>
+<tr>
+<td><code>mews/captcha</code> atau Cloudflare Turnstile</td>
+<td>CAPTCHA form publik</td>
+</tr>
+</tbody>
+</table>
+<h3 id="22-development">2.2 Development</h3>
+<table>
+<thead>
+<tr>
+<th>Package</th>
+<th>Fungsi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pestphp/pest</code> + <code>pestphp/pest-plugin-laravel</code></td>
+<td>Testing</td>
+</tr>
+<tr>
+<td><code>laravel/pint</code></td>
+<td>Formatter PSR-12</td>
+</tr>
+<tr>
+<td><code>larastan/larastan</code></td>
+<td>Analisis statis</td>
+</tr>
+<tr>
+<td><code>barryvdh/laravel-debugbar</code></td>
+<td>Debug lokal</td>
+</tr>
+<tr>
+<td><code>laravel/telescope</code></td>
+<td>Monitoring request/query lokal &amp; staging</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-struktur-folder-proyek">3. Struktur Folder Proyek</h2>
+<pre><code>rindam/
+├── app/
+│   ├── Enums/                    # Condition (B/RR/RB), ComplaintStatus, Classification, dll.
+│   ├── Filament/
+│   │   ├── Pages/                # Dashboard Pimpinan, Pengaturan Indeks
+│   │   ├── Widgets/              # ReadinessGauge, ComponentRadar, ComplaintStats
+│   │   └── Resources/
+│   │       ├── Binsat/           # Unit, TopPosition, Personnel, Materiel, Facility,
+│   │       │                     # TrainingProgram, Doctrine ...
+│   │       ├── Education/        # EduProgram, Classroom, Student, Course
+│   │       ├── Library/          # LibraryItem, LibraryCopy, Loan
+│   │       ├── Wbk/              # Post, Complaint, Gratification, Survey
+│   │       └── System/           # User, Setting
+│   ├── Http/
+│   │   ├── Controllers/          # Portal, Reader (signed URL), Certificate verify
+│   │   ├── Middleware/
+│   │   └── Requests/             # Form Request (validasi)
+│   ├── Livewire/
+│   │   ├── Portal/               # ComplaintForm, TrackTicket, SurveyForm
+│   │   ├── Lms/                  # StudentDashboard, CoursePage, ExamRunner, AssignmentUpload
+│   │   └── Library/              # Catalog, Reader
+│   ├── Models/
+│   │   ├── Binsat/  ├── Education/  ├── Library/  ├── Wbk/
+│   │   └── User.php
+│   ├── Policies/                 # Otorisasi per model
+│   ├── Services/                 # Logika bisnis
+│   │   ├── Binsat/ReadinessIndexService.php
+│   │   ├── Education/GradingService.php
+│   │   ├── Education/ExamService.php
+│   │   ├── Library/CirculationService.php
+│   │   └── Wbk/ComplaintService.php
+│   ├── Exports/  ├── Imports/    # Excel
+│   ├── Jobs/                     # GenerateReport, SendDueReminder, RecalculateIndex
+│   ├── Notifications/
+│   └── Observers/
+├── config/
+├── database/
+│   ├── migrations/               # Prefix per modul: 2026_10_19_100000_create_units_table
+│   ├── factories/
+│   └── seeders/                  # RoleSeeder, RankSeeder, DemoDataSeeder
+├── docs/                         # Dokumentasi proyek (folder ini)
+├── resources/
+│   ├── css/  ├── js/
+│   └── views/
+│       ├── components/           # Blade components (card, badge, stat)
+│       ├── layouts/              # portal, lms
+│       ├── portal/  ├── lms/  ├── library/
+│       └── pdf/                  # Template laporan, rapor, sertifikat
+├── routes/
+│   ├── web.php                   # Portal publik
+│   ├── lms.php                   # /belajar
+│   ├── library.php               # /pustaka
+│   └── api.php
+├── storage/app/private/          # E-book &amp; dokumen (TIDAK publik)
+└── tests/
+    ├── Feature/{Binsat,Education,Library,Wbk}/
+    └── Unit/
+</code></pre>
+<hr />
+<h2 id="4-standar-pengkodean">4. Standar Pengkodean</h2>
+<table>
+<thead>
+<tr>
+<th>Aspek</th>
+<th>Aturan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bahasa kode</td>
+<td><strong>Inggris</strong> (class, method, tabel, kolom) — mis. <code>Personnel</code>, <code>materiels</code>, <code>due_at</code></td>
+</tr>
+<tr>
+<td>Bahasa UI</td>
+<td><strong>Indonesia</strong> (label, pesan, menu) via file <code>lang/id</code></td>
+</tr>
+<tr>
+<td>Style</td>
+<td>PSR-12, dijalankan <code>vendor/bin/pint</code> sebelum commit</td>
+</tr>
+<tr>
+<td>Tabel</td>
+<td><code>snake_case</code> jamak (<code>training_sessions</code>), FK <code>{model}_id</code></td>
+</tr>
+<tr>
+<td>Validasi</td>
+<td>Wajib menggunakan Form Request / validasi Filament, tidak di controller</td>
+</tr>
+<tr>
+<td>Logika bisnis</td>
+<td>Di <code>Services/</code>, bukan di controller/Livewire</td>
+</tr>
+<tr>
+<td>Otorisasi</td>
+<td>Setiap model memiliki <code>Policy</code>; tidak ada pengecekan role <em>hardcoded</em> di view</td>
+</tr>
+<tr>
+<td>Status/Konstanta</td>
+<td>Gunakan PHP <code>Enum</code></td>
+</tr>
+<tr>
+<td>Query</td>
+<td>Eager loading (<code>with()</code>) untuk cegah N+1; index pada kolom pencarian/FK</td>
+</tr>
+<tr>
+<td>File</td>
+<td>Disimpan di disk <code>private</code>, diakses via <em>signed URL</em></td>
+</tr>
+<tr>
+<td>Data sensitif</td>
+<td>Cast <code>encrypted</code> di model</td>
+</tr>
+<tr>
+<td>Soft Delete</td>
+<td>Aktif untuk data master (personel, materiil, naskah)</td>
+</tr>
+<tr>
+<td>Audit</td>
+<td>Trait <code>LogsActivity</code> di semua model bisnis</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="5-alur-kerja-git">5. Alur Kerja Git</h2>
+<div class="mermaid-box"><pre class="mermaid">
+gitGraph
+    commit id: "init"
+    branch develop
+    checkout develop
+    commit id: "setup core"
+    branch feature/binsat-personnel
+    checkout feature/binsat-personnel
+    commit id: "personnel CRUD"
+    commit id: "readiness"
+    checkout develop
+    merge feature/binsat-personnel
+    branch feature/lms-exam
+    checkout feature/lms-exam
+    commit id: "exam runner"
+    checkout develop
+    merge feature/lms-exam
+    checkout main
+    merge develop tag: "v1.0.0"
+</pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Branch</th>
+<th>Fungsi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>main</code></td>
+<td>Kode produksi (hanya dari <code>develop</code> atau <code>hotfix/*</code>)</td>
+</tr>
+<tr>
+<td><code>develop</code></td>
+<td>Integrasi, otomatis deploy ke <strong>staging</strong></td>
+</tr>
+<tr>
+<td><code>feature/&lt;modul&gt;-&lt;fitur&gt;</code></td>
+<td>Pengembangan fitur</td>
+</tr>
+<tr>
+<td><code>hotfix/&lt;deskripsi&gt;</code></td>
+<td>Perbaikan darurat produksi</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Konvensi commit</strong> (<em>Conventional Commits</em>):</p>
+<pre><code>feat(binsat): tambah perhitungan indeks materiil
+fix(lms): perbaiki timer ujian saat reload
+docs: perbarui ERD e-pustaka
+test(wbk): tambah test SLA pengaduan
+</code></pre>
+<p><strong>Pull Request</strong>: minimal 1 reviewer, lulus Pint + Larastan + Pest (CI GitHub Actions/GitLab CI).</p>
+<hr />
+<h2 id="6-definition-of-done-dod">6. Definition of Done (DoD)</h2>
+<p>Sebuah fitur dinyatakan <strong>selesai</strong> jika:<br />
+- [ ] Sesuai <em>acceptance criteria</em> pada backlog<br />
+- [ ] Policy/otorisasi diterapkan &amp; diuji<br />
+- [ ] Validasi input lengkap, pesan error berbahasa Indonesia<br />
+- [ ] Feature test untuk alur utama lulus<br />
+- [ ] Lolos Pint &amp; Larastan<br />
+- [ ] Responsif (dicek di lebar 375px &amp; 1366px)<br />
+- [ ] Aktivitas tercatat di audit log<br />
+- [ ] Sudah di-<em>review</em> dan di-merge ke <code>develop</code><br />
+- [ ] Didemokan di Sprint Review</p>
+<hr />
+<h2 id="7-setup-lingkungan-pengembangan-laragon">7. Setup Lingkungan Pengembangan (Laragon)</h2>
+<pre><code class="language-powershell"># 1. Buat proyek (di d:\laragon\rindam)
+composer create-project laravel/laravel .
+
+# 2. Atur .env
+#    APP_NAME=&quot;SIPANDU-WBK&quot;  APP_LOCALE=id  APP_TIMEZONE=Asia/Jakarta
+#    DB_CONNECTION=mysql  DB_DATABASE=rindam  DB_USERNAME=root  DB_PASSWORD=
+
+# 3. Package inti
+composer require filament/filament spatie/laravel-permission spatie/laravel-activitylog `
+  spatie/laravel-medialibrary spatie/laravel-backup maatwebsite/excel `
+  barryvdh/laravel-dompdf simplesoftwareio/simple-qrcode laravel/scout
+composer require bezhansalleh/filament-shield
+
+# 4. Package development
+composer require --dev pestphp/pest pestphp/pest-plugin-laravel larastan/larastan barryvdh/laravel-debugbar
+
+# 5. Instalasi
+php artisan filament:install --panels      # ID panel: panel
+php artisan vendor:publish --provider=&quot;Spatie\Permission\PermissionServiceProvider&quot;
+php artisan vendor:publish --provider=&quot;Spatie\Activitylog\ActivitylogServiceProvider&quot; --tag=&quot;activitylog-migrations&quot;
+php artisan migrate
+php artisan shield:install panel
+php artisan make:filament-user
+
+# 6. Frontend
+npm install
+npm run dev
+</code></pre>
+<p>Akses lokal: <code>http://rindam.test</code> (Portal) · <code>http://rindam.test/panel</code> (Panel Staf) · <code>http://rindam.test/belajar</code> (E-Learning)</p>
+<hr />
+<h2 id="8-strategi-pengujian-teknis">8. Strategi Pengujian Teknis</h2>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Cakupan</th>
+<th>Target</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Unit</td>
+<td><code>ReadinessIndexService</code>, <code>GradingService</code>, perhitungan denda, SLA</td>
+<td>100% service kritis</td>
+</tr>
+<tr>
+<td>Feature</td>
+<td>CRUD + policy per resource, alur pengaduan, alur ujian, sirkulasi</td>
+<td>Alur utama tiap modul</td>
+</tr>
+<tr>
+<td>Browser (opsional)</td>
+<td>Ujian daring end-to-end</td>
+<td>Skenario ujian</td>
+</tr>
+<tr>
+<td>Beban</td>
+<td>200 user ujian serentak (k6)</td>
+<td>p95 &lt; 2 detik</td>
+</tr>
+<tr>
+<td>Keamanan</td>
+<td>OWASP ZAP baseline scan</td>
+<td>0 temuan High</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="9-operasional-pemeliharaan">9. Operasional &amp; Pemeliharaan</h2>
+<table>
+<thead>
+<tr>
+<th>Tugas</th>
+<th>Frekuensi</th>
+<th>Mekanisme</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Backup database + file</td>
+<td>Harian 01.00 WIB</td>
+<td><code>spatie/laravel-backup</code> via scheduler</td>
+</tr>
+<tr>
+<td>Hitung ulang Indeks Binsat</td>
+<td>Harian 02.00 WIB + saat data berubah</td>
+<td>Job <code>RecalculateIndex</code></td>
+</tr>
+<tr>
+<td>Pengingat jatuh tempo pinjaman</td>
+<td>Harian 07.00 WIB</td>
+<td>Job <code>SendDueReminder</code></td>
+</tr>
+<tr>
+<td>Peringatan SLA pengaduan</td>
+<td>Setiap jam</td>
+<td>Scheduler</td>
+</tr>
+<tr>
+<td>Pembersihan log lama</td>
+<td>Bulanan</td>
+<td><code>activitylog:clean</code></td>
+</tr>
+<tr>
+<td>Update keamanan dependensi</td>
+<td>Bulanan</td>
+<td><code>composer audit</code></td>
+</tr>
+<tr>
+<td>Uji restore backup</td>
+<td>Bulanan</td>
+<td>Manual oleh admin</td>
+</tr>
+</tbody>
+</table>
+      </div>
+    </div>
+    <div class="page-break"></div>
+    
+
+    <div class="document-part">
+      <div class="part-header-band">
+        <span class="part-tag">SIPANDU-WBK · DOKUMENTASI PROYEK</span>
+        <h1 class="part-title">BAGIAN V: RENCANA KERJA & TIMELINE 2 BULAN</h1>
+      </div>
+      <div class="part-content">
+        <h1 id="timeline-proyek-2-bulan-sipandu-wbk-rindam">TIMELINE PROYEK 2 BULAN — SIPANDU-WBK RINDAM</h1>
+<p><strong>Periode</strong>: Senin, 5 Oktober 2026 – Jumat, 27 November 2026 (8 minggu / 40 hari kerja)<br />
+<strong>Pendampingan opsional</strong>: 30 November – 4 Desember 2026<br />
+<strong>Metode</strong>: Scrum, sprint 1 minggu (Senin–Jumat), demo setiap Jumat</p>
+<hr />
+<h2 id="1-tim-proyek-rekomendasi">1. Tim Proyek (Rekomendasi)</h2>
+<table>
+<thead>
+<tr>
+<th>Peran</th>
+<th style="text-align: center;">Jumlah</th>
+<th>Tanggung Jawab</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Product Owner</strong> (pejabat Rindam, mis. Kasi/Kabag terkait)</td>
+<td style="text-align: center;">1</td>
+<td>Menentukan prioritas, menyetujui hasil sprint, penanggung jawab UAT</td>
+</tr>
+<tr>
+<td><strong>Project Manager / Scrum Master</strong></td>
+<td style="text-align: center;">1</td>
+<td>Jadwal, koordinasi, laporan kemajuan, hilangkan hambatan</td>
+</tr>
+<tr>
+<td><strong>System Analyst / Peneliti</strong></td>
+<td style="text-align: center;">1</td>
+<td>Analisis kebutuhan, dokumentasi, instrumen penelitian</td>
+</tr>
+<tr>
+<td><strong>Backend Developer</strong> (Laravel)</td>
+<td style="text-align: center;">2</td>
+<td>Database, logika bisnis, Filament, API</td>
+</tr>
+<tr>
+<td><strong>Frontend / UI Developer</strong></td>
+<td style="text-align: center;">1</td>
+<td>Desain UI, Portal, LMS, Reader (Livewire/Blade)</td>
+</tr>
+<tr>
+<td><strong>QA / Tester</strong></td>
+<td style="text-align: center;">1</td>
+<td>Skenario uji, black-box, regresi</td>
+</tr>
+<tr>
+<td><strong>Narahubung per seksi</strong> (Pers, Log, Ops/Diklat, Perpus, Tim ZI)</td>
+<td style="text-align: center;">5</td>
+<td>Sumber data &amp; penguji UAT</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-note"><b>CATATAN:</b><p><br />
+Jika dikerjakan <strong>1–2 developer</strong>, pertahankan urutan sprint namun turunkan fitur berprioritas <em>Could</em> (forum, PWA, WhatsApp gateway) ke fase lanjutan dan manfaatkan Filament semaksimal mungkin.</p></div>
+<hr />
+<h2 id="2-gantt-chart">2. Gantt Chart</h2>
+<div class="mermaid-box"><pre class="mermaid">
+gantt
+    title Timeline SIPANDU-WBK Rindam - Okt s.d. Nov 2026
+    dateFormat YYYY-MM-DD
+    axisFormat %d %b
+    excludes weekends
+
+    section Fase 1 Analisis
+    Kick-off dan observasi           :a1, 2026-10-05, 2d
+    Wawancara dan studi dokumen      :a2, after a1, 2d
+    SRS dan Product Backlog          :milestone, m1, 2026-10-09, 0d
+    Penyusunan SRS                   :a3, 2026-10-09, 1d
+
+    section Fase 2 Desain
+    Arsitektur dan ERD final         :d1, 2026-10-12, 2d
+    UI UX mockup Figma               :d2, 2026-10-12, 4d
+    Setup proyek, repo, staging      :d3, 2026-10-14, 2d
+    Persetujuan desain               :milestone, m2, 2026-10-16, 0d
+
+    section Fase 3 Development
+    Sprint 1 Core dan Portal WBK     :s1, 2026-10-19, 5d
+    Sprint 2 Organisasi Personel Materiil :s2, 2026-10-26, 5d
+    Sprint 3 Fasilitas Latihan Doktrin Dashboard :s3, 2026-11-02, 5d
+    Sprint 4 E-Learning              :s4, 2026-11-09, 5d
+    Sprint 5 E-Pustaka dan WBK lanjutan :s5, 2026-11-16, 5d
+    Feature Freeze                   :milestone, m3, 2026-11-20, 0d
+
+    section Fase 4 Uji dan Rilis
+    Integration dan performance test :t1, 2026-11-23, 2d
+    UAT dan perbaikan                :t2, 2026-11-23, 3d
+    Migrasi data dan deployment      :t3, 2026-11-25, 2d
+    Pelatihan pengguna               :t4, 2026-11-25, 2d
+    Go-Live dan serah terima         :milestone, m4, 2026-11-27, 0d
+
+    section Dokumentasi Penelitian
+    BAB I-III                        :r1, 2026-10-05, 10d
+    BAB IV perancangan               :r2, 2026-10-12, 25d
+    BAB V pengujian SUS ISO 25010    :r3, 2026-11-23, 5d
+
+    section Pasca Go-Live
+    Hypercare opsional               :h1, 2026-11-30, 5d
+</pre></div>
+
+<hr />
+<h2 id="3-rincian-kegiatan-per-minggu">3. Rincian Kegiatan Per Minggu</h2>
+<h3 id="minggu-1-analisis-kebutuhan-59-okt-2026">🔍 MINGGU 1 — Analisis Kebutuhan (5–9 Okt 2026)</h3>
+<table>
+<thead>
+<tr>
+<th>Hari</th>
+<th>Kegiatan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sen</td>
+<td>Kick-off meeting dengan pimpinan &amp; narahubung; penetapan Product Owner, ruang lingkup, jalur komunikasi</td>
+</tr>
+<tr>
+<td>Sel</td>
+<td>Observasi proses Binsat di seksi Pers, Log, Ops/Diklat; observasi perpustakaan &amp; Dodik</td>
+</tr>
+<tr>
+<td>Rab</td>
+<td>Wawancara pejabat, gadik, pustakawan, Tim ZI; kumpulkan format laporan, TOP/DSPP, contoh hanjar</td>
+</tr>
+<tr>
+<td>Kam</td>
+<td>Studi dokumen; kuesioner pra-implementasi; validasi rumus Indeks Binsat dengan pejabat</td>
+</tr>
+<tr>
+<td>Jum</td>
+<td>Penyusunan SRS &amp; Product Backlog (prioritas MoSCoW); presentasi hasil analisis</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Deliverable</strong>: Dokumen SRS · Product Backlog · Data sampel (Excel) · BAB I–II draf<br />
+<strong>Milestone M1</strong>: ✅ SRS &amp; Backlog disetujui Product Owner</p>
+<hr />
+<h3 id="minggu-2-desain-sistem-setup-1216-okt-2026">🎨 MINGGU 2 — Desain Sistem &amp; Setup (12–16 Okt 2026)</h3>
+<table>
+<thead>
+<tr>
+<th>Hari</th>
+<th>Kegiatan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sen</td>
+<td>Finalisasi arsitektur &amp; ERD; mulai mockup Figma (Portal &amp; Dashboard)</td>
+</tr>
+<tr>
+<td>Sel</td>
+<td>Data dictionary; mockup Form Binsat &amp; Panel Staf</td>
+</tr>
+<tr>
+<td>Rab</td>
+<td>Setup repo Git, proyek Laravel, Filament, CI, server staging; mockup LMS &amp; Reader</td>
+</tr>
+<tr>
+<td>Kam</td>
+<td>Seeder data master (pangkat, satuan, role); design system (warna, tipografi, komponen)</td>
+</tr>
+<tr>
+<td>Jum</td>
+<td>Review desain bersama Product Owner; revisi; Sprint 1 Planning</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Deliverable</strong>: ERD final · Mockup UI · Proyek berjalan di staging · BAB III draf<br />
+<strong>Milestone M2</strong>: ✅ Desain disetujui</p>
+<hr />
+<h3 id="minggu-3-sprint-1-core-sistem-portal-wbk-1923-okt-2026">⚙️ MINGGU 3 — Sprint 1: Core Sistem + Portal WBK (19–23 Okt 2026)</h3>
+<table>
+<thead>
+<tr>
+<th>Backlog</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Autentikasi</td>
+<td>Login, logout, reset password, 2FA, penguncian akun</td>
+</tr>
+<tr>
+<td>RBAC</td>
+<td>Role &amp; permission (Filament Shield), pembatasan data per satuan</td>
+</tr>
+<tr>
+<td>Audit Log</td>
+<td>Activity log semua model, halaman log</td>
+</tr>
+<tr>
+<td>Master Data</td>
+<td>Satuan (pohon), pangkat, korps, kategori</td>
+</tr>
+<tr>
+<td>Portal WBK</td>
+<td>Beranda, profil, berita &amp; agenda, standar &amp; maklumat pelayanan, informasi publik, galeri, FAQ</td>
+</tr>
+<tr>
+<td>Pengaturan</td>
+<td>Identitas satuan, logo, kontak</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Demo Jumat</strong>: Portal publik dapat diakses, admin dapat login &amp; mengelola konten<br />
+<strong>Bukti ZI</strong>: Portal ZI aktif sejak minggu ke-3 (bisa langsung dipakai sebagai bukti dukung)</p>
+<hr />
+<h3 id="minggu-4-sprint-2-binsat-organisasi-personel-materiil-2630-okt-2026">🪖 MINGGU 4 — Sprint 2: Binsat Organisasi, Personel, Materiil (26–30 Okt 2026)</h3>
+<table>
+<thead>
+<tr>
+<th>Backlog</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Organisasi</td>
+<td>TOP/DSPP, struktur riil, gap analysis, bagan organisasi</td>
+</tr>
+<tr>
+<td>Personel</td>
+<td>Data personel (impor Excel), kekuatan DSPP vs nyata, pemenuhan jabatan, riwayat, kesiapan harian, moril</td>
+</tr>
+<tr>
+<td>Materiil</td>
+<td>Inventaris, kondisi B/RR/RB, jadwal harwat, mutasi + approval, label QR</td>
+</tr>
+<tr>
+<td>Laporan</td>
+<td>Ekspor PDF/Excel ketiga komponen</td>
+</tr>
+<tr>
+<td>Uji</td>
+<td>Feature test &amp; black-box Sprint 2</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Demo Jumat</strong>: Operator Pers &amp; Log menginput data nyata; laporan kekuatan &amp; kondisi materiil keluar otomatis</p>
+<hr />
+<h3 id="minggu-5-sprint-3-binsat-fasilitas-latihan-doktrin-dashboard-26-nov-2026">🏗️ MINGGU 5 — Sprint 3: Binsat Fasilitas, Latihan, Doktrin + Dashboard (2–6 Nov 2026)</h3>
+<table>
+<thead>
+<tr>
+<th>Backlog</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fasilitas</td>
+<td>Aset fasilitas, rumah dinas &amp; penghuni, tiket perbaikan, booking ruang/lapangan</td>
+</tr>
+<tr>
+<td>Latihan</td>
+<td>Program tahunan/bulanan, jadwal &amp; peserta, hasil &amp; evaluasi</td>
+</tr>
+<tr>
+<td>Doktrin</td>
+<td>Repositori naskah + versi + status berlaku, sosialisasi, bukti baca</td>
+</tr>
+<tr>
+<td>Indeks Binsat</td>
+<td><code>ReadinessIndexService</code>, konfigurasi bobot, job hitung ulang</td>
+</tr>
+<tr>
+<td>Dashboard Pimpinan</td>
+<td>Gauge indeks, radar 6 komponen, tren, titik lemah</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Demo Jumat</strong>: Dashboard Pimpinan menampilkan Indeks Kesiapan Binsat dari data riil<br />
+<strong>Milestone (internal)</strong>: 🎯 SIM Binsat 6 komponen lengkap</p>
+<hr />
+<h3 id="minggu-6-sprint-4-e-learning-913-nov-2026">🎓 MINGGU 6 — Sprint 4: E-Learning (9–13 Nov 2026)</h3>
+<table>
+<thead>
+<tr>
+<th>Backlog</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Data Pendidikan</td>
+<td>Program pendidikan, angkatan, kelas/peleton, siswa (impor Excel), gadik</td>
+</tr>
+<tr>
+<td>Mata Pelajaran &amp; Materi</td>
+<td>PDF, video, tautan; pembukaan bertahap; progres siswa</td>
+</tr>
+<tr>
+<td>Bank Soal</td>
+<td>PG, benar/salah, esai; impor soal dari Excel</td>
+</tr>
+<tr>
+<td>Kuis &amp; Ujian</td>
+<td>Token, timer, acak, autosave, penilaian otomatis, koreksi esai</td>
+</tr>
+<tr>
+<td>Tugas &amp; Presensi</td>
+<td>Unggah tugas, penilaian, presensi daring</td>
+</tr>
+<tr>
+<td>Nilai</td>
+<td>Bobot nilai, rapor, sertifikat QR</td>
+</tr>
+<tr>
+<td>Integrasi</td>
+<td>Tes pemahaman Doktrin memakai mesin kuis LMS</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Demo Jumat</strong>: Gadik membuat kelas &amp; ujian; siswa mengerjakan ujian dari ponsel; nilai otomatis</p>
+<hr />
+<h3 id="minggu-7-sprint-5-e-pustaka-wbk-lanjutan-integrasi-1620-nov-2026">📚 MINGGU 7 — Sprint 5: E-Pustaka + WBK Lanjutan + Integrasi (16–20 Nov 2026)</h3>
+<table>
+<thead>
+<tr>
+<th>Backlog</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E-Pustaka</td>
+<td>Katalog, eksemplar &amp; barcode, reader PDF.js + watermark, sirkulasi, denda/sanksi, kartu anggota, statistik, usulan buku</td>
+</tr>
+<tr>
+<td>Integrasi LMS</td>
+<td>Hanjar di E-Pustaka dapat dipasang sebagai materi kelas</td>
+</tr>
+<tr>
+<td>Pengaduan / WBS</td>
+<td>Form anonim, tiket, lacak, verifikasi, disposisi, SLA</td>
+</tr>
+<tr>
+<td>Gratifikasi</td>
+<td>Form pelaporan &amp; pengelolaan</td>
+</tr>
+<tr>
+<td>Survei</td>
+<td>SKM, IPAK, IPKP + tampilan hasil publik</td>
+</tr>
+<tr>
+<td>Notifikasi</td>
+<td>In-app &amp; email (pengaduan baru, tenggat tugas, jatuh tempo pinjaman)</td>
+</tr>
+<tr>
+<td>Hardening</td>
+<td>Rate limit, CAPTCHA, signed URL, review policy</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Demo Jumat</strong>: Seluruh modul terintegrasi<br />
+<strong>Milestone M3</strong>: ⛔ <strong>Feature Freeze</strong> — setelah ini hanya perbaikan bug</p>
+<hr />
+<h3 id="minggu-8-pengujian-uat-deployment-serah-terima-2327-nov-2026">✅ MINGGU 8 — Pengujian, UAT, Deployment &amp; Serah Terima (23–27 Nov 2026)</h3>
+<table>
+<thead>
+<tr>
+<th>Hari</th>
+<th>Kegiatan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sen</td>
+<td>Integration test; performance test (200 user ujian serentak); OWASP ZAP scan; UAT sesi 1 (Binsat)</td>
+</tr>
+<tr>
+<td>Sel</td>
+<td>UAT sesi 2 (LMS &amp; Pustaka) &amp; sesi 3 (Portal &amp; WBK); perbaikan bug prioritas tinggi</td>
+</tr>
+<tr>
+<td>Rab</td>
+<td>Setup server produksi; migrasi data riil; backup terjadwal; pelatihan Operator Binsat &amp; Tim ZI</td>
+</tr>
+<tr>
+<td>Kam</td>
+<td>Pelatihan Gadik, Siswa perwakilan, Pustakawan; pengisian kuesioner SUS &amp; ISO 25010</td>
+</tr>
+<tr>
+<td>Jum</td>
+<td><strong>Go-Live</strong>; serah terima (kode sumber, kredensial, dokumentasi, manual); penandatanganan BA UAT</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Deliverable</strong>: Aplikasi produksi · Laporan pengujian · BA UAT · Manual pengguna (per role) · Manual admin &amp; deployment · Video tutorial singkat · Hasil SUS &amp; ISO 25010 (BAB V)<br />
+<strong>Milestone M4</strong>: 🚀 <strong>Go-Live &amp; Serah Terima</strong></p>
+<hr />
+<h3 id="opsional-minggu-9-hypercare-30-nov-4-des-2026">🛟 (OPSIONAL) MINGGU 9 — Hypercare (30 Nov – 4 Des 2026)</h3>
+<p>Pendampingan harian, perbaikan bug pasca go-live, penyesuaian kecil, pemantauan kinerja server, finalisasi dokumen penelitian.</p>
+<hr />
+<h2 id="4-ringkasan-milestone">4. Ringkasan Milestone</h2>
+<table>
+<thead>
+<tr>
+<th>Kode</th>
+<th>Milestone</th>
+<th>Tanggal</th>
+<th>Kriteria Penerimaan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M1</td>
+<td>SRS &amp; Backlog disetujui</td>
+<td>9 Okt 2026</td>
+<td>Ditandatangani Product Owner</td>
+</tr>
+<tr>
+<td>M2</td>
+<td>Desain disetujui</td>
+<td>16 Okt 2026</td>
+<td>Mockup &amp; ERD disetujui, staging aktif</td>
+</tr>
+<tr>
+<td>M2.5</td>
+<td>Portal WBK online (staging)</td>
+<td>23 Okt 2026</td>
+<td>Konten ZI dapat dikelola</td>
+</tr>
+<tr>
+<td>M2.7</td>
+<td>SIM Binsat lengkap</td>
+<td>6 Nov 2026</td>
+<td>Indeks Binsat tampil dari data riil</td>
+</tr>
+<tr>
+<td>M3</td>
+<td>Feature Freeze</td>
+<td>20 Nov 2026</td>
+<td>Semua backlog <em>Must</em> selesai</td>
+</tr>
+<tr>
+<td>M4</td>
+<td>Go-Live &amp; Serah Terima</td>
+<td>27 Nov 2026</td>
+<td>BA UAT ditandatangani, black-box ≥ 95%</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="5-seremoni-scrum-mingguan">5. Seremoni Scrum Mingguan</h2>
+<table>
+<thead>
+<tr>
+<th>Seremoni</th>
+<th>Waktu</th>
+<th>Durasi</th>
+<th>Peserta</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sprint Planning</td>
+<td>Senin 08.00</td>
+<td>1 jam</td>
+<td>Tim + Product Owner</td>
+</tr>
+<tr>
+<td>Daily Scrum</td>
+<td>Setiap hari 08.00 (Sel–Jum)</td>
+<td>15 menit</td>
+<td>Tim</td>
+</tr>
+<tr>
+<td>Sprint Review (Demo)</td>
+<td>Jumat 13.30</td>
+<td>1 jam</td>
+<td>Tim + Product Owner + narahubung</td>
+</tr>
+<tr>
+<td>Retrospective</td>
+<td>Jumat 15.00</td>
+<td>30 menit</td>
+<td>Tim</td>
+</tr>
+<tr>
+<td>Laporan Mingguan ke Pimpinan</td>
+<td>Jumat</td>
+<td>1 halaman</td>
+<td>PM</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="6-alokasi-usaha-estimasi">6. Alokasi Usaha (Estimasi)</h2>
+<div class="mermaid-box"><pre class="mermaid">
+pie title Alokasi Waktu Proyek
+    "Analisis dan Desain" : 25
+    "Pengembangan Binsat" : 25
+    "Pengembangan LMS" : 15
+    "Pengembangan E-Pustaka" : 10
+    "Portal dan Fitur WBK" : 10
+    "Pengujian dan UAT" : 10
+    "Deployment dan Pelatihan" : 5
+</pre></div>
+
+<hr />
+<h2 id="7-manajemen-risiko">7. Manajemen Risiko</h2>
+<table>
+<thead>
+<tr>
+<th>No</th>
+<th>Risiko</th>
+<th style="text-align: center;">Kemungkinan</th>
+<th style="text-align: center;">Dampak</th>
+<th>Mitigasi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Data riil (personel, materiil) terlambat diserahkan</td>
+<td style="text-align: center;">Tinggi</td>
+<td style="text-align: center;">Tinggi</td>
+<td>Minta data sejak Minggu 1; siapkan template Excel impor; gunakan data dummy sementara</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Perubahan kebutuhan di tengah sprint</td>
+<td style="text-align: center;">Sedang</td>
+<td style="text-align: center;">Tinggi</td>
+<td>Perubahan masuk backlog sprint berikutnya; Product Owner tunggal yang memutuskan</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Kesibukan dinas narahubung (latihan, upacara, pendidikan)</td>
+<td style="text-align: center;">Tinggi</td>
+<td style="text-align: center;">Sedang</td>
+<td>Jadwal UAT disepakati sejak awal; tunjuk wakil narahubung</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Klasifikasi keamanan data tidak jelas</td>
+<td style="text-align: center;">Sedang</td>
+<td style="text-align: center;">Tinggi</td>
+<td>Tetapkan kebijakan klasifikasi di Minggu 1; data rahasia tidak masuk sistem</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Infrastruktur server/jaringan belum siap</td>
+<td style="text-align: center;">Sedang</td>
+<td style="text-align: center;">Tinggi</td>
+<td>Ajukan kebutuhan server di Minggu 2; siapkan staging cadangan</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Kapasitas jaringan saat ujian serentak</td>
+<td style="text-align: center;">Sedang</td>
+<td style="text-align: center;">Sedang</td>
+<td>Load test; ujian bergelombang; mode intranet</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Rumus Indeks Binsat belum sesuai ketentuan resmi</td>
+<td style="text-align: center;">Sedang</td>
+<td style="text-align: center;">Sedang</td>
+<td>Rumus &amp; bobot dapat dikonfigurasi, divalidasi pejabat</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Literasi digital pengguna beragam</td>
+<td style="text-align: center;">Sedang</td>
+<td style="text-align: center;">Sedang</td>
+<td>UI sederhana, pelatihan per role, manual bergambar, video tutorial</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Hak cipta e-book</td>
+<td style="text-align: center;">Rendah</td>
+<td style="text-align: center;">Sedang</td>
+<td>Hanya unggah hanjar/naskah internal &amp; koleksi berlisensi</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Developer berhalangan</td>
+<td style="text-align: center;">Rendah</td>
+<td style="text-align: center;">Tinggi</td>
+<td>Kode terdokumentasi, review silang, repositori terpusat</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="8-checklist-go-live">8. Checklist Go-Live</h2>
+<p><strong>Teknis</strong><br />
+- [ ] <code>APP_ENV=production</code>, <code>APP_DEBUG=false</code>, <code>APP_KEY</code> baru<br />
+- [ ] HTTPS aktif, header keamanan (HSTS, CSP, X-Frame-Options)<br />
+- [ ] <code>php artisan optimize</code>, <code>config:cache</code>, <code>route:cache</code>, <code>view:cache</code><br />
+- [ ] Queue worker (Supervisor) &amp; scheduler (cron) berjalan<br />
+- [ ] Backup otomatis aktif + uji restore berhasil<br />
+- [ ] Panel <code>/panel</code> dibatasi intranet/VPN (sesuai kebijakan)<br />
+- [ ] Akun default/demo dihapus; password admin kuat + 2FA<br />
+- [ ] Hasil OWASP ZAP: 0 temuan High/Critical</p>
+<p><strong>Data</strong><br />
+- [ ] Data master &amp; data riil terimpor dan tervalidasi narahubung<br />
+- [ ] Akun pengguna dibuat &amp; dibagikan secara aman</p>
+<p><strong>Organisasi</strong><br />
+- [ ] BA UAT ditandatangani<br />
+- [ ] Seluruh role telah mengikuti pelatihan<br />
+- [ ] Admin sistem satuan ditunjuk &amp; menerima serah terima<br />
+- [ ] SOP penggunaan sistem &amp; penanganan pengaduan diterbitkan</p>
+<hr />
+<h2 id="9-daftar-deliverable-akhir">9. Daftar Deliverable Akhir</h2>
+<table>
+<thead>
+<tr>
+<th>No</th>
+<th>Deliverable</th>
+<th>Format</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Aplikasi SIPANDU-WBK (produksi)</td>
+<td>Web</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Kode sumber + riwayat Git</td>
+<td>Repositori</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Dokumen Penelitian (BAB I–V)</td>
+<td>DOCX/PDF</td>
+</tr>
+<tr>
+<td>4</td>
+<td>SRS, Blueprint, ERD, Data Dictionary</td>
+<td>PDF</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Laporan Pengujian (black-box, performa, keamanan, SUS, ISO 25010)</td>
+<td>PDF</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Manual Pengguna per role</td>
+<td>PDF + video</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Manual Administrator &amp; Deployment</td>
+<td>PDF</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Berita Acara UAT &amp; Serah Terima</td>
+<td>Dokumen bertanda tangan</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="10-rencana-pengembangan-lanjutan-pasca-2-bulan">10. Rencana Pengembangan Lanjutan (Pasca 2 Bulan)</h2>
+<table>
+<thead>
+<tr>
+<th>Fase</th>
+<th>Fitur</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v1.1</td>
+<td>PWA (aplikasi ponsel tanpa install), notifikasi WhatsApp</td>
+</tr>
+<tr>
+<td>v1.2</td>
+<td>Forum diskusi, gamifikasi belajar (badge, leaderboard)</td>
+</tr>
+<tr>
+<td>v1.3</td>
+<td>Integrasi Single Sign-On dengan sistem Kodam/TNI AD (jika diizinkan)</td>
+</tr>
+<tr>
+<td>v2.0</td>
+<td>Analitik prediktif (prediksi kelulusan siswa, prediksi kerusakan materiil)</td>
+</tr>
+</tbody>
+</table>
+      </div>
+    </div>
+    <div class="page-break"></div>
+    
+
+</body>
+</html>

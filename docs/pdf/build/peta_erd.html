@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Peta ERD Lengkap — SIPANDU-WBK Rindam</title>
+<meta name="description" content="Peta Relasi Entitas Basis Data (Entity Relationship Diagram Map) SIPANDU-WBK Rindam: 5 Kluster, 45 Tabel, dan Integrasi Lintas Domain.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@700;800;900&display=block" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,1,0&display=block" rel="stylesheet">
+<style>
+:root {
+  --bg: #0D130A;
+  --bg-panel: #141C10;
+  --card-bg: #1B2616;
+  --card-border: #2C3D24;
+  --line: #3D5232;
+  --text: #E5EADF;
+  --text-muted: #8F9E87;
+  
+  --c-core: #B23A2E;
+  --c-core-bg: #2B1411;
+  --c-binsat: #4E7C38;
+  --c-binsat-bg: #152B10;
+  --c-lms: #2A6F97;
+  --c-lms-bg: #0C212E;
+  --c-lib: #7B2CBF;
+  --c-lib-bg: #240C38;
+  --c-wbk: #D4A325;
+  --c-wbk-bg: #332607;
+  
+  --gold: #C9A227;
+  --pk: #E6C766;
+  --fk: #64B5F6;
+}
+
+@page {
+  size: A3 landscape;
+  margin: 10mm;
+}
+
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  width: 100%; height: 100%;
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.ms {
+  font-family: 'Material Symbols Rounded';
+  font-weight: normal; font-style: normal;
+  display: inline-block; vertical-align: middle;
+  line-height: 1;
+}
+
+/* TOP NAVBAR */
+#navbar {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 64px;
+  background: rgba(20, 28, 16, 0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--card-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  z-index: 1000;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.brand-logo {
+  width: 38px; height: 38px;
+  background: linear-gradient(135deg, var(--gold), #7A5F12);
+  border-radius: 10px;
+  display: grid; place-items: center;
+  color: #0D130A;
+  font-weight: 900; font-size: 20px;
+}
+.brand-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 17px; font-weight: 800;
+  color: #fff; line-height: 1.2;
+}
+.brand-title span { color: var(--gold); }
+.brand-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.cluster-pills {
+  display: flex;
+  gap: 8px;
+}
+.pill-btn {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: var(--text);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 6px;
+  transition: all 0.2s;
+}
+.pill-btn:hover, .pill-btn.active {
+  background: rgba(201, 162, 39, 0.2);
+  border-color: var(--gold);
+  color: #fff;
+}
+.dot {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.search-box {
+  position: relative;
+  display: flex; align-items: center;
+}
+.search-box input {
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--card-border);
+  color: #fff;
+  padding: 6px 12px 6px 32px;
+  border-radius: 8px;
+  font-size: 13px;
+  outline: none;
+  width: 190px;
+  transition: width 0.2s;
+}
+.search-box input:focus {
+  width: 250px;
+  border-color: var(--gold);
+}
+.search-box .ms {
+  position: absolute; left: 8px;
+  color: var(--text-muted); font-size: 18px;
+}
+.btn-icon {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid var(--card-border);
+  color: #fff;
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  display: grid; place-items: center;
+  cursor: pointer;
+}
+.btn-icon:hover { background: var(--card-border); }
+
+/* CANVAS VIEWPORT */
+#viewport {
+  position: absolute;
+  top: 64px; left: 0; right: 0; bottom: 0;
+  overflow: hidden;
+  cursor: grab;
+  background-color: var(--bg);
+  background-image: 
+    radial-gradient(rgba(61, 82, 50, 0.25) 1px, transparent 1px),
+    linear-gradient(to right, rgba(44, 61, 36, 0.15) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(44, 61, 36, 0.15) 1px, transparent 1px);
+  background-size: 32px 32px, 128px 128px, 128px 128px;
+}
+#viewport.grabbing { cursor: grabbing; }
+
+#canvas {
+  position: absolute;
+  width: 4400px;
+  height: 2800px;
+  transform-origin: 0 0;
+  transition: transform 0.05s linear;
+}
+
+/* SVG CONNECTIONS */
+#svg-layer {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+.rel-line {
+  stroke-width: 2px;
+  fill: none;
+  transition: stroke-width 0.2s, stroke 0.2s;
+}
+.rel-line.active {
+  stroke: var(--gold) !important;
+  stroke-width: 4px !important;
+  stroke-dasharray: 6,4;
+  animation: dash 1s linear infinite;
+}
+@keyframes dash {
+  to { stroke-dashoffset: -20; }
+}
+
+/* CLUSTER REGIONS */
+.cluster-zone {
+  position: absolute;
+  border-radius: 24px;
+  border: 2px dashed;
+  padding: 30px;
+  pointer-events: none;
+  z-index: 5;
+}
+.cluster-label {
+  position: absolute;
+  top: -18px; left: 30px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px; font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 6px 18px;
+  border-radius: 999px;
+  display: flex; align-items: center; gap: 8px;
+}
+
+/* TABLE CARDS */
+.table-card {
+  position: absolute;
+  width: 320px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  z-index: 20;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  cursor: pointer;
+}
+.table-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--gold);
+  box-shadow: 0 16px 40px rgba(201, 162, 39, 0.25);
+  z-index: 30;
+}
+.table-card.highlighted {
+  border-color: var(--gold) !important;
+  box-shadow: 0 0 0 3px var(--gold), 0 16px 40px rgba(201, 162, 39, 0.4) !important;
+  z-index: 40 !important;
+}
+.table-card.dimmed {
+  opacity: 0.25;
+}
+
+.table-header {
+  padding: 10px 14px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13.5px; font-weight: 800;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.table-name {
+  display: flex; align-items: center; gap: 7px;
+  color: #fff;
+}
+.table-badge {
+  font-size: 10px; font-weight: 700;
+  padding: 2px 7px; border-radius: 4px;
+  background: rgba(0,0,0,0.3);
+}
+
+.table-body {
+  padding: 8px 0;
+  font-family: 'Fira Code', monospace;
+  font-size: 11.5px;
+}
+.field-row {
+  padding: 4px 14px;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: background 0.15s;
+}
+.field-row:hover { background: rgba(255,255,255,0.05); }
+.field-left {
+  display: flex; align-items: center; gap: 6px;
+}
+.field-name { color: var(--text); }
+.field-type { color: var(--text-muted); font-size: 10.5px; }
+
+.key-badge {
+  font-size: 9px; font-weight: 700;
+  padding: 1px 4px; border-radius: 3px;
+}
+.key-pk { background: #5E4609; color: var(--pk); }
+.key-fk { background: #133E60; color: var(--fk); }
+
+.more-fields {
+  padding: 4px 14px;
+  color: var(--text-muted);
+  font-size: 10.5px;
+  font-style: italic;
+  border-top: 1px dashed rgba(255,255,255,0.08);
+  margin-top: 4px;
+}
+
+/* FLOATING CONTROLS */
+.floating-controls {
+  position: absolute;
+  bottom: 24px; right: 24px;
+  display: flex; flex-direction: column; gap: 8px;
+  z-index: 1000;
+}
+.float-btn {
+  width: 44px; height: 44px;
+  background: var(--bg-panel);
+  border: 1px solid var(--card-border);
+  color: #fff; border-radius: 12px;
+  display: grid; place-items: center;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+}
+.float-btn:hover { background: var(--card-border); color: var(--gold); }
+
+/* SIDE DRAWER (DETAIL) */
+#drawer {
+  position: absolute;
+  top: 64px; right: -420px; bottom: 0;
+  width: 400px;
+  background: rgba(16, 23, 13, 0.97);
+  backdrop-filter: blur(16px);
+  border-left: 1px solid var(--card-border);
+  padding: 24px;
+  overflow-y: auto;
+  z-index: 1100;
+  transition: right 0.25s cubic-bezier(0.1, 0.9, 0.2, 1);
+  box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+}
+#drawer.open { right: 0; }
+.drawer-close {
+  position: absolute; top: 18px; right: 18px;
+  background: none; border: none; color: var(--text-muted);
+  cursor: pointer; font-size: 22px;
+}
+.drawer-close:hover { color: #fff; }
+.drawer-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 20px; font-weight: 800;
+  color: #fff; margin-bottom: 4px;
+}
+.drawer-tag {
+  display: inline-block;
+  padding: 3px 10px; border-radius: 999px;
+  font-size: 11px; font-weight: 700;
+  margin-bottom: 16px;
+}
+.drawer-desc {
+  font-size: 13px; line-height: 1.6;
+  color: var(--text-muted); margin-bottom: 20px;
+  padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.drawer-sec-title {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px; font-weight: 700;
+  color: var(--gold); text-transform: uppercase;
+  letter-spacing: 0.08em; margin: 16px 0 10px;
+}
+.drawer-list {
+  list-style: none; padding: 0; margin: 0;
+  font-size: 12.5px;
+}
+.drawer-list li {
+  padding: 7px 10px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.03);
+  margin-bottom: 6px;
+  display: flex; justify-content: space-between;
+}
+.drawer-list li b { color: #fff; font-family: 'Fira Code', monospace; }
+
+/* LEGEND OVERLAY */
+.legend-card {
+  position: absolute;
+  bottom: 24px; left: 24px;
+  background: rgba(20, 28, 16, 0.92);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 14px 18px;
+  font-size: 12px;
+  z-index: 1000;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+.legend-card b {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px; display: block; margin-bottom: 8px;
+  color: var(--gold);
+}
+.legend-row {
+  display: flex; gap: 14px; align-items: center;
+}
+.legend-item {
+  display: flex; align-items: center; gap: 6px;
+  color: var(--text-muted);
+}
+</style>
+</head>
+<body>
+
+<!-- TOP NAVBAR -->
+<nav id="navbar">
+  <div class="brand">
+    <div class="brand-logo"><span class="ms">schema</span></div>
+    <div>
+      <div class="brand-title">SIPANDU<span>-WBK</span> · PETA RELASI ENTITAS (ERD MAP)</div>
+      <div class="brand-sub">5 Kluster Domain · 45 Tabel Basis Data · Relasi Lintas Modul</div>
+    </div>
+  </div>
+
+  <div class="cluster-pills">
+    <button class="pill-btn active" onclick="filterCluster('all')">Semua Kluster (45)</button>
+    <button class="pill-btn" onclick="filterCluster('core')"><span class="dot" style="background:var(--c-core)"></span>Core (5)</button>
+    <button class="pill-btn" onclick="filterCluster('binsat')"><span class="dot" style="background:var(--c-binsat)"></span>SIM Binsat (15)</button>
+    <button class="pill-btn" onclick="filterCluster('lms')"><span class="dot" style="background:var(--c-lms)"></span>E-Learning (11)</button>
+    <button class="pill-btn" onclick="filterCluster('lib')"><span class="dot" style="background:var(--c-lib)"></span>E-Pustaka (7)</button>
+    <button class="pill-btn" onclick="filterCluster('wbk')"><span class="dot" style="background:var(--c-wbk)"></span>Portal WBK (7)</button>
+  </div>
+
+  <div class="nav-actions">
+    <div class="search-box">
+      <span class="ms">search</span>
+      <input type="text" id="search-input" placeholder="Cari tabel / field..." oninput="handleSearch(this.value)">
+    </div>
+    <button class="btn-icon" title="Cetak / Print PDF Poster" onclick="window.print()"><span class="ms">print</span></button>
+    <button class="btn-icon" title="Reset Tampilan" onclick="resetTransform()"><span class="ms">restart_alt</span></button>
+  </div>
+</nav>
+
+<!-- VIEWPORT CONTAINER -->
+<div id="viewport">
+  <div id="canvas">
+    <!-- SVG CONNECTING LINES -->
+    <svg id="svg-layer">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 1 L 8 5 L 0 9 z" fill="var(--gold)"/>
+        </marker>
+        <marker id="dot-mark" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="6" markerHeight="6">
+          <circle cx="4" cy="4" r="3" fill="var(--gold)"/>
+        </marker>
+      </defs>
+      <!-- Relation paths drawn dynamically via JS -->
+    </svg>
+
+    <!-- CLUSTER BOUNDARY ZONES -->
+    <!-- 1. CORE -->
+    <div class="cluster-zone" style="left:50px; top:60px; width:480px; height:1200px; border-color:var(--c-core); background:var(--c-core-bg); opacity:0.35;"></div>
+    <div class="cluster-label" style="left:80px; top:42px; background:var(--c-core); color:#fff;">
+      <span class="ms">lock</span> 1. CORE & KEAMANAN
+    </div>
+
+    <!-- 2. BINSAT -->
+    <div class="cluster-zone" style="left:580px; top:60px; width:1550px; height:2450px; border-color:var(--c-binsat); background:var(--c-binsat-bg); opacity:0.25;"></div>
+    <div class="cluster-label" style="left:610px; top:42px; background:var(--c-binsat); color:#fff;">
+      <span class="ms">shield_person</span> 2. SIM BINSAT (6 KOMPONEN & INDEKS)
+    </div>
+
+    <!-- 3. E-LEARNING -->
+    <div class="cluster-zone" style="left:2200px; top:60px; width:1100px; height:2100px; border-color:var(--c-lms); background:var(--c-lms-bg); opacity:0.25;"></div>
+    <div class="cluster-label" style="left:2230px; top:42px; background:var(--c-lms); color:#fff;">
+      <span class="ms">school</span> 3. E-LEARNING (LMS)
+    </div>
+
+    <!-- 4. E-PUSTAKA -->
+    <div class="cluster-zone" style="left:3370px; top:60px; width:950px; height:1100px; border-color:var(--c-lib); background:var(--c-lib-bg); opacity:0.25;"></div>
+    <div class="cluster-label" style="left:3400px; top:42px; background:var(--c-lib); color:#fff;">
+      <span class="ms">local_library</span> 4. E-PUSTAKA (DIGITAL LIBRARY)
+    </div>
+
+    <!-- 5. PORTAL WBK -->
+    <div class="cluster-zone" style="left:3370px; top:1230px; width:950px; height:1280px; border-color:var(--c-wbk); background:var(--c-wbk-bg); opacity:0.25;"></div>
+    <div class="cluster-label" style="left:3400px; top:1212px; background:var(--c-wbk); color:#0D130A;">
+      <span class="ms">gavel</span> 5. PORTAL WBK & ZONA INTEGRITAS
+    </div>
+
+    <!-- ==================== TABLE CARDS CONTAINER ==================== -->
+    <div id="tables-container">
+      <!-- Generated dynamically by JavaScript to guarantee precision & interactivity -->
+    </div>
+  </div>
+</div>
+
+<!-- FLOATING CONTROLS -->
+<div class="floating-controls">
+  <button class="float-btn" title="Perbesar (Zoom In)" onclick="zoomBy(0.15)"><span class="ms">add</span></button>
+  <button class="float-btn" title="Perkecil (Zoom Out)" onclick="zoomBy(-0.15)"><span class="ms">remove</span></button>
+  <button class="float-btn" title="Sesuaikan Layar (Fit View)" onclick="fitToScreen()"><span class="ms">fit_screen</span></button>
+  <button class="float-btn" title="Layar Penuh" onclick="toggleFullscreen()"><span class="ms">fullscreen</span></button>
+</div>
+
+<!-- LEGEND OVERLAY -->
+<div class="legend-card">
+  <b>KETERANGAN ERD MAP</b>
+  <div class="legend-row">
+    <div class="legend-item"><span class="key-badge key-pk">PK</span> Primary Key</div>
+    <div class="legend-item"><span class="key-badge key-fk">FK</span> Foreign Key</div>
+    <div class="legend-item"><span class="ms" style="color:var(--gold);font-size:16px">trending_flat</span> Relasi 1:N / 1:1</div>
+    <div class="legend-item"><span class="dot" style="background:var(--gold)"></span> Klik tabel untuk detail</div>
+  </div>
+</div>
+
+<!-- SIDE DRAWER DETAIL -->
+<div id="drawer">
+  <button class="drawer-close" onclick="closeDrawer()"><span class="ms">close</span></button>
+  <div id="drawer-content">
+    <!-- Populated dynamically on click -->
+  </div>
+</div>
+
+<script>
+// ==================== SCHEMA DEFINITIONS ====================
+const tablesData = [
+  // --- CLUSTER 1: CORE ---
+  {
+    id: "users", cluster: "core", x: 100, y: 120,
+    name: "users", title: "Master Pengguna & 2FA",
+    desc: "Akun login terpusat seluruh peran. Mendukung Two-Factor Authentication TOTP.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "name", type: "VARCHAR(150)" },
+      { name: "username", type: "VARCHAR(50) UNIQ" },
+      { name: "email", type: "VARCHAR(100) UNIQ" },
+      { name: "password", type: "VARCHAR(255)" },
+      { name: "two_factor_secret", type: "TEXT NULL" },
+      { name: "last_login_at", type: "TIMESTAMP NULL" }
+    ]
+  },
+  {
+    id: "roles", cluster: "core", x: 100, y: 440,
+    name: "roles", title: "Manajemen Role Spatie",
+    desc: "Definisi peran sistem (Super Admin, Pimpinan, Operator Binsat, Gadik, Siswa, Pustakawan, Tim ZI).",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "name", type: "VARCHAR(50)" },
+      { name: "guard_name", type: "VARCHAR(50)" }
+    ]
+  },
+  {
+    id: "permissions", cluster: "core", x: 100, y: 640,
+    name: "permissions", title: "Hak Akses Spatie",
+    desc: "Hak akses granular per modul (create, read, update, delete, approve).",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "name", type: "VARCHAR(100)" },
+      { name: "guard_name", type: "VARCHAR(50)" }
+    ]
+  },
+  {
+    id: "activity_log", cluster: "core", x: 100, y: 840,
+    name: "activity_log", title: "Audit Trail ZI Area 5",
+    desc: "Jejak audit digital tak terhapuskan untuk pengawasan integritas perubahan data.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "log_name", type: "VARCHAR(50)" },
+      { name: "description", type: "TEXT" },
+      { name: "causer_id", type: "BIGINT FK", key: "fk", ref: "users" },
+      { name: "properties", type: "JSON" },
+      { name: "created_at", type: "TIMESTAMP" }
+    ]
+  },
+  {
+    id: "system_settings", cluster: "core", x: 100, y: 1080,
+    name: "system_settings", title: "Konfigurasi Global",
+    desc: "Parameter operasional: SLA tiket, bobot Indeks Binsat, identitas pangkalan.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "key", type: "VARCHAR(100) UNIQ" },
+      { name: "value", type: "TEXT" },
+      { name: "group", type: "VARCHAR(50)" }
+    ]
+  },
+
+  // --- CLUSTER 2: SIM BINSAT ---
+  // Organisasi & Personel
+  {
+    id: "units", cluster: "binsat", x: 630, y: 120,
+    name: "units", title: "Struktur Organisasi Satuan",
+    desc: "Hierarki satuan (Rindam -> Dodik -> Seksi/Urusan). Parent-child relationship.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "parent_id", type: "BIGINT FK NULL", key: "fk", ref: "units" },
+      { name: "code", type: "VARCHAR(30) UNIQ" },
+      { name: "name", type: "VARCHAR(150)" },
+      { name: "type", type: "ENUM" }
+    ]
+  },
+  {
+    id: "top_positions", cluster: "binsat", x: 630, y: 390,
+    name: "top_positions", title: "Tabel Organisasi & Peralatan",
+    desc: "Standar formasi jabatan resmi menurut ketetapan TOP/DSPP Kasad.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "unit_id", type: "BIGINT FK", key: "fk", ref: "units" },
+      { name: "position_name", type: "VARCHAR(150)" },
+      { name: "rank_required", type: "VARCHAR(50)" },
+      { name: "quota_top", type: "INT UNSIGNED" }
+    ]
+  },
+  {
+    id: "ranks", cluster: "binsat", x: 1020, y: 120,
+    name: "ranks", title: "Pangkat Militer & PNS",
+    desc: "Tingkatan kepangkatan militer (Pamen, Pama, Ba, Ta, PNS).",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "code", type: "VARCHAR(20)" },
+      { name: "name", type: "VARCHAR(100)" },
+      { name: "order_level", type: "TINYINT" }
+    ]
+  },
+  {
+    id: "personnel", cluster: "binsat", x: 1020, y: 360,
+    name: "personnel", title: "Master Personel / Prajurit",
+    desc: "Data organik prajurit. Data sensitif terenkripsi dengan AES-256.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "user_id", type: "BIGINT FK NULL", key: "fk", ref: "users" },
+      { name: "nrp", type: "VARCHAR(30) UNIQ" },
+      { name: "full_name", type: "VARCHAR(150)" },
+      { name: "rank_id", type: "BIGINT FK", key: "fk", ref: "ranks" },
+      { name: "unit_id", type: "BIGINT FK", key: "fk", ref: "units" },
+      { name: "status", type: "ENUM" }
+    ]
+  },
+  {
+    id: "personnel_assignments", cluster: "binsat", x: 630, y: 660,
+    name: "personnel_assignments", title: "Pemenuhan Formasi Jabatan",
+    desc: "Riwayat penugasan jabatan riil vs TOP (Definitif, Plt, Pj).",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "personnel_id", type: "BIGINT FK", key: "fk", ref: "personnel" },
+      { name: "top_position_id", type: "BIGINT FK", key: "fk", ref: "top_positions" },
+      { name: "assignment_type", type: "ENUM" },
+      { name: "is_current", type: "BOOLEAN" }
+    ]
+  },
+  {
+    id: "daily_readiness", cluster: "binsat", x: 1020, y: 700,
+    name: "daily_readiness", title: "Kesiapan Harian (Apel)",
+    desc: "Rekap absensi fisik prajurit: Hadir, Dinas Luar, Cuti, Sakit, Dik.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "personnel_id", type: "BIGINT FK", key: "fk", ref: "personnel" },
+      { name: "unit_id", type: "BIGINT FK", key: "fk", ref: "units" },
+      { name: "date", type: "DATE" },
+      { name: "status", type: "ENUM" }
+    ]
+  },
+  {
+    id: "morale_records", cluster: "binsat", x: 1020, y: 960,
+    name: "morale_records", title: "Indeks Moril Prajurit",
+    desc: "Evaluasi kegiatan pembinaan mental, olahraga, dan penghargaan disiplin.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "unit_id", type: "BIGINT FK", key: "fk", ref: "units" },
+      { name: "period", type: "VARCHAR(7)" },
+      { name: "morale_score", type: "DECIMAL(5,2)" }
+    ]
+  },
+
+  // Materiil & Fasilitas
+  {
+    id: "materiel_categories", cluster: "binsat", x: 1400, y: 120,
+    name: "materiel_categories", title: "Kategori Bekal / Alutsista",
+    desc: "Pengelompokan logistik: Senjata, Munisi, Ranmor, Alkom, Alins.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "code", type: "VARCHAR(20)" },
+      { name: "name", type: "VARCHAR(100)" },
+      { name: "type", type: "ENUM" }
+    ]
+  },
+  {
+    id: "materiels", cluster: "binsat", x: 1400, y: 360,
+    name: "materiels", title: "Inventaris Materiil & QR",
+    desc: "Master aset materiil ber-barcode QR dengan status kondisi Baik, RR, RB.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "category_id", type: "BIGINT FK", key: "fk", ref: "materiel_categories" },
+      { name: "unit_id", type: "BIGINT FK", key: "fk", ref: "units" },
+      { name: "code", type: "VARCHAR(50) UNIQ" },
+      { name: "name", type: "VARCHAR(150)" },
+      { name: "condition", type: "ENUM('B','RR','RB')" },
+      { name: "is_operational", type: "BOOLEAN" }
+    ]
+  },
+  {
+    id: "materiel_maintenances", cluster: "binsat", x: 1400, y: 690,
+    name: "materiel_maintenances", title: "Harwat Pemeliharaan Bekal",
+    desc: "Jadwal dan rekam pengerjaan perawatan rutin atau servis alutsista.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "materiel_id", type: "BIGINT FK", key: "fk", ref: "materiels" },
+      { name: "scheduled_date", type: "DATE" },
+      { name: "condition_after", type: "ENUM('B','RR','RB')" }
+    ]
+  },
+  {
+    id: "facilities", cluster: "binsat", x: 1780, y: 120,
+    name: "facilities", title: "Fasilitas & Pangkalan",
+    desc: "Aset gedung, barak serdik, kelas, rumdis, lapangan tembak/upacara.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "unit_id", type: "BIGINT FK", key: "fk", ref: "units" },
+      { name: "code", type: "VARCHAR(50) UNIQ" },
+      { name: "name", type: "VARCHAR(150)" },
+      { name: "facility_type", type: "ENUM" },
+      { name: "condition", type: "ENUM('B','RR','RB')" }
+    ]
+  },
+  {
+    id: "facility_repair_requests", cluster: "binsat", x: 1780, y: 410,
+    name: "facility_repair_requests", title: "Tiket Perbaikan Fasilitas",
+    desc: "Alur pengajuan dan verifikasi pemeliharaan fisik gedung/pangkalan.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "facility_id", type: "BIGINT FK", key: "fk", ref: "facilities" },
+      { name: "reported_by", type: "BIGINT FK", key: "fk", ref: "personnel" },
+      { name: "urgency", type: "ENUM" },
+      { name: "status", type: "ENUM" }
+    ]
+  },
+  {
+    id: "housing_occupancies", cluster: "binsat", x: 1780, y: 680,
+    name: "housing_occupancies", title: "Penghuni Rumah Dinas (SIP)",
+    desc: "Pengelolaan rumah dinas berdasar Surat Izin Penghunian (SIP).",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "facility_id", type: "BIGINT FK", key: "fk", ref: "facilities" },
+      { name: "personnel_id", type: "BIGINT FK", key: "fk", ref: "personnel" },
+      { name: "sip_number", type: "VARCHAR(100)" },
+      { name: "status", type: "ENUM" }
+    ]
+  },
+
+  // Latihan, Doktrin & Indeks
+  {
+    id: "training_programs", cluster: "binsat", x: 630, y: 990,
+    name: "training_programs", title: "Program Latihan (Renlat)",
+    desc: "Rencana program latihan perorangan, satuan, menembak, dan Garjas.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "unit_id", type: "BIGINT FK", key: "fk", ref: "units" },
+      { name: "name", type: "VARCHAR(150)" },
+      { name: "year", type: "YEAR" }
+    ]
+  },
+  {
+    id: "training_sessions", cluster: "binsat", x: 630, y: 1240,
+    name: "training_sessions", title: "Jadwal Sesi Latihan",
+    desc: "Jadwal latihan riil terhubung ke sarana fasilitas pangkalan.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "program_id", type: "BIGINT FK", key: "fk", ref: "training_programs" },
+      { name: "facility_id", type: "BIGINT FK", key: "fk", ref: "facilities" },
+      { name: "start_at", type: "DATETIME" },
+      { name: "status", type: "ENUM" }
+    ]
+  },
+  {
+    id: "training_participants", cluster: "binsat", x: 1020, y: 1240,
+    name: "training_participants", title: "Rekap Nilai Latihan",
+    desc: "Hasil nilai teori, praktik, Garjas A/B prajurit peserta latihan.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "session_id", type: "BIGINT FK", key: "fk", ref: "training_sessions" },
+      { name: "personnel_id", type: "BIGINT FK", key: "fk", ref: "personnel" },
+      { name: "final_score", type: "DECIMAL(5,2)" },
+      { name: "result", type: "ENUM('Lulus','Tidak')" }
+    ]
+  },
+  {
+    id: "doctrines", cluster: "binsat", x: 1400, y: 990,
+    name: "doctrines", title: "Repositori Doktrin & Naskah",
+    desc: "Bujuk, Juknis, Protap, SOP dinas. Dilengkapi kuis pemahaman di LMS.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "document_number", type: "VARCHAR(100)" },
+      { name: "title", type: "VARCHAR(200)" },
+      { name: "doctrine_type", type: "ENUM" },
+      { name: "classification", type: "ENUM('Biasa','Terbatas')" },
+      { name: "assessment_id", type: "BIGINT FK NULL", key: "fk", ref: "assessments" }
+    ]
+  },
+  {
+    id: "doctrine_reads", cluster: "binsat", x: 1400, y: 1290,
+    name: "doctrine_reads", title: "Bukti Baca Naskah Doktrin",
+    desc: "Log kepatuhan prajurit dalam membaca dan memahami naskah dinas.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "doctrine_id", type: "BIGINT FK", key: "fk", ref: "doctrines" },
+      { name: "user_id", type: "BIGINT FK", key: "fk", ref: "users" },
+      { name: "read_at", type: "TIMESTAMP" }
+    ]
+  },
+  {
+    id: "readiness_calculation_logs", cluster: "binsat", x: 1020, y: 1530,
+    name: "readiness_calculation_logs", title: "Indeks Kesiapan Binsat",
+    desc: "Rekam skor otomatis 6 komponen (Org, Pers, Mat, Fas, Lat, Dok) & status kesiapan.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "unit_id", type: "BIGINT FK", key: "fk", ref: "units" },
+      { name: "period_date", type: "DATE" },
+      { name: "total_index", type: "DECIMAL(5,2)" },
+      { name: "status", type: "ENUM('SIAP','CUKUP','KURANG')" }
+    ]
+  },
+
+  // --- CLUSTER 3: E-LEARNING (LMS) ---
+  {
+    id: "education_programs", cluster: "lms", x: 2250, y: 120,
+    name: "education_programs", title: "Program Pendidikan Militer",
+    desc: "Diktukba, Diktukta, Dikjur Ba/Ta, Pendidikan Bela Negara.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "code", type: "VARCHAR(30) UNIQ" },
+      { name: "name", type: "VARCHAR(150)" },
+      { name: "category", type: "ENUM" }
+    ]
+  },
+  {
+    id: "classrooms", cluster: "lms", x: 2250, y: 350,
+    name: "classrooms", title: "Rombel Kelas / Peleton",
+    desc: "Kelompok belajar serdik yang dipimpin Komandan Peleton.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "program_id", type: "BIGINT FK", key: "fk", ref: "education_programs" },
+      { name: "code", type: "VARCHAR(30) UNIQ" },
+      { name: "name", type: "VARCHAR(100)" },
+      { name: "commander_personnel_id", type: "BIGINT FK", key: "fk", ref: "personnel" }
+    ]
+  },
+  {
+    id: "students", cluster: "lms", x: 2250, y: 640,
+    name: "students", title: "Buku Induk Serdik / Siswa",
+    desc: "Data siswa pendidikan terhubung ke akun login pengguna.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "user_id", type: "BIGINT FK NULL", key: "fk", ref: "users" },
+      { name: "classroom_id", type: "BIGINT FK", key: "fk", ref: "classrooms" },
+      { name: "nosik", type: "VARCHAR(30) UNIQ" },
+      { name: "full_name", type: "VARCHAR(150)" },
+      { name: "status", type: "ENUM" }
+    ]
+  },
+  {
+    id: "courses", cluster: "lms", x: 2650, y: 350,
+    name: "courses", title: "Mata Pelajaran (Mapel)",
+    desc: "Kurikulum pelajaran yang diampu oleh Tenaga Pendidik (Gadik).",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "classroom_id", type: "BIGINT FK", key: "fk", ref: "classrooms" },
+      { name: "instructor_personnel_id", type: "BIGINT FK", key: "fk", ref: "personnel" },
+      { name: "name", type: "VARCHAR(150)" },
+      { name: "credit_hours_jp", type: "INT UNSIGNED" }
+    ]
+  },
+  {
+    id: "lessons", cluster: "lms", x: 2650, y: 640,
+    name: "lessons", title: "Materi Belajar & Hanjar",
+    desc: "Materi belajar per pertemuan. Mengambil hanjar dari E-Pustaka.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "course_id", type: "BIGINT FK", key: "fk", ref: "courses" },
+      { name: "library_item_id", type: "BIGINT FK NULL", key: "fk", ref: "library_items" },
+      { name: "title", type: "VARCHAR(200)" },
+      { name: "lesson_type", type: "ENUM" }
+    ]
+  },
+  {
+    id: "question_banks", cluster: "lms", x: 2980, y: 120,
+    name: "question_banks", title: "Bank Soal Ujian",
+    desc: "Koleksi bank butir soal untuk diacak saat evaluasi berlangsung.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "course_id", type: "BIGINT FK", key: "fk", ref: "courses" },
+      { name: "title", type: "VARCHAR(150)" }
+    ]
+  },
+  {
+    id: "questions", cluster: "lms", x: 2980, y: 350,
+    name: "questions", title: "Butir Soal & Poin",
+    desc: "Soal pilihan ganda, benar/salah, atau esai uraian.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "bank_id", type: "BIGINT FK", key: "fk", ref: "question_banks" },
+      { name: "question_text", type: "TEXT" },
+      { name: "question_type", type: "ENUM" },
+      { name: "points", type: "DECIMAL(5,2)" }
+    ]
+  },
+  {
+    id: "assessments", cluster: "lms", x: 2650, y: 950,
+    name: "assessments", title: "Jadwal Kuis & Ujian",
+    desc: "Ujian berbatas waktu dengan token akses, acak soal, dan autosave.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "course_id", type: "BIGINT FK", key: "fk", ref: "courses" },
+      { name: "title", type: "VARCHAR(150)" },
+      { name: "duration_minutes", type: "INT UNSIGNED" },
+      { name: "passing_grade", type: "DECIMAL(5,2)" }
+    ]
+  },
+  {
+    id: "exam_attempts", cluster: "lms", x: 2650, y: 1240,
+    name: "exam_attempts", title: "Sesi Pengerjaan Ujian Serdik",
+    desc: "Sesi ujian siswa, pencatatan durasi, nilai akhir, dan kelulusan.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "assessment_id", type: "BIGINT FK", key: "fk", ref: "assessments" },
+      { name: "student_id", type: "BIGINT FK", key: "fk", ref: "students" },
+      { name: "total_score", type: "DECIMAL(5,2)" },
+      { name: "status", type: "ENUM" }
+    ]
+  },
+  {
+    id: "student_report_cards", cluster: "lms", x: 2250, y: 950,
+    name: "student_report_cards", title: "Rapor Hasil Didik Serdik",
+    desc: "Kompilasi nilai akademis teori, praktik lapangan, sikap (Tanggon, Tanggap, Trengginas).",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "classroom_id", type: "BIGINT FK", key: "fk", ref: "classrooms" },
+      { name: "student_id", type: "BIGINT FK", key: "fk", ref: "students" },
+      { name: "final_gpa", type: "DECIMAL(5,2)" },
+      { name: "ranking", type: "INT UNSIGNED" }
+    ]
+  },
+  {
+    id: "certificates", cluster: "lms", x: 2250, y: 1240,
+    name: "certificates", title: "Ijazah / Sertifikat QR",
+    desc: "Ijazah elektronik ber-QR hash untuk verifikasi keaslian daring.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "student_id", type: "BIGINT FK", key: "fk", ref: "students" },
+      { name: "program_id", type: "BIGINT FK", key: "fk", ref: "education_programs" },
+      { name: "certificate_number", type: "VARCHAR(100)" },
+      { name: "qr_hash", type: "VARCHAR(64)" }
+    ]
+  },
+
+  // --- CLUSTER 4: E-PUSTAKA ---
+  {
+    id: "library_categories", cluster: "lib", x: 3420, y: 120,
+    name: "library_categories", title: "Klasifikasi DDC Pustaka",
+    desc: "Kategori buku menurut nomor klasifikasi Dewey Decimal militer.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "ddc_code", type: "VARCHAR(20)" },
+      { name: "name", type: "VARCHAR(100)" }
+    ]
+  },
+  {
+    id: "library_items", cluster: "lib", x: 3420, y: 350,
+    name: "library_items", title: "Katalog Koleksi & E-Book",
+    desc: "Katalog buku cetak & digital. File dilindungi reader anti-unduh ber-watermark.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "category_id", type: "BIGINT FK", key: "fk", ref: "library_categories" },
+      { name: "title", type: "VARCHAR(200)" },
+      { name: "author", type: "VARCHAR(150)" },
+      { name: "format_type", type: "ENUM" },
+      { name: "digital_file_path", type: "VARCHAR(255) NULL" }
+    ]
+  },
+  {
+    id: "library_copies", cluster: "lib", x: 3420, y: 680,
+    name: "library_copies", title: "Eksemplar Fisik & Barcode",
+    desc: "Buku cetak fisik dengan stiker barcode/RFID untuk sirkulasi cepat.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "library_item_id", type: "BIGINT FK", key: "fk", ref: "library_items" },
+      { name: "barcode_rfid", type: "VARCHAR(50) UNIQ" },
+      { name: "status", type: "ENUM('Tersedia','Dipinjam')" }
+    ]
+  },
+  {
+    id: "library_loans", cluster: "lib", x: 3820, y: 680,
+    name: "library_loans", title: "Sirkulasi Peminjaman Buku",
+    desc: "Transaksi peminjaman buku fisik (jatuh tempo 7 hari dengan alarm).",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "copy_id", type: "BIGINT FK", key: "fk", ref: "library_copies" },
+      { name: "user_id", type: "BIGINT FK", key: "fk", ref: "users" },
+      { name: "borrow_date", type: "DATE" },
+      { name: "due_date", type: "DATE" },
+      { name: "status", type: "ENUM" }
+    ]
+  },
+  {
+    id: "library_fines", cluster: "lib", x: 3820, y: 990,
+    name: "library_fines", title: "Sanksi Keterlambatan Pustaka",
+    desc: "Pencatatan denda materiil atau sanksi disiplin bagi keterlambatan.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "loan_id", type: "BIGINT FK", key: "fk", ref: "library_loans" },
+      { name: "late_days", type: "INT UNSIGNED" },
+      { name: "is_settled", type: "BOOLEAN" }
+    ]
+  },
+  {
+    id: "library_reading_logs", cluster: "lib", x: 3820, y: 350,
+    name: "library_reading_logs", title: "Statistik Pembaca Digital",
+    desc: "Catatan waktu baca e-book untuk mengukur literasi siswa/prajurit.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "library_item_id", type: "BIGINT FK", key: "fk", ref: "library_items" },
+      { name: "user_id", type: "BIGINT FK", key: "fk", ref: "users" },
+      { name: "duration_minutes", type: "INT UNSIGNED" }
+    ]
+  },
+  {
+    id: "library_book_proposals", cluster: "lib", x: 3820, y: 120,
+    name: "library_book_proposals", title: "Usulan Pengadaan Buku",
+    desc: "Usulan literatur baru yang diajukan oleh Gadik atau serdik.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "proposed_by", type: "BIGINT FK", key: "fk", ref: "users" },
+      { name: "title", type: "VARCHAR(200)" },
+      { name: "status", type: "ENUM" }
+    ]
+  },
+
+  // --- CLUSTER 5: PORTAL WBK ---
+  {
+    id: "complaints", cluster: "wbk", x: 3420, y: 1290,
+    name: "complaints", title: "Whistleblowing System (WBS)",
+    desc: "Pengaduan publik/internal bertiket dengan kode akses dan alarm batas SLA.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "ticket_number", type: "VARCHAR(30) UNIQ" },
+      { name: "access_code_hash", type: "VARCHAR(255)" },
+      { name: "is_anonymous", type: "BOOLEAN" },
+      { name: "category", type: "ENUM" },
+      { name: "status", type: "ENUM" },
+      { name: "sla_due_at", type: "DATETIME" }
+    ]
+  },
+  {
+    id: "complaint_actions", cluster: "wbk", x: 3820, y: 1290,
+    name: "complaint_actions", title: "Tindak Lanjut & Disposisi",
+    desc: "Histori penanganan pengaduan: telaah Tim ZI, disposisi Danrindam, tindak lanjut seksi.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "complaint_id", type: "BIGINT FK", key: "fk", ref: "complaints" },
+      { name: "action_by", type: "BIGINT FK", key: "fk", ref: "users" },
+      { name: "action_type", type: "ENUM" },
+      { name: "created_at", type: "TIMESTAMP" }
+    ]
+  },
+  {
+    id: "gratification_reports", cluster: "wbk", x: 3420, y: 1610,
+    name: "gratification_reports", title: "Lapor Gratifikasi (Area 5)",
+    desc: "Form pelaporan penerimaan atau penolakan gratifikasi oleh prajurit.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "reporter_user_id", type: "BIGINT FK", key: "fk", ref: "users" },
+      { name: "report_type", type: "ENUM('Terima','Tolak')" },
+      { name: "estimated_value", type: "DECIMAL(14,2)" },
+      { name: "status", type: "ENUM" }
+    ]
+  },
+  {
+    id: "public_info_requests", cluster: "wbk", x: 3820, y: 1610,
+    name: "public_info_requests", title: "Layanan PPID (Area 2)",
+    desc: "Permohonan Keterbukaan Informasi Publik sesuai UU No. 14/2008.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "request_number", type: "VARCHAR(30) UNIQ" },
+      { name: "applicant_name", type: "VARCHAR(100)" },
+      { name: "status", type: "ENUM" }
+    ]
+  },
+  {
+    id: "surveys", cluster: "wbk", x: 3420, y: 1890,
+    name: "surveys", title: "Survei Kepuasan (SKM/IPAK)",
+    desc: "Survei resmi Indeks Kepuasan Masyarakat, Persepsi Anti Korupsi & Pelayanan.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "title", type: "VARCHAR(150)" },
+      { name: "survey_type", type: "ENUM('SKM','IPAK','IPKP')" },
+      { name: "year", type: "YEAR" },
+      { name: "is_active", type: "BOOLEAN" }
+    ]
+  },
+  {
+    id: "survey_responses", cluster: "wbk", x: 3820, y: 1890,
+    name: "survey_responses", title: "Hasil Responden Survei",
+    desc: "Data isian penilaian kepuasan publik dengan kalkulasi skor otomatis.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "survey_id", type: "BIGINT FK", key: "fk", ref: "surveys" },
+      { name: "calculated_score", type: "DECIMAL(5,2)" },
+      { name: "submitted_at", type: "TIMESTAMP" }
+    ]
+  },
+  {
+    id: "portal_service_standards", cluster: "wbk", x: 3420, y: 2180,
+    name: "portal_service_standards", title: "Standar Layanan Publik",
+    desc: "Transparansi persyaratan, alur, produk layanan, dan biaya Rp 0,-.",
+    fields: [
+      { name: "id", type: "BIGINT PK", key: "pk" },
+      { name: "service_name", type: "VARCHAR(150)" },
+      { name: "time_sla", type: "VARCHAR(100)" },
+      { name: "fee", type: "VARCHAR(50)" }
+    ]
+  }
+];
+
+// ==================== RELATIONSHIPS ====================
+const relations = [
+  // Core to others
+  { from: "users", to: "personnel", type: "1:1" },
+  { from: "users", to: "students", type: "1:1" },
+  { from: "users", to: "library_loans", type: "1:N" },
+  { from: "users", to: "complaint_actions", type: "1:N" },
+  { from: "users", to: "gratification_reports", type: "1:N" },
+  { from: "users", to: "activity_log", type: "1:N" },
+  { from: "users", to: "doctrine_reads", type: "1:N" },
+
+  // Binsat Organisasi & Personel
+  { from: "units", to: "top_positions", type: "1:N" },
+  { from: "units", to: "personnel", type: "1:N" },
+  { from: "units", to: "materiels", type: "1:N" },
+  { from: "units", to: "facilities", type: "1:N" },
+  { from: "units", to: "training_programs", type: "1:N" },
+  { from: "units", to: "readiness_calculation_logs", type: "1:N" },
+  { from: "ranks", to: "personnel", type: "1:N" },
+  { from: "top_positions", to: "personnel_assignments", type: "1:N" },
+  { from: "personnel", to: "personnel_assignments", type: "1:N" },
+  { from: "personnel", to: "daily_readiness", type: "1:N" },
+  { from: "personnel", to: "housing_occupancies", type: "1:N" },
+  { from: "personnel", to: "training_participants", type: "1:N" },
+  { from: "personnel", to: "courses", type: "1:N" },
+  { from: "personnel", to: "classrooms", type: "1:N" },
+
+  // Binsat Materiil & Fasilitas
+  { from: "materiel_categories", to: "materiels", type: "1:N" },
+  { from: "materiels", to: "materiel_maintenances", type: "1:N" },
+  { from: "facilities", to: "facility_repair_requests", type: "1:N" },
+  { from: "facilities", to: "housing_occupancies", type: "1:N" },
+  { from: "facilities", to: "training_sessions", type: "1:N" },
+
+  // Binsat Latihan, Doktrin & Indeks
+  { from: "training_programs", to: "training_sessions", type: "1:N" },
+  { from: "training_sessions", to: "training_participants", type: "1:N" },
+  { from: "doctrines", to: "doctrine_reads", type: "1:N" },
+  { from: "assessments", to: "doctrines", type: "1:N" },
+
+  // LMS
+  { from: "education_programs", to: "classrooms", type: "1:N" },
+  { from: "classrooms", to: "students", type: "1:N" },
+  { from: "classrooms", to: "courses", type: "1:N" },
+  { from: "courses", to: "lessons", type: "1:N" },
+  { from: "courses", to: "assessments", type: "1:N" },
+  { from: "courses", to: "question_banks", type: "1:N" },
+  { from: "question_banks", to: "questions", type: "1:N" },
+  { from: "assessments", to: "exam_attempts", type: "1:N" },
+  { from: "students", to: "exam_attempts", type: "1:N" },
+  { from: "students", to: "student_report_cards", type: "1:N" },
+  { from: "students", to: "certificates", type: "1:N" },
+
+  // E-Pustaka
+  { from: "library_categories", to: "library_items", type: "1:N" },
+  { from: "library_items", to: "library_copies", type: "1:N" },
+  { from: "library_copies", to: "library_loans", type: "1:N" },
+  { from: "library_loans", to: "library_fines", type: "1:1" },
+  { from: "library_items", to: "lessons", type: "1:N" }, // Integrasi Pustaka -> LMS
+  { from: "library_items", to: "library_reading_logs", type: "1:N" },
+
+  // WBK
+  { from: "complaints", to: "complaint_actions", type: "1:N" },
+  { from: "surveys", to: "survey_responses", type: "1:N" }
+];
+
+// ==================== RENDERING LOGIC ====================
+const container = document.getElementById("tables-container");
+const svgLayer = document.getElementById("svg-layer");
+
+const clusterColors = {
+  core: "var(--c-core)",
+  binsat: "var(--c-binsat)",
+  lms: "var(--c-lms)",
+  lib: "var(--c-lib)",
+  wbk: "var(--c-wbk)"
+};
+
+function renderTables() {
+  container.innerHTML = "";
+  tablesData.forEach(t => {
+    const card = document.createElement("div");
+    card.className = `table-card table-${t.cluster}`;
+    card.id = `card-${t.id}`;
+    card.style.left = `${t.x}px`;
+    card.style.top = `${t.y}px`;
+    card.onclick = (e) => {
+      e.stopPropagation();
+      openDrawer(t);
+    };
+
+    let fieldsHtml = "";
+    t.fields.slice(0, 5).forEach(f => {
+      let keyTag = "";
+      if (f.key === "pk") keyTag = `<span class="key-badge key-pk">PK</span>`;
+      else if (f.key === "fk") keyTag = `<span class="key-badge key-fk">FK</span>`;
+      
+      fieldsHtml += `
+        <div class="field-row">
+          <div class="field-left">
+            ${keyTag}
+            <span class="field-name">${f.name}</span>
+          </div>
+          <span class="field-type">${f.type}</span>
+        </div>
+      `;
+    });
+
+    if (t.fields.length > 5) {
+      fieldsHtml += `<div class="more-fields">+ ${t.fields.length - 5} kolom lainnya...</div>`;
+    }
+
+    card.innerHTML = `
+      <div class="table-header" style="background:${clusterColors[t.cluster]};">
+        <div class="table-name">
+          <span class="ms" style="font-size:16px;">table_rows</span>
+          ${t.name}
+        </div>
+        <span class="table-badge">${t.cluster.toUpperCase()}</span>
+      </div>
+      <div class="table-body">
+        ${fieldsHtml}
+      </div>
+    `;
+
+    container.appendChild(card);
+  });
+
+  renderConnections();
+}
+
+function renderConnections() {
+  // Clear old paths
+  const oldPaths = svgLayer.querySelectorAll("path.rel-line");
+  oldPaths.forEach(p => p.remove());
+
+  relations.forEach((rel, idx) => {
+    const fromCard = document.getElementById(`card-${rel.from}`);
+    const toCard = document.getElementById(`card-${rel.to}`);
+    if (!fromCard || !toCard) return;
+
+    const fromX = parseInt(fromCard.style.left) + 160;
+    const fromY = parseInt(fromCard.style.top) + 40;
+    const toX = parseInt(toCard.style.left) + 160;
+    const toY = parseInt(toCard.style.top) + 40;
+
+    const dx = toX - fromX;
+    const dy = toY - fromY;
+    const cx1 = fromX + dx * 0.4;
+    const cy1 = fromY;
+    const cx2 = fromX + dx * 0.6;
+    const cy2 = toY;
+
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", `M ${fromX} ${fromY} C ${cx1} ${cy1}, ${cx2} ${cy2}, ${toX} ${toY}`);
+    path.setAttribute("class", "rel-line");
+    path.setAttribute("id", `rel-${rel.from}-${rel.to}`);
+    path.setAttribute("stroke", "rgba(201, 162, 39, 0.45)");
+    path.setAttribute("marker-end", "url(#arrow)");
+    path.setAttribute("marker-start", "url(#dot-mark)");
+
+    svgLayer.appendChild(path);
+  });
+}
+
+// ==================== INTERACTION & PAN-ZOOM ====================
+let scale = 0.55;
+let panX = 40;
+let panY = 20;
+let isDragging = false;
+let startX, startY;
+
+const viewport = document.getElementById("viewport");
+const canvas = document.getElementById("canvas");
+
+function applyTransform() {
+  canvas.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
+}
+
+viewport.addEventListener("mousedown", (e) => {
+  if (e.target.closest(".table-card") || e.target.closest("#drawer")) return;
+  isDragging = true;
+  viewport.classList.add("grabbing");
+  startX = e.clientX - panX;
+  startY = e.clientY - panY;
+});
+
+window.addEventListener("mousemove", (e) => {
+  if (!isDragging) return;
+  panX = e.clientX - startX;
+  panY = e.clientY - startY;
+  applyTransform();
+});
+
+window.addEventListener("mouseup", () => {
+  isDragging = false;
+  viewport.classList.remove("grabbing");
+});
+
+viewport.addEventListener("wheel", (e) => {
+  e.preventDefault();
+  const zoomFactor = e.deltaY < 0 ? 1.08 : 0.92;
+  const newScale = Math.min(Math.max(scale * zoomFactor, 0.2), 1.8);
+  
+  // Zoom to mouse cursor
+  const rect = viewport.getBoundingClientRect();
+  const mouseX = e.clientX - rect.left;
+  const mouseY = e.clientY - rect.top;
+  
+  panX = mouseX - (mouseX - panX) * (newScale / scale);
+  panY = mouseY - (mouseY - panY) * (newScale / scale);
+  scale = newScale;
+  applyTransform();
+}, { passive: false });
+
+function zoomBy(delta) {
+  scale = Math.min(Math.max(scale + delta, 0.25), 1.6);
+  applyTransform();
+}
+
+function resetTransform() {
+  scale = 0.55;
+  panX = 40;
+  panY = 20;
+  applyTransform();
+}
+
+function fitToScreen() {
+  scale = 0.32;
+  panX = 10;
+  panY = 10;
+  applyTransform();
+}
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+}
+
+// ==================== FILTERING & SEARCH ====================
+function filterCluster(cluster) {
+  document.querySelectorAll(".pill-btn").forEach(b => b.classList.remove("active"));
+  event.target.closest(".pill-btn").classList.add("active");
+
+  const cards = document.querySelectorAll(".table-card");
+  const lines = document.querySelectorAll(".rel-line");
+
+  if (cluster === "all") {
+    cards.forEach(c => c.classList.remove("dimmed"));
+    lines.forEach(l => l.style.opacity = "1");
+  } else {
+    cards.forEach(c => {
+      if (c.classList.contains(`table-${cluster}`)) {
+        c.classList.remove("dimmed");
+      } else {
+        c.classList.add("dimmed");
+      }
+    });
+  }
+}
+
+function handleSearch(query) {
+  const q = query.toLowerCase().trim();
+  const cards = document.querySelectorAll(".table-card");
+
+  if (!q) {
+    cards.forEach(c => c.classList.remove("highlighted", "dimmed"));
+    return;
+  }
+
+  let firstMatch = null;
+  tablesData.forEach(t => {
+    const card = document.getElementById(`card-${t.id}`);
+    const matchName = t.name.toLowerCase().includes(q) || t.title.toLowerCase().includes(q);
+    const matchField = t.fields.some(f => f.name.toLowerCase().includes(q));
+
+    if (matchName || matchField) {
+      card.classList.remove("dimmed");
+      card.classList.add("highlighted");
+      if (!firstMatch) firstMatch = t;
+    } else {
+      card.classList.remove("highlighted");
+      card.classList.add("dimmed");
+    }
+  });
+
+  if (firstMatch) {
+    // Pan smoothly to first match
+    panX = (viewport.clientWidth / 2) - (firstMatch.x * scale);
+    panY = (viewport.clientHeight / 2) - (firstMatch.y * scale);
+    applyTransform();
+  }
+}
+
+// ==================== DETAIL DRAWER ====================
+const drawer = document.getElementById("drawer");
+const drawerContent = document.getElementById("drawer-content");
+
+function openDrawer(table) {
+  // Highlight active relations
+  document.querySelectorAll(".rel-line").forEach(l => l.classList.remove("active"));
+  relations.forEach(r => {
+    if (r.from === table.id || r.to === table.id) {
+      const line = document.getElementById(`rel-${r.from}-${r.to}`);
+      if (line) line.classList.add("active");
+    }
+  });
+
+  // Highlight connected cards
+  document.querySelectorAll(".table-card").forEach(c => c.classList.remove("highlighted"));
+  const currentCard = document.getElementById(`card-${table.id}`);
+  if (currentCard) currentCard.classList.add("highlighted");
+
+  let fieldsListHtml = "";
+  table.fields.forEach(f => {
+    fieldsListHtml += `
+      <li>
+        <span>${f.key ? `<span class="key-badge key-${f.key}">${f.key.toUpperCase()}</span> ` : ''}<b>${f.name}</b></span>
+        <span style="color:var(--text-muted);font-size:11px;">${f.type}</span>
+      </li>
+    `;
+  });
+
+  // Outgoing relations
+  const outgoing = relations.filter(r => r.from === table.id);
+  let outgoingHtml = outgoing.length > 0 
+    ? outgoing.map(r => `<li><span>Has Many &rarr; <b>${r.to}</b></span><span class="key-badge key-fk">${r.type}</span></li>`).join("")
+    : `<li style="color:var(--text-muted);">Tidak ada relasi turunan.</li>`;
+
+  // Incoming relations
+  const incoming = relations.filter(r => r.to === table.id);
+  let incomingHtml = incoming.length > 0
+    ? incoming.map(r => `<li><span>Belongs To &larr; <b>${r.from}</b></span><span class="key-badge key-fk">${r.type}</span></li>`).join("")
+    : `<li style="color:var(--text-muted);">Tidak ada relasi induk.</li>`;
+
+  drawerContent.innerHTML = `
+    <div class="drawer-title">${table.name}</div>
+    <span class="drawer-tag" style="background:${clusterColors[table.cluster]};color:#fff;">${table.cluster.toUpperCase()} · ${table.title}</span>
+    <div class="drawer-desc">${table.desc}</div>
+
+    <div class="drawer-sec-title">Daftar Kolom (${table.fields.length})</div>
+    <ul class="drawer-list">
+      ${fieldsListHtml}
+    </ul>
+
+    <div class="drawer-sec-title">Relasi Keluar (Has Many)</div>
+    <ul class="drawer-list">
+      ${outgoingHtml}
+    </ul>
+
+    <div class="drawer-sec-title">Relasi Masuk (Belongs To)</div>
+    <ul class="drawer-list">
+      ${incomingHtml}
+    </ul>
+  `;
+
+  drawer.classList.add("open");
+}
+
+function closeDrawer() {
+  drawer.classList.remove("open");
+  document.querySelectorAll(".rel-line").forEach(l => l.classList.remove("active"));
+  document.querySelectorAll(".table-card").forEach(c => c.classList.remove("highlighted"));
+}
+
+window.addEventListener("click", (e) => {
+  if (!e.target.closest("#drawer") && !e.target.closest(".table-card")) {
+    closeDrawer();
+  }
+});
+
+// Init
+renderTables();
+applyTransform();
+</script>
+</body>
+</html>
