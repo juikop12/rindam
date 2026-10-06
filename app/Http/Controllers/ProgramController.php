@@ -17,16 +17,17 @@ class ProgramController extends Controller
      */
     public function index(Request $request)
     {
-        $satdiks = Satdik::active()->get();
-        $selectedSatdikId = $request->query('satdik_id');
-        $keyword = $request->query('q');
-        $statusFilter = $request->query('status'); // 'Berjalan', 'Perencanaan', 'Selesai', 'Ditutup'
-
-        // Pembatasan hak akses bila operator terikat Satdik tertentu
         $currentUser = Auth::user();
         if ($currentUser && !$currentUser->isPimpinan() && $currentUser->satdik_id) {
             $selectedSatdikId = $currentUser->satdik_id;
+            $satdiks = Satdik::where('id', $selectedSatdikId)->get();
+        } else {
+            $satdiks = Satdik::active()->get();
+            $selectedSatdikId = $request->query('satdik_id');
         }
+
+        $keyword = $request->query('q');
+        $statusFilter = $request->query('status'); // 'Berjalan', 'Perencanaan', 'Selesai', 'Ditutup'
 
         $query = EducationProgram::with(['satdik', 'classrooms'])
             ->withCount('students')

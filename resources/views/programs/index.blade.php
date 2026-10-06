@@ -98,32 +98,44 @@
             <span class="ms">domain</span>
         </div>
         <div>
-            <div class="stat-val">5</div>
+            <div class="stat-val">{{ auth()->check() && !auth()->user()->isPimpinan() && auth()->user()->satdik_id ? 1 : count($satdiks) }}</div>
             <div class="stat-lbl">Satdik Penyelenggara</div>
             <small style="color:var(--muted); font-size:11px; display:block; margin-top:2px;">
-                Secaba, Secata, Dodikjur, Latpur, Belneg
+                {{ auth()->check() && !auth()->user()->isPimpinan() && auth()->user()->satdik_id ? (auth()->user()->satdik?->code ?? 'Satuan Anda') : 'Secaba, Secata, Dodikjur, Latpur, Belneg' }}
             </small>
         </div>
     </div>
 </div>
 
 <!-- SATDIK NAVIGATION TABS -->
-<div class="satdik-nav">
-    <a href="{{ route('programs.index', array_merge(request()->except(['satdik_id']))) }}" class="satdik-tab {{ empty($selectedSatdikId) ? 'active' : '' }}">
-        <span class="ms">domain</span> Semua Satdik
-        <span class="tab-badge">{{ $totalPrograms }} Program</span>
-    </a>
-
-    @foreach($satdiks as $satdik)
-        @php
-            $pCount = $satdik->educationPrograms()->count();
-        @endphp
-        <a href="{{ route('programs.index', array_merge(request()->except(['page']), ['satdik_id' => $satdik->id])) }}" class="satdik-tab {{ $selectedSatdikId == $satdik->id ? 'active' : '' }}">
-            <span class="ms">military_tech</span> {{ $satdik->code }}
-            <span class="tab-badge">{{ $pCount }} Program</span>
+@if(auth()->check() && !auth()->user()->isPimpinan() && auth()->user()->satdik_id)
+    <div class="satdik-nav" style="margin-bottom:20px;">
+        <div class="satdik-tab active" style="cursor:default; background:var(--o800); color:var(--gold2); border-color:var(--gold); box-shadow:0 4px 12px rgba(29,42,22,0.15);">
+            <span class="ms" style="color:var(--gold);">lock</span> 
+            <span>SATDIK ANDA: <b>{{ auth()->user()->satdik?->code }}</b> &mdash; {{ auth()->user()->satdik?->name }}</span>
+            <span class="tab-badge" style="background:var(--gold); color:var(--o900); font-weight:800;">
+                🔒 Terkunci Sesuai Wewenang Akun
+            </span>
+        </div>
+    </div>
+@else
+    <div class="satdik-nav">
+        <a href="{{ route('programs.index', array_merge(request()->except(['satdik_id']))) }}" class="satdik-tab {{ empty($selectedSatdikId) ? 'active' : '' }}">
+            <span class="ms">domain</span> Semua Satdik
+            <span class="tab-badge">{{ $totalPrograms }} Program</span>
         </a>
-    @endforeach
-</div>
+
+        @foreach($satdiks as $satdik)
+            @php
+                $pCount = $satdik->educationPrograms()->count();
+            @endphp
+            <a href="{{ route('programs.index', array_merge(request()->except(['page']), ['satdik_id' => $satdik->id])) }}" class="satdik-tab {{ $selectedSatdikId == $satdik->id ? 'active' : '' }}">
+                <span class="ms">military_tech</span> {{ $satdik->code }}
+                <span class="tab-badge">{{ $pCount }} Program</span>
+            </a>
+        @endforeach
+    </div>
+@endif
 
 <!-- FILTER & SEARCH BAR -->
 <div class="card" style="margin-bottom:20px; padding:16px 20px;">

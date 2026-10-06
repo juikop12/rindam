@@ -27,22 +27,21 @@ class StudentController extends Controller
      */
     public function index(Request $request)
     {
-        $satdiks = Satdik::active()->get();
-        
-        $selectedSatdikId = $request->query('satdik_id');
-        $selectedSatdikCode = $request->query('satdik');
-
-        if ($selectedSatdikCode && !$selectedSatdikId) {
-            $matched = $satdiks->firstWhere('code', strtoupper($selectedSatdikCode));
-            if ($matched) {
-                $selectedSatdikId = $matched->id;
-            }
-        }
-
-        // Jika user adalah operator terikat pada satu Satdik
         $currentUser = Auth::user();
         if ($currentUser && !$currentUser->isPimpinan() && $currentUser->satdik_id) {
             $selectedSatdikId = $currentUser->satdik_id;
+            $satdiks = Satdik::where('id', $selectedSatdikId)->get();
+        } else {
+            $satdiks = Satdik::active()->get();
+            $selectedSatdikId = $request->query('satdik_id');
+            $selectedSatdikCode = $request->query('satdik');
+
+            if ($selectedSatdikCode && !$selectedSatdikId) {
+                $matched = $satdiks->firstWhere('code', strtoupper($selectedSatdikCode));
+                if ($matched) {
+                    $selectedSatdikId = $matched->id;
+                }
+            }
         }
 
         $selectedProgramId = $request->query('program_id') ? (int)$request->query('program_id') : null;
@@ -73,7 +72,11 @@ class StudentController extends Controller
         $availablePrograms = $programsQuery->orderBy('name')->get();
         $selectedProgram = $selectedProgramId ? EducationProgram::find($selectedProgramId) : null;
 
-        $allPrograms = EducationProgram::with('classrooms')->orderBy('name')->get();
+        $allProgramsQuery = EducationProgram::with('classrooms')->orderBy('name');
+        if ($currentUser && !$currentUser->isPimpinan() && $currentUser->satdik_id) {
+            $allProgramsQuery->where('satdik_id', $currentUser->satdik_id);
+        }
+        $allPrograms = $allProgramsQuery->get();
         $allClassrooms = Classroom::orderBy('name')->get();
 
         return view('students.index', compact(
@@ -539,9 +542,16 @@ class StudentController extends Controller
      */
     public function auditLogs(Request $request)
     {
-        $logs = StudentPersonalDataAccessLog::with(['student.satdik', 'accessedByUser'])
-            ->latest('accessed_at')
-            ->paginate(20);
+        $currentUser = Auth::user();
+        $query = StudentPersonalDataAccessLog::with(['student.satdik', 'accessedByUser']);
+
+        if ($currentUser && !$currentUser->isPimpinan() && $currentUser->satdik_id) {
+            $query->whereHas('student', function ($q) use ($currentUser) {
+                $q->where('satdik_id', $currentUser->satdik_id);
+            });
+        }
+
+        $logs = $query->latest('accessed_at')->paginate(20);
 
         return view('students.audit_logs', compact('logs'));
     }

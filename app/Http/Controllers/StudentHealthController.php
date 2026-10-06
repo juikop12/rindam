@@ -23,21 +23,21 @@ class StudentHealthController extends Controller
      */
     public function index(Request $request)
     {
-        $satdiks = Satdik::active()->get();
-        $selectedSatdikId = $request->query('satdik_id');
-        $selectedSatdikCode = $request->query('satdik');
-
-        if ($selectedSatdikCode && !$selectedSatdikId) {
-            $matched = $satdiks->firstWhere('code', strtoupper($selectedSatdikCode));
-            if ($matched) {
-                $selectedSatdikId = $matched->id;
-            }
-        }
-
-        // Jika user adalah operator terikat Satdik tertentu
         $currentUser = Auth::user();
         if ($currentUser && !$currentUser->isPimpinan() && $currentUser->satdik_id) {
             $selectedSatdikId = $currentUser->satdik_id;
+            $satdiks = Satdik::where('id', $selectedSatdikId)->get();
+        } else {
+            $satdiks = Satdik::active()->get();
+            $selectedSatdikId = $request->query('satdik_id');
+            $selectedSatdikCode = $request->query('satdik');
+
+            if ($selectedSatdikCode && !$selectedSatdikId) {
+                $matched = $satdiks->firstWhere('code', strtoupper($selectedSatdikCode));
+                if ($matched) {
+                    $selectedSatdikId = $matched->id;
+                }
+            }
         }
 
         $selectedProgramId = $request->query('program_id') ? (int)$request->query('program_id') : null;
