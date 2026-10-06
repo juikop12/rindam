@@ -388,6 +388,7 @@
 <!-- =====================================================================
      MODAL TAMBAH KOMPI & PELETON BARU
      ===================================================================== -->
+@if(auth()->user()?->canModifyData())
 <div class="modal-overlay" id="createClassroomModal">
     <div class="modal-card" style="max-width:540px;">
         <div class="modal-header">
@@ -547,17 +548,23 @@
         </form>
     </div>
 </div>
+@endif
 
 @endsection
 
 @section('scripts')
 <script>
 function openCreateClassroomModal() {
+    if (!document.getElementById('createClassroomModal')) return;
     document.getElementById('createClassroomModal').classList.add('active');
-    setTimeout(() => document.getElementById('create_company').focus(), 100);
+    setTimeout(() => {
+        const comp = document.getElementById('create_company');
+        if (comp) comp.focus();
+    }, 100);
 }
 
 function closeCreateClassroomModal() {
+    if (!document.getElementById('createClassroomModal')) return;
     document.getElementById('createClassroomModal').classList.remove('active');
 }
 
@@ -572,6 +579,7 @@ function updateCreateClassName() {
 }
 
 function openEditClassroomModal(cls) {
+    if (!document.getElementById('editClassroomModal')) return;
     const form = document.getElementById('editClassroomForm');
     form.action = `/classrooms/${cls.id}`;
     document.getElementById('edit_company').value = cls.company || '';
@@ -584,6 +592,7 @@ function openEditClassroomModal(cls) {
 }
 
 function closeEditClassroomModal() {
+    if (!document.getElementById('editClassroomModal')) return;
     document.getElementById('editClassroomModal').classList.remove('active');
 }
 

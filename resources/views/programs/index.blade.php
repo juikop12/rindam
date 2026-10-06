@@ -428,9 +428,11 @@
             <p style="color:var(--muted); font-size:13px; max-width:480px; margin:6px auto 16px;">
                 Belum ada program pendidikan yang terdaftar untuk filter Satdik atau kata kunci pencarian ini.
             </p>
+            @if(auth()->user()?->canModifyData())
             <button type="button" class="btn btn-gold" onclick="openCreateProgramModal()">
                 <span class="ms">add_circle</span> Tambah Program Baru
             </button>
+            @endif
         </div>
     @endforelse
 </div>
@@ -438,6 +440,7 @@
 <!-- =====================================================================
      MODAL TAMBAH PROGRAM PENDIDIKAN BARU
      ===================================================================== -->
+@if(auth()->user()?->canModifyData())
 <div class="modal-overlay" id="createProgramModal">
     <div class="modal-card" style="max-width:540px;">
         <div class="modal-header">
@@ -601,6 +604,7 @@
         </form>
     </div>
 </div>
+@endif
 
 @endsection
 
@@ -653,13 +657,16 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function openCreateProgramModal() {
+    if (!document.getElementById('createProgramModal')) return;
     document.getElementById('createProgramModal').classList.add('active');
 }
 function closeCreateProgramModal() {
+    if (!document.getElementById('createProgramModal')) return;
     document.getElementById('createProgramModal').classList.remove('active');
 }
 
 function openEditProgramModal(prog) {
+    if (!document.getElementById('editProgramModal')) return;
     const form = document.getElementById('editProgramForm');
     form.action = `/programs/${prog.id}`;
     document.getElementById('editSatdikId').value = prog.satdik_id;

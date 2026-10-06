@@ -1386,11 +1386,13 @@
                 </div>
                 
                 <!-- Action Button -->
+                @if(auth()->user()?->canModifyData())
                 <button onclick="if(typeof openCreateStudentModal === 'function') { openCreateStudentModal(); } else { window.location='{{ route('students.index', ['action' => 'create']) }}'; }" 
                         class="flex items-center gap-2 px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg font-semibold text-sm shadow-sm transition-colors duration-200">
                     <span class="ms text-[20px]">add</span>
                     <span class="hidden sm:block">Tambah Serdik</span>
                 </button>
+                @endif
 
                 <!-- Logout Button in Topbar -->
                 <form method="POST" action="{{ route('logout') }}" class="inline">

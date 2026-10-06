@@ -444,6 +444,7 @@
     </div>
 </div>
 
+@if(auth()->user()?->canModifyData())
 <!-- MODAL UBAH STATUS SERDIK (AKTIF vs ARSIP SELESAI) -->
 <div class="modal-overlay" id="statusModal">
     <div class="modal-card" style="max-width:480px;">
@@ -494,6 +495,7 @@
         </form>
     </div>
 </div>
+@endif
 
 <!-- MODAL BUKA DATA PRIBADI TERPROTEKSI (SIPANDU-WBK) -->
 <div class="modal-overlay" id="revealModal">
@@ -600,6 +602,7 @@
     <option value="Kodam V/Brw - Kodim 0832/Surabaya Selatan">
 </datalist>
 
+@if(auth()->user()?->canModifyData())
 <!-- 1. MODAL TAMBAH SISWA BARU (CREATE) -->
 <div class="modal-overlay" id="createStudentModal">
     <div class="modal-card" style="max-width:900px; max-height:92vh; display:flex; flex-direction:column;">
@@ -1133,6 +1136,7 @@
         </form>
     </div>
 </div>
+@endif
 
 @endsection
 
@@ -1247,6 +1251,7 @@ function calcBmi(prefix) {
 
 // Modal open/close functions
 function openCreateStudentModal(defaultSatdikId = null, defaultProgramId = null) {
+    if (!document.getElementById('createStudentModal')) return;
     const operatorSatdikId = '{{ (!auth()->user()?->isPimpinan() && auth()->user()?->satdik_id) ? auth()->user()->satdik_id : '' }}';
     const sId = operatorSatdikId || defaultSatdikId || '{{ $selectedSatdikId }}' || (allSatdiksData.length > 0 ? allSatdiksData[0].id : '');
     const pId = defaultProgramId || '{{ $selectedProgramId }}' || '';
@@ -1266,6 +1271,7 @@ function closeCreateStudentModal() {
 }
 
 function openEditStudentModal(btnOrData) {
+    if (!document.getElementById('editStudentModal')) return;
     let s;
     if (typeof btnOrData === 'object' && btnOrData.getAttribute) {
         s = JSON.parse(btnOrData.getAttribute('data-student'));
@@ -1318,6 +1324,7 @@ function closeEditStudentModal() {
 }
 
 function openDeleteStudentModal(id, name, nosik, satdikName) {
+    if (!document.getElementById('deleteStudentModal')) return;
     document.getElementById('deleteStudentForm').action = `/students/${id}`;
     document.getElementById('deleteModalStudentName').textContent = name;
     document.getElementById('deleteModalStudentNosik').textContent = 'NOSIK: ' + nosik;
@@ -1391,6 +1398,7 @@ function handleAjaxSubmit(event, type) {
 
 // Status & Reveal modal functions
 function openStatusModal(studentId, fullName, currentStatus) {
+    if (!document.getElementById('statusModal')) return;
     document.getElementById('statusModalStudentName').textContent = fullName;
     const form = document.getElementById('statusForm');
     form.action = `/students/${studentId}/status`;
@@ -1524,12 +1532,16 @@ window.addEventListener('keydown', function(e) {
 
 // Auto-open modal if URL query param action=create exists
 document.addEventListener('DOMContentLoaded', function() {
+    @if(auth()->user()?->canModifyData())
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('action') === 'create') {
         const satdikParam = urlParams.get('satdik_id');
         const progParam = urlParams.get('program_id');
-        openCreateStudentModal(satdikParam, progParam);
+        if (typeof openCreateStudentModal === 'function') {
+            openCreateStudentModal(satdikParam, progParam);
+        }
     }
+    @endif
 });
 </script>
 @endsection

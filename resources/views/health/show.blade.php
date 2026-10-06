@@ -159,9 +159,11 @@
                     <div style="font-size:11px; color:#2E7D32;">Status Rawat Inap & Rujukan Kesehatan Siswa</div>
                 </div>
             </div>
+            @if(auth()->user()?->canModifyData())
             <a href="{{ route('health.edit', $student) }}" class="btn btn-outline btn-sm" style="background:#fff;">
                 <span class="ms">edit</span> Update Perawatan
             </a>
+            @endif
         </div>
         <div class="card-body">
             <table style="width:100%; border-collapse:collapse; font-size:13.5px;">
