@@ -20,9 +20,11 @@
         <a href="{{ route('students.show', $student) }}" class="btn btn-outline btn-sm">
             <span class="ms">badge</span> Lihat Data Pribadi
         </a>
-        <a href="{{ route('health.edit', $student) }}" class="btn btn-gold btn-sm">
-            <span class="ms">edit</span> Perbarui Status Kesehatan
-        </a>
+        @if(auth()->user()?->canModifyData())
+            <a href="{{ route('health.edit', $student) }}" class="btn btn-gold btn-sm">
+                <span class="ms">edit</span> Perbarui Status Kesehatan
+            </a>
+        @endif
     </div>
 </div>
 

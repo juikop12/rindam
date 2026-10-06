@@ -170,7 +170,11 @@ class ProgramController extends Controller
     public function store(Request $request)
     {
         $currentUser = Auth::user();
-        if ($currentUser && !$currentUser->isPimpinan() && $currentUser->satdik_id) {
+        if ($currentUser && !$currentUser->canModifyData()) {
+            abort(403, 'Akses Ditolak: Akun Anda berada dalam mode peninjauan (Hanya Baca / View-Only) dan tidak dapat menambah program pendidikan.');
+        }
+
+        if ($currentUser && !$currentUser->hasCrossSatdikAccess() && $currentUser->satdik_id) {
             $request->merge(['satdik_id' => $currentUser->satdik_id]);
         }
 
@@ -186,7 +190,7 @@ class ProgramController extends Controller
             'initial_classrooms' => ['nullable', 'string', 'max:255'],
         ]);
 
-        if ($currentUser && !$currentUser->isPimpinan() && $currentUser->satdik_id) {
+        if ($currentUser && !$currentUser->hasCrossSatdikAccess() && $currentUser->satdik_id) {
             $validated['satdik_id'] = $currentUser->satdik_id;
         }
 
@@ -242,10 +246,13 @@ class ProgramController extends Controller
     public function update(Request $request, EducationProgram $program)
     {
         $currentUser = Auth::user();
-        if ($currentUser && !$currentUser->isPimpinan() && $currentUser->satdik_id) {
-            if ($program->satdik_id !== $currentUser->satdik_id) {
-                abort(403, 'Akses Ditolak: Anda hanya berwenang memperbarui program pendidikan pada Satuan Pendidikan Anda.');
-            }
+        if ($currentUser && !$currentUser->canModifyData()) {
+            abort(403, 'Akses Ditolak: Akun Anda berada dalam mode peninjauan (Hanya Baca / View-Only) dan tidak dapat mengubah program pendidikan.');
+        }
+        if ($currentUser && !$currentUser->canManageSatdik($program->satdik_id)) {
+            abort(403, 'Akses Ditolak: Anda hanya berwenang memperbarui program pendidikan pada Satuan Pendidikan Anda.');
+        }
+        if ($currentUser && !$currentUser->hasCrossSatdikAccess() && $currentUser->satdik_id) {
             $request->merge(['satdik_id' => $currentUser->satdik_id]);
         }
 
@@ -260,7 +267,7 @@ class ProgramController extends Controller
             'end_date' => ['nullable', 'date'],
         ]);
 
-        if ($currentUser && !$currentUser->isPimpinan() && $currentUser->satdik_id) {
+        if ($currentUser && !$currentUser->hasCrossSatdikAccess() && $currentUser->satdik_id) {
             $validated['satdik_id'] = $currentUser->satdik_id;
         }
 
@@ -284,10 +291,11 @@ class ProgramController extends Controller
     public function destroy(EducationProgram $program)
     {
         $currentUser = Auth::user();
-        if ($currentUser && !$currentUser->isPimpinan() && $currentUser->satdik_id) {
-            if ($program->satdik_id !== $currentUser->satdik_id) {
-                abort(403, 'Akses Ditolak: Anda hanya berwenang menghapus program pendidikan pada Satuan Pendidikan Anda.');
-            }
+        if ($currentUser && !$currentUser->canModifyData()) {
+            abort(403, 'Akses Ditolak: Akun Anda berada dalam mode peninjauan (Hanya Baca / View-Only) dan tidak dapat menghapus program pendidikan.');
+        }
+        if ($currentUser && !$currentUser->canManageSatdik($program->satdik_id)) {
+            abort(403, 'Akses Ditolak: Anda hanya berwenang menghapus program pendidikan pada Satuan Pendidikan Anda.');
         }
 
         $studentCount = $program->students()->count();

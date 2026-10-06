@@ -23,13 +23,31 @@ class AuthController extends Controller
         // Akun-akun percontohan untuk mempermudah pengujian & simulasi role
         $demoAccounts = [
             [
-                'role' => 'Pimpinan Satuan',
-                'badge' => 'Pusat & Seluruh Satdik',
+                'role' => 'Super Administrator',
+                'badge' => 'Sistem & Pengaturan',
+                'color' => '#1E293B',
+                'name' => 'Super Administrator',
+                'email' => 'superadmin@rindam.mil.id',
+                'password' => 'password',
+                'scope' => 'Pengaturan Superadmin & Kelola Akun',
+            ],
+            [
+                'role' => 'Danrindam',
+                'badge' => 'Pusat (View Only 5 Satdik)',
                 'color' => '#C9A227',
                 'name' => 'Kolonel Inf Danrindam III/Slw',
                 'email' => 'danrindam@rindam.mil.id',
                 'password' => 'password',
-                'scope' => 'Akses Penuh 5 Satdik + Manajemen Akun',
+                'scope' => 'Monitoring 5 Satdik (Hanya Lihat)',
+            ],
+            [
+                'role' => 'Operator Danrindam',
+                'badge' => 'Pusat (Akses Penuh 5 Satdik)',
+                'color' => '#0284C7',
+                'name' => 'Mayor Inf Operator Danrindam',
+                'email' => 'operator.danrindam@rindam.mil.id',
+                'password' => 'password',
+                'scope' => 'Kelola Data 5 Satdik (Non-Superadmin)',
             ],
             [
                 'role' => 'Operator Satdik',

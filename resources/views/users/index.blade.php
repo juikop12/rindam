@@ -44,13 +44,26 @@
 
     <div class="stat-card">
         <div class="stat-icon" style="background:linear-gradient(135deg, var(--gold), #8A680C);">
-            <span class="ms">military_tech</span>
+            <span class="ms">visibility</span>
         </div>
         <div>
             <div class="stat-val" style="color:var(--gold);">{{ $stats['pimpinan'] }}</div>
-            <div class="stat-lbl">Pimpinan Satuan (Pusat)</div>
+            <div class="stat-lbl">Danrindam (View Only)</div>
             <small style="color:var(--muted); font-size:11px; display:block; margin-top:2px;">
-                Akses Seluruh 5 Satdik
+                Monitoring Seluruh 5 Satdik
+            </small>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon" style="background:linear-gradient(135deg, #0284C7, #0369A1);">
+            <span class="ms">edit_document</span>
+        </div>
+        <div>
+            <div class="stat-val" style="color:#0284C7;">{{ $stats['operator_danrindam'] ?? 1 }}</div>
+            <div class="stat-lbl">Operator Danrindam</div>
+            <small style="color:var(--muted); font-size:11px; display:block; margin-top:2px;">
+                Akses Penuh Seluruh 5 Satdik
             </small>
         </div>
     </div>
@@ -64,19 +77,6 @@
             <div class="stat-lbl">Operator Satdik Terkunci</div>
             <small style="color:var(--muted); font-size:11px; display:block; margin-top:2px;">
                 Secaba, Secata, Dodikjur, dll.
-            </small>
-        </div>
-    </div>
-
-    <div class="stat-card">
-        <div class="stat-icon" style="background:linear-gradient(135deg, #475569, #334155);">
-            <span class="ms">policy</span>
-        </div>
-        <div>
-            <div class="stat-val" style="color:#475569;">{{ $stats['tim_zi'] }}</div>
-            <div class="stat-lbl">Pengawas Integritas / ZI</div>
-            <small style="color:var(--muted); font-size:11px; display:block; margin-top:2px;">
-                Audit Trail & Pengawasan
             </small>
         </div>
     </div>
@@ -103,7 +103,9 @@
             <div style="min-width:180px;">
                 <select name="role" class="form-control" onchange="this.form.submit()" style="font-size:13px;">
                     <option value="">-- Semua Peran / Role --</option>
-                    <option value="pimpinan" {{ $selectedRole === 'pimpinan' ? 'selected' : '' }}>Pimpinan / Komandan</option>
+                    <option value="super_admin" {{ $selectedRole === 'super_admin' ? 'selected' : '' }}>Super Admin</option>
+                    <option value="pimpinan" {{ $selectedRole === 'pimpinan' ? 'selected' : '' }}>Danrindam (View Only)</option>
+                    <option value="operator_danrindam" {{ $selectedRole === 'operator_danrindam' ? 'selected' : '' }}>Operator Danrindam (Pusat)</option>
                     <option value="operator_satdik" {{ $selectedRole === 'operator_satdik' ? 'selected' : '' }}>Operator Satdik</option>
                     <option value="tim_zi" {{ $selectedRole === 'tim_zi' ? 'selected' : '' }}>Tim ZI / Inspektorat</option>
                 </select>
@@ -153,7 +155,7 @@
                         </td>
                         <td style="padding:14px 18px;">
                             <div style="display:flex; align-items:center; gap:12px;">
-                                <div style="width:38px; height:38px; border-radius:10px; background:{{ $u->isPimpinan() ? '#FEF3C7' : ($u->isOperator() ? '#DCFCE7' : '#E2E8F0') }}; color:{{ $u->isPimpinan() ? '#92400E' : ($u->isOperator() ? '#166534' : '#334155') }}; display:grid; place-items:center; font-weight:800; font-size:15px; flex-shrink:0;">
+                                <div style="width:38px; height:38px; border-radius:10px; background:{{ $u->isSuperAdmin() ? '#0F172A' : ($u->isDanrindam() ? '#FEF3C7' : ($u->isOperatorDanrindam() ? '#E0F2FE' : ($u->isOperatorSatdik() ? '#DCFCE7' : '#E2E8F0'))) }}; color:{{ $u->isSuperAdmin() ? '#F8FAFC' : ($u->isDanrindam() ? '#92400E' : ($u->isOperatorDanrindam() ? '#0369A1' : ($u->isOperatorSatdik() ? '#166534' : '#334155'))) }}; display:grid; place-items:center; font-weight:800; font-size:15px; flex-shrink:0;">
                                     {{ strtoupper(substr($u->name, 0, 2)) }}
                                 </div>
                                 <div>
@@ -171,11 +173,19 @@
                             {{ $u->email }}
                         </td>
                         <td style="padding:14px 18px;">
-                            @if($u->isPimpinan())
-                                <span class="badge" style="background:#FEF3C7; color:#92400E; border:1px solid #FDE68A; padding:4px 10px; font-size:11.5px; font-weight:700;">
-                                    <span class="ms" style="font-size:14px;">military_tech</span> Pimpinan
+                            @if($u->isSuperAdmin())
+                                <span class="badge" style="background:#0F172A; color:#F8FAFC; border:1px solid #334155; padding:4px 10px; font-size:11.5px; font-weight:700;">
+                                    <span class="ms" style="font-size:14px;">admin_panel_settings</span> Super Admin
                                 </span>
-                            @elseif($u->isOperator())
+                            @elseif($u->isDanrindam())
+                                <span class="badge" style="background:#FEF3C7; color:#92400E; border:1px solid #FDE68A; padding:4px 10px; font-size:11.5px; font-weight:700;">
+                                    <span class="ms" style="font-size:14px;">visibility</span> Danrindam (View Only)
+                                </span>
+                            @elseif($u->isOperatorDanrindam())
+                                <span class="badge" style="background:#E0F2FE; color:#0369A1; border:1px solid #BAE6FD; padding:4px 10px; font-size:11.5px; font-weight:700;">
+                                    <span class="ms" style="font-size:14px;">edit_document</span> Operator Danrindam
+                                </span>
+                            @elseif($u->isOperatorSatdik())
                                 <span class="badge" style="background:#DCFCE7; color:#166534; border:1px solid #BBF7D0; padding:4px 10px; font-size:11.5px; font-weight:700;">
                                     <span class="ms" style="font-size:14px;">support_agent</span> Operator Satdik
                                 </span>
@@ -299,7 +309,9 @@
                     <label class="form-label">Peran dalam Sistem (Role) <span style="color:var(--red);">*</span></label>
                     <select name="role_code" id="create_role_code" class="form-control" required onchange="handleRoleChange('create', this.value)">
                         <option value="operator_satdik" selected>Operator Satuan Pendidikan (Terkunci per Satdik)</option>
-                        <option value="pimpinan">Komandan / Pimpinan Satuan (Akses Seluruh 5 Satdik)</option>
+                        <option value="operator_danrindam">Operator Danrindam (Akses Penuh Seluruh 5 Satdik)</option>
+                        <option value="pimpinan">Danrindam (Pimpinan Satuan - View Only 5 Satdik)</option>
+                        <option value="super_admin">Super Administrator (Akses Penuh Pengaturan & Sistem)</option>
                         <option value="tim_zi">Tim Pengawasan Integritas / ZI Area 5</option>
                         <option value="poliklinik">Petugas Medis / Poliklinik</option>
                     </select>
@@ -384,7 +396,9 @@
                     <label class="form-label">Peran dalam Sistem (Role) <span style="color:var(--red);">*</span></label>
                     <select name="role_code" id="edit_role_code" class="form-control" required onchange="handleRoleChange('edit', this.value)">
                         <option value="operator_satdik">Operator Satuan Pendidikan (Terkunci per Satdik)</option>
-                        <option value="pimpinan">Komandan / Pimpinan Satuan (Akses Seluruh 5 Satdik)</option>
+                        <option value="operator_danrindam">Operator Danrindam (Akses Penuh Seluruh 5 Satdik)</option>
+                        <option value="pimpinan">Danrindam (Pimpinan Satuan - View Only 5 Satdik)</option>
+                        <option value="super_admin">Super Administrator (Akses Penuh Pengaturan & Sistem)</option>
                         <option value="tim_zi">Tim Pengawasan Integritas / ZI Area 5</option>
                         <option value="poliklinik">Petugas Medis / Poliklinik</option>
                     </select>

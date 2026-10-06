@@ -340,9 +340,11 @@
                                 <a href="{{ route('health.show', $student) }}" class="btn btn-outline btn-sm" title="Lihat Rekam Medis" style="color:var(--green); padding:5px 8px;">
                                     <span class="ms">visibility</span> Medis
                                 </a>
-                                <a href="{{ route('health.edit', $student) }}" class="btn btn-gold btn-sm" title="Perbarui Status Kesehatan" style="padding:5px 8px;">
-                                    <span class="ms">edit_note</span> Update
-                                </a>
+                                @if(auth()->user()?->canModifyData())
+                                    <a href="{{ route('health.edit', $student) }}" class="btn btn-gold btn-sm" title="Perbarui Status Kesehatan" style="padding:5px 8px;">
+                                        <span class="ms">edit_note</span> Update
+                                    </a>
+                                @endif
                                 <a href="{{ route('students.show', $student) }}" class="btn btn-outline btn-sm" title="Dossier Lengkap Siswa" style="padding:5px 8px;">
                                     <span class="ms">badge</span>
                                 </a>

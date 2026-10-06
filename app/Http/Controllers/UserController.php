@@ -12,13 +12,13 @@ use Illuminate\Validation\Rule;
 class UserController extends Controller
 {
     /**
-     * Pastikan hanya Pimpinan / Super Admin yang berhak mengelola akun pengguna
+     * Pastikan hanya Super Admin yang berhak mengelola akun pengguna
      */
     protected function authorizeManager()
     {
         $currentUser = Auth::user();
-        if (!$currentUser || !$currentUser->isPimpinan()) {
-            abort(403, 'Akses Ditolak: Modul Manajemen Akun Pengguna hanya dapat diakses oleh Komandan / Pimpinan Satuan.');
+        if (!$currentUser || !$currentUser->isSuperAdmin()) {
+            abort(403, 'Akses Ditolak: Modul Manajemen Akun Pengguna hanya dapat diakses oleh Super Administrator.');
         }
     }
 
@@ -77,7 +77,7 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:150'],
             'email' => ['required', 'email', 'max:150', 'unique:users,email'],
             'password' => ['required', 'string', 'min:6'],
-            'role_code' => ['required', 'string', 'in:pimpinan,operator_satdik,tim_zi,poliklinik,super_admin'],
+            'role_code' => ['required', 'string', 'in:super_admin,pimpinan,danrindam,operator_danrindam,operator_satdik,tim_zi,poliklinik'],
             'satdik_id' => [
                 'nullable',
                 'exists:satdiks,id',
@@ -117,7 +117,7 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:150'],
             'email' => ['required', 'email', 'max:150', Rule::unique('users', 'email')->ignore($user->id)],
             'password' => ['nullable', 'string', 'min:6'],
-            'role_code' => ['required', 'string', 'in:pimpinan,operator_satdik,tim_zi,poliklinik,super_admin'],
+            'role_code' => ['required', 'string', 'in:super_admin,pimpinan,danrindam,operator_danrindam,operator_satdik,tim_zi,poliklinik'],
             'satdik_id' => [
                 'nullable',
                 'exists:satdiks,id',
@@ -129,9 +129,9 @@ class UserController extends Controller
             'satdik_id.required' => 'Satuan Pendidikan wajib dipilih untuk peran Operator Satdik.',
         ]);
 
-        // Cegah pengguna mencopot perannya sendiri jika dia satu-satunya pimpinan
-        if ($user->id === Auth::id() && $validated['role_code'] !== 'pimpinan' && $validated['role_code'] !== 'super_admin') {
-            return back()->with('error', 'Anda tidak dapat mengubah peran akun Anda sendiri dari Pimpinan.');
+        // Cegah pengguna mencopot perannya sendiri jika super_admin
+        if ($user->id === Auth::id() && $validated['role_code'] !== 'super_admin') {
+            return back()->with('error', 'Anda tidak dapat mengubah peran akun Anda sendiri dari Super Administrator.');
         }
 
         $satdikId = ($validated['role_code'] === 'operator_satdik') ? $validated['satdik_id'] : null;

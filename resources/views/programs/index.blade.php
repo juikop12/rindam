@@ -22,9 +22,11 @@
         </p>
     </div>
     <div style="display:flex; gap:10px; flex-wrap:wrap;">
-        <button type="button" class="btn btn-gold" onclick="openCreateProgramModal()">
-            <span class="ms">add_circle</span> Tambah Program Pendidikan
-        </button>
+        @if(auth()->user()?->canModifyData())
+            <button type="button" class="btn btn-gold" onclick="openCreateProgramModal()">
+                <span class="ms">add_circle</span> Tambah Program Pendidikan
+            </button>
+        @endif
         <a href="{{ route('students.index') }}" class="btn btn-outline" style="background:rgba(255,255,255,0.12); color:#fff; border-color:rgba(255,255,255,0.3);">
             <span class="ms">groups</span> Buka Buku Induk Serdik
         </a>
@@ -279,9 +281,11 @@
                                 <a href="{{ route('programs.show', $p['id']) }}" class="btn btn-outline btn-sm" style="padding:4px 8px;" title="Detail & Peleton">
                                     <span class="ms" style="font-size:16px;">visibility</span>
                                 </a>
-                                <button type="button" class="btn btn-outline btn-sm" onclick="openEditProgramModal({{ json_encode($p['model']) }})" style="padding:4px 8px;" title="Edit Data Program">
-                                    <span class="ms" style="font-size:16px;">edit</span>
-                                </button>
+                                @if(auth()->user()?->canModifyData())
+                                    <button type="button" class="btn btn-outline btn-sm" onclick="openEditProgramModal({{ json_encode($p['model']) }})" style="padding:4px 8px;" title="Edit Data Program">
+                                        <span class="ms" style="font-size:16px;">edit</span>
+                                    </button>
+                                @endif
                             </td>
                         </tr>
                     @empty
@@ -409,9 +413,11 @@
                     <a href="{{ route('programs.show', $p['id']) }}" class="btn btn-outline btn-sm" style="padding:6px 12px; font-size:12.5px;" title="Detail & Kelola Program">
                         <span class="ms">visibility</span> Detail
                     </a>
-                    <button type="button" class="btn btn-outline btn-sm" onclick="openEditProgramModal({{ json_encode($p['model']) }})" style="padding:6px 10px;" title="Edit Data Program">
-                        <span class="ms">edit</span>
-                    </button>
+                    @if(auth()->user()?->canModifyData())
+                        <button type="button" class="btn btn-outline btn-sm" onclick="openEditProgramModal({{ json_encode($p['model']) }})" style="padding:6px 10px;" title="Edit Data Program">
+                            <span class="ms">edit</span>
+                        </button>
+                    @endif
                 </div>
             </div>
         </div>

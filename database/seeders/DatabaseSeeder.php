@@ -67,12 +67,28 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // 2. Buat Pengguna Percontohan Berdasarkan Peran
+        $superAdmin = User::create([
+            'name' => 'Super Administrator (Admin Sistem)',
+            'email' => 'superadmin@rindam.mil.id',
+            'password' => Hash::make('password'),
+            'role_code' => 'super_admin',
+            'phone' => '081100000000',
+        ]);
+
         $adminPimpinan = User::create([
             'name' => 'Kolonel Inf Danrindam III/Siliwangi (Komandan)',
             'email' => 'danrindam@rindam.mil.id',
             'password' => Hash::make('password'),
             'role_code' => 'pimpinan',
             'phone' => '081100000001',
+        ]);
+
+        $opDanrindam = User::create([
+            'name' => 'Mayor Inf Operator Danrindam (Operator Pusat)',
+            'email' => 'operator.danrindam@rindam.mil.id',
+            'password' => Hash::make('password'),
+            'role_code' => 'operator_danrindam',
+            'phone' => '081100000002',
         ]);
 
         $opSecaba = User::create([

@@ -161,23 +161,30 @@
                 <tr>
                     <td style="padding:10px 0; color:var(--muted);">Status Keaktifan Pendidikan</td>
                     <td style="padding:10px 0;">
-                        <form method="POST" action="{{ route('students.update-status', $student) }}" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-                            @csrf
-                            @method('PATCH')
-                            <select name="status" class="form-control" style="width:auto; font-size:12.5px; padding:4px 8px; font-weight:700;">
-                                <optgroup label="── STATUS TERHITUNG (PENDIDIKAN BERJALAN) ──">
-                                    <option value="Aktif" {{ $student->status == 'Aktif' ? 'selected' : '' }}>🟢 Aktif (Siap Latih — Terhitung)</option>
-                                    <option value="Sakit" {{ $student->status == 'Sakit' ? 'selected' : '' }}>🟡 Sakit (Dispen Medis — Terhitung)</option>
-                                    <option value="Dinas Luar" {{ $student->status == 'Dinas Luar' ? 'selected' : '' }}>🔵 Dinas Luar (Terhitung)</option>
-                                </optgroup>
-                                <optgroup label="── STATUS ARSIP (TIDAK TERHITUNG LAGI) ──">
-                                    <option value="Selesai" {{ $student->status == 'Selesai' ? 'selected' : '' }}>📁 Selesai (Tamat Pendidikan — Arsip)</option>
-                                    <option value="Lulus" {{ $student->status == 'Lulus' ? 'selected' : '' }}>🎓 Lulus (Alumni — Arsip)</option>
-                                    <option value="DO / Dikeluarkan" {{ $student->status == 'DO / Dikeluarkan' ? 'selected' : '' }}>🔴 DO / Dikeluarkan (Arsip)</option>
-                                </optgroup>
-                            </select>
-                            <button type="submit" class="btn btn-outline btn-sm" style="font-size:12px; padding:4px 10px;">Simpan Status</button>
-                        </form>
+                        @if(auth()->user()?->canModifyData())
+                            <form method="POST" action="{{ route('students.update-status', $student) }}" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                                @csrf
+                                @method('PATCH')
+                                <select name="status" class="form-control" style="width:auto; font-size:12.5px; padding:4px 8px; font-weight:700;">
+                                    <optgroup label="── STATUS TERHITUNG (PENDIDIKAN BERJALAN) ──">
+                                        <option value="Aktif" {{ $student->status == 'Aktif' ? 'selected' : '' }}>🟢 Aktif (Siap Latih — Terhitung)</option>
+                                        <option value="Sakit" {{ $student->status == 'Sakit' ? 'selected' : '' }}>🟡 Sakit (Dispen Medis — Terhitung)</option>
+                                        <option value="Dinas Luar" {{ $student->status == 'Dinas Luar' ? 'selected' : '' }}>🔵 Dinas Luar (Terhitung)</option>
+                                    </optgroup>
+                                    <optgroup label="── STATUS ARSIP (TIDAK TERHITUNG LAGI) ──">
+                                        <option value="Selesai" {{ $student->status == 'Selesai' ? 'selected' : '' }}>📁 Selesai (Tamat Pendidikan — Arsip)</option>
+                                        <option value="Lulus" {{ $student->status == 'Lulus' ? 'selected' : '' }}>🎓 Lulus (Alumni — Arsip)</option>
+                                        <option value="DO / Dikeluarkan" {{ $student->status == 'DO / Dikeluarkan' ? 'selected' : '' }}>🔴 DO / Dikeluarkan (Arsip)</option>
+                                    </optgroup>
+                                </select>
+                                <button type="submit" class="btn btn-outline btn-sm" style="font-size:12px; padding:4px 10px;">Simpan Status</button>
+                            </form>
+                        @else
+                            <div style="font-weight:700; color:var(--o900); font-size:13.5px; display:inline-flex; align-items:center; gap:8px;">
+                                <span>{{ $student->status }}</span>
+                                <span class="badge" style="background:#F1F5F9; color:#475569; font-size:11px;">Hanya Lihat</span>
+                            </div>
+                        @endif
                         <small style="color:var(--muted); display:block; margin-top:5px; font-size:11.5px;">
                             @if($student->is_counted)
                                 <b style="color:var(--green);">✓ Terhitung:</b> Prajurit siswa aktif menjalani program pendidikan.

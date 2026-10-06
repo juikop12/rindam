@@ -153,10 +153,11 @@ class StudentHealthController extends Controller
     public function edit(Student $student)
     {
         $currentUser = Auth::user();
-        if ($currentUser && !$currentUser->isPimpinan() && $currentUser->satdik_id) {
-            if ($student->satdik_id !== $currentUser->satdik_id) {
-                abort(403, 'Akses Ditolak: Anda hanya berwenang mengedit rekam medis serdik di Satuan Pendidikan Anda (' . ($currentUser->satdik->name ?? 'Satdik Anda') . ').');
-            }
+        if ($currentUser && !$currentUser->canModifyData()) {
+            abort(403, 'Akses Ditolak: Akun Anda berada dalam mode peninjauan (Hanya Baca / View-Only) dan tidak dapat mengedit rekam medis.');
+        }
+        if ($currentUser && !$currentUser->canManageSatdik($student->satdik_id)) {
+            abort(403, 'Akses Ditolak: Anda hanya berwenang mengedit rekam medis serdik di Satuan Pendidikan Anda (' . ($currentUser->satdik->name ?? 'Satdik Anda') . ').');
         }
 
         $student->load(['satdik', 'educationProgram', 'classroom', 'healthRecord']);
@@ -176,10 +177,11 @@ class StudentHealthController extends Controller
     public function update(Request $request, Student $student)
     {
         $currentUser = Auth::user();
-        if ($currentUser && !$currentUser->isPimpinan() && $currentUser->satdik_id) {
-            if ($student->satdik_id !== $currentUser->satdik_id) {
-                abort(403, 'Akses Ditolak: Anda hanya berwenang memperbarui rekam medis serdik di Satuan Pendidikan Anda (' . ($currentUser->satdik->name ?? 'Satdik Anda') . ').');
-            }
+        if ($currentUser && !$currentUser->canModifyData()) {
+            abort(403, 'Akses Ditolak: Akun Anda berada dalam mode peninjauan (Hanya Baca / View-Only) dan tidak dapat memperbarui rekam medis.');
+        }
+        if ($currentUser && !$currentUser->canManageSatdik($student->satdik_id)) {
+            abort(403, 'Akses Ditolak: Anda hanya berwenang memperbarui rekam medis serdik di Satuan Pendidikan Anda (' . ($currentUser->satdik->name ?? 'Satdik Anda') . ').');
         }
 
         $validated = $request->validate([

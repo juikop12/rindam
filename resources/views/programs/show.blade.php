@@ -25,9 +25,11 @@
         </p>
     </div>
     <div style="display:flex; gap:10px; flex-wrap:wrap;">
-        <a href="{{ route('students.index', ['satdik_id' => $program->satdik_id, 'program_id' => $program->id, 'action' => 'create']) }}" class="btn btn-gold">
-            <span class="ms">person_add</span> Tambah Siswa ke Program
-        </a>
+        @if(auth()->user()?->canModifyData())
+            <a href="{{ route('students.index', ['satdik_id' => $program->satdik_id, 'program_id' => $program->id, 'action' => 'create']) }}" class="btn btn-gold">
+                <span class="ms">person_add</span> Tambah Siswa ke Program
+            </a>
+        @endif
         <a href="{{ route('students.index', ['program_id' => $program->id]) }}" class="btn btn-outline" style="background:rgba(255,255,255,0.12); color:#fff; border-color:rgba(255,255,255,0.3);">
             <span class="ms">groups</span> Buka di Buku Induk
         </a>
@@ -146,9 +148,11 @@
                 </h3>
                 <span class="badge badge-satdik">{{ $program->classrooms->count() }} Peleton</span>
             </div>
-            <button type="button" class="btn btn-gold btn-sm" onclick="openCreateClassroomModal()" style="display:inline-flex; align-items:center; gap:6px;">
-                <span class="ms" style="font-size:16px;">add_circle</span> Buat Kompi & Peleton
-            </button>
+            @if(auth()->user()?->canModifyData())
+                <button type="button" class="btn btn-gold btn-sm" onclick="openCreateClassroomModal()" style="display:inline-flex; align-items:center; gap:6px;">
+                    <span class="ms" style="font-size:16px;">add_circle</span> Buat Kompi & Peleton
+                </button>
+            @endif
         </div>
         <div class="card-body" style="padding:0;">
             <div class="table-wrap">
@@ -202,21 +206,25 @@
                                 </td>
                                 <td style="text-align:right;">
                                     <div style="display:inline-flex; gap:4px;">
-                                        <button type="button" class="btn btn-outline btn-sm" onclick='openEditClassroomModal(@json($cls))' style="padding:4px 8px;" title="Edit Kompi & Peleton">
-                                            <span class="ms" style="font-size:15px;">edit</span>
-                                        </button>
-                                        @if($stuCount == 0)
-                                            <form method="POST" action="{{ route('classrooms.destroy', $cls->id) }}" onsubmit="return confirm('Hapus rombel/peleton [{{ $cls->name }}]?')" style="display:inline;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-outline btn-sm" style="color:var(--red); padding:4px 8px;" title="Hapus Peleton">
+                                        @if(auth()->user()?->canModifyData())
+                                            <button type="button" class="btn btn-outline btn-sm" onclick='openEditClassroomModal(@json($cls))' style="padding:4px 8px;" title="Edit Kompi & Peleton">
+                                                <span class="ms" style="font-size:15px;">edit</span>
+                                            </button>
+                                            @if($stuCount == 0)
+                                                <form method="POST" action="{{ route('classrooms.destroy', $cls->id) }}" onsubmit="return confirm('Hapus rombel/peleton [{{ $cls->name }}]?')" style="display:inline;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-outline btn-sm" style="color:var(--red); padding:4px 8px;" title="Hapus Peleton">
+                                                        <span class="ms" style="font-size:15px;">delete</span>
+                                                    </button>
+                                                </form>
+                                            @else
+                                                <button type="button" class="btn btn-outline btn-sm" style="color:#A0AEC0; cursor:not-allowed; padding:4px 8px;" title="Tidak dapat dihapus karena menaungi {{ $stuCount }} siswa" disabled>
                                                     <span class="ms" style="font-size:15px;">delete</span>
                                                 </button>
-                                            </form>
+                                            @endif
                                         @else
-                                            <button type="button" class="btn btn-outline btn-sm" style="color:#A0AEC0; cursor:not-allowed; padding:4px 8px;" title="Tidak dapat dihapus karena menaungi {{ $stuCount }} siswa" disabled>
-                                                <span class="ms" style="font-size:15px;">delete</span>
-                                            </button>
+                                            <span class="badge" style="background:#F1F5F9; color:#475569; font-size:10.5px;">View Only</span>
                                         @endif
                                     </div>
                                 </td>
@@ -226,11 +234,13 @@
                                 <td colspan="5" style="text-align:center; padding:28px; color:var(--muted);">
                                     <span class="ms" style="font-size:32px; color:var(--o200); display:block; margin-bottom:4px;">groups_2</span>
                                     Belum ada Kompi / Peleton yang dibuat untuk program ini.
-                                    <div style="margin-top:10px;">
-                                        <button type="button" class="btn btn-gold btn-sm" onclick="openCreateClassroomModal()">
-                                            <span class="ms">add_circle</span> Buat Kompi & Peleton Pertama
-                                        </button>
-                                    </div>
+                                    @if(auth()->user()?->canModifyData())
+                                        <div style="margin-top:10px;">
+                                            <button type="button" class="btn btn-gold btn-sm" onclick="openCreateClassroomModal()">
+                                                <span class="ms">add_circle</span> Buat Kompi & Peleton Pertama
+                                            </button>
+                                        </div>
+                                    @endif
                                 </td>
                             </tr>
                         @endforelse

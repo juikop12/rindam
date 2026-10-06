@@ -21,12 +21,18 @@
         </p>
     </div>
     <div style="display:flex; gap:10px; flex-wrap:wrap;">
-        <a href="{{ route('students.import', ['satdik_id' => $selectedSatdikId]) }}" class="btn btn-outline" style="background:rgba(255,255,255,0.12); color:#fff; border-color:rgba(255,255,255,0.3);">
-            <span class="ms">upload_file</span> Impor Format Excel
-        </a>
-        <button type="button" class="btn btn-gold" onclick="openCreateStudentModal()">
-            <span class="ms">person_add</span> Tambah Siswa Baru
-        </button>
+        @if(auth()->user()?->canModifyData())
+            <a href="{{ route('students.import', ['satdik_id' => $selectedSatdikId]) }}" class="btn btn-outline" style="background:rgba(255,255,255,0.12); color:#fff; border-color:rgba(255,255,255,0.3);">
+                <span class="ms">upload_file</span> Impor Format Excel
+            </a>
+            <button type="button" class="btn btn-gold" onclick="openCreateStudentModal()">
+                <span class="ms">person_add</span> Tambah Siswa Baru
+            </button>
+        @else
+            <span class="pdp-badge" style="background:rgba(255,255,255,0.15); color:#fff; border-color:rgba(255,255,255,0.3); font-size:12px; padding:6px 14px;">
+                <span class="ms" style="font-size:16px;">visibility</span> Hak Akses Danrindam: View-Only Seluruh Satdik
+            </span>
+        @endif
     </div>
 </div>
 
@@ -393,15 +399,17 @@
                                 <a href="{{ route('students.show', $student) }}" class="btn btn-outline btn-sm" title="Dossier Lengkap" style="padding:5px 8px;">
                                     <span class="ms">visibility</span>
                                 </a>
-                                <button type="button" class="btn btn-outline btn-sm" onclick="openStatusModal({{ $student->id }}, '{{ addslashes($student->full_name) }}', '{{ $student->status }}')" title="Ubah Status / Arsipkan Serdik" style="color:var(--o800); padding:5px 8px;">
-                                    <span class="ms">swap_horiz</span> Status
-                                </button>
-                                <button type="button" class="btn btn-outline btn-sm" onclick="openEditStudentModal(this)" data-student="{{ json_encode($studentJson) }}" title="Edit Data Serdik (Modal)" style="color:#2563EB; border-color:#93C5FD; padding:5px 8px;">
-                                    <span class="ms">edit</span> Edit
-                                </button>
-                                <button type="button" class="btn btn-outline btn-sm" onclick="openDeleteStudentModal({{ $student->id }}, '{{ addslashes($student->full_name) }}', '{{ $student->nosik }}', '{{ addslashes($student->satdik->name ?? '') }}')" title="Hapus Data Serdik (Modal)" style="color:#DC2626; border-color:#FCA5A5; padding:5px 8px;">
-                                    <span class="ms">delete</span>
-                                </button>
+                                @if(auth()->user()?->canModifyData())
+                                    <button type="button" class="btn btn-outline btn-sm" onclick="openStatusModal({{ $student->id }}, '{{ addslashes($student->full_name) }}', '{{ $student->status }}')" title="Ubah Status / Arsipkan Serdik" style="color:var(--o800); padding:5px 8px;">
+                                        <span class="ms">swap_horiz</span> Status
+                                    </button>
+                                    <button type="button" class="btn btn-outline btn-sm" onclick="openEditStudentModal(this)" data-student="{{ json_encode($studentJson) }}" title="Edit Data Serdik (Modal)" style="color:#2563EB; border-color:#93C5FD; padding:5px 8px;">
+                                        <span class="ms">edit</span> Edit
+                                    </button>
+                                    <button type="button" class="btn btn-outline btn-sm" onclick="openDeleteStudentModal({{ $student->id }}, '{{ addslashes($student->full_name) }}', '{{ $student->nosik }}', '{{ addslashes($student->satdik->name ?? '') }}')" title="Hapus Data Serdik (Modal)" style="color:#DC2626; border-color:#FCA5A5; padding:5px 8px;">
+                                        <span class="ms">delete</span>
+                                    </button>
+                                @endif
                                 <button type="button" class="btn btn-primary btn-sm" onclick="openRevealModal({{ $student->id }}, '{{ addslashes($student->full_name) }}', '{{ $student->nosik }}')" title="Buka Data Pribadi Terproteksi (SIPANDU-WBK)" style="padding:5px 10px;">
                                     <span class="ms">key</span> Buka Data
                                 </button>
