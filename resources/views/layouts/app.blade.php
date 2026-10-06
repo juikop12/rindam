@@ -1109,17 +1109,12 @@
     </style>
 </head><body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-hidden" 
       x-data="{ 
-          sidebarPinned: localStorage.getItem('sipandu_sidebar_pinned') !== 'false',
-          sidebarHovered: false,
+          isSidebarExpanded: localStorage.getItem('sipandu_sidebar_expanded') !== 'false',
           mobileSidebarOpen: false,
           
-          togglePin() {
-              this.sidebarPinned = !this.sidebarPinned;
-              localStorage.setItem('sipandu_sidebar_pinned', this.sidebarPinned);
-          },
-          
-          get isSidebarExpanded() {
-              return this.sidebarPinned || this.sidebarHovered;
+          toggleSidebar() {
+              this.isSidebarExpanded = !this.isSidebarExpanded;
+              localStorage.setItem('sipandu_sidebar_expanded', this.isSidebarExpanded);
           }
       }">
 
@@ -1132,20 +1127,25 @@
          class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-40 lg:hidden" style="display: none;"></div>
 
     <!-- SIDEBAR -->
-    <aside @mouseenter="sidebarHovered = true" 
-           @mouseleave="sidebarHovered = false"
-           :class="{ 
-               'w-72': isSidebarExpanded, 
-               'w-20': !isSidebarExpanded,
+    <aside :class="{ 
+               'w-72 lg:w-72': isSidebarExpanded, 
+               'w-72 lg:w-20': !isSidebarExpanded,
                'translate-x-0': mobileSidebarOpen,
                '-translate-x-full lg:translate-x-0': !mobileSidebarOpen
            }"
            class="fixed inset-y-0 left-0 z-50 flex flex-col bg-white border-r border-slate-200 transition-all duration-300 ease-in-out lg:static lg:h-screen lg:shrink-0 shadow-[4px_0_24px_rgba(0,0,0,0.02)]">
         
+        <!-- Toggle Button (Floating Edge) -->
+        <button @click="toggleSidebar()" 
+                class="hidden lg:flex items-center justify-center w-7 h-7 rounded-full bg-white border border-slate-200 text-slate-400 hover:text-blue-600 hover:border-blue-200 hover:bg-blue-50 absolute -right-3.5 top-6 z-50 transition-colors shadow-sm"
+                title="Toggle Sidebar">
+            <span class="ms text-[18px] transition-transform duration-300" :class="!(isSidebarExpanded || mobileSidebarOpen) ? 'rotate-180' : ''">chevron_left</span>
+        </button>
+
         <!-- BRAND HEADER -->
         <div class="flex items-center justify-between h-20 px-4 border-b border-slate-100 shrink-0">
-            <a href="{{ route('dashboard') }}" class="flex items-center gap-3 overflow-hidden whitespace-nowrap outline-none">
-                <div class="flex items-center justify-center w-12 h-12 shrink-0 transition-transform duration-300" :class="!isSidebarExpanded ? 'mx-auto' : ''">
+            <a href="{{ route('dashboard') }}" class="flex items-center gap-3 overflow-hidden whitespace-nowrap outline-none w-full">
+                <div class="flex items-center justify-center w-12 h-12 shrink-0 transition-transform duration-300" :class="!(isSidebarExpanded || mobileSidebarOpen) ? 'mx-auto' : ''">
                     <!-- USING THE NEW LOGO -->
                     <img src="{{ asset('img/rindam-logo.png') }}" alt="Logo" class="w-11 h-11 object-contain drop-shadow-sm" onerror="this.outerHTML='<span class=\'ms text-[28px] text-slate-800\'>shield_person</span>'">
                 </div>
@@ -1158,24 +1158,6 @@
                     </div>
                 </div>
             </a>
-            
-            <button @click="togglePin()" 
-                    class="hidden lg:flex items-center justify-center w-8 h-8 rounded-lg transition-colors duration-200"
-                    :class="sidebarPinned ? 'bg-slate-100 text-slate-900' : 'bg-transparent text-slate-400 hover:bg-slate-50 hover:text-slate-600'"
-                    x-show="isSidebarExpanded"
-                    :title="sidebarPinned ? 'Lepas Pin (Otomatis Ciut)' : 'Pin Sidebar (Tetap Lebar)'">
-                <span class="ms text-[18px]" x-text="sidebarPinned ? 'keep' : 'keep_off'"></span>
-            </button>
-        </div>
-
-        <div class="px-4 py-3 shrink-0" x-show="isSidebarExpanded" x-transition.opacity.duration.300ms>
-            <div class="flex items-center justify-between bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 text-amber-700">
-                <div class="flex items-center gap-2">
-                    <span class="ms text-[16px]">verified</span>
-                    <span class="text-[11px] font-bold uppercase tracking-wider">Zona Integritas</span>
-                </div>
-                <span class="text-[11px] font-black">WBK</span>
-            </div>
         </div>
 
         <!-- NAVIGATION MENU -->
@@ -1184,20 +1166,20 @@
             <!-- SECTION TITLE -->
             <div class="mt-4 mb-2 first:mt-0 transition-all duration-300" :class="isSidebarExpanded ? 'px-3' : 'px-0 text-center'">
                 <div x-show="!isSidebarExpanded" class="h-0.5 w-8 mx-auto bg-slate-200 rounded-full"></div>
-                <span x-show="isSidebarExpanded" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Pusat Komando</span>
+                <span x-show="isSidebarExpanded || mobileSidebarOpen" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Pusat Komando</span>
             </div>
 
             <!-- MENU ITEM 1 -->
             <a href="{{ route('dashboard') }}" 
-               class="group relative flex items-center p-3 rounded-xl transition-all duration-200 {{ request()->routeIs('dashboard') ? 'bg-slate-900 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900' }}"
-               :class="!isSidebarExpanded ? 'justify-center' : 'justify-between'">
+               class="group relative flex items-center p-3 rounded-xl transition-all duration-200 {{ request()->routeIs('dashboard') ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'text-slate-600 font-medium hover:bg-blue-50 hover:text-blue-700' }}"
+               :class="!(isSidebarExpanded || mobileSidebarOpen) ? 'justify-center' : 'justify-between'">
                 
                 <div class="flex items-center gap-3">
-                    <span class="ms text-[24px] transition-transform duration-200 group-hover:scale-110 {{ request()->routeIs('dashboard') ? 'text-white' : 'text-slate-400 group-hover:text-slate-600' }}">dashboard</span>
-                    <span x-show="isSidebarExpanded" class="font-semibold text-[13.5px] whitespace-nowrap">Dashboard Utama</span>
+                    <span class="ms text-[24px] transition-transform duration-200 group-hover:scale-110 {{ request()->routeIs('dashboard') ? 'text-white' : 'text-slate-400 group-hover:text-blue-600' }}">dashboard</span>
+                    <span x-show="isSidebarExpanded || mobileSidebarOpen" class="font-semibold text-[13.5px] whitespace-nowrap">Dashboard Utama</span>
                 </div>
                 
-                <span x-show="isSidebarExpanded" class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-blue-100 text-blue-700">Live</span>
+                <span x-show="isSidebarExpanded || mobileSidebarOpen" class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-blue-100 text-blue-700">Live</span>
                 
                 <!-- TOOLTIP FOR COLLAPSED -->
                 <div x-show="!isSidebarExpanded" class="absolute left-full ml-3 px-3 py-2 bg-slate-800 text-white text-xs font-semibold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50">
@@ -1208,54 +1190,54 @@
             <!-- SECTION TITLE -->
             <div class="mt-4 mb-2 transition-all duration-300" :class="isSidebarExpanded ? 'px-3' : 'px-0 text-center'">
                 <div x-show="!isSidebarExpanded" class="h-0.5 w-8 mx-auto bg-slate-200 rounded-full"></div>
-                <span x-show="isSidebarExpanded" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Data & Kesehatan</span>
+                <span x-show="isSidebarExpanded || mobileSidebarOpen" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Data & Kesehatan</span>
             </div>
             
             <a href="{{ route('students.index') }}" 
-               class="group relative flex items-center p-3 rounded-xl transition-all duration-200 {{ request()->routeIs('students.index') || request()->routeIs('students.show') ? 'bg-slate-900 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900' }}"
-               :class="!isSidebarExpanded ? 'justify-center' : 'justify-between'">
+               class="group relative flex items-center p-3 rounded-xl transition-all duration-200 {{ request()->routeIs('students.index') || request()->routeIs('students.show') ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'text-slate-600 font-medium hover:bg-blue-50 hover:text-blue-700' }}"
+               :class="!(isSidebarExpanded || mobileSidebarOpen) ? 'justify-center' : 'justify-between'">
                 <div class="flex items-center gap-3">
-                    <span class="ms text-[24px] transition-transform duration-200 group-hover:scale-110 {{ request()->routeIs('students.index') || request()->routeIs('students.show') ? 'text-white' : 'text-slate-400 group-hover:text-slate-600' }}">groups</span>
-                    <span x-show="isSidebarExpanded" class="font-semibold text-[13.5px] whitespace-nowrap">Data Serdik</span>
+                    <span class="ms text-[24px] transition-transform duration-200 group-hover:scale-110 {{ request()->routeIs('students.index') || request()->routeIs('students.show') ? 'text-white' : 'text-slate-400 group-hover:text-blue-600' }}">groups</span>
+                    <span x-show="isSidebarExpanded || mobileSidebarOpen" class="font-semibold text-[13.5px] whitespace-nowrap">Data Serdik</span>
                 </div>
-                <span x-show="isSidebarExpanded" class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-slate-100 text-slate-600 {{ request()->routeIs('students.index') || request()->routeIs('students.show') ? 'bg-slate-700 text-slate-200' : '' }}">{{ \App\Models\Student::count() }}</span>
+                <span x-show="isSidebarExpanded || mobileSidebarOpen" class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-slate-100 text-slate-600 {{ request()->routeIs('students.index') || request()->routeIs('students.show') ? 'bg-blue-100 text-blue-700' : '' }}">{{ \App\Models\Student::count() }}</span>
                 <div x-show="!isSidebarExpanded" class="absolute left-full ml-3 px-3 py-2 bg-slate-800 text-white text-xs font-semibold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50">Data Serdik</div>
             </a>
 
             <a href="{{ route('programs.index') }}" 
-               class="group relative flex items-center p-3 rounded-xl transition-all duration-200 {{ request()->routeIs('programs.*') ? 'bg-slate-900 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900' }}"
-               :class="!isSidebarExpanded ? 'justify-center' : 'justify-between'">
+               class="group relative flex items-center p-3 rounded-xl transition-all duration-200 {{ request()->routeIs('programs.*') ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'text-slate-600 font-medium hover:bg-blue-50 hover:text-blue-700' }}"
+               :class="!(isSidebarExpanded || mobileSidebarOpen) ? 'justify-center' : 'justify-between'">
                 <div class="flex items-center gap-3">
-                    <span class="ms text-[24px] transition-transform duration-200 group-hover:scale-110 {{ request()->routeIs('programs.*') ? 'text-white' : 'text-slate-400 group-hover:text-slate-600' }}">school</span>
-                    <span x-show="isSidebarExpanded" class="font-semibold text-[13.5px] whitespace-nowrap">Program Satdik</span>
+                    <span class="ms text-[24px] transition-transform duration-200 group-hover:scale-110 {{ request()->routeIs('programs.*') ? 'text-white' : 'text-slate-400 group-hover:text-blue-600' }}">school</span>
+                    <span x-show="isSidebarExpanded || mobileSidebarOpen" class="font-semibold text-[13.5px] whitespace-nowrap">Program Satdik</span>
                 </div>
                 <div x-show="!isSidebarExpanded" class="absolute left-full ml-3 px-3 py-2 bg-slate-800 text-white text-xs font-semibold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50">Program Satdik</div>
             </a>
 
             <a href="{{ route('health.index') }}" 
-               class="group relative flex items-center p-3 rounded-xl transition-all duration-200 {{ request()->routeIs('health.*') ? 'bg-slate-900 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900' }}"
-               :class="!isSidebarExpanded ? 'justify-center' : 'justify-between'">
+               class="group relative flex items-center p-3 rounded-xl transition-all duration-200 {{ request()->routeIs('health.*') ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'text-slate-600 font-medium hover:bg-blue-50 hover:text-blue-700' }}"
+               :class="!(isSidebarExpanded || mobileSidebarOpen) ? 'justify-center' : 'justify-between'">
                 <div class="flex items-center gap-3">
-                    <span class="ms text-[24px] transition-transform duration-200 group-hover:scale-110 {{ request()->routeIs('health.*') ? 'text-white' : 'text-slate-400 group-hover:text-slate-600' }}">medical_services</span>
-                    <span x-show="isSidebarExpanded" class="font-semibold text-[13.5px] whitespace-nowrap">Kesehatan Serdik</span>
+                    <span class="ms text-[24px] transition-transform duration-200 group-hover:scale-110 {{ request()->routeIs('health.*') ? 'text-white' : 'text-slate-400 group-hover:text-blue-600' }}">medical_services</span>
+                    <span x-show="isSidebarExpanded || mobileSidebarOpen" class="font-semibold text-[13.5px] whitespace-nowrap">Kesehatan Serdik</span>
                 </div>
-                <span x-show="isSidebarExpanded" class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-emerald-100 text-emerald-700">Medis</span>
+                <span x-show="isSidebarExpanded || mobileSidebarOpen" class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-emerald-100 text-emerald-700">Medis</span>
                 <div x-show="!isSidebarExpanded" class="absolute left-full ml-3 px-3 py-2 bg-slate-800 text-white text-xs font-semibold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50">Kesehatan Serdik</div>
             </a>
 
             <!-- SECTION TITLE -->
             <div class="mt-4 mb-2 transition-all duration-300" :class="isSidebarExpanded ? 'px-3' : 'px-0 text-center'">
                 <div x-show="!isSidebarExpanded" class="h-0.5 w-8 mx-auto bg-slate-200 rounded-full"></div>
-                <span x-show="isSidebarExpanded" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Sistem</span>
+                <span x-show="isSidebarExpanded || mobileSidebarOpen" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Sistem</span>
             </div>
             
             @if(auth()->user()?->canModifyData())
             <a href="{{ route('students.import') }}" 
-               class="group relative flex items-center p-3 rounded-xl transition-all duration-200 {{ request()->routeIs('students.import') ? 'bg-slate-900 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900' }}"
-               :class="!isSidebarExpanded ? 'justify-center' : 'justify-between'">
+               class="group relative flex items-center p-3 rounded-xl transition-all duration-200 {{ request()->routeIs('students.import') ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'text-slate-600 font-medium hover:bg-blue-50 hover:text-blue-700' }}"
+               :class="!(isSidebarExpanded || mobileSidebarOpen) ? 'justify-center' : 'justify-between'">
                 <div class="flex items-center gap-3">
-                    <span class="ms text-[24px] transition-transform duration-200 group-hover:scale-110 {{ request()->routeIs('students.import') ? 'text-white' : 'text-slate-400 group-hover:text-slate-600' }}">upload_file</span>
-                    <span x-show="isSidebarExpanded" class="font-semibold text-[13.5px] whitespace-nowrap">Input Data Excel</span>
+                    <span class="ms text-[24px] transition-transform duration-200 group-hover:scale-110 {{ request()->routeIs('students.import') ? 'text-white' : 'text-slate-400 group-hover:text-blue-600' }}">upload_file</span>
+                    <span x-show="isSidebarExpanded || mobileSidebarOpen" class="font-semibold text-[13.5px] whitespace-nowrap">Input Data Excel</span>
                 </div>
                 <div x-show="!isSidebarExpanded" class="absolute left-full ml-3 px-3 py-2 bg-slate-800 text-white text-xs font-semibold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50">Input Data Excel</div>
             </a>
@@ -1263,34 +1245,34 @@
 
             @if(auth()->user()?->isSuperAdmin())
             <a href="{{ route('settings.index') }}" 
-               class="group relative flex items-center p-3 rounded-xl transition-all duration-200 {{ request()->routeIs('settings.*') ? 'bg-slate-900 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900' }}"
-               :class="!isSidebarExpanded ? 'justify-center' : 'justify-between'">
+               class="group relative flex items-center p-3 rounded-xl transition-all duration-200 {{ request()->routeIs('settings.*') ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'text-slate-600 font-medium hover:bg-blue-50 hover:text-blue-700' }}"
+               :class="!(isSidebarExpanded || mobileSidebarOpen) ? 'justify-center' : 'justify-between'">
                 <div class="flex items-center gap-3">
-                    <span class="ms text-[24px] transition-transform duration-200 group-hover:scale-110 {{ request()->routeIs('settings.*') ? 'text-white' : 'text-slate-400 group-hover:text-slate-600' }}">settings</span>
-                    <span x-show="isSidebarExpanded" class="font-semibold text-[13.5px] whitespace-nowrap">Pengaturan</span>
+                    <span class="ms text-[24px] transition-transform duration-200 group-hover:scale-110 {{ request()->routeIs('settings.*') ? 'text-white' : 'text-slate-400 group-hover:text-blue-600' }}">settings</span>
+                    <span x-show="isSidebarExpanded || mobileSidebarOpen" class="font-semibold text-[13.5px] whitespace-nowrap">Pengaturan</span>
                 </div>
-                <span x-show="isSidebarExpanded" class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-rose-100 text-rose-800">Admin</span>
+                <span x-show="isSidebarExpanded || mobileSidebarOpen" class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-rose-100 text-rose-800">Admin</span>
                 <div x-show="!isSidebarExpanded" class="absolute left-full ml-3 px-3 py-2 bg-slate-800 text-white text-xs font-semibold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50">Pengaturan</div>
             </a>
 
             <a href="{{ route('users.index') }}" 
-               class="group relative flex items-center p-3 rounded-xl transition-all duration-200 {{ request()->routeIs('users.*') ? 'bg-slate-900 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900' }}"
-               :class="!isSidebarExpanded ? 'justify-center' : 'justify-between'">
+               class="group relative flex items-center p-3 rounded-xl transition-all duration-200 {{ request()->routeIs('users.*') ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'text-slate-600 font-medium hover:bg-blue-50 hover:text-blue-700' }}"
+               :class="!(isSidebarExpanded || mobileSidebarOpen) ? 'justify-center' : 'justify-between'">
                 <div class="flex items-center gap-3">
-                    <span class="ms text-[24px] transition-transform duration-200 group-hover:scale-110 {{ request()->routeIs('users.*') ? 'text-white' : 'text-slate-400 group-hover:text-slate-600' }}">manage_accounts</span>
-                    <span x-show="isSidebarExpanded" class="font-semibold text-[13.5px] whitespace-nowrap">Manajemen Akun</span>
+                    <span class="ms text-[24px] transition-transform duration-200 group-hover:scale-110 {{ request()->routeIs('users.*') ? 'text-white' : 'text-slate-400 group-hover:text-blue-600' }}">manage_accounts</span>
+                    <span x-show="isSidebarExpanded || mobileSidebarOpen" class="font-semibold text-[13.5px] whitespace-nowrap">Manajemen Akun</span>
                 </div>
-                <span x-show="isSidebarExpanded" class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-rose-100 text-rose-800">Admin</span>
+                <span x-show="isSidebarExpanded || mobileSidebarOpen" class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-rose-100 text-rose-800">Admin</span>
                 <div x-show="!isSidebarExpanded" class="absolute left-full ml-3 px-3 py-2 bg-slate-800 text-white text-xs font-semibold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50">Manajemen Akun</div>
             </a>
             <a href="{{ route('students.audit-logs') }}" 
-               class="group relative flex items-center p-3 rounded-xl transition-all duration-200 {{ request()->routeIs('students.audit-logs') ? 'bg-slate-900 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900' }}"
-               :class="!isSidebarExpanded ? 'justify-center' : 'justify-between'">
+               class="group relative flex items-center p-3 rounded-xl transition-all duration-200 {{ request()->routeIs('students.audit-logs') ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'text-slate-600 font-medium hover:bg-blue-50 hover:text-blue-700' }}"
+               :class="!(isSidebarExpanded || mobileSidebarOpen) ? 'justify-center' : 'justify-between'">
                 <div class="flex items-center gap-3">
-                    <span class="ms text-[24px] transition-transform duration-200 group-hover:scale-110 {{ request()->routeIs('students.audit-logs') ? 'text-white' : 'text-slate-400 group-hover:text-slate-600' }}">policy</span>
-                    <span x-show="isSidebarExpanded" class="font-semibold text-[13.5px] whitespace-nowrap">Audit Log</span>
+                    <span class="ms text-[24px] transition-transform duration-200 group-hover:scale-110 {{ request()->routeIs('students.audit-logs') ? 'text-white' : 'text-slate-400 group-hover:text-blue-600' }}">policy</span>
+                    <span x-show="isSidebarExpanded || mobileSidebarOpen" class="font-semibold text-[13.5px] whitespace-nowrap">Audit Log</span>
                 </div>
-                <span x-show="isSidebarExpanded" class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-rose-100 text-rose-800">Admin</span>
+                <span x-show="isSidebarExpanded || mobileSidebarOpen" class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-rose-100 text-rose-800">Admin</span>
                 <div x-show="!isSidebarExpanded" class="absolute left-full ml-3 px-3 py-2 bg-slate-800 text-white text-xs font-semibold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50">Audit Log</div>
             </a>
             @endif
@@ -1299,12 +1281,12 @@
 
         <!-- USER FOOTER -->
         <div class="p-3 border-t border-slate-100 bg-slate-50 shrink-0">
-            <div class="flex items-center justify-between" :class="!isSidebarExpanded ? 'justify-center' : ''">
+            <div class="flex items-center justify-between" :class="!(isSidebarExpanded || mobileSidebarOpen) ? 'justify-center' : ''">
                 <div class="flex items-center gap-2.5 overflow-hidden">
                     <div class="w-10 h-10 rounded-xl {{ auth()->user()?->isSuperAdmin() ? 'bg-rose-100 text-rose-800' : (auth()->user()?->isDanrindam() ? 'bg-amber-100 text-amber-800' : (auth()->user()?->isOperatorDanrindam() ? 'bg-indigo-100 text-indigo-800' : (auth()->user()?->isOperatorSatdik() ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700'))) }} border border-white shadow-sm flex items-center justify-center shrink-0">
                         <span class="ms text-[20px]">{{ auth()->user()?->isSuperAdmin() ? 'admin_panel_settings' : (auth()->user()?->isDanrindam() ? 'military_tech' : (auth()->user()?->isOperatorDanrindam() ? 'stars' : (auth()->user()?->isOperatorSatdik() ? 'support_agent' : 'shield_person'))) }}</span>
                     </div>
-                    <div class="flex flex-col overflow-hidden" x-show="isSidebarExpanded" x-transition.opacity.duration.300ms>
+                    <div class="flex flex-col overflow-hidden" x-show="isSidebarExpanded || mobileSidebarOpen" x-transition.opacity.duration.300ms>
                         <span class="text-xs font-bold text-slate-800 truncate" title="{{ auth()->user()->name ?? 'Prajurit Rindam' }}">{{ auth()->user()->name ?? 'Prajurit Rindam' }}</span>
                         <span class="text-[10px] font-semibold text-slate-500 truncate">
                             @if(auth()->user()?->isSuperAdmin())
@@ -1322,7 +1304,7 @@
                     </div>
                 </div>
 
-                <form method="POST" action="{{ route('logout') }}" x-show="isSidebarExpanded" x-transition.opacity.duration.300ms class="shrink-0">
+                <form method="POST" action="{{ route('logout') }}" x-show="isSidebarExpanded || mobileSidebarOpen" x-transition.opacity.duration.300ms class="shrink-0">
                     @csrf
                     <button type="submit" class="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Keluar dari Sistem (Logout)">
                         <span class="ms text-[20px]">logout</span>
@@ -1336,18 +1318,20 @@
     <div class="flex-1 flex flex-col h-screen overflow-hidden bg-slate-50">
         
         <!-- TOPBAR -->
-        <header class="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:px-8 shrink-0 z-30 shadow-sm">
-            <div class="flex items-center gap-4">
+        <header class="h-[72px] bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:px-6 shrink-0 z-30 shadow-sm sticky top-0">
+            <div class="flex items-center gap-3 lg:gap-4">
                 <!-- Mobile Menu Button -->
-                <button @click="mobileSidebarOpen = true" class="lg:hidden p-2 -ml-2 rounded-lg text-slate-500 hover:bg-slate-100">
-                    <span class="ms text-[26px]">menu</span>
+                <button @click="mobileSidebarOpen = true" class="lg:hidden flex items-center justify-center w-10 h-10 rounded-xl text-slate-500 hover:bg-blue-50 hover:text-blue-600 transition-colors">
+                    <span class="ms text-[24px]">menu_open</span>
                 </button>
                 
-                <!-- BREADCRUMB -->
-                <div class="hidden sm:flex items-center gap-2 text-sm font-medium">
-                    <span class="text-slate-400">SIPANDU-WBK</span>
-                    <span class="ms text-slate-300 text-[18px]">chevron_right</span>
-                    <span class="text-slate-800 font-bold">
+                <!-- TITLE & BREADCRUMB -->
+                <div class="flex items-center gap-2">
+                    <div class="hidden sm:flex items-center gap-2 text-sm font-medium">
+                        <span class="text-slate-400">SIPANDU-WBK</span>
+                        <span class="ms text-slate-300 text-[18px]">chevron_right</span>
+                    </div>
+                    <h1 class="text-slate-800 font-bold text-lg sm:text-sm">
                         @if(request()->routeIs('dashboard'))
                             Dashboard Eksekutif
                         @elseif(request()->routeIs('settings.*'))
@@ -1363,41 +1347,32 @@
                         @else
                             Buku Induk Data Serdik
                         @endif
-                    </span>
+                    </h1>
                 </div>
             </div>
 
-            <div class="flex items-center gap-3 lg:gap-5">
+            <div class="flex items-center gap-2 sm:gap-4">
                 <!-- User Scope Badge -->
                 @if(auth()->check())
-                    <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-bold {{ auth()->user()->isSuperAdmin() ? 'bg-rose-50 border-rose-200 text-rose-800' : (auth()->user()->isDanrindam() ? 'bg-amber-50 border-amber-200 text-amber-800' : (auth()->user()->isOperatorDanrindam() ? 'bg-indigo-50 border-indigo-200 text-indigo-800' : (auth()->user()->isOperatorSatdik() ? 'bg-emerald-50 border-emerald-200 text-emerald-800' : 'bg-slate-100 border-slate-200 text-slate-700'))) }}">
+                    <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl border text-xs font-bold {{ auth()->user()->isSuperAdmin() ? 'bg-rose-50 border-rose-200 text-rose-800' : (auth()->user()->isDanrindam() ? 'bg-amber-50 border-amber-200 text-amber-800' : (auth()->user()->isOperatorDanrindam() ? 'bg-indigo-50 border-indigo-200 text-indigo-800' : (auth()->user()->isOperatorSatdik() ? 'bg-emerald-50 border-emerald-200 text-emerald-800' : 'bg-slate-100 border-slate-200 text-slate-700'))) }}">
                         <span class="ms text-[16px]">{{ auth()->user()->isSuperAdmin() ? 'admin_panel_settings' : (auth()->user()->isDanrindam() ? 'visibility' : (auth()->user()->isOperatorDanrindam() ? 'stars' : (auth()->user()->isOperatorSatdik() ? 'lock' : 'verified_user'))) }}</span>
-                        <span>{{ auth()->user()->isSuperAdmin() ? 'Super Admin (Sistem & Akun)' : (auth()->user()->isDanrindam() ? 'Danrindam (Monitoring 5 Satdik)' : (auth()->user()->isOperatorDanrindam() ? 'Operator Pusat (Kelola 5 Satdik)' : ('Satdik ' . (auth()->user()->satdik?->code ?? 'Terkunci')))) }}</span>
+                        <span>{{ auth()->user()->isSuperAdmin() ? 'Super Admin (Sistem)' : (auth()->user()->isDanrindam() ? 'Danrindam (Monitor)' : (auth()->user()->isOperatorDanrindam() ? 'Operator Pusat' : ('Satdik ' . (auth()->user()->satdik?->code ?? 'Terkunci')))) }}</span>
                     </div>
                 @endif
 
-                <!-- LAN Indicator -->
-                <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-emerald-50 border border-emerald-100 rounded-full text-emerald-700">
-                    <span class="relative flex h-2.5 w-2.5">
-                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                      <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-                    </span>
-                    <span class="text-xs font-bold tracking-wide">LAN AKTIF</span>
-                </div>
-                
+
                 <!-- Action Button -->
                 @if(auth()->user()?->canModifyData())
                 <button onclick="if(typeof openCreateStudentModal === 'function') { openCreateStudentModal(); } else { window.location='{{ route('students.index', ['action' => 'create']) }}'; }" 
-                        class="flex items-center gap-2 px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg font-semibold text-sm shadow-sm transition-colors duration-200">
+                        class="flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold text-sm shadow-sm shadow-blue-200 transition-colors duration-200">
                     <span class="ms text-[20px]">add</span>
                     <span class="hidden sm:block">Tambah Serdik</span>
                 </button>
                 @endif
 
-                <!-- Logout Button in Topbar -->
                 <form method="POST" action="{{ route('logout') }}" class="inline">
                     @csrf
-                    <button type="submit" class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Keluar / Logout">
+                    <button type="submit" class="flex items-center justify-center w-10 h-10 text-slate-400 hover:text-rose-600 hover:bg-rose-50 border border-transparent hover:border-rose-100 rounded-xl transition-all" title="Keluar / Logout">
                         <span class="ms text-[22px]">logout</span>
                     </button>
                 </form>
