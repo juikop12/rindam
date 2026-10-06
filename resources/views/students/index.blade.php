@@ -22,11 +22,11 @@
         
         <!-- Action Buttons -->
         @if(auth()->user()?->canModifyData())
-        <div class="flex items-center gap-2.5">
-            <a href="{{ route('students.import', ['satdik_id' => $selectedSatdikId]) }}" class="inline-flex items-center gap-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 px-4 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm">
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full md:w-auto">
+            <a href="{{ route('students.import', ['satdik_id' => $selectedSatdikId]) }}" class="inline-flex justify-center items-center gap-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 px-4 py-2.5 sm:py-2 rounded-xl text-sm font-semibold transition-colors shadow-sm w-full sm:w-auto">
                 <span class="ms text-[18px]">upload_file</span> Impor Format Excel
             </a>
-            <button type="button" onclick="openCreateStudentModal()" class="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm">
+            <button type="button" onclick="openCreateStudentModal()" class="inline-flex justify-center items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 sm:py-2 rounded-xl text-sm font-semibold transition-colors shadow-sm shadow-blue-200 w-full sm:w-auto">
                 <span class="ms text-[18px]">person_add</span> Tambah Siswa Baru
             </button>
         </div>
@@ -63,86 +63,140 @@
         </div>
     @endif
 
-    <!-- TABS FILTER SATDIK -->
-    <div class="flex flex-wrap items-center gap-3 mb-6">
-        <a href="{{ route('students.index', array_merge(request()->except(['satdik_id', 'page']))) }}" 
-           class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors border {{ empty($selectedSatdikId) ? 'bg-slate-100 text-slate-900 border-slate-300 shadow-sm font-semibold' : 'bg-white text-slate-500 border-slate-200 hover:bg-slate-50' }}">
-            <span class="ms text-[18px]">list</span>
-            Semua Satdik
-            <span class="px-2 py-0.5 rounded text-xs bg-slate-200 text-slate-700">{{ $stats['overall_total'] }}</span>
-        </a>
-        @foreach($satdiks as $satdik)
-            @php
-                $satdikCounted = $satdik->counted_students ?? $satdik->students()->whereIn('status', ['Aktif', 'Sakit', 'Dinas Luar'])->count();
-                $isActive = ($selectedSatdikId == $satdik->id);
-            @endphp
-            <a href="{{ route('students.index', array_merge(request()->except(['page']), ['satdik_id' => $satdik->id])) }}" 
-               class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors border {{ $isActive ? 'bg-slate-100 text-slate-900 border-slate-300 shadow-sm font-semibold' : 'bg-white text-slate-500 border-slate-200 hover:bg-slate-50' }}">
-                <span class="ms text-[18px]">filter_list</span>
-                {{ $satdik->code }}
-                <span class="px-2 py-0.5 rounded text-xs {{ $isActive ? 'bg-slate-200 text-slate-800' : 'bg-slate-100 text-slate-600' }}">{{ $satdikCounted }} Aktif</span>
+    <!-- DROPDOWN FILTER SATDIK -->
+    <div class="relative w-full sm:w-80 mb-6 z-20" x-data="{ open: false }" @click.outside="open = false">
+        <!-- Dropdown Toggle Button -->
+        <button type="button" @click="open = !open" 
+                class="w-full flex items-center justify-between gap-3 px-4 py-3 bg-white border border-slate-200 rounded-xl shadow-sm hover:bg-slate-50 hover:border-slate-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-600/50">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                    <span class="ms text-[24px]">domain</span>
+                </div>
+                <div class="text-left flex flex-col overflow-hidden">
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Satuan Pendidikan</span>
+                    <span class="text-sm font-bold text-slate-900 truncate">
+                        {{ $selectedSatdikId ? ($satdiks->firstWhere('id', $selectedSatdikId)->code ?? 'Semua Satdik') : 'Semua Satdik Rindam' }}
+                    </span>
+                </div>
+            </div>
+            <span class="ms text-slate-400 transition-transform duration-300 shrink-0" :class="open ? 'rotate-180' : ''">expand_more</span>
+        </button>
+
+        <!-- Dropdown Menu -->
+        <div x-show="open" 
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0 translate-y-2 scale-95"
+             x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+             x-transition:leave="transition ease-in duration-150"
+             x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+             x-transition:leave-end="opacity-0 translate-y-2 scale-95"
+             style="display: none;"
+             class="absolute top-full left-0 mt-2 w-full sm:w-[350px] bg-white border border-slate-200 rounded-xl shadow-xl overflow-hidden">
+            
+            <a href="{{ route('students.index', array_merge(request()->except(['satdik_id', 'page']))) }}" 
+               class="flex items-center justify-between px-4 py-3 hover:bg-blue-50/50 transition-colors {{ empty($selectedSatdikId) ? 'bg-blue-50/50' : '' }} border-b border-slate-100">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg flex items-center justify-center {{ empty($selectedSatdikId) ? 'bg-blue-600 text-white shadow-sm' : 'bg-slate-100 text-slate-500' }}">
+                        <span class="ms text-[18px]">list</span>
+                    </div>
+                    <div>
+                        <div class="text-sm font-bold {{ empty($selectedSatdikId) ? 'text-blue-900' : 'text-slate-700' }}">Tampilkan Semua Satdik</div>
+                        <div class="text-[11px] text-slate-500">Seluruh Rindam III/Siliwangi</div>
+                    </div>
+                </div>
+                @if(empty($selectedSatdikId))
+                    <span class="ms text-blue-600 text-[20px]">check_circle</span>
+                @else
+                    <span class="px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 text-xs font-bold border border-slate-200">{{ $stats['overall_total'] }} Total</span>
+                @endif
             </a>
-        @endforeach
+
+            <div class="max-h-[320px] overflow-y-auto overscroll-contain">
+                @foreach($satdiks as $satdik)
+                    @php
+                        $satdikCounted = $satdik->counted_students ?? $satdik->students()->whereIn('status', ['Aktif', 'Sakit', 'Dinas Luar'])->count();
+                        $isActive = ($selectedSatdikId == $satdik->id);
+                    @endphp
+                    <a href="{{ route('students.index', array_merge(request()->except(['page']), ['satdik_id' => $satdik->id])) }}" 
+                       class="flex items-center justify-between px-4 py-3 hover:bg-blue-50/50 transition-colors {{ $isActive ? 'bg-blue-50/50' : '' }} border-b border-slate-50 last:border-0">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-lg flex items-center justify-center {{ $isActive ? 'bg-blue-600 text-white shadow-sm' : 'bg-slate-100 text-slate-500' }}">
+                                <span class="ms text-[18px]">account_balance</span>
+                            </div>
+                            <div class="min-w-0">
+                                <div class="text-sm font-bold {{ $isActive ? 'text-blue-900' : 'text-slate-700' }} truncate">{{ $satdik->code }}</div>
+                                <div class="text-[11px] text-slate-500 truncate max-w-[150px] sm:max-w-[180px]" title="{{ $satdik->name }}">{{ $satdik->name }}</div>
+                            </div>
+                        </div>
+                        @if($isActive)
+                            <span class="ms text-blue-600 text-[20px] shrink-0">check_circle</span>
+                        @else
+                            <span class="px-2 py-0.5 rounded-md bg-emerald-50 border border-emerald-100 text-emerald-700 text-xs font-bold shrink-0">{{ $satdikCounted }} Aktif</span>
+                        @endif
+                    </a>
+                @endforeach
+            </div>
+        </div>
     </div>
 
     <!-- 4 STAT CARDS (Clean Minimalist Dashboard Style) -->
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
+    <div class="grid grid-cols-2 xl:grid-cols-4 gap-3 sm:gap-5 mb-8">
         <!-- Siswa Aktif Terhitung -->
-        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex flex-col justify-between">
-            <div class="text-sm font-medium text-slate-500 mb-4 flex items-center justify-between">
-                <span>Siswa Aktif Terhitung</span>
-                <span class="ms text-sm text-slate-400">how_to_reg</span>
+        <div class="bg-white border border-slate-200 rounded-xl p-3.5 sm:p-5 shadow-sm flex flex-col justify-between">
+            <div class="text-xs sm:text-sm font-medium text-slate-500 mb-2 sm:mb-4 flex items-center justify-between">
+                <span class="truncate">Aktif Terhitung</span>
+                <span class="ms text-sm sm:text-[18px] text-blue-500">how_to_reg</span>
             </div>
             <div>
-                <div class="text-3xl font-bold text-slate-900 mb-2">{{ number_format($stats['overall_counted']) }}</div>
-                <div class="flex items-center gap-2 text-xs text-slate-500">
-                    <span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded font-semibold">+ {{ $stats['overall_active'] }} siap latih</span>
-                    <span>&bull; {{ $stats['overall_sick'] }} dispen</span>
+                <div class="text-xl sm:text-3xl font-bold text-slate-900 mb-1 sm:mb-2">{{ number_format($stats['overall_counted']) }}</div>
+                <div class="flex flex-wrap items-center gap-1 sm:gap-2 text-[10px] sm:text-xs text-slate-500">
+                    <span class="bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded font-semibold">+ {{ $stats['overall_active'] }} aktif</span>
+                    <span>&bull; {{ $stats['overall_sick'] }} sakit</span>
                 </div>
             </div>
         </div>
 
         <!-- Arsip Siswa Selesai -->
-        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex flex-col justify-between">
-            <div class="text-sm font-medium text-slate-500 mb-4 flex items-center justify-between">
-                <span>Arsip Siswa Selesai</span>
-                <span class="ms text-sm text-slate-400">archive</span>
+        <div class="bg-white border border-slate-200 rounded-xl p-3.5 sm:p-5 shadow-sm flex flex-col justify-between">
+            <div class="text-xs sm:text-sm font-medium text-slate-500 mb-2 sm:mb-4 flex items-center justify-between">
+                <span class="truncate">Arsip Selesai</span>
+                <span class="ms text-sm sm:text-[18px] text-emerald-500">archive</span>
             </div>
             <div>
-                <div class="text-3xl font-bold text-slate-900 mb-2">{{ number_format($stats['overall_archived']) }}</div>
-                <div class="flex items-center gap-2 text-xs text-slate-500">
-                    <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-semibold">{{ $stats['overall_finished'] }} lulus / tamat</span>
-                    <span>&bull; tidak terhitung</span>
+                <div class="text-xl sm:text-3xl font-bold text-slate-900 mb-1 sm:mb-2">{{ number_format($stats['overall_archived']) }}</div>
+                <div class="flex flex-wrap items-center gap-1 sm:gap-2 text-[10px] sm:text-xs text-slate-500">
+                    <span class="bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded font-semibold">{{ $stats['overall_finished'] }} lulus</span>
+                    <span class="hidden sm:inline">&bull; tak terhitung</span>
                 </div>
             </div>
         </div>
 
         <!-- Program Diklat -->
-        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex flex-col justify-between">
-            <div class="text-sm font-medium text-slate-500 mb-4 flex items-center justify-between">
-                <span>Program Diklat</span>
-                <span class="ms text-sm text-slate-400">school</span>
+        <div class="bg-white border border-slate-200 rounded-xl p-3.5 sm:p-5 shadow-sm flex flex-col justify-between">
+            <div class="text-xs sm:text-sm font-medium text-slate-500 mb-2 sm:mb-4 flex items-center justify-between">
+                <span class="truncate">Program Diklat</span>
+                <span class="ms text-sm sm:text-[18px] text-amber-500">school</span>
             </div>
             <div>
-                <div class="text-3xl font-bold text-slate-900 mb-2">{{ count($stats['program_list'] ?? []) }}</div>
-                <div class="flex items-center gap-2 text-xs text-slate-500">
-                    <span class="bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded font-semibold">Tahun Anggaran 2026</span>
-                    <span>DIKMABA &bull; DIKMATA</span>
+                <div class="text-xl sm:text-3xl font-bold text-slate-900 mb-1 sm:mb-2">{{ count($stats['program_list'] ?? []) }}</div>
+                <div class="flex flex-wrap items-center gap-1 sm:gap-2 text-[10px] sm:text-xs text-slate-500">
+                    <span class="bg-indigo-100 text-indigo-700 px-1.5 py-0.5 rounded font-semibold">TA 2026</span>
+                    <span class="hidden sm:inline">DIKMABA &bull; DIKMATA</span>
                 </div>
             </div>
         </div>
 
         <!-- Total Rekam Serdik -->
-        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex flex-col justify-between">
-            <div class="text-sm font-medium text-slate-500 mb-4 flex items-center justify-between">
-                <span>Total Rekam Serdik</span>
-                <span class="ms text-sm text-slate-400">domain</span>
+        <div class="bg-white border border-slate-200 rounded-xl p-3.5 sm:p-5 shadow-sm flex flex-col justify-between">
+            <div class="text-xs sm:text-sm font-medium text-slate-500 mb-2 sm:mb-4 flex items-center justify-between">
+                <span class="truncate">Total Rekam</span>
+                <span class="ms text-sm sm:text-[18px] text-indigo-500">domain</span>
             </div>
             <div>
-                <div class="text-3xl font-bold text-slate-900 mb-2">{{ number_format($stats['overall_total']) }}</div>
-                <div class="flex items-center gap-2 text-xs text-slate-500">
-                    <span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-semibold">5 Satuan Pendidikan</span>
-                    <span>Rindam III/Slw</span>
+                <div class="text-xl sm:text-3xl font-bold text-slate-900 mb-1 sm:mb-2">{{ number_format($stats['overall_total']) }}</div>
+                <div class="flex flex-wrap items-center gap-1 sm:gap-2 text-[10px] sm:text-xs text-slate-500">
+                    <span class="bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded font-semibold">5 Satdik</span>
+                    <span class="hidden sm:inline">Rindam III/Slw</span>
                 </div>
             </div>
         </div>
@@ -172,29 +226,29 @@
             @endif
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 sm:gap-3">
             @foreach($stats['program_list'] as $prog)
                 @php
                     $isProgActive = ($selectedProgramId == $prog['id']);
                 @endphp
                 <a href="{{ route('students.index', array_merge(request()->except(['page']), ['program_id' => $isProgActive ? null : $prog['id']])) }}"
                    class="group block p-3.5 rounded-xl border transition-all {{ $isProgActive ? 'border-slate-900 bg-slate-50 ring-2 ring-slate-900 shadow-sm' : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/50' }}">
-                    <div class="flex items-start justify-between gap-2 mb-2">
-                        <span class="font-bold text-xs {{ $isProgActive ? 'text-slate-900' : 'text-slate-800 group-hover:text-slate-900' }} leading-snug line-clamp-2">
+                    <div class="flex flex-col gap-1.5 mb-3">
+                        <span class="font-bold text-[11px] sm:text-xs {{ $isProgActive ? 'text-slate-900' : 'text-slate-800 group-hover:text-slate-900' }} leading-snug line-clamp-2 min-h-[32px]">
                             {{ $prog['name'] }}
                         </span>
-                        <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-700 shrink-0">
+                        <span class="w-fit px-2 py-0.5 rounded-md text-[9px] sm:text-[10px] font-bold bg-slate-100 text-slate-700 shrink-0">
                             {{ $prog['satdik_code'] }}
                         </span>
                     </div>
-                    <div class="flex items-center justify-between pt-2 border-t border-slate-100 text-xs">
-                        <span class="inline-flex items-center gap-1 text-emerald-700 font-semibold text-[11px]" title="Terhitung dalam kekuatan pendidikan">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                            <b>{{ $prog['counted_students'] }}</b> Terhitung
+                    <div class="flex flex-col gap-1.5 pt-2 border-t border-slate-100 text-xs">
+                        <span class="inline-flex items-center gap-1.5 text-emerald-700 font-semibold text-[10px] sm:text-[11px]" title="Terhitung dalam kekuatan pendidikan">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
+                            <span class="truncate"><b>{{ $prog['counted_students'] }}</b> <span class="opacity-80">Terhitung</span></span>
                         </span>
-                        <span class="inline-flex items-center gap-1 text-slate-500 font-medium text-[11px]" title="Selesai Pendidikan (Arsip)">
-                            <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
-                            <b>{{ $prog['archived_students'] }}</b> Arsip
+                        <span class="inline-flex items-center gap-1.5 text-slate-500 font-medium text-[10px] sm:text-[11px]" title="Selesai Pendidikan (Arsip)">
+                            <span class="w-1.5 h-1.5 rounded-full bg-slate-400 shrink-0"></span>
+                            <span class="truncate"><b>{{ $prog['archived_students'] }}</b> <span class="opacity-80">Arsip</span></span>
                         </span>
                     </div>
                 </a>
@@ -204,7 +258,7 @@
 
     <!-- SEGMENTED TABS: SEMUA vs SISWA AKTIF vs ARSIP SELESAI -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-        <div class="inline-flex p-1 bg-slate-100 border border-slate-200 rounded-xl gap-1">
+        <div class="flex flex-col sm:flex-row p-1 bg-slate-100 border border-slate-200 rounded-xl gap-1">
             <a href="{{ route('students.index', array_merge(request()->except(['page', 'tab']), ['tab' => 'all'])) }}"
                class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all {{ $tab == 'all' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-900' }}">
                 <span class="ms text-[16px]">people</span> Semua Serdik
@@ -244,23 +298,16 @@
             </div>
 
             <!-- SEARCH & FILTER FORM -->
-            <form method="GET" action="{{ route('students.index') }}" class="flex items-center gap-2 flex-nowrap shrink-0">
+            <form method="GET" action="{{ route('students.index') }}" class="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2 w-full xl:w-auto mt-4 xl:mt-0">
                 @if($tab && $tab !== 'all')
                     <input type="hidden" name="tab" value="{{ $tab }}">
                 @endif
-
-                <!-- PILIH SATUAN PENDIDIKAN (SATDIK) -->
-                <select name="satdik_id" class="w-32 sm:w-36 h-9 bg-white border border-slate-200 text-slate-700 text-xs font-medium rounded-lg px-2.5 focus:ring-2 focus:ring-slate-900 focus:outline-none shrink-0" onchange="if(this.form.program_id) this.form.program_id.value=''; this.form.submit()">
-                    <option value="">Semua Satdik</option>
-                    @foreach($satdiks as $s)
-                        <option value="{{ $s->id }}" {{ $selectedSatdikId == $s->id ? 'selected' : '' }}>
-                            {{ $s->code }}
-                        </option>
-                    @endforeach
-                </select>
+                @if($selectedSatdikId)
+                    <input type="hidden" name="satdik_id" value="{{ $selectedSatdikId }}">
+                @endif
 
                 <!-- PILIH PROGRAM PENDIDIKAN -->
-                <select name="program_id" class="w-32 sm:w-36 h-9 bg-white border border-slate-200 text-slate-700 text-xs font-medium rounded-lg px-2.5 focus:ring-2 focus:ring-slate-900 focus:outline-none truncate shrink-0" onchange="this.form.submit()">
+                <select name="program_id" class="col-span-1 w-full sm:w-36 h-10 sm:h-9 bg-white border border-slate-200 text-slate-700 text-xs font-medium rounded-lg px-2.5 focus:ring-2 focus:ring-slate-900 focus:outline-none truncate" onchange="this.form.submit()">
                     <option value="">Semua Program</option>
                     @foreach($availablePrograms as $ap)
                         <option value="{{ $ap->id }}" {{ $selectedProgramId == $ap->id ? 'selected' : '' }}>
@@ -270,7 +317,7 @@
                 </select>
 
                 <!-- PILIH STATUS DETAIL -->
-                <select name="status" class="w-32 sm:w-36 h-9 bg-white border border-slate-200 text-slate-700 text-xs font-medium rounded-lg px-2.5 focus:ring-2 focus:ring-slate-900 focus:outline-none shrink-0" onchange="this.form.submit()">
+                <select name="status" class="col-span-1 w-full sm:w-32 h-10 sm:h-9 bg-white border border-slate-200 text-slate-700 text-xs font-medium rounded-lg px-2.5 focus:ring-2 focus:ring-slate-900 focus:outline-none" onchange="this.form.submit()">
                     <option value="">Semua Status</option>
                     <option value="Aktif" {{ $status == 'Aktif' ? 'selected' : '' }}>Aktif</option>
                     <option value="Sakit" {{ $status == 'Sakit' ? 'selected' : '' }}>Sakit</option>
@@ -280,19 +327,21 @@
                     <option value="DO / Dikeluarkan" {{ $status == 'DO / Dikeluarkan' ? 'selected' : '' }}>DO</option>
                 </select>
 
-                <div class="relative w-32 sm:w-36 shrink-0">
+                <div class="relative col-span-2 sm:col-span-1 w-full sm:w-40">
                     <span class="ms text-slate-400 text-[18px] absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none">search</span>
-                    <input type="text" name="q" value="{{ $keyword }}" placeholder="Cari Nosik, Nama..." class="w-full h-9 pl-8 pr-2.5 border border-slate-200 rounded-lg text-xs text-slate-700 placeholder-slate-400 focus:ring-2 focus:ring-slate-900 focus:outline-none">
+                    <input type="text" name="q" value="{{ $keyword }}" placeholder="Cari Nosik, Nama..." class="w-full h-10 sm:h-9 pl-8 pr-2.5 border border-slate-200 rounded-lg text-xs text-slate-700 placeholder-slate-400 focus:ring-2 focus:ring-slate-900 focus:outline-none">
                 </div>
 
-                <button type="submit" class="h-9 bg-slate-900 hover:bg-slate-800 text-white px-3.5 rounded-lg text-xs font-semibold transition-colors shrink-0 flex items-center justify-center">
-                    Filter
-                </button>
-                @if($keyword || $status || $selectedProgramId || $selectedSatdikId || ($tab && $tab !== 'all'))
-                    <a href="{{ route('students.index') }}" class="h-9 text-xs font-medium text-slate-500 hover:text-slate-800 px-2 rounded-lg flex items-center justify-center shrink-0">
-                        Reset
-                    </a>
-                @endif
+                <div class="col-span-2 flex items-center gap-2">
+                    <button type="submit" class="flex-1 sm:flex-none h-10 sm:h-9 bg-slate-900 hover:bg-slate-800 text-white px-4 rounded-lg text-xs font-semibold transition-colors flex items-center justify-center">
+                        Filter
+                    </button>
+                    @if($keyword || $status || $selectedProgramId || $selectedSatdikId || ($tab && $tab !== 'all'))
+                        <a href="{{ route('students.index') }}" class="h-10 sm:h-9 text-xs font-medium text-slate-500 hover:text-slate-800 px-3 rounded-lg flex items-center justify-center bg-slate-100 hover:bg-slate-200 transition-colors">
+                            Reset
+                        </a>
+                    @endif
+                </div>
             </form>
         </div>
 
@@ -404,7 +453,7 @@
                                     <button type="button" class="p-1.5 text-slate-400 hover:text-red-600 rounded-lg hover:bg-slate-100 transition-colors" onclick="openDeleteStudentModal({{ $student->id }}, '{{ addslashes($student->full_name) }}', '{{ $student->nosik }}', '{{ addslashes($student->satdik->name ?? '') }}')" title="Hapus Data">
                                         <span class="ms text-[18px]">delete</span>
                                     </button>
-                                    <button type="button" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-white transition-colors ml-1" onclick="openRevealModal({{ $student->id }}, '{{ addslashes($student->full_name) }}', '{{ $student->nosik }}')" title="Buka Data Terproteksi">
+                                    <button type="button" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white transition-colors ml-1 shadow-sm shadow-blue-200" onclick="openRevealModal({{ $student->id }}, '{{ addslashes($student->full_name) }}', '{{ $student->nosik }}')" title="Buka Data Terproteksi">
                                         <span class="ms text-[14px]">key</span> Buka
                                     </button>
                                 </div>
@@ -505,8 +554,8 @@
                     </div>
 
                     <!-- Card Action Buttons -->
-                    <div class="flex items-center justify-between gap-1 pt-2 border-t border-slate-100">
-                        <div class="flex items-center gap-1">
+                    <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100">
+                        <div class="flex flex-wrap items-center gap-1">
                             <a href="{{ route('health.show', $student) }}" class="p-1.5 text-slate-400 hover:text-emerald-600 rounded-lg hover:bg-slate-100 transition-colors" title="Rekam Medis">
                                 <span class="ms text-[18px]">medical_services</span>
                             </a>
@@ -523,7 +572,7 @@
                                 <span class="ms text-[18px]">delete</span>
                             </button>
                         </div>
-                        <button type="button" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-white transition-colors shadow-sm" onclick="openRevealModal({{ $student->id }}, '{{ addslashes($student->full_name) }}', '{{ $student->nosik }}')" title="Buka Data Terproteksi">
+                        <button type="button" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-700 text-white transition-colors shadow-sm shadow-blue-200" onclick="openRevealModal({{ $student->id }}, '{{ addslashes($student->full_name) }}', '{{ $student->nosik }}')" title="Buka Data Terproteksi">
                             <span class="ms text-[14px]">key</span> Buka
                         </button>
                     </div>

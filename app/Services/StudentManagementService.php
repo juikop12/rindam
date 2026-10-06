@@ -42,6 +42,10 @@ class StudentManagementService
             $query->whereIn('status', ['Aktif', 'Sakit', 'Dinas Luar']);
         } elseif ($tab === 'arsip') {
             $query->whereIn('status', ['Selesai', 'Lulus', 'DO / Dikeluarkan']);
+        } elseif ($tab === 'lulus') {
+            $query->whereIn('status', ['Selesai', 'Lulus']);
+        } elseif ($tab === 'do') {
+            $query->where('status', 'DO / Dikeluarkan');
         }
 
         if (!empty($status)) {
@@ -93,6 +97,7 @@ class StudentManagementService
         $overallSick = (clone $baseQuery)->where('status', 'Sakit')->count();
         $overallArchived = (clone $baseQuery)->whereIn('status', ['Selesai', 'Lulus', 'DO / Dikeluarkan'])->count();
         $overallFinished = (clone $baseQuery)->whereIn('status', ['Selesai', 'Lulus'])->count();
+        $overallDo = (clone $baseQuery)->where('status', 'DO / Dikeluarkan')->count();
         $overallProtectedProfiles = StudentPersonalProfile::count();
 
         // Rekapitulasi per Program Pendidikan (Aktif Terhitung vs Selesai Arsip)
@@ -139,6 +144,7 @@ class StudentManagementService
             'overall_sick' => $overallSick,
             'overall_archived' => $overallArchived,
             'overall_finished' => $overallFinished,
+            'overall_do' => $overallDo,
             'overall_protected_profiles' => $overallProtectedProfiles,
             'satdik_list' => $satdiks,
             'program_list' => $programStats,

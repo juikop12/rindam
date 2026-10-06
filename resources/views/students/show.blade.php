@@ -5,400 +5,431 @@
 @section('content')
 
 <!-- BREADCRUMB & BACK BUTTON -->
-<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;">
-    <div style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--muted);">
-        <a href="{{ route('students.index') }}" style="color:var(--o700); text-decoration:none; font-weight:600;">Data Serdik</a>
-        <span class="ms" style="font-size:16px;">chevron_right</span>
-        <a href="{{ route('students.index', ['satdik_id' => $student->satdik_id]) }}" style="color:var(--o700); text-decoration:none; font-weight:600;">{{ $student->satdik->code }}</a>
-        <span class="ms" style="font-size:16px;">chevron_right</span>
-        <span style="color:var(--text); font-weight:700;">{{ $student->nosik }}</span>
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+    <div class="flex flex-wrap items-center gap-2 text-xs font-medium text-slate-500">
+        <a href="{{ route('students.index') }}" class="text-blue-600 hover:text-blue-800 font-semibold transition-colors">Data Serdik</a>
+        <span class="ms text-slate-400 text-[16px]">chevron_right</span>
+        <a href="{{ route('students.index', ['satdik_id' => $student->satdik_id]) }}" class="text-blue-600 hover:text-blue-800 font-semibold transition-colors">{{ $student->satdik->code }}</a>
+        <span class="ms text-slate-400 text-[16px]">chevron_right</span>
+        <span class="text-slate-900 font-bold">NOSIK: {{ $student->nosik }}</span>
     </div>
-    <div style="display:flex; gap:10px;">
-        <a href="{{ route('students.index', ['satdik_id' => $student->satdik_id]) }}" class="btn btn-outline btn-sm">
-            <span class="ms">arrow_back</span> Kembali ke Daftar
+    <div class="flex flex-wrap items-center gap-2.5">
+        <a href="{{ route('students.index', ['satdik_id' => $student->satdik_id]) }}" class="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 rounded-lg text-xs font-semibold shadow-sm transition-colors w-full sm:w-auto">
+            <span class="ms text-[18px]">arrow_back</span> Kembali ke Daftar
         </a>
         @if(auth()->user()?->isSuperAdmin())
-        <a href="{{ route('students.audit-logs') }}" class="btn btn-outline btn-sm">
-            <span class="ms">policy</span> Lihat Seluruh Audit Trail
+        <a href="{{ route('students.audit-logs') }}" class="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 rounded-lg text-xs font-semibold shadow-sm transition-colors w-full sm:w-auto">
+            <span class="ms text-[18px]">policy</span> Lihat Seluruh Audit Trail
         </a>
         @endif
     </div>
 </div>
 
 <!-- STUDENT PROFILE HEADER HERO -->
-<div class="card" style="margin-bottom:24px; border-left: 5px solid var(--gold);">
-    <div class="card-body" style="padding:28px;">
-        <div style="display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:20px;">
-            <div style="display:flex; align-items:center; gap:22px;">
-                <!-- AVATAR / PHOTO -->
-                <div style="width:84px; height:84px; border-radius:18px; background:linear-gradient(135deg, var(--o800), var(--o600)); color:var(--gold2); display:grid; place-items:center; font-size:32px; font-weight:900; font-family:'Montserrat',sans-serif; border:3px solid var(--gold); box-shadow:0 8px 20px rgba(0,0,0,0.15);">
-                    {{ substr($student->full_name, 0, 2) }}
+<div class="bg-white border border-slate-200 border-l-4 border-l-blue-600 rounded-xl shadow-sm mb-6 p-5 sm:p-7">
+    <div class="flex flex-col lg:flex-row lg:items-start justify-between gap-6">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-5">
+            <!-- AVATAR / PHOTO -->
+            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-blue-700 to-blue-500 text-white flex items-center justify-center text-2xl sm:text-3xl font-black shadow-lg shadow-blue-500/30 border-2 border-white shrink-0">
+                {{ substr($student->full_name, 0, 2) }}
+            </div>
+            <div>
+                <div class="flex flex-wrap items-center gap-2 mb-2">
+                    <span class="px-2 py-0.5 rounded-md text-xs font-bold bg-blue-50 border border-blue-100 text-blue-700 inline-flex items-center gap-1">
+                        <span class="ms text-[14px]">account_balance</span> {{ $student->satdik->code }}
+                    </span>
+                    <span class="px-2 py-0.5 rounded-md text-xs font-mono font-bold bg-slate-100 text-slate-700 border border-slate-200">
+                        NOSIK: {{ $student->nosik }}
+                    </span>
+                    @php 
+                        $u = $student->unified_status; 
+                        $bgClass = 'bg-slate-100 text-slate-700 border-slate-200';
+                        if($student->status === 'Aktif') $bgClass = 'bg-emerald-50 text-emerald-700 border-emerald-200';
+                        if($student->status === 'Sakit') $bgClass = 'bg-amber-50 text-amber-700 border-amber-200';
+                        if(in_array($student->status, ['Lulus', 'Selesai'])) $bgClass = 'bg-indigo-50 text-indigo-700 border-indigo-200';
+                        if(str_contains($student->status, 'DO')) $bgClass = 'bg-rose-50 text-rose-700 border-rose-200';
+                    @endphp
+                    <span class="px-2 py-0.5 rounded-md text-xs font-semibold border {{ $bgClass }} inline-flex items-center gap-1">
+                        <span class="ms text-[14px]">{{ $u['icon'] }}</span> {{ $u['label'] }}
+                    </span>
                 </div>
-                <div>
-                    <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
-                        <span class="badge badge-satdik" style="font-size:12px; font-weight:800; background:var(--o800); color:var(--gold2);">
-                            <span class="ms" style="font-size:14px;">account_balance</span> {{ $student->satdik->code }}
-                        </span>
-                        <span class="badge" style="font-family:'Fira Code',monospace; font-size:12px; background:var(--o100); color:var(--o800);">
-                            NOSIK: {{ $student->nosik }}
-                        </span>
-                        @php $u = $student->unified_status; @endphp
-                        <span class="badge {{ $u['badge'] }}" style="font-size:12px;">
-                            <span class="ms" style="font-size:14px;">{{ $u['icon'] }}</span> {{ $u['label'] }}
-                        </span>
-                    </div>
-                    <h1 style="margin:0 0 6px; font-family:'Montserrat',sans-serif; font-size:24px; font-weight:800; color:var(--o900);">
-                        {{ $student->full_name }}
-                    </h1>
-                    <div style="color:var(--muted); font-size:13.5px; display:flex; align-items:center; gap:16px;">
-                        <span><b style="color:var(--o800);">Pangkat:</b> {{ $student->student_rank }}</span>
-                        <span>•</span>
-                        <span><b style="color:var(--o800);">Program:</b> {{ $student->educationProgram->name ?? '-' }}</span>
-                        <span>•</span>
-                        <span><b style="color:var(--o800);">Kelas:</b> {{ $student->classroom->name ?? 'Belum Ditentukan' }}</span>
-                    </div>
+                <h1 class="m-0 text-xl sm:text-2xl font-bold text-slate-900 mb-1.5 tracking-tight">
+                    {{ $student->full_name }}
+                </h1>
+                <div class="text-[11px] sm:text-xs text-slate-500 flex flex-wrap items-center gap-x-3 gap-y-1">
+                    <span>Pangkat: <b class="text-slate-800">{{ $student->student_rank }}</b></span>
+                    <span class="text-slate-300">•</span>
+                    <span>Program: <b class="text-slate-800">{{ $student->educationProgram->name ?? '-' }}</b></span>
+                    <span class="text-slate-300">•</span>
+                    <span>Kelas: <b class="text-slate-800">{{ $student->classroom->name ?? 'Belum Ditentukan' }}</b></span>
                 </div>
             </div>
+        </div>
 
-            <div style="text-align:right;">
-                @if($student->is_counted)
-                    <div style="margin-bottom:8px;">
-                        <span class="badge badge-green" style="font-size:12px; padding:6px 12px;">
-                            <span class="ms" style="font-size:15px;">how_to_reg</span> Siswa Aktif Terhitung
-                        </span>
-                    </div>
-                @else
-                    <div style="margin-bottom:8px;">
-                        <span class="badge" style="background:#475569; color:#fff; font-size:12px; padding:6px 12px;">
-                            <span class="ms" style="font-size:15px;">archive</span> Status Arsip (Tidak Terhitung)
-                        </span>
-                    </div>
-                @endif
-                <div class="pdp-badge" style="margin-bottom:8px;">
-                    <span class="ms" style="font-size:15px;">enhanced_encryption</span> Data Pribadi Terproteksi Sistem
+        <div class="lg:text-right shrink-0">
+            @if($student->is_counted)
+                <div class="mb-2">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-md text-xs font-bold">
+                        <span class="ms text-[16px]">how_to_reg</span> Siswa Aktif Terhitung
+                    </span>
                 </div>
-                <div style="font-size:12px; color:var(--muted);">
-                    Terdaftar sejak: {{ $student->created_at->format('d M Y, H:i') }} WIB
+            @else
+                <div class="mb-2">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-100 border border-slate-200 text-slate-600 rounded-md text-xs font-bold">
+                        <span class="ms text-[16px]">archive</span> Status Arsip (Tidak Terhitung)
+                    </span>
                 </div>
+            @endif
+            <div class="mb-2">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 border border-amber-200 text-amber-700 rounded-md text-xs font-bold shadow-sm">
+                    <span class="ms text-[16px]">enhanced_encryption</span> Data Pribadi Terproteksi Sistem
+                </span>
+            </div>
+            <div class="text-[11px] text-slate-400 mt-2 font-medium">
+                Terdaftar sejak: {{ $student->created_at->format('d M Y, H:i') }} WIB
             </div>
         </div>
     </div>
 </div>
 
-<div style="display:grid; grid-template-columns: 1fr 1fr; gap:24px; margin-bottom:24px;">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
 
-    <!-- KARTU 1: PROFIL KEMILITERAN & PENDIDIKAN (PUBLIC TO OPERATORS) -->
-    <div class="card" style="margin-bottom:0;">
-        <div class="card-header">
-            <h3 class="card-title">
-                <span class="ms" style="color:var(--o700);">military_tech</span> Data Kemiliteran & Satdik
+    <!-- KARTU 1: PROFIL KEMILITERAN & PENDIDIKAN -->
+    <div class="bg-white border border-slate-200 rounded-xl shadow-sm flex flex-col">
+        <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50 rounded-t-xl">
+            <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <span class="ms text-blue-600 text-[20px]">military_tech</span> Data Kemiliteran & Satdik
             </h3>
-            <span class="badge badge-satdik">{{ $student->satdik->code }}</span>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-700 border border-blue-200">{{ $student->satdik->code }}</span>
         </div>
-        <div class="card-body">
-            <table style="width:100%; border-collapse:collapse; font-size:13.5px;">
-                <tr style="border-bottom:1px solid #EEF2EB;">
-                    <td style="padding:10px 0; color:var(--muted); width:40%;">Satuan Pendidikan</td>
-                    <td style="padding:10px 0; font-weight:600; color:var(--o900);">{{ $student->satdik->name }} ({{ $student->satdik->code }})</td>
-                </tr>
-                <tr style="border-bottom:1px solid #EEF2EB;">
-                    <td style="padding:10px 0; color:var(--muted);">Nomor Siswa (NOSIK)</td>
-                    <td style="padding:10px 0; font-family:'Fira Code',monospace; font-weight:700; color:var(--o800);">{{ $student->nosik }}</td>
-                </tr>
-                <tr style="border-bottom:1px solid #EEF2EB;">
-                    <td style="padding:10px 0; color:var(--muted);">Program Pendidikan</td>
-                    <td style="padding:10px 0; font-weight:600;">{{ $student->educationProgram->name ?? '-' }} (TA {{ $student->educationProgram->academic_year ?? '-' }})</td>
-                </tr>
-                <tr style="border-bottom:1px solid #EEF2EB;">
-                    <td style="padding:10px 0; color:var(--muted);">Kompi & Peleton Siswa</td>
-                    <td style="padding:10px 0; font-weight:600;">
+        <div class="p-0 sm:p-5 flex-1">
+            <div class="flex flex-col sm:gap-2">
+                
+                <div class="flex flex-col sm:flex-row sm:items-start justify-between py-3 px-5 sm:px-0 border-b border-slate-100 last:border-0">
+                    <div class="text-xs text-slate-500 sm:w-2/5 mb-1 sm:mb-0">Satuan Pendidikan</div>
+                    <div class="text-sm font-semibold text-slate-900 sm:w-3/5">{{ $student->satdik->name }} ({{ $student->satdik->code }})</div>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row sm:items-start justify-between py-3 px-5 sm:px-0 border-b border-slate-100 last:border-0">
+                    <div class="text-xs text-slate-500 sm:w-2/5 mb-1 sm:mb-0">Nomor Siswa (NOSIK)</div>
+                    <div class="text-sm font-bold font-mono text-slate-800 sm:w-3/5">{{ $student->nosik }}</div>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row sm:items-start justify-between py-3 px-5 sm:px-0 border-b border-slate-100 last:border-0">
+                    <div class="text-xs text-slate-500 sm:w-2/5 mb-1 sm:mb-0">Program Pendidikan</div>
+                    <div class="text-sm font-semibold text-slate-900 sm:w-3/5">{{ $student->educationProgram->name ?? '-' }} (TA {{ $student->educationProgram->academic_year ?? '-' }})</div>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row sm:items-start justify-between py-3 px-5 sm:px-0 border-b border-slate-100 last:border-0">
+                    <div class="text-xs text-slate-500 sm:w-2/5 mb-1 sm:mb-0">Kompi & Peleton Siswa</div>
+                    <div class="text-sm font-semibold text-slate-900 sm:w-3/5">
                         {{ $student->classroom->name ?? ($student->company ? $student->company . ' ' . $student->platoon : 'Belum Ditentukan') }}
                         @if($student->company || $student->platoon)
-                            <div style="font-size:11.5px; color:var(--muted); font-weight:500; margin-top:2px;">
-                                Kompi: <b style="color:var(--o900);">{{ $student->company ?? '-' }}</b> · Peleton: <b style="color:var(--o900);">{{ $student->platoon ?? '-' }}</b>
+                            <div class="text-[11px] text-slate-500 font-medium mt-1">
+                                Kompi: <b class="text-slate-800">{{ $student->company ?? '-' }}</b> &bull; Peleton: <b class="text-slate-800">{{ $student->platoon ?? '-' }}</b>
                                 @if($student->classroom?->platoon_leader_name)
-                                    · Danton: <b>{{ $student->classroom->platoon_leader_name }}</b>
+                                    &bull; Danton: <b class="text-slate-800">{{ $student->classroom->platoon_leader_name }}</b>
                                 @endif
                             </div>
                         @endif
-                    </td>
-                </tr>
-                <tr style="border-bottom:1px solid #EEF2EB;">
-                    <td style="padding:10px 0; color:var(--muted);">Kodam / Kodim Asal</td>
-                    <td style="padding:10px 0; font-weight:600;">{{ $student->origin_military_unit ?? '-' }}</td>
-                </tr>
-                <tr style="border-bottom:1px solid #EEF2EB;">
-                    <td style="padding:10px 0; color:var(--muted);">Tempat, Tanggal Lahir</td>
-                    <td style="padding:10px 0; font-weight:600;">
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row sm:items-start justify-between py-3 px-5 sm:px-0 border-b border-slate-100 last:border-0">
+                    <div class="text-xs text-slate-500 sm:w-2/5 mb-1 sm:mb-0">Kodam / Kodim Asal</div>
+                    <div class="text-sm font-semibold text-slate-900 sm:w-3/5">{{ $student->origin_military_unit ?? '-' }}</div>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row sm:items-start justify-between py-3 px-5 sm:px-0 border-b border-slate-100 last:border-0">
+                    <div class="text-xs text-slate-500 sm:w-2/5 mb-1 sm:mb-0">Tempat, Tanggal Lahir</div>
+                    <div class="text-sm font-semibold text-slate-900 sm:w-3/5">
                         {{ $student->birth_place ?? '-' }}, 
                         {{ $student->birth_date ? \Carbon\Carbon::parse($student->birth_date)->translatedFormat('d F Y') : '-' }}
                         @if($student->birth_date)
-                            <span style="font-size:12px; color:var(--muted);">({{ \Carbon\Carbon::parse($student->birth_date)->age }} tahun)</span>
+                            <span class="text-xs text-slate-500 font-normal">({{ \Carbon\Carbon::parse($student->birth_date)->age }} tahun)</span>
                         @endif
-                    </td>
-                </tr>
-                <tr style="border-bottom:1px solid #EEF2EB;">
-                    <td style="padding:10px 0; color:var(--muted);">Jenis Kelamin</td>
-                    <td style="padding:10px 0; font-weight:600;">{{ $student->gender == 'L' ? 'Laki-Laki' : 'Perempuan' }}</td>
-                </tr>
-                <tr style="border-bottom:1px solid #EEF2EB;">
-                    <td style="padding:10px 0; color:var(--muted);">Agama</td>
-                    <td style="padding:10px 0; font-weight:600;">{{ $student->religion ?? '-' }}</td>
-                </tr>
-                <tr style="border-bottom:1px solid #EEF2EB;">
-                    <td style="padding:10px 0; color:var(--muted);">Golongan Darah</td>
-                    <td style="padding:10px 0; font-weight:700; color:var(--red);">{{ $student->blood_type ?? '-' }}</td>
-                </tr>
-                <tr style="border-bottom:1px solid #EEF2EB;">
-                    <td style="padding:10px 0; color:var(--muted);">Status Fisik / Kesehatan</td>
-                    <td style="padding:10px 0;">
-                        <span class="badge {{ $u['badge'] }}">
-                            <span class="ms" style="font-size:13px;">{{ $u['icon'] }}</span> {{ $u['label'] }}
-                        </span>
-                        <a href="{{ route('health.show', $student) }}" style="font-size:12px; margin-left:8px; color:var(--o700); font-weight:700; text-decoration:none;">
-                            (Lihat Rekam Medis &rarr;)
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="padding:10px 0; color:var(--muted);">Status Keaktifan Pendidikan</td>
-                    <td style="padding:10px 0;">
+                    </div>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row sm:items-start justify-between py-3 px-5 sm:px-0 border-b border-slate-100 last:border-0">
+                    <div class="text-xs text-slate-500 sm:w-2/5 mb-1 sm:mb-0">Jenis Kelamin & Agama</div>
+                    <div class="text-sm font-semibold text-slate-900 sm:w-3/5">
+                        {{ $student->gender == 'L' ? 'Laki-Laki' : 'Perempuan' }} &bull; {{ $student->religion ?? '-' }}
+                    </div>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row sm:items-start justify-between py-3 px-5 sm:px-0 border-b border-slate-100 last:border-0">
+                    <div class="text-xs text-slate-500 sm:w-2/5 mb-1 sm:mb-0">Golongan Darah</div>
+                    <div class="text-sm font-bold text-rose-600 sm:w-3/5">{{ $student->blood_type ?? '-' }}</div>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row sm:items-start justify-between py-3 px-5 sm:px-0 border-b border-slate-100 last:border-0">
+                    <div class="text-xs text-slate-500 sm:w-2/5 mb-2 sm:mb-0 mt-1">Status Keaktifan</div>
+                    <div class="sm:w-3/5">
                         @if(auth()->user()?->canModifyData())
-                            <form method="POST" action="{{ route('students.update-status', $student) }}" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                            <form method="POST" action="{{ route('students.update-status', $student) }}" class="flex flex-col sm:flex-row sm:items-center gap-2">
                                 @csrf
                                 @method('PATCH')
-                                <select name="status" class="form-control" style="width:auto; font-size:12.5px; padding:4px 8px; font-weight:700;">
-                                    <optgroup label="── STATUS TERHITUNG (PENDIDIKAN BERJALAN) ──">
-                                        <option value="Aktif" {{ $student->status == 'Aktif' ? 'selected' : '' }}>🟢 Aktif (Siap Latih — Terhitung)</option>
-                                        <option value="Sakit" {{ $student->status == 'Sakit' ? 'selected' : '' }}>🟡 Sakit (Dispen Medis — Terhitung)</option>
+                                <select name="status" class="w-full sm:w-auto h-9 bg-slate-50 border border-slate-200 text-slate-800 text-xs font-bold rounded-lg px-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                                    <optgroup label="STATUS TERHITUNG">
+                                        <option value="Aktif" {{ $student->status == 'Aktif' ? 'selected' : '' }}>🟢 Aktif (Siap Latih)</option>
+                                        <option value="Sakit" {{ $student->status == 'Sakit' ? 'selected' : '' }}>🟡 Sakit (Dispen Medis)</option>
                                         <option value="Dinas Luar" {{ $student->status == 'Dinas Luar' ? 'selected' : '' }}>🔵 Dinas Luar (Terhitung)</option>
                                     </optgroup>
-                                    <optgroup label="── STATUS ARSIP (TIDAK TERHITUNG LAGI) ──">
-                                        <option value="Selesai" {{ $student->status == 'Selesai' ? 'selected' : '' }}>📁 Selesai (Tamat Pendidikan — Arsip)</option>
-                                        <option value="Lulus" {{ $student->status == 'Lulus' ? 'selected' : '' }}>🎓 Lulus (Alumni — Arsip)</option>
-                                        <option value="DO / Dikeluarkan" {{ $student->status == 'DO / Dikeluarkan' ? 'selected' : '' }}>🔴 DO / Dikeluarkan (Arsip)</option>
+                                    <optgroup label="STATUS ARSIP">
+                                        <option value="Selesai" {{ $student->status == 'Selesai' ? 'selected' : '' }}>📁 Selesai (Tamat Arsip)</option>
+                                        <option value="Lulus" {{ $student->status == 'Lulus' ? 'selected' : '' }}>🎓 Lulus (Alumni)</option>
+                                        <option value="DO / Dikeluarkan" {{ $student->status == 'DO / Dikeluarkan' ? 'selected' : '' }}>🔴 DO / Dikeluarkan</option>
                                     </optgroup>
                                 </select>
-                                <button type="submit" class="btn btn-outline btn-sm" style="font-size:12px; padding:4px 10px;">Simpan Status</button>
+                                <button type="submit" class="h-9 bg-white border border-slate-300 text-slate-700 px-3 rounded-lg text-xs font-semibold hover:bg-slate-50 transition-colors w-full sm:w-auto text-center">Simpan</button>
                             </form>
                         @else
-                            <div style="font-weight:700; color:var(--o900); font-size:13.5px; display:inline-flex; align-items:center; gap:8px;">
-                                <span>{{ $student->status }}</span>
-                                <span class="badge" style="background:#F1F5F9; color:#475569; font-size:11px;">Hanya Lihat</span>
+                            <div class="inline-flex items-center gap-2">
+                                <span class="font-bold text-slate-900 text-sm">{{ $student->status }}</span>
+                                <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-500 text-[10px] font-bold">Hanya Lihat</span>
                             </div>
                         @endif
-                        <small style="color:var(--muted); display:block; margin-top:5px; font-size:11.5px;">
+                        <div class="text-[10px] text-slate-500 mt-2 leading-relaxed">
                             @if($student->is_counted)
-                                <b style="color:var(--green);">✓ Terhitung:</b> Prajurit siswa aktif menjalani program pendidikan.
+                                <b class="text-emerald-600">✓ Terhitung:</b> Prajurit siswa aktif menjalani program pendidikan.
                             @else
-                                <b style="color:#475569;">ℹ Masuk Arsip:</b> Prajurit siswa telah selesai pendidikan dan tidak terhitung dalam kuota aktif.
+                                <b class="text-slate-600">ℹ Masuk Arsip:</b> Prajurit siswa telah selesai pendidikan dan tidak terhitung dalam kuota aktif.
                             @endif
-                        </small>
-                    </td>
-                </tr>
-            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 
-    <!-- KARTU 2: DATA PRIBADI SENSITIF TERPROTEKSI SISTEM SIPANDU-WBK -->
-    <div class="card" style="margin-bottom:0; border: 1.5px solid var(--gold);">
-        <div class="card-header" style="background:var(--gold-bg); border-bottom:1px solid #E8D9A8;">
-            <div style="display:flex; align-items:center; gap:8px;">
-                <span class="ms" style="color:#7A5C07;">enhanced_encryption</span>
+    <!-- KARTU 2: DATA PRIBADI SENSITIF TERPROTEKSI -->
+    <div class="bg-amber-50/30 border-2 border-amber-200 rounded-xl shadow-sm flex flex-col relative overflow-hidden">
+        <div class="px-5 py-4 border-b border-amber-200 flex flex-col sm:flex-row sm:items-center justify-between bg-amber-100/50 gap-3">
+            <div class="flex items-center gap-2">
+                <span class="ms text-amber-700 text-[20px]">enhanced_encryption</span>
                 <div>
-                    <h3 class="card-title" style="color:#7A5C07; font-size:15px;">Informasi Pribadi Sensitif Terproteksi</h3>
-                    <div style="font-size:11px; color:#8A680C;">Terenkripsi AES-256 pada Database & Tersamar (Masked)</div>
+                    <h3 class="text-sm font-bold text-amber-900">Informasi Pribadi Sensitif</h3>
+                    <div class="text-[10px] font-semibold text-amber-700/80 mt-0.5">Terenkripsi AES-256 & Tersamar</div>
                 </div>
             </div>
             
-            <button id="btnTriggerReveal" onclick="openRevealModal()" class="btn btn-gold btn-sm">
-                <span class="ms">visibility</span> Buka Data Sensitif
+            <button id="btnTriggerReveal" onclick="openRevealModal()" class="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-bold transition-colors shadow-sm shadow-amber-200 shrink-0 w-full sm:w-auto">
+                <span class="ms text-[16px]">visibility</span> Buka Data Sensitif
             </button>
         </div>
 
-        <div class="card-body">
+        <div class="p-0 sm:p-5 flex-1">
             <!-- NOTIFIKASI STATUS DEKRIPSI -->
-            <div id="decryptedNotice" style="display:none; background:#E8F5E9; border:1px solid #A5D6A7; padding:10px 14px; border-radius:8px; margin-bottom:16px; font-size:12.5px; color:#1B5E20;">
-                <div style="display:flex; align-items:center; gap:8px;">
-                    <span class="ms" style="font-size:18px;">lock_open</span>
+            <div id="decryptedNotice" style="display:none;" class="mx-5 my-4 sm:mx-0 sm:mt-0 sm:mb-4 bg-emerald-50 border border-emerald-200 p-3 rounded-lg text-xs text-emerald-800">
+                <div class="flex items-start gap-2">
+                    <span class="ms text-emerald-600 text-[18px]">lock_open</span>
                     <div>
-                        <b>Mode Dekripsi Terbuka:</b> Data telah didekripsi untuk sesi ini dan pencatatan audit telah direkam.
-                        <div id="decryptedReasonText" style="font-style:italic; margin-top:2px;"></div>
+                        <b class="text-emerald-700">Mode Dekripsi Terbuka:</b> Data telah didekripsi untuk sesi ini dan direkam ke Audit Trail.
+                        <div id="decryptedReasonText" class="italic mt-1 text-[11px] text-emerald-600/80"></div>
                     </div>
                 </div>
             </div>
 
             @php $profile = $student->personalProfile; @endphp
 
-            <table style="width:100%; border-collapse:collapse; font-size:13.5px;">
-                <tr style="border-bottom:1px solid #EEF2EB;">
-                    <td style="padding:10px 0; color:var(--muted); width:42%;">Nomor Induk Kependudukan (NIK)</td>
-                    <td style="padding:10px 0;">
-                        <span id="field_nik" class="masked-pill">{{ $profile ? $profile->masked_nik : 'N/A' }}</span>
-                    </td>
-                </tr>
-                <tr style="border-bottom:1px solid #EEF2EB;">
-                    <td style="padding:10px 0; color:var(--muted);">Nomor Kartu Keluarga (No KK)</td>
-                    <td style="padding:10px 0;">
-                        <span id="field_kk" class="masked-pill">{{ $profile && $profile->family_card_number ? substr($profile->family_card_number, 0, 4) . '********' . substr($profile->family_card_number, -4) : 'N/A' }}</span>
-                    </td>
-                </tr>
-                <tr style="border-bottom:1px solid #EEF2EB;">
-                    <td style="padding:10px 0; color:var(--muted);">Nama Ibu Kandung</td>
-                    <td style="padding:10px 0;">
-                        <span id="field_mother" class="masked-pill">{{ $profile ? $profile->masked_mother_name : 'N/A' }}</span>
-                    </td>
-                </tr>
-                <tr style="border-bottom:1px solid #EEF2EB;">
-                    <td style="padding:10px 0; color:var(--muted);">Nama Ayah Kandung</td>
-                    <td style="padding:10px 0;">
-                        <span id="field_father" class="masked-pill">{{ $profile && $profile->father_name ? substr($profile->father_name, 0, 2) . '*****' : 'N/A' }}</span>
-                    </td>
-                </tr>
-                <tr style="border-bottom:1px solid #EEF2EB;">
-                    <td style="padding:10px 0; color:var(--muted);">Kontak Darurat</td>
-                    <td style="padding:10px 0;">
-                        <span id="field_emergency" class="masked-pill">{{ $profile ? $profile->masked_emergency_phone : 'N/A' }}</span>
-                    </td>
-                </tr>
-                <tr style="border-bottom:1px solid #EEF2EB;">
-                    <td style="padding:10px 0; color:var(--muted);">Alamat Domisili KTP</td>
-                    <td style="padding:10px 0;">
-                        <span id="field_address" class="masked-pill">{{ $profile && $profile->home_address ? substr($profile->home_address, 0, 15) . '... [Disamarkan]' : 'N/A' }}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="padding:14px 0 0;">
-                        <div style="background:#E8F5E9; border:1px solid #C8E6C9; border-radius:10px; padding:12px 16px; display:flex; align-items:center; justify-content:space-between; gap:12px;">
-                            <div style="display:flex; align-items:center; gap:8px;">
-                                <span class="ms" style="color:#1B5E20; font-size:22px;">medical_services</span>
-                                <div>
-                                    <div style="font-weight:700; color:#1B5E20; font-size:13px;">Data Kesehatan & Rekam Medis Dikelola Terpisah</div>
-                                    <div style="font-size:11.5px; color:#2E7D32;">Informasi riwayat alergi, stakes keswa, dan rekam medis fisik dipisahkan pada Menu Kesehatan Serdik.</div>
-                                </div>
-                            </div>
-                            <a href="{{ route('health.show', $student) }}" class="btn btn-sm" style="background:#1B5E20; color:#fff; text-decoration:none; white-space:nowrap;">
-                                <span class="ms">arrow_forward</span> Buka Rekam Medis
-                            </a>
-                        </div>
-                    </td>
-                </tr>
-            </table>
+            <div class="flex flex-col sm:gap-2">
+                <div class="flex flex-col sm:flex-row sm:items-start justify-between py-3 px-5 sm:px-0 border-b border-amber-100 last:border-0">
+                    <div class="text-xs text-slate-500 sm:w-2/5 mb-1 sm:mb-0">Nomor Induk Kependudukan (NIK)</div>
+                    <div class="text-sm sm:w-3/5 font-mono font-medium">
+                        <span id="field_nik" class="px-2 py-1 rounded bg-slate-100 text-slate-600 text-xs border border-slate-200">{{ $profile ? $profile->masked_nik : 'N/A' }}</span>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row sm:items-start justify-between py-3 px-5 sm:px-0 border-b border-amber-100 last:border-0">
+                    <div class="text-xs text-slate-500 sm:w-2/5 mb-1 sm:mb-0">Nomor Kartu Keluarga (No KK)</div>
+                    <div class="text-sm sm:w-3/5 font-mono font-medium">
+                        <span id="field_kk" class="px-2 py-1 rounded bg-slate-100 text-slate-600 text-xs border border-slate-200">{{ $profile && $profile->family_card_number ? substr($profile->family_card_number, 0, 4) . '********' . substr($profile->family_card_number, -4) : 'N/A' }}</span>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row sm:items-start justify-between py-3 px-5 sm:px-0 border-b border-amber-100 last:border-0">
+                    <div class="text-xs text-slate-500 sm:w-2/5 mb-1 sm:mb-0">Nama Ibu Kandung</div>
+                    <div class="text-sm sm:w-3/5 font-medium">
+                        <span id="field_mother" class="px-2 py-1 rounded bg-slate-100 text-slate-600 text-xs border border-slate-200">{{ $profile ? $profile->masked_mother_name : 'N/A' }}</span>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row sm:items-start justify-between py-3 px-5 sm:px-0 border-b border-amber-100 last:border-0">
+                    <div class="text-xs text-slate-500 sm:w-2/5 mb-1 sm:mb-0">Nama Ayah Kandung</div>
+                    <div class="text-sm sm:w-3/5 font-medium">
+                        <span id="field_father" class="px-2 py-1 rounded bg-slate-100 text-slate-600 text-xs border border-slate-200">{{ $profile && $profile->father_name ? substr($profile->father_name, 0, 2) . '*****' : 'N/A' }}</span>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row sm:items-start justify-between py-3 px-5 sm:px-0 border-b border-amber-100 last:border-0">
+                    <div class="text-xs text-slate-500 sm:w-2/5 mb-1 sm:mb-0">Kontak Darurat</div>
+                    <div class="text-sm sm:w-3/5 font-medium">
+                        <span id="field_emergency" class="px-2 py-1 rounded bg-slate-100 text-slate-600 text-xs border border-slate-200">{{ $profile ? $profile->masked_emergency_phone : 'N/A' }}</span>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col sm:flex-row sm:items-start justify-between py-3 px-5 sm:px-0 border-b border-amber-100 last:border-0">
+                    <div class="text-xs text-slate-500 sm:w-2/5 mb-1 sm:mb-0">Alamat Domisili KTP</div>
+                    <div class="text-sm sm:w-3/5 font-medium">
+                        <span id="field_address" class="px-2 py-1 rounded bg-slate-100 text-slate-600 text-xs border border-slate-200">{{ $profile && $profile->home_address ? substr($profile->home_address, 0, 15) . '... [Disamarkan]' : 'N/A' }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notice Rekam Medis -->
+            <div class="mt-5 mx-5 sm:mx-0 mb-5 sm:mb-0 bg-emerald-50/50 border border-emerald-200 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="flex items-start gap-3">
+                    <span class="ms text-emerald-600 text-[24px]">medical_services</span>
+                    <div>
+                        <div class="text-xs font-bold text-emerald-800">Data Kesehatan Dikelola Terpisah</div>
+                        <div class="text-[11px] text-emerald-600/80 mt-0.5 leading-relaxed">Rekam medis fisik dan riwayat alergi dipisahkan pada sistem Rekam Medis.</div>
+                    </div>
+                </div>
+                <a href="{{ route('health.show', $student) }}" class="inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-bold transition-colors shadow-sm shrink-0">
+                    <span class="ms text-[16px]">arrow_forward</span> Buka Rekam Medis
+                </a>
+            </div>
+
         </div>
     </div>
-
 </div>
 
-<!-- TABEL AUDIT TRAIL AKSES DATA PRIBADI SISWA INI -->
-<div class="card">
-    <div class="card-header">
+<!-- AUDIT TRAIL CARD -->
+<div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
+    <div class="px-5 py-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-50/50">
         <div>
-            <h3 class="card-title">
-                <span class="ms" style="color:var(--o700);">history_edu</span> Riwayat Audit Trail Akses Data Sensitif Serdik Ini
+            <h3 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                <span class="ms text-slate-500 text-[20px]">history_edu</span> Riwayat Akses Data Sensitif
             </h3>
-            <div style="font-size:12px; color:var(--muted); margin-top:2px;">
-                Log permanen immutable (*append-only*) mencatat setiap pembukaan data pribadi sensitif sesuai prinsip akuntabilitas ZI WBK Area 5.
-            </div>
+            <div class="text-[11px] text-slate-500 mt-0.5">Log permanen immutable (*append-only*) mencatat setiap pembukaan data.</div>
         </div>
-        <span class="badge badge-satdik">{{ $student->accessLogs->count() }} Kali Diakses</span>
+        <span class="px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-200 text-slate-700 self-start sm:self-auto shrink-0">{{ $student->accessLogs->count() }} Kali Diakses</span>
     </div>
-    <div class="card-body" style="padding:0;">
-        <div class="table-wrap">
-            <table class="data-table">
+    <div class="p-0">
+        <!-- Desktop Table View -->
+        <div class="hidden sm:block overflow-x-auto">
+            <table class="w-full text-left border-collapse">
                 <thead>
-                    <tr>
-                        <th style="width:60px;">No</th>
-                        <th>Waktu Akses (WIB)</th>
-                        <th>Personel / Operator Pengakses</th>
-                        <th>Role / Otoritas</th>
-                        <th>Alasan Akses Terbuka</th>
-                        <th>IP Address & Host</th>
+                    <tr class="bg-slate-50 border-b border-slate-200">
+                        <th class="py-3 px-5 text-xs font-bold text-slate-600 w-[60px]">No</th>
+                        <th class="py-3 px-5 text-xs font-bold text-slate-600">Waktu Akses (WIB)</th>
+                        <th class="py-3 px-5 text-xs font-bold text-slate-600">Personel Pengakses</th>
+                        <th class="py-3 px-5 text-xs font-bold text-slate-600">Otoritas</th>
+                        <th class="py-3 px-5 text-xs font-bold text-slate-600">Alasan Akses Terbuka</th>
+                        <th class="py-3 px-5 text-xs font-bold text-slate-600">IP Address</th>
                     </tr>
                 </thead>
                 <tbody id="auditTrailTableBody">
                     @forelse($student->accessLogs->sortByDesc('accessed_at') as $index => $log)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td style="font-family:'Fira Code',monospace; font-size:12.5px; font-weight:600;">
+                        <tr class="border-b border-slate-100 hover:bg-slate-50/50 transition-colors last:border-0">
+                            <td class="py-3 px-5 text-xs text-slate-500">{{ $loop->iteration }}</td>
+                            <td class="py-3 px-5 text-xs font-mono font-semibold text-slate-700">
                                 {{ $log->accessed_at ? \Carbon\Carbon::parse($log->accessed_at)->format('d/m/Y H:i:s') : '-' }}
                             </td>
-                            <td>
-                                <b>{{ $log->accessedByUser->name ?? 'User #' . $log->user_id }}</b>
-                                <div style="font-size:11.5px; color:var(--muted);">{{ $log->accessedByUser->email ?? '-' }}</div>
+                            <td class="py-3 px-5">
+                                <div class="text-xs font-bold text-slate-900">{{ $log->accessedByUser->name ?? 'User #' . $log->user_id }}</div>
+                                <div class="text-[11px] text-slate-500">{{ $log->accessedByUser->email ?? '-' }}</div>
                             </td>
-                            <td>
-                                <span class="badge badge-satdik">{{ $log->accessedByUser->role_code ?? 'operator' }}</span>
+                            <td class="py-3 px-5">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">{{ $log->accessedByUser->role_code ?? 'operator' }}</span>
                             </td>
-                            <td>
-                                <span style="font-weight:600; color:var(--o800);">{{ $log->access_reason }}</span>
+                            <td class="py-3 px-5 text-xs font-semibold text-slate-800">
+                                {{ $log->access_reason }}
                             </td>
-                            <td style="font-family:'Fira Code',monospace; font-size:12px; color:var(--muted);">
+                            <td class="py-3 px-5 text-xs font-mono text-slate-400">
                                 {{ $log->ip_address ?? '127.0.0.1' }}
                             </td>
                         </tr>
                     @empty
                         <tr id="emptyLogNotice">
-                            <td colspan="6" style="text-align:center; padding:32px; color:var(--muted);">
-                                <span class="ms" style="font-size:36px; display:block; margin-bottom:8px; opacity:0.5;">verified_user</span>
-                                Belum ada riwayat pembukaan data pribadi untuk Serdik ini. Seluruh data tetap aman terenkripsi.
+                            <td colspan="6" class="py-12 px-5 text-center text-slate-400">
+                                <span class="ms text-[36px] block mb-2 opacity-50">verified_user</span>
+                                <div class="text-sm font-medium">Belum ada riwayat pembukaan data.</div>
+                                <div class="text-xs mt-1">Data sensitif belum pernah diakses dan tetap aman.</div>
                             </td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
+
+        <!-- Mobile Card View -->
+        <div class="block sm:hidden divide-y divide-slate-100">
+            @forelse($student->accessLogs->sortByDesc('accessed_at') as $index => $log)
+                <div class="p-4 flex flex-col gap-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-mono font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded">{{ $log->accessed_at ? \Carbon\Carbon::parse($log->accessed_at)->format('d/m/y H:i') : '-' }}</span>
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">{{ $log->accessedByUser->role_code ?? 'operator' }}</span>
+                    </div>
+                    <div>
+                        <div class="text-xs font-bold text-slate-900 mb-0.5">{{ $log->accessedByUser->name ?? 'User #' . $log->user_id }}</div>
+                        <div class="text-[11px] text-slate-500">{{ $log->accessedByUser->email ?? '-' }} (IP: {{ $log->ip_address ?? '127.0.0.1' }})</div>
+                    </div>
+                    <div class="bg-slate-50 rounded-lg p-2.5 border border-slate-100 text-xs font-semibold text-slate-700">
+                        "{{ $log->access_reason }}"
+                    </div>
+                </div>
+            @empty
+                <div class="py-10 px-5 text-center text-slate-400">
+                    <span class="ms text-[32px] block mb-2 opacity-50">verified_user</span>
+                    <div class="text-xs font-medium">Belum ada riwayat pembukaan data.</div>
+                </div>
+            @endforelse
+        </div>
     </div>
 </div>
 
 <!-- MODAL AUDIT TRAIL FORM -->
-<div id="revealModal" class="modal-overlay">
-    <div class="modal-card">
-        <div class="modal-header">
-            <div style="display:flex; align-items:center; gap:10px;">
-                <span class="ms" style="color:var(--gold2); font-size:24px;">lock_open</span>
-                <h4 style="margin:0; font-family:'Montserrat',sans-serif; font-size:17px;">Buka Data Pribadi Sensitif</h4>
+<div id="revealModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="bg-white w-full max-w-md mx-4 rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-transform duration-300" id="revealModalCard">
+        <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+            <div class="flex items-center gap-2.5">
+                <span class="ms text-amber-500 text-[22px]">lock_open</span>
+                <h4 class="m-0 font-bold text-slate-900 text-[15px]">Buka Data Pribadi Sensitif</h4>
             </div>
-            <button onclick="closeRevealModal()" style="background:transparent; border:none; color:#fff; cursor:pointer;">
-                <span class="ms">close</span>
+            <button onclick="closeRevealModal()" class="text-slate-400 hover:text-slate-700 transition-colors bg-transparent border-none cursor-pointer">
+                <span class="ms text-[20px]">close</span>
             </button>
         </div>
-        <div class="modal-body">
-            <div class="alert alert-warning" style="margin-bottom:16px;">
-                <span class="ms" style="font-size:24px;">security</span>
-                <div style="font-size:12.5px;">
-                    <b>PEMBERITAHUAN KEAMANAN DATA SIPANDU-WBK:</b><br>
-                    Pembukaan informasi identitas pribadi (NIK, No KK, Ibu Kandung, Rekam Medis, Rekening Bank) akan dicatat permanen dalam Audit Trail SIPANDU-WBK beserta identitas akun, alamat IP, dan waktu akses Anda.
+        <div class="p-5">
+            <div class="mb-4 bg-amber-50 border border-amber-200 rounded-lg p-3 flex gap-3 text-amber-800 text-xs leading-relaxed">
+                <span class="ms text-[20px] text-amber-600 shrink-0">security</span>
+                <div>
+                    <b class="block mb-0.5">PEMBERITAHUAN KEAMANAN:</b>
+                    Pembukaan informasi identitas pribadi (NIK, No KK, dll) akan dicatat permanen dalam Audit Trail beserta identitas akun, alamat IP, dan waktu akses Anda.
                 </div>
             </div>
 
-            <div style="margin-bottom:14px;">
-                <label class="form-label">Siswa yang akan dibuka:</label>
-                <div style="padding:10px 14px; background:var(--o50); border:1px solid var(--line); border-radius:8px; font-size:13.5px;">
-                    <b>{{ $student->full_name }}</b> (NOSIK: {{ $student->nosik }}) — <i>{{ $student->satdik->name }}</i>
+            <div class="mb-4">
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">Siswa yang akan dibuka:</label>
+                <div class="px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs">
+                    <b class="text-slate-900">{{ $student->full_name }}</b> <span class="text-slate-500">(NOSIK: {{ $student->nosik }})</span>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="accessReason" class="form-label">
-                    Alasan Pembukaan Data Pribadi <span style="color:var(--red);">*</span>
+            <div class="mb-2">
+                <label for="accessReason" class="block text-xs font-bold text-slate-700 mb-1.5">
+                    Alasan Pembukaan Data Pribadi <span class="text-rose-500">*</span>
                 </label>
-                <select id="quickReasonSelect" class="form-control" style="margin-bottom:8px;" onchange="applyQuickReason(this.value)">
+                <select id="quickReasonSelect" class="w-full h-9 mb-2 bg-white border border-slate-300 text-slate-700 text-xs rounded-lg px-2 focus:ring-2 focus:ring-blue-500 focus:outline-none" onchange="applyQuickReason(this.value)">
                     <option value="">-- Pilih Format Alasan Resmi --</option>
                     <option value="Verifikasi keabsahan NIK dan data kependudukan Disdukcapil">Verifikasi Keabsahan NIK & Data Disdukcapil</option>
                     <option value="Konfirmasi kontak darurat orang tua / wali serdik">Konfirmasi Kontak Darurat Orang Tua / Wali Serdik</option>
                     <option value="Pemeriksaan berkas administrasi personel & ijazah serdik">Pemeriksaan Berkas Administrasi Personel & Ijazah</option>
                     <option value="Pemeriksaan integritas serdik oleh Komite Pengawas Pendidikan">Pemeriksaan Integritas Serdik Komite Pendidikan</option>
                 </select>
-                <textarea id="accessReason" class="form-control" rows="3" placeholder="Tuliskan alasan operasional resmi pembukaan data pribadi..."></textarea>
-                <div class="form-hint">Minimal 5 karakter. Wajib mencerminkan kebutuhan dinas pendidikan militer yang sah.</div>
+                <textarea id="accessReason" class="w-full bg-white border border-slate-300 rounded-lg p-2.5 text-xs text-slate-700 placeholder-slate-400 focus:ring-2 focus:ring-blue-500 focus:outline-none" rows="3" placeholder="Tuliskan alasan operasional resmi pembukaan data pribadi..."></textarea>
+                <div class="text-[10px] text-slate-500 mt-1">Minimal 5 karakter. Wajib mencerminkan kebutuhan dinas.</div>
             </div>
 
-            <div id="modalAlertError" style="display:none; color:var(--red); font-size:12.5px; margin-top:8px;"></div>
+            <div id="modalAlertError" style="display:none;" class="text-xs font-semibold text-rose-600 mt-2 bg-rose-50 border border-rose-100 p-2 rounded-lg"></div>
         </div>
-        <div class="modal-footer">
-            <button type="button" onclick="closeRevealModal()" class="btn btn-outline">Batal</button>
-            <button type="button" id="btnSubmitReveal" onclick="executeReveal()" class="btn btn-gold">
-                <span class="ms">lock_open</span> Dekripsi & Rekam Log
+        <div class="px-5 py-4 border-t border-slate-100 flex items-center justify-end gap-2 bg-slate-50/50">
+            <button type="button" onclick="closeRevealModal()" class="px-4 py-2 bg-white border border-slate-300 text-slate-700 rounded-lg text-xs font-bold hover:bg-slate-50 transition-colors">Batal</button>
+            <button type="button" id="btnSubmitReveal" onclick="executeReveal()" class="inline-flex items-center gap-1.5 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-bold transition-colors shadow-sm shadow-amber-200">
+                <span class="ms text-[16px]">lock_open</span> Dekripsi & Rekam Log
             </button>
         </div>
     </div>
@@ -409,12 +440,18 @@
 @section('scripts')
 <script>
     function openRevealModal() {
-        document.getElementById('revealModal').classList.add('active');
+        const modal = document.getElementById('revealModal');
+        const card = document.getElementById('revealModalCard');
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        card.classList.remove('scale-95');
         document.getElementById('accessReason').focus();
     }
 
     function closeRevealModal() {
-        document.getElementById('revealModal').classList.remove('active');
+        const modal = document.getElementById('revealModal');
+        const card = document.getElementById('revealModalCard');
+        modal.classList.add('opacity-0', 'pointer-events-none');
+        card.classList.add('scale-95');
         document.getElementById('modalAlertError').style.display = 'none';
     }
 
@@ -437,7 +474,7 @@
 
         errDiv.style.display = 'none';
         btn.disabled = true;
-        btn.innerHTML = '<span class="ms">hourglass_empty</span> Mendekripsi...';
+        btn.innerHTML = '<span class="ms text-[16px]">hourglass_empty</span> Mendekripsi...';
 
         const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -475,9 +512,8 @@
             // Disable button trigger
             const triggerBtn = document.getElementById('btnTriggerReveal');
             triggerBtn.disabled = true;
-            triggerBtn.innerHTML = '<span class="ms">lock_open</span> Terbuka (Audit Logged)';
-            triggerBtn.classList.remove('btn-gold');
-            triggerBtn.classList.add('btn-outline');
+            triggerBtn.innerHTML = '<span class="ms text-[16px]">lock_open</span> Terbuka (Audit Logged)';
+            triggerBtn.className = 'inline-flex items-center justify-center gap-1.5 px-3 py-1.5 bg-slate-100 text-slate-500 rounded-lg text-xs font-bold border border-slate-200 cursor-not-allowed w-full sm:w-auto';
 
             // Prepend new row in audit log table dynamically
             const tableBody = document.getElementById('auditTrailTableBody');
@@ -488,23 +524,25 @@
             const dateStr = now.toLocaleDateString('id-ID') + ' ' + now.toLocaleTimeString('id-ID');
 
             const newRow = document.createElement('tr');
-            newRow.style.background = '#FBF6E5';
+            newRow.className = 'border-b border-slate-100 bg-amber-50/50';
             newRow.innerHTML = `
-                <td><b>BARU</b></td>
-                <td style="font-family:'Fira Code',monospace; font-size:12.5px; font-weight:700; color:var(--o800);">${dateStr}</td>
-                <td>
-                    <b>{{ auth()->user()->name ?? 'Operator Rindam' }}</b>
-                    <div style="font-size:11.5px; color:var(--muted);">{{ auth()->user()->email ?? 'op@rindam.mil.id' }}</div>
+                <td class="py-3 px-5 text-xs text-amber-700 font-bold">BARU</td>
+                <td class="py-3 px-5 text-xs font-mono font-bold text-slate-800">${dateStr}</td>
+                <td class="py-3 px-5">
+                    <div class="text-xs font-bold text-slate-900">{{ auth()->user()->name ?? 'Operator Rindam' }}</div>
+                    <div class="text-[11px] text-slate-500">{{ auth()->user()->email ?? 'op@rindam.mil.id' }}</div>
                 </td>
-                <td><span class="badge badge-satdik">{{ auth()->user()->role_code ?? 'pimpinan' }}</span></td>
-                <td><span style="font-weight:700; color:var(--o800);">${reason}</span></td>
-                <td style="font-family:'Fira Code',monospace; font-size:12px; color:var(--muted);">127.0.0.1 (Current)</td>
+                <td class="py-3 px-5"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-50 text-blue-700 border border-blue-200">{{ auth()->user()->role_code ?? 'pimpinan' }}</span></td>
+                <td class="py-3 px-5 text-xs font-bold text-slate-800">${reason}</td>
+                <td class="py-3 px-5 text-xs font-mono text-slate-400">127.0.0.1 (Current)</td>
             `;
             tableBody.insertBefore(newRow, tableBody.firstChild);
+            
+            // Note: Didn't inject into mobile card view dynamically for simplicity, but it updates on refresh
         })
         .catch(err => {
             btn.disabled = false;
-            btn.innerHTML = '<span class="ms">lock_open</span> Dekripsi & Rekam Log';
+            btn.innerHTML = '<span class="ms text-[16px]">lock_open</span> Dekripsi & Rekam Log';
             errDiv.textContent = err.message || 'Terjadi kesalahan saat otentikasi dekripsi.';
             errDiv.style.display = 'block';
         });
@@ -514,10 +552,7 @@
         const el = document.getElementById(elementId);
         if(el) {
             el.textContent = value;
-            el.style.background = '#E8F5E9';
-            el.style.color = '#1B5E20';
-            el.style.borderColor = '#81C784';
-            el.style.fontWeight = '700';
+            el.className = 'px-2 py-1 rounded bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-200';
         }
     }
 </script>
