@@ -73,7 +73,7 @@
             <div>
                 <div class="text-2xl md:text-3xl font-bold text-slate-900 mb-2">{{ number_format($countedActiveStudents) }}</div>
                 <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 text-[10px] md:text-xs text-slate-500">
-                    <span class="bg-emerald-100 text-emerald-700 px-1.5 md:px-2 py-0.5 rounded font-semibold w-fit">+ {{ $activeStudents }} siap latih</span>
+                    <span class="bg-emerald-100 text-emerald-700 px-1.5 md:px-2 py-0.5 rounded font-semibold w-fit">+ {{ $activeStudents }} sehat</span>
                     <span class="hidden sm:inline">&bull; {{ $sickStudents }} dispen</span>
                 </div>
             </div>

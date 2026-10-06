@@ -172,7 +172,7 @@
                                 @method('PATCH')
                                 <select name="status" class="w-full sm:w-auto h-9 bg-slate-50 border border-slate-200 text-slate-800 text-xs font-bold rounded-lg px-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
                                     <optgroup label="STATUS TERHITUNG">
-                                        <option value="Aktif" {{ $student->status == 'Aktif' ? 'selected' : '' }}>🟢 Aktif (Siap Latih)</option>
+                                        <option value="Aktif" {{ $student->status == 'Aktif' ? 'selected' : '' }}>🟢 Aktif (Sehat)</option>
                                         <option value="Sakit" {{ $student->status == 'Sakit' ? 'selected' : '' }}>🟡 Sakit (Dispen Medis)</option>
                                         <option value="Dinas Luar" {{ $student->status == 'Dinas Luar' ? 'selected' : '' }}>🔵 Dinas Luar (Terhitung)</option>
                                     </optgroup>

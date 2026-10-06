@@ -90,7 +90,7 @@
                         </label>
                         <select name="daily_health_status" id="daily_health_status" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-900" required onchange="handleHealthStatusChange(this.value)">
                             <option value="Siap Latih" {{ old('daily_health_status', $healthRecord->daily_health_status) == 'Siap Latih' ? 'selected' : '' }}>
-                                🟢 Siap Latih (Kondisi Prima & Siap Latihan Penuh)
+                                🟢 Sehat (Kondisi Prima & Siap Latihan Penuh)
                             </option>
                             <option value="Berobat Jalan" {{ old('daily_health_status', $healthRecord->daily_health_status) == 'Berobat Jalan' ? 'selected' : '' }}>
                                 🟡 Berobat Jalan (Dispensasi Lari / Latihan Berat)

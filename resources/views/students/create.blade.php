@@ -374,7 +374,7 @@
                 <div class="form-group" style="margin-bottom:0;">
                     <label class="form-label" for="daily_health_status">Status Kesiapan Fisik</label>
                     <select name="daily_health_status" id="daily_health_status" class="form-control">
-                        <option value="Siap Latih" {{ old('daily_health_status', 'Siap Latih') == 'Siap Latih' ? 'selected' : '' }}>Siap Latih Penuh</option>
+                        <option value="Siap Latih" {{ old('daily_health_status', 'Siap Latih') == 'Siap Latih' ? 'selected' : '' }}>Sehat Penuh</option>
                         <option value="Berobat Jalan" {{ old('daily_health_status') == 'Berobat Jalan' ? 'selected' : '' }}>Berobat Jalan / Dispen</option>
                         <option value="Rawat Inap Poliklinik" {{ old('daily_health_status') == 'Rawat Inap Poliklinik' ? 'selected' : '' }}>Rawat Inap Poliklinik</option>
                         <option value="Rujuk Rumkit" {{ old('daily_health_status') == 'Rujuk Rumkit' ? 'selected' : '' }}>Rujuk Rumkit Dinas</option>
