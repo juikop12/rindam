@@ -27,22 +27,21 @@ class StudentController extends Controller
      */
     public function index(Request $request)
     {
-        $satdiks = Satdik::active()->get();
-        
-        $selectedSatdikId = $request->query('satdik_id');
-        $selectedSatdikCode = $request->query('satdik');
-
-        if ($selectedSatdikCode && !$selectedSatdikId) {
-            $matched = $satdiks->firstWhere('code', strtoupper($selectedSatdikCode));
-            if ($matched) {
-                $selectedSatdikId = $matched->id;
-            }
-        }
-
-        // Jika user adalah operator terikat pada satu Satdik
         $currentUser = Auth::user();
         if ($currentUser && !$currentUser->isPimpinan() && $currentUser->satdik_id) {
             $selectedSatdikId = $currentUser->satdik_id;
+            $satdiks = Satdik::where('id', $selectedSatdikId)->get();
+        } else {
+            $satdiks = Satdik::active()->get();
+            $selectedSatdikId = $request->query('satdik_id');
+            $selectedSatdikCode = $request->query('satdik');
+
+            if ($selectedSatdikCode && !$selectedSatdikId) {
+                $matched = $satdiks->firstWhere('code', strtoupper($selectedSatdikCode));
+                if ($matched) {
+                    $selectedSatdikId = $matched->id;
+                }
+            }
         }
 
         $selectedProgramId = $request->query('program_id') ? (int)$request->query('program_id') : null;
@@ -73,7 +72,11 @@ class StudentController extends Controller
         $availablePrograms = $programsQuery->orderBy('name')->get();
         $selectedProgram = $selectedProgramId ? EducationProgram::find($selectedProgramId) : null;
 
-        $allPrograms = EducationProgram::with('classrooms')->orderBy('name')->get();
+        $allProgramsQuery = EducationProgram::with('classrooms')->orderBy('name');
+        if ($currentUser && !$currentUser->isPimpinan() && $currentUser->satdik_id) {
+            $allProgramsQuery->where('satdik_id', $currentUser->satdik_id);
+        }
+        $allPrograms = $allProgramsQuery->get();
         $allClassrooms = Classroom::orderBy('name')->get();
 
         return view('students.index', compact(
@@ -98,6 +101,13 @@ class StudentController extends Controller
      */
     public function show(Student $student)
     {
+        $currentUser = Auth::user();
+        if ($currentUser && !$currentUser->isPimpinan() && $currentUser->satdik_id) {
+            if ($student->satdik_id !== $currentUser->satdik_id) {
+                abort(403, 'Akses Ditolak: Anda hanya berwenang mengakses berkas prajurit siswa di ' . ($currentUser->satdik->name ?? 'Satuan Pendidikan Anda') . '.');
+            }
+        }
+
         $student->load(['satdik', 'educationProgram', 'classroom', 'personalProfile', 'accessLogs.accessedByUser']);
         
         return view('students.show', compact('student'));
@@ -108,6 +118,11 @@ class StudentController extends Controller
      */
     public function create(Request $request)
     {
+        $currentUser = Auth::user();
+        if ($currentUser && !$currentUser->canModifyData()) {
+            abort(403, 'Akses Ditolak: Akun Anda berada dalam mode peninjauan (Hanya Baca / View-Only) dan tidak dapat menambah data serdik.');
+        }
+
         return redirect()->route('students.index', [
             'action' => 'create',
             'satdik_id' => $request->query('satdik_id'),
@@ -120,6 +135,15 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
+        $currentUser = Auth::user();
+        if ($currentUser && !$currentUser->canModifyData()) {
+            abort(403, 'Akses Ditolak: Akun Anda berada dalam mode peninjauan (Hanya Baca / View-Only) dan tidak dapat menambah data serdik.');
+        }
+
+        if ($currentUser && !$currentUser->hasCrossSatdikAccess() && $currentUser->satdik_id) {
+            $request->merge(['satdik_id' => $currentUser->satdik_id]);
+        }
+
         $validated = $request->validate([
             'satdik_id' => ['required', 'exists:satdiks,id'],
             'education_program_id' => ['required', 'exists:education_programs,id'],
@@ -152,6 +176,18 @@ class StudentController extends Controller
             'stakes_grade' => ['nullable', 'string', 'max:50'],
             'doctor_notes' => ['nullable', 'string', 'max:500'],
         ]);
+
+        if ($currentUser && !$currentUser->hasCrossSatdikAccess() && $currentUser->satdik_id) {
+            $validated['satdik_id'] = $currentUser->satdik_id;
+            $selectedProg = EducationProgram::findOrFail($validated['education_program_id']);
+            if ($selectedProg->satdik_id !== $currentUser->satdik_id) {
+                $err = 'Program pendidikan yang dipilih tidak berada di bawah wewenang Satdik Anda (' . ($currentUser->satdik->name ?? 'Satdik Anda') . ').';
+                if ($request->wantsJson() || $request->ajax()) {
+                    return response()->json(['message' => $err, 'errors' => ['education_program_id' => [$err]]], 422);
+                }
+                return back()->withInput()->withErrors(['education_program_id' => $err]);
+            }
+        }
 
         // Pengecekan Data Duplikat Berdasarkan NIK KTP (16 Digit)
         if (StudentPersonalProfile::isNikRegistered($validated['nik'])) {
@@ -278,6 +314,17 @@ class StudentController extends Controller
      */
     public function update(Request $request, Student $student)
     {
+        $currentUser = Auth::user();
+        if ($currentUser && !$currentUser->canModifyData()) {
+            abort(403, 'Akses Ditolak: Akun Anda berada dalam mode peninjauan (Hanya Baca / View-Only) dan tidak dapat mengubah data serdik.');
+        }
+        if ($currentUser && !$currentUser->canManageSatdik($student->satdik_id)) {
+            abort(403, 'Akses Ditolak: Anda hanya berwenang memperbarui data prajurit siswa di ' . ($currentUser->satdik->name ?? 'Satuan Pendidikan Anda') . '.');
+        }
+        if ($currentUser && !$currentUser->hasCrossSatdikAccess() && $currentUser->satdik_id) {
+            $request->merge(['satdik_id' => $currentUser->satdik_id]);
+        }
+
         $validated = $request->validate([
             'satdik_id' => ['required', 'exists:satdiks,id'],
             'education_program_id' => ['required', 'exists:education_programs,id'],
@@ -430,6 +477,14 @@ class StudentController extends Controller
      */
     public function destroy(Request $request, Student $student)
     {
+        $currentUser = Auth::user();
+        if ($currentUser && !$currentUser->canModifyData()) {
+            abort(403, 'Akses Ditolak: Akun Anda berada dalam mode peninjauan (Hanya Baca / View-Only) dan tidak dapat menghapus data serdik.');
+        }
+        if ($currentUser && !$currentUser->canManageSatdik($student->satdik_id)) {
+            abort(403, 'Akses Ditolak: Anda tidak memiliki wewenang untuk menghapus serdik dari Satdik ini.');
+        }
+
         $name = $student->full_name;
         $student->delete();
 
@@ -473,6 +528,14 @@ class StudentController extends Controller
         ]);
 
         $currentUser = Auth::user() ?? User::first(); // Fallback untuk dev jika belum login session
+        if ($currentUser && !$currentUser->isPimpinan() && $currentUser->satdik_id) {
+            if ($student->satdik_id !== $currentUser->satdik_id) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Akses Ditolak: Anda tidak diizinkan membuka data pribadi serdik dari Satdik lain.',
+                ], 403);
+            }
+        }
         
         $decryptedData = $this->studentService->revealSensitiveData(
             student: $student,
@@ -488,10 +551,15 @@ class StudentController extends Controller
     }
 
     /**
-     * Halaman Pemantauan Audit Trail Akses Data Pribadi (Pengawasan ZI Area 5)
+     * Halaman Pemantauan Audit Trail Akses Data Pribadi (Khusus Super Administrator)
      */
     public function auditLogs(Request $request)
     {
+        $currentUser = Auth::user();
+        if (!$currentUser || !$currentUser->isSuperAdmin()) {
+            abort(403, 'Akses Ditolak: Modul Audit Log Keamanan Sistem hanya dapat diakses oleh Super Administrator.');
+        }
+
         $logs = StudentPersonalDataAccessLog::with(['student.satdik', 'accessedByUser'])
             ->latest('accessed_at')
             ->paginate(20);
@@ -504,8 +572,19 @@ class StudentController extends Controller
      */
     public function importForm(Request $request)
     {
-        $satdiks = Satdik::active()->get();
-        $selectedSatdikId = $request->query('satdik_id');
+        $currentUser = Auth::user();
+        if ($currentUser && !$currentUser->canModifyData()) {
+            abort(403, 'Akses Ditolak: Akun Anda berada dalam mode peninjauan (Hanya Baca / View-Only) dan tidak dapat mengimpor data serdik.');
+        }
+
+        if ($currentUser && !$currentUser->hasCrossSatdikAccess() && $currentUser->satdik_id) {
+            $selectedSatdikId = $currentUser->satdik_id;
+            $satdiks = Satdik::where('id', $selectedSatdikId)->get();
+        } else {
+            $satdiks = Satdik::active()->get();
+            $selectedSatdikId = $request->query('satdik_id');
+        }
+
         $selectedSatdik = $selectedSatdikId ? Satdik::find($selectedSatdikId) : null;
 
         return view('students.import', compact('satdiks', 'selectedSatdikId', 'selectedSatdik'));
@@ -516,7 +595,13 @@ class StudentController extends Controller
      */
     public function downloadTemplate(Request $request)
     {
-        $satdikId = $request->query('satdik_id');
+        $currentUser = Auth::user();
+        if ($currentUser && !$currentUser->hasCrossSatdikAccess() && $currentUser->satdik_id) {
+            $satdikId = $currentUser->satdik_id;
+        } else {
+            $satdikId = $request->query('satdik_id');
+        }
+
         $format = strtolower($request->query('format', 'xlsx'));
 
         if ($format === 'csv') {
@@ -539,6 +624,15 @@ class StudentController extends Controller
      */
     public function processImport(Request $request)
     {
+        $currentUser = Auth::user();
+        if ($currentUser && !$currentUser->canModifyData()) {
+            abort(403, 'Akses Ditolak: Akun Anda berada dalam mode peninjauan (Hanya Baca / View-Only) dan tidak dapat mengimpor data serdik.');
+        }
+
+        if ($currentUser && !$currentUser->hasCrossSatdikAccess() && $currentUser->satdik_id) {
+            $request->merge(['satdik_id' => $currentUser->satdik_id]);
+        }
+
         $request->validate([
             'excel_file' => ['required', 'file', 'max:10240', 'mimes:xlsx,xls,csv,txt'],
             'satdik_id' => ['nullable', 'exists:satdiks,id'],
@@ -549,7 +643,12 @@ class StudentController extends Controller
             'excel_file.max' => 'Ukuran berkas maksimal 10 MB.',
         ]);
 
-        $defaultSatdikId = $request->input('satdik_id') ? (int)$request->input('satdik_id') : null;
+        if ($currentUser && !$currentUser->hasCrossSatdikAccess() && $currentUser->satdik_id) {
+            $defaultSatdikId = $currentUser->satdik_id;
+        } else {
+            $defaultSatdikId = $request->input('satdik_id') ? (int)$request->input('satdik_id') : null;
+        }
+
         $updateExisting = $request->boolean('update_existing', true);
 
         $result = $this->excelService->importFile(
@@ -586,6 +685,14 @@ class StudentController extends Controller
      */
     public function updateStatus(Request $request, Student $student)
     {
+        $currentUser = Auth::user();
+        if ($currentUser && !$currentUser->canModifyData()) {
+            abort(403, 'Akses Ditolak: Akun Anda berada dalam mode peninjauan (Hanya Baca / View-Only) dan tidak dapat mengubah status prajurit siswa.');
+        }
+        if ($currentUser && !$currentUser->canManageSatdik($student->satdik_id)) {
+            abort(403, 'Akses Ditolak: Anda hanya berwenang mengubah status prajurit siswa di Satuan Pendidikan Anda.');
+        }
+
         $validated = $request->validate([
             'status' => ['required', 'string', 'in:Aktif,Sakit,Selesai,Lulus,DO / Dikeluarkan,Dinas Luar'],
         ]);

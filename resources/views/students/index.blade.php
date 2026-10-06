@@ -1362,11 +1362,13 @@ function calcBmi(prefix) {
 
 // Modal open/close functions
 function openCreateStudentModal(defaultSatdikId = null, defaultProgramId = null) {
-    const sId = defaultSatdikId || '{{ $selectedSatdikId }}' || (allSatdiksData.length > 0 ? allSatdiksData[0].id : '');
+    const operatorSatdikId = '{{ (!auth()->user()?->isPimpinan() && auth()->user()?->satdik_id) ? auth()->user()->satdik_id : '' }}';
+    const sId = operatorSatdikId || defaultSatdikId || '{{ $selectedSatdikId }}' || (allSatdiksData.length > 0 ? allSatdiksData[0].id : '');
     const pId = defaultProgramId || '{{ $selectedProgramId }}' || '';
     
     if (sId) {
-        document.getElementById('create_satdik_id').value = sId;
+        const satdikEl = document.getElementById('create_satdik_id');
+        if (satdikEl) satdikEl.value = sId;
         handleSatdikSelectChange(sId, 'create', pId);
     }
     
@@ -1390,8 +1392,11 @@ function openEditStudentModal(btnOrData) {
     document.getElementById('edit_nosik_badge').textContent = 'NOSIK: ' + (s.nosik || '-');
     document.getElementById('edit_student_title').textContent = s.full_name;
     
-    document.getElementById('edit_satdik_id').value = s.satdik_id;
-    handleSatdikSelectChange(s.satdik_id, 'edit', s.education_program_id, s.classroom_id);
+    const operatorSatdikId = '{{ (!auth()->user()?->isPimpinan() && auth()->user()?->satdik_id) ? auth()->user()->satdik_id : '' }}';
+    const satdikId = operatorSatdikId || s.satdik_id;
+    const satdikEl = document.getElementById('edit_satdik_id');
+    if (satdikEl) satdikEl.value = satdikId;
+    handleSatdikSelectChange(satdikId, 'edit', s.education_program_id, s.classroom_id);
     
     document.getElementById('edit_full_name').value = s.full_name;
     document.getElementById('edit_student_rank').value = s.student_rank;

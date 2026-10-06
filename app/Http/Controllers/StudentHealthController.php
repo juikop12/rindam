@@ -23,21 +23,21 @@ class StudentHealthController extends Controller
      */
     public function index(Request $request)
     {
-        $satdiks = Satdik::active()->get();
-        $selectedSatdikId = $request->query('satdik_id');
-        $selectedSatdikCode = $request->query('satdik');
-
-        if ($selectedSatdikCode && !$selectedSatdikId) {
-            $matched = $satdiks->firstWhere('code', strtoupper($selectedSatdikCode));
-            if ($matched) {
-                $selectedSatdikId = $matched->id;
-            }
-        }
-
-        // Jika user adalah operator terikat Satdik tertentu
         $currentUser = Auth::user();
         if ($currentUser && !$currentUser->isPimpinan() && $currentUser->satdik_id) {
             $selectedSatdikId = $currentUser->satdik_id;
+            $satdiks = Satdik::where('id', $selectedSatdikId)->get();
+        } else {
+            $satdiks = Satdik::active()->get();
+            $selectedSatdikId = $request->query('satdik_id');
+            $selectedSatdikCode = $request->query('satdik');
+
+            if ($selectedSatdikCode && !$selectedSatdikId) {
+                $matched = $satdiks->firstWhere('code', strtoupper($selectedSatdikCode));
+                if ($matched) {
+                    $selectedSatdikId = $matched->id;
+                }
+            }
         }
 
         $selectedProgramId = $request->query('program_id') ? (int)$request->query('program_id') : null;
@@ -129,6 +129,13 @@ class StudentHealthController extends Controller
      */
     public function show(Student $student)
     {
+        $currentUser = Auth::user();
+        if ($currentUser && !$currentUser->isPimpinan() && $currentUser->satdik_id) {
+            if ($student->satdik_id !== $currentUser->satdik_id) {
+                abort(403, 'Akses Ditolak: Anda hanya berwenang mengakses rekam medis serdik di Satuan Pendidikan Anda (' . ($currentUser->satdik->name ?? 'Satdik Anda') . ').');
+            }
+        }
+
         $student->load(['satdik', 'educationProgram', 'classroom', 'healthRecord']);
         
         $healthRecord = $student->healthRecord ?? $student->healthRecord()->create([
@@ -145,6 +152,14 @@ class StudentHealthController extends Controller
      */
     public function edit(Student $student)
     {
+        $currentUser = Auth::user();
+        if ($currentUser && !$currentUser->canModifyData()) {
+            abort(403, 'Akses Ditolak: Akun Anda berada dalam mode peninjauan (Hanya Baca / View-Only) dan tidak dapat mengedit rekam medis.');
+        }
+        if ($currentUser && !$currentUser->canManageSatdik($student->satdik_id)) {
+            abort(403, 'Akses Ditolak: Anda hanya berwenang mengedit rekam medis serdik di Satuan Pendidikan Anda (' . ($currentUser->satdik->name ?? 'Satdik Anda') . ').');
+        }
+
         $student->load(['satdik', 'educationProgram', 'classroom', 'healthRecord']);
         
         $healthRecord = $student->healthRecord ?? $student->healthRecord()->create([
@@ -161,6 +176,14 @@ class StudentHealthController extends Controller
      */
     public function update(Request $request, Student $student)
     {
+        $currentUser = Auth::user();
+        if ($currentUser && !$currentUser->canModifyData()) {
+            abort(403, 'Akses Ditolak: Akun Anda berada dalam mode peninjauan (Hanya Baca / View-Only) dan tidak dapat memperbarui rekam medis.');
+        }
+        if ($currentUser && !$currentUser->canManageSatdik($student->satdik_id)) {
+            abort(403, 'Akses Ditolak: Anda hanya berwenang memperbarui rekam medis serdik di Satuan Pendidikan Anda (' . ($currentUser->satdik->name ?? 'Satdik Anda') . ').');
+        }
+
         $validated = $request->validate([
             'daily_health_status' => ['required', 'in:Siap Latih,Berobat Jalan,Rawat Inap Poliklinik,Rujuk Rumkit'],
             'stakes_grade' => ['nullable', 'string', 'max:50'],

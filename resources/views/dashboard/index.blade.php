@@ -10,7 +10,7 @@
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
             <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Pusat Komando & Dashboard Eksekutif</h1>
-            <p class="text-sm text-slate-500 mt-1">Data Siswa & Kesehatan — Rindam III/Siliwangi</p>
+            <p class="text-sm text-slate-500 mt-1">Data Siswa & Kesehatan &mdash; {{ auth()->user()?->isOperator() && auth()->user()?->satdik ? (auth()->user()->satdik->code . ' (' . auth()->user()->satdik->name . ')') : 'Rindam III/Siliwangi' }}</p>
         </div>
         
         <!-- Waktu Sistem -->
@@ -21,19 +21,33 @@
     </div>
 
     <!-- TABS FILTER SATDIK -->
-    <div class="flex flex-wrap items-center gap-3 mb-6">
-        <a href="{{ route('dashboard') }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors border {{ is_null($selectedSatdik) ? 'bg-slate-100 text-slate-900 border-slate-300 shadow-sm' : 'bg-white text-slate-500 border-slate-200 hover:bg-slate-50' }}">
-            <span class="ms text-[18px]">list</span>
-            Semua Satdik
-            <span class="px-2 py-0.5 rounded text-xs bg-slate-200 text-slate-700">{{ \App\Models\Student::count() }}</span>
-        </a>
-        @foreach($satdiks as $s)
-            <a href="{{ route('dashboard', ['satdik_id' => $s->id]) }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors border {{ $selectedSatdik?->id === $s->id ? 'bg-slate-100 text-slate-900 border-slate-300 shadow-sm' : 'bg-white text-slate-500 border-slate-200 hover:bg-slate-50' }}">
-                <span class="ms text-[18px]">filter_list</span>
-                {{ $s->code }}
+    @if(auth()->check() && !auth()->user()->isPimpinan() && auth()->user()->satdik_id)
+        <!-- OPERATOR VIEW: HANYA TAMPILKAN SATDIK OPERATOR (TERKUNCI & TIDAK ADA SATDIK LAIN) -->
+        <div class="flex items-center gap-3 mb-6">
+            <div class="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-lg text-sm font-bold bg-slate-900 text-white border border-slate-800 shadow-sm">
+                <span class="ms text-[18px] text-amber-400">lock</span>
+                <span>Satdik: {{ auth()->user()->satdik?->code }} &mdash; {{ auth()->user()->satdik?->name }}</span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
+                    Wewenang Satuan Anda (Terkunci)
+                </span>
+            </div>
+        </div>
+    @else
+        <!-- PIMPINAN / SUPER ADMIN: BISA MEMILIH SELURUH SATDIK -->
+        <div class="flex flex-wrap items-center gap-3 mb-6">
+            <a href="{{ route('dashboard') }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors border {{ is_null($selectedSatdik) ? 'bg-slate-100 text-slate-900 border-slate-300 shadow-sm' : 'bg-white text-slate-500 border-slate-200 hover:bg-slate-50' }}">
+                <span class="ms text-[18px]">list</span>
+                Semua Satdik
+                <span class="px-2 py-0.5 rounded text-xs bg-slate-200 text-slate-700">{{ \App\Models\Student::withoutGlobalScopes()->count() }}</span>
             </a>
-        @endforeach
-    </div>
+            @foreach($satdiks as $s)
+                <a href="{{ route('dashboard', ['satdik_id' => $s->id]) }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors border {{ $selectedSatdik?->id === $s->id ? 'bg-slate-100 text-slate-900 border-slate-300 shadow-sm' : 'bg-white text-slate-500 border-slate-200 hover:bg-slate-50' }}">
+                    <span class="ms text-[18px]">filter_list</span>
+                    {{ $s->code }}
+                </a>
+            @endforeach
+        </div>
+    @endif
 
     <!-- 4 STAT CARDS (Clean Minimalist) -->
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
@@ -209,12 +223,14 @@
         </div>
     </div>
 
-    <!-- SECONDARY LINKS (Audit Logs) -->
+    @if(auth()->user()?->isSuperAdmin())
+    <!-- SECONDARY LINKS (Audit Logs - Khusus Superadmin) -->
     <div class="flex justify-end">
         <a href="{{ route('students.audit-logs') }}" class="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors">
             Lihat Seluruh Audit Log Keamanan <span class="ms text-[18px]">arrow_forward</span>
         </a>
     </div>
+    @endif
 
 </div>
 @endsection

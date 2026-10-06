@@ -10,11 +10,21 @@ use Illuminate\Support\Facades\Cache;
 
 class SettingController extends Controller
 {
+    protected function authorizeSuperAdmin()
+    {
+        $user = auth()->user();
+        if (!$user || !$user->isSuperAdmin()) {
+            abort(403, 'Akses Ditolak: Modul Pengaturan Sistem hanya dapat diakses oleh Super Administrator.');
+        }
+    }
+
     /**
      * Tampilkan Halaman Pengaturan Sistem & Pejabat Pimpinan
      */
     public function index()
     {
+        $this->authorizeSuperAdmin();
+
         $settings = SystemSetting::getAllKeyValues();
         $satdiks = Satdik::orderBy('id')->get();
 
@@ -26,6 +36,8 @@ class SettingController extends Controller
      */
     public function update(Request $request)
     {
+        $this->authorizeSuperAdmin();
+
         $validated = $request->validate([
             // Identitas Satuan Pusat
             'institution_name' => ['required', 'string', 'max:150'],

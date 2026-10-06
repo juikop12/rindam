@@ -15,9 +15,16 @@ class DashboardController extends Controller
      */
     public function index(Request $request)
     {
-        $satdikId = $request->get('satdik_id');
-        $satdiks = Satdik::where('is_active', true)->withCount('students')->get();
-        $selectedSatdik = $satdikId ? Satdik::find($satdikId) : null;
+        $currentUser = auth()->user();
+        if ($currentUser && !$currentUser->isPimpinan() && $currentUser->satdik_id) {
+            $satdikId = $currentUser->satdik_id;
+            $satdiks = Satdik::where('id', $satdikId)->withCount('students')->get();
+            $selectedSatdik = Satdik::find($satdikId);
+        } else {
+            $satdikId = $request->get('satdik_id');
+            $satdiks = Satdik::where('is_active', true)->withCount('students')->get();
+            $selectedSatdik = $satdikId ? Satdik::find($satdikId) : null;
+        }
 
         // Query dasar serdik
         $studentQuery = Student::query();
@@ -99,10 +106,13 @@ class DashboardController extends Controller
             ->get();
 
         // Log Akses Audit Keamanan Terkini (Area 5 Zona Integritas)
-        $recentAuditLogs = StudentPersonalDataAccessLog::with(['student', 'user'])
-            ->latest('accessed_at')
-            ->take(5)
-            ->get();
+        $auditQuery = StudentPersonalDataAccessLog::with(['student', 'user']);
+        if ($satdikId) {
+            $auditQuery->whereHas('student', function ($q) use ($satdikId) {
+                $q->where('satdik_id', $satdikId);
+            });
+        }
+        $recentAuditLogs = $auditQuery->latest('accessed_at')->take(5)->get();
 
         // Data Grafik Analitik & Diagram Interaktif (Murni Data & Kesehatan Siswa)
         $chartData = [

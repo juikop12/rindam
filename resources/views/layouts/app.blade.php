@@ -1249,6 +1249,7 @@
                 <span x-show="isSidebarExpanded" class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Sistem</span>
             </div>
             
+            @if(auth()->user()?->canModifyData())
             <a href="{{ route('students.import') }}" 
                class="group relative flex items-center p-3 rounded-xl transition-all duration-200 {{ request()->routeIs('students.import') ? 'bg-slate-900 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900' }}"
                :class="!isSidebarExpanded ? 'justify-center' : 'justify-between'">
@@ -1258,7 +1259,9 @@
                 </div>
                 <div x-show="!isSidebarExpanded" class="absolute left-full ml-3 px-3 py-2 bg-slate-800 text-white text-xs font-semibold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50">Input Data Excel</div>
             </a>
+            @endif
 
+            @if(auth()->user()?->isSuperAdmin())
             <a href="{{ route('settings.index') }}" 
                class="group relative flex items-center p-3 rounded-xl transition-all duration-200 {{ request()->routeIs('settings.*') ? 'bg-slate-900 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900' }}"
                :class="!isSidebarExpanded ? 'justify-center' : 'justify-between'">
@@ -1266,9 +1269,20 @@
                     <span class="ms text-[24px] transition-transform duration-200 group-hover:scale-110 {{ request()->routeIs('settings.*') ? 'text-white' : 'text-slate-400 group-hover:text-slate-600' }}">settings</span>
                     <span x-show="isSidebarExpanded" class="font-semibold text-[13.5px] whitespace-nowrap">Pengaturan</span>
                 </div>
+                <span x-show="isSidebarExpanded" class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-rose-100 text-rose-800">Admin</span>
                 <div x-show="!isSidebarExpanded" class="absolute left-full ml-3 px-3 py-2 bg-slate-800 text-white text-xs font-semibold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50">Pengaturan</div>
             </a>
-            
+
+            <a href="{{ route('users.index') }}" 
+               class="group relative flex items-center p-3 rounded-xl transition-all duration-200 {{ request()->routeIs('users.*') ? 'bg-slate-900 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900' }}"
+               :class="!isSidebarExpanded ? 'justify-center' : 'justify-between'">
+                <div class="flex items-center gap-3">
+                    <span class="ms text-[24px] transition-transform duration-200 group-hover:scale-110 {{ request()->routeIs('users.*') ? 'text-white' : 'text-slate-400 group-hover:text-slate-600' }}">manage_accounts</span>
+                    <span x-show="isSidebarExpanded" class="font-semibold text-[13.5px] whitespace-nowrap">Manajemen Akun</span>
+                </div>
+                <span x-show="isSidebarExpanded" class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-rose-100 text-rose-800">Admin</span>
+                <div x-show="!isSidebarExpanded" class="absolute left-full ml-3 px-3 py-2 bg-slate-800 text-white text-xs font-semibold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50">Manajemen Akun</div>
+            </a>
             <a href="{{ route('students.audit-logs') }}" 
                class="group relative flex items-center p-3 rounded-xl transition-all duration-200 {{ request()->routeIs('students.audit-logs') ? 'bg-slate-900 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900' }}"
                :class="!isSidebarExpanded ? 'justify-center' : 'justify-between'">
@@ -1276,21 +1290,44 @@
                     <span class="ms text-[24px] transition-transform duration-200 group-hover:scale-110 {{ request()->routeIs('students.audit-logs') ? 'text-white' : 'text-slate-400 group-hover:text-slate-600' }}">policy</span>
                     <span x-show="isSidebarExpanded" class="font-semibold text-[13.5px] whitespace-nowrap">Audit Log</span>
                 </div>
+                <span x-show="isSidebarExpanded" class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-rose-100 text-rose-800">Admin</span>
                 <div x-show="!isSidebarExpanded" class="absolute left-full ml-3 px-3 py-2 bg-slate-800 text-white text-xs font-semibold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50">Audit Log</div>
             </a>
+            @endif
 
         </nav>
 
         <!-- USER FOOTER -->
-        <div class="p-4 border-t border-slate-100 bg-slate-50 shrink-0">
-            <div class="flex items-center gap-3" :class="!isSidebarExpanded ? 'justify-center' : ''">
-                <div class="w-10 h-10 rounded-full bg-slate-200 border-2 border-white shadow-sm flex items-center justify-center shrink-0">
-                    <span class="ms text-slate-500 text-[20px]">military_tech</span>
+        <div class="p-3 border-t border-slate-100 bg-slate-50 shrink-0">
+            <div class="flex items-center justify-between" :class="!isSidebarExpanded ? 'justify-center' : ''">
+                <div class="flex items-center gap-2.5 overflow-hidden">
+                    <div class="w-10 h-10 rounded-xl {{ auth()->user()?->isSuperAdmin() ? 'bg-rose-100 text-rose-800' : (auth()->user()?->isDanrindam() ? 'bg-amber-100 text-amber-800' : (auth()->user()?->isOperatorDanrindam() ? 'bg-indigo-100 text-indigo-800' : (auth()->user()?->isOperatorSatdik() ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700'))) }} border border-white shadow-sm flex items-center justify-center shrink-0">
+                        <span class="ms text-[20px]">{{ auth()->user()?->isSuperAdmin() ? 'admin_panel_settings' : (auth()->user()?->isDanrindam() ? 'military_tech' : (auth()->user()?->isOperatorDanrindam() ? 'stars' : (auth()->user()?->isOperatorSatdik() ? 'support_agent' : 'shield_person'))) }}</span>
+                    </div>
+                    <div class="flex flex-col overflow-hidden" x-show="isSidebarExpanded" x-transition.opacity.duration.300ms>
+                        <span class="text-xs font-bold text-slate-800 truncate" title="{{ auth()->user()->name ?? 'Prajurit Rindam' }}">{{ auth()->user()->name ?? 'Prajurit Rindam' }}</span>
+                        <span class="text-[10px] font-semibold text-slate-500 truncate">
+                            @if(auth()->user()?->isSuperAdmin())
+                                <span class="text-rose-700 font-bold">👑 SUPER ADMIN</span>
+                            @elseif(auth()->user()?->isDanrindam())
+                                <span class="text-amber-700 font-bold">⭐ DANRINDAM (VIEW ONLY)</span>
+                            @elseif(auth()->user()?->isOperatorDanrindam())
+                                <span class="text-indigo-700 font-bold">🎖️ OPERATOR PUSAT (5 SATDIK)</span>
+                            @elseif(auth()->user()?->isOperatorSatdik() && auth()->user()?->satdik)
+                                <span class="text-emerald-700 font-bold">🔒 {{ auth()->user()->satdik->code }}</span>
+                            @else
+                                {{ strtoupper(auth()->user()?->role_code ?? 'PENGGUNA') }}
+                            @endif
+                        </span>
+                    </div>
                 </div>
-                <div class="flex flex-col overflow-hidden" x-show="isSidebarExpanded" x-transition.opacity.duration.300ms>
-                    <span class="text-sm font-bold text-slate-800 truncate">{{ auth()->user()->name ?? \App\Models\SystemSetting::get('danrindam_name', 'Danrindam III/Slw') }}</span>
-                    <span class="text-[11px] font-semibold text-slate-500">{{ strtoupper(auth()->user()->role_code ?? 'PIMPINAN') }}</span>
-                </div>
+
+                <form method="POST" action="{{ route('logout') }}" x-show="isSidebarExpanded" x-transition.opacity.duration.300ms class="shrink-0">
+                    @csrf
+                    <button type="submit" class="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Keluar dari Sistem (Logout)">
+                        <span class="ms text-[20px]">logout</span>
+                    </button>
+                </form>
             </div>
         </div>
     </aside>
@@ -1315,6 +1352,8 @@
                             Dashboard Eksekutif
                         @elseif(request()->routeIs('settings.*'))
                             Pengaturan Sistem
+                        @elseif(request()->routeIs('users.*'))
+                            Manajemen Akun Pengguna
                         @elseif(request()->routeIs('health.*'))
                             Kesehatan Serdik
                         @elseif(request()->routeIs('students.import'))
@@ -1328,9 +1367,17 @@
                 </div>
             </div>
 
-            <div class="flex items-center gap-4 lg:gap-6">
+            <div class="flex items-center gap-3 lg:gap-5">
+                <!-- User Scope Badge -->
+                @if(auth()->check())
+                    <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-bold {{ auth()->user()->isSuperAdmin() ? 'bg-rose-50 border-rose-200 text-rose-800' : (auth()->user()->isDanrindam() ? 'bg-amber-50 border-amber-200 text-amber-800' : (auth()->user()->isOperatorDanrindam() ? 'bg-indigo-50 border-indigo-200 text-indigo-800' : (auth()->user()->isOperatorSatdik() ? 'bg-emerald-50 border-emerald-200 text-emerald-800' : 'bg-slate-100 border-slate-200 text-slate-700'))) }}">
+                        <span class="ms text-[16px]">{{ auth()->user()->isSuperAdmin() ? 'admin_panel_settings' : (auth()->user()->isDanrindam() ? 'visibility' : (auth()->user()->isOperatorDanrindam() ? 'stars' : (auth()->user()->isOperatorSatdik() ? 'lock' : 'verified_user'))) }}</span>
+                        <span>{{ auth()->user()->isSuperAdmin() ? 'Super Admin (Sistem & Akun)' : (auth()->user()->isDanrindam() ? 'Danrindam (Monitoring 5 Satdik)' : (auth()->user()->isOperatorDanrindam() ? 'Operator Pusat (Kelola 5 Satdik)' : ('Satdik ' . (auth()->user()->satdik?->code ?? 'Terkunci')))) }}</span>
+                    </div>
+                @endif
+
                 <!-- LAN Indicator -->
-                <div class="hidden md:flex items-center gap-2 px-3 py-1.5 bg-emerald-50 border border-emerald-100 rounded-full text-emerald-700">
+                <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-emerald-50 border border-emerald-100 rounded-full text-emerald-700">
                     <span class="relative flex h-2.5 w-2.5">
                       <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                       <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
@@ -1344,6 +1391,14 @@
                     <span class="ms text-[20px]">add</span>
                     <span class="hidden sm:block">Tambah Serdik</span>
                 </button>
+
+                <!-- Logout Button in Topbar -->
+                <form method="POST" action="{{ route('logout') }}" class="inline">
+                    @csrf
+                    <button type="submit" class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Keluar / Logout">
+                        <span class="ms text-[22px]">logout</span>
+                    </button>
+                </form>
             </div>
         </header>
 

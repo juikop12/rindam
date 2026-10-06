@@ -67,12 +67,28 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // 2. Buat Pengguna Percontohan Berdasarkan Peran
+        $superAdmin = User::create([
+            'name' => 'Super Administrator (Admin Sistem)',
+            'email' => 'superadmin@rindam.mil.id',
+            'password' => Hash::make('password'),
+            'role_code' => 'super_admin',
+            'phone' => '081100000000',
+        ]);
+
         $adminPimpinan = User::create([
             'name' => 'Kolonel Inf Danrindam III/Siliwangi (Komandan)',
             'email' => 'danrindam@rindam.mil.id',
             'password' => Hash::make('password'),
             'role_code' => 'pimpinan',
             'phone' => '081100000001',
+        ]);
+
+        $opDanrindam = User::create([
+            'name' => 'Mayor Inf Operator Danrindam (Operator Pusat)',
+            'email' => 'operator.danrindam@rindam.mil.id',
+            'password' => Hash::make('password'),
+            'role_code' => 'operator_danrindam',
+            'phone' => '081100000002',
         ]);
 
         $opSecaba = User::create([
@@ -99,6 +115,33 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
             'role_code' => 'tim_zi',
             'phone' => '081400000004',
+        ]);
+
+        $opDodikjur = User::create([
+            'name' => 'Kapten Inf Darmawan (Operator Dodikjur)',
+            'email' => 'operator.dodikjur@rindam.mil.id',
+            'password' => Hash::make('password'),
+            'satdik_id' => $dodikjur->id,
+            'role_code' => 'operator_satdik',
+            'phone' => '081500000005',
+        ]);
+
+        $opDodiklatpur = User::create([
+            'name' => 'Lettu Inf Hendro (Operator Dodiklatpur)',
+            'email' => 'operator.dodiklatpur@rindam.mil.id',
+            'password' => Hash::make('password'),
+            'satdik_id' => $dodiklatpur->id,
+            'role_code' => 'operator_satdik',
+            'phone' => '081600000006',
+        ]);
+
+        $opBelanegara = User::create([
+            'name' => 'Kapten Czi Anwar (Operator Belanegara)',
+            'email' => 'operator.belanegara@rindam.mil.id',
+            'password' => Hash::make('password'),
+            'satdik_id' => $belanegara->id,
+            'role_code' => 'operator_satdik',
+            'phone' => '081700000007',
         ]);
 
         // 3. Program Pendidikan & Kelas

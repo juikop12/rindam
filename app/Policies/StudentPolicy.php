@@ -28,7 +28,7 @@ class StudentPolicy
      */
     public function create(User $user): bool
     {
-        return in_array($user->role_code, ['super_admin', 'pimpinan', 'operator_satdik']);
+        return $user->canModifyData() && ($user->isSuperAdmin() || $user->isOperatorDanrindam() || $user->isOperatorSatdik());
     }
 
     /**
@@ -36,7 +36,7 @@ class StudentPolicy
      */
     public function update(User $user, Student $student): bool
     {
-        return $user->canAccessSatdik($student->satdik_id);
+        return $user->canManageSatdik($student->satdik_id);
     }
 
     /**
@@ -44,7 +44,7 @@ class StudentPolicy
      */
     public function delete(User $user, Student $student): bool
     {
-        return in_array($user->role_code, ['super_admin', 'pimpinan']);
+        return $user->canManageSatdik($student->satdik_id);
     }
 
     /**
@@ -52,11 +52,6 @@ class StudentPolicy
      */
     public function viewSensitiveData(User $user, Student $student): bool
     {
-        // Hanya Pimpinan, Super Admin, dan Operator Satdik yang bersangkutan yang berhak
-        if ($user->isPimpinan()) {
-            return true;
-        }
-
-        return $user->role_code === 'operator_satdik' && $user->satdik_id === $student->satdik_id;
+        return $user->canAccessSatdik($student->satdik_id);
     }
 }

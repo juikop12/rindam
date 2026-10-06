@@ -15,6 +15,11 @@ class ClassroomController extends Controller
      */
     public function store(Request $request, ?EducationProgram $program = null)
     {
+        $currentUser = auth()->user();
+        if ($currentUser && !$currentUser->canModifyData()) {
+            abort(403, 'Akses Ditolak: Akun Anda berada dalam mode peninjauan (Hanya Baca / View-Only) dan tidak dapat memodifikasi peleton/kelas.');
+        }
+
         $programId = $program ? $program->id : $request->input('education_program_id');
 
         $validated = $request->validate([
@@ -29,6 +34,10 @@ class ClassroomController extends Controller
 
         $finalProgramId = $programId ?? $validated['education_program_id'];
         $prog = EducationProgram::findOrFail($finalProgramId);
+
+        if ($currentUser && !$currentUser->canManageSatdik($prog->satdik_id)) {
+            abort(403, 'Akses Ditolak: Anda tidak memiliki wewenang untuk mengubah peleton pada Satuan Pendidikan ini.');
+        }
 
         $company = !empty($validated['company']) ? trim($validated['company']) : null;
         $platoon = !empty($validated['platoon']) ? trim($validated['platoon']) : null;
@@ -87,6 +96,14 @@ class ClassroomController extends Controller
      */
     public function update(Request $request, Classroom $classroom)
     {
+        $currentUser = auth()->user();
+        if ($currentUser && !$currentUser->canModifyData()) {
+            abort(403, 'Akses Ditolak: Akun Anda berada dalam mode peninjauan (Hanya Baca / View-Only) dan tidak dapat memodifikasi peleton/kelas.');
+        }
+        if ($currentUser && !$currentUser->canManageSatdik($classroom->educationProgram?->satdik_id)) {
+            abort(403, 'Akses Ditolak: Anda tidak memiliki wewenang untuk mengubah peleton pada Satuan Pendidikan ini.');
+        }
+
         $validated = $request->validate([
             'company' => ['nullable', 'string', 'max:100'],
             'platoon' => ['nullable', 'string', 'max:100'],
@@ -138,6 +155,13 @@ class ClassroomController extends Controller
      */
     public function destroy(Classroom $classroom)
     {
+        $currentUser = auth()->user();
+        if ($currentUser && !$currentUser->canModifyData()) {
+            abort(403, 'Akses Ditolak: Akun Anda berada dalam mode peninjauan (Hanya Baca / View-Only) dan tidak dapat menghapus peleton/kelas.');
+        }
+        if ($currentUser && !$currentUser->canManageSatdik($classroom->educationProgram?->satdik_id)) {
+            abort(403, 'Akses Ditolak: Anda tidak memiliki wewenang untuk menghapus peleton pada Satuan Pendidikan ini.');
+        }
         $studentCount = $classroom->students()->count();
         if ($studentCount > 0) {
             return back()->withErrors("Kompi/Peleton [{$classroom->name}] tidak dapat dihapus karena menaungi {$studentCount} prajurit siswa. Silakan alihkan atau hapus data serdik terlebih dahulu.");

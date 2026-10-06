@@ -21,9 +21,8 @@ class SatdikScope implements Scope
 
         $user = Auth::user();
 
-        // Role dengan hak lintas Satdik
-        $crossSatdikRoles = ['super_admin', 'pimpinan', 'kabag_diklat', 'kabag_dik', 'tim_zi'];
-        if (in_array($user->role_code, $crossSatdikRoles)) {
+        // Role dengan hak lintas Satdik (Super Admin, Danrindam, Operator Danrindam, Tim ZI)
+        if ($user->hasCrossSatdikAccess()) {
             return;
         }
 
