@@ -94,7 +94,7 @@ class StudentHealthRecord extends Model
     public function getStatusBadgeAttribute(): array
     {
         return match($this->daily_health_status) {
-            'Siap Latih' => ['class' => 'badge-green', 'icon' => 'check_circle', 'label' => 'Siap Latih'],
+            'Siap Latih' => ['class' => 'badge-green', 'icon' => 'check_circle', 'label' => 'Sehat'],
             'Berobat Jalan' => ['class' => 'badge-amber', 'icon' => 'healing', 'label' => 'Berobat Jalan / Dispen'],
             'Rawat Inap Poliklinik' => ['class' => 'badge-red', 'icon' => 'local_hospital', 'label' => 'Rawat Inap Poliklinik'],
             'Rujuk Rumkit' => ['class' => 'badge-blue', 'icon' => 'emergency', 'label' => 'Rujuk Rumkit'],

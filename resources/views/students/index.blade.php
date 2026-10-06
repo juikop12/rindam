@@ -636,7 +636,7 @@
                     </label>
                     <select name="status" id="statusModalSelect" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm text-slate-800 font-semibold focus:outline-none focus:ring-2 focus:ring-slate-900" onchange="updateStatusExplanation(this.value)">
                         <optgroup label="── STATUS TERHITUNG (PENDIDIKAN BERJALAN) ──">
-                            <option value="Aktif">🟢 Aktif (Siap Latih — Terhitung)</option>
+                            <option value="Aktif">🟢 Aktif (Sehat — Terhitung)</option>
                             <option value="Sakit">🟡 Sakit (Dispen Medis — Terhitung)</option>
                             <option value="Dinas Luar">🔵 Dinas Luar (Terhitung)</option>
                         </optgroup>
@@ -970,7 +970,7 @@
                     <div class="mb-3.5">
                         <label class="block text-xs font-bold text-slate-700 mb-1">Kondisi Fisik / Kesiapan Medis</label>
                         <select name="daily_health_status" id="create_daily_health_status" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-xs font-medium text-slate-800">
-                            <option value="Siap Latih">🟢 Siap Latih Penuh (Normal & Prima)</option>
+                            <option value="Siap Latih">🟢 Sehat Penuh (Normal & Prima)</option>
                             <option value="Berobat Jalan">🟡 Berobat Jalan / Dispen (Keluhan Ringan)</option>
                             <option value="Rawat Inap Poliklinik">🔴 Rawat Inap Poliklinik Satdik (Bed Rest)</option>
                             <option value="Rujuk Rumkit">🔵 Rujuk Rumah Sakit (Rumkit Tk. II Soedjono / Dinas)</option>
@@ -1202,7 +1202,7 @@
                     <div class="mb-3.5">
                         <label class="block text-xs font-bold text-slate-700 mb-1">Kondisi Fisik / Kesiapan Medis</label>
                         <select name="daily_health_status" id="edit_daily_health_status" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-xs font-medium text-slate-800">
-                            <option value="Siap Latih">🟢 Siap Latih Penuh (Normal & Prima)</option>
+                            <option value="Siap Latih">🟢 Sehat Penuh (Normal & Prima)</option>
                             <option value="Berobat Jalan">🟡 Berobat Jalan / Dispen (Keluhan Ringan)</option>
                             <option value="Rawat Inap Poliklinik">🔴 Rawat Inap Poliklinik Satdik (Bed Rest)</option>
                             <option value="Rujuk Rumkit">🔵 Rujuk Rumah Sakit (Rumkit Tk. II Soedjono / Dinas)</option>

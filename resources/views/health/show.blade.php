@@ -63,7 +63,7 @@
 
                         @if($healthRecord->daily_health_status == 'Siap Latih')
                             <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-semibold bg-emerald-50 text-emerald-700">
-                                <span class="ms text-[14px]">check_circle</span> Siap Latih Penuh
+                                <span class="ms text-[14px]">check_circle</span> Sehat Penuh
                             </span>
                         @elseif($healthRecord->daily_health_status == 'Berobat Jalan')
                             <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-semibold bg-amber-50 text-amber-700">
