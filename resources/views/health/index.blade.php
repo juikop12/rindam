@@ -3,359 +3,369 @@
 @section('title', 'Kesehatan & Rekam Medis Serdik — SIPANDU-WBK')
 
 @section('content')
+<div class="px-2 py-4">
 
-<!-- HEADER BANNER -->
-<div class="header-banner">
-    <div>
-        <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
-            <span class="pdp-badge" style="background:#E8F5E9; color:#1B5E20; border-color:#81C784;">
-                <span class="ms" style="font-size:16px;">medical_services</span> POLIKLINIK & TONKES SATDIK
-            </span>
-            <span class="pdp-badge" style="background:rgba(255,255,255,0.15);color:#fff;border-color:rgba(255,255,255,0.25);">
-                <span class="ms" style="font-size:16px;">health_and_safety</span> KESIAPAN KESEHATAN SISWA
-            </span>
+    <!-- HEADER TITLE & ACTIONS -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+        <div>
+            <div class="flex flex-wrap items-center gap-2 mb-1.5">
+                <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Kesehatan & Rekam Medis Serdik</h1>
+                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    <span class="ms text-[13px]">medical_services</span> POLIKLINIK & TONKES
+                </span>
+                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-slate-100 text-slate-700 border border-slate-200">
+                    <span class="ms text-[13px]">health_and_safety</span> KESIAPAN KESEHATAN
+                </span>
+            </div>
+            <p class="text-sm text-slate-500">Pemantauan kesiapan fisik latihan lapangan & perawatan medis per Satdik — Rindam III/Siliwangi</p>
         </div>
-        <h1>Pengelolaan Kesehatan & Rekam Medis Serdik per Satdik</h1>
-        <p>
-            Modul pemantauan kesehatan fisik serdik terpadu: status kesiapan latihan lapangan, pemantauan program pendidikan, verifikasi Kodam/Kodim asal, pemisahan siswa aktif berjalan dengan arsip lulusan, serta penanganan rujukan Rumkit dinas.
-        </p>
+        
+        <!-- Action Buttons -->
+        <div class="flex items-center gap-2.5">
+            <button type="button" onclick="window.print()" class="inline-flex items-center gap-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 px-4 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm">
+                <span class="ms text-[18px]">print</span> Cetak Rekap Medis
+            </button>
+            <a href="{{ route('students.index') }}" class="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm">
+                <span class="ms text-[18px]">groups</span> Buku Induk Siswa
+            </a>
+        </div>
     </div>
-    <div style="display:flex; gap:10px; align-items:flex-start; flex-wrap:wrap;">
-        <button type="button" onclick="window.print()" class="btn btn-outline btn-sm" style="background:rgba(255,255,255,0.1); color:#fff; border-color:rgba(255,255,255,0.3);">
-            <span class="ms">print</span> Cetak Rekap Medis
-        </button>
-        <a href="{{ route('students.index') }}" class="btn btn-gold btn-sm">
-            <span class="ms">school</span> Buku Induk Siswa
+
+    <!-- TABS FILTER SATDIK -->
+    <div class="flex flex-wrap items-center gap-3 mb-6">
+        <a href="{{ route('health.index', array_merge(request()->except(['satdik_id', 'page']))) }}" 
+           class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors border {{ empty($selectedSatdikId) ? 'bg-slate-100 text-slate-900 border-slate-300 shadow-sm font-semibold' : 'bg-white text-slate-500 border-slate-200 hover:bg-slate-50' }}">
+            <span class="ms text-[18px]">list</span>
+            Semua Satdik
+            <span class="px-2 py-0.5 rounded text-xs bg-slate-200 text-slate-700">{{ $stats['overall_total'] }}</span>
         </a>
-    </div>
-</div>
-
-<!-- STATS SUMMARY (IDENTIK & TERPADU DENGAN DATA SISWA & PROGRAM) -->
-<div class="stats-grid">
-    <div class="stat-card">
-        <div class="stat-icon" style="background:linear-gradient(135deg, var(--green), #2E7D32);">
-            <span class="ms">how_to_reg</span>
-        </div>
-        <div>
-            <div class="stat-val" style="color:var(--green);">{{ $stats['overall_counted'] }}</div>
-            <div class="stat-lbl">Siswa Aktif Terhitung (Pendidikan Berjalan)</div>
-            <small style="color:var(--muted); font-size:11px; display:block; margin-top:2px;">
-                {{ $stats['siap_latih'] }} Siap Latih • {{ $stats['berobat_jalan'] }} Berobat/Dispen
-            </small>
-        </div>
-    </div>
-
-    <div class="stat-card">
-        <div class="stat-icon" style="background:linear-gradient(135deg, #475569, #1E293B);">
-            <span class="ms">archive</span>
-        </div>
-        <div>
-            <div class="stat-val" style="color:#475569;">{{ $stats['overall_archived'] }}</div>
-            <div class="stat-lbl">Arsip Siswa Selesai (Tidak Terhitung)</div>
-            <small style="color:var(--muted); font-size:11px; display:block; margin-top:2px;">
-                {{ $stats['overall_finished'] }} Rekam Medis Historis Lulusan
-            </small>
-        </div>
-    </div>
-
-    <div class="stat-card">
-        <div class="stat-icon" style="background:linear-gradient(135deg, var(--o700), var(--o500));">
-            <span class="ms">school</span>
-        </div>
-        <div>
-            <div class="stat-val">{{ count($stats['program_list'] ?? []) }}</div>
-            <div class="stat-lbl">Program Pendidikan (TA 2026)</div>
-            <small style="color:var(--muted); font-size:11px; display:block; margin-top:2px;">
-                DIKMABA, DIKJURBA, DIKMATA, dll.
-            </small>
-        </div>
-    </div>
-
-    <div class="stat-card">
-        <div class="stat-icon" style="background:linear-gradient(135deg, var(--red), #C62828);">
-            <span class="ms">local_hospital</span>
-        </div>
-        <div>
-            <div class="stat-val" style="color:var(--red);">{{ $stats['perawatan_khusus'] }}</div>
-            <div class="stat-lbl">Perawatan Poliklinik & Rujuk Rumkit</div>
-            <small style="color:var(--muted); font-size:11px; display:block; margin-top:2px;">
-                {{ $stats['rawat_inap'] }} Rawat Inap • {{ $stats['rujuk_rumkit'] }} Rujuk Rumkit
-            </small>
-        </div>
-    </div>
-</div>
-
-<!-- SATDIK NAVIGATION TABS (MENAMPILKAN KUOTA AKTIF SERUPA DATA SISWA) -->
-@if(auth()->check() && !auth()->user()->isPimpinan() && auth()->user()->satdik_id)
-    <div class="satdik-nav" style="margin-bottom:20px;">
-        <div class="satdik-tab active" style="cursor:default; background:var(--o800); color:var(--gold2); border-color:var(--gold); box-shadow:0 4px 12px rgba(29,42,22,0.15);">
-            <span class="ms" style="color:var(--gold);">lock</span> 
-            <span>SATDIK ANDA: <b>{{ auth()->user()->satdik?->code }}</b> &mdash; {{ auth()->user()->satdik?->name }}</span>
-            <span class="tab-badge" style="background:var(--gold); color:var(--o900); font-weight:800;">
-                🔒 Terkunci Sesuai Wewenang Akun
-            </span>
-        </div>
-    </div>
-@else
-    <div class="satdik-nav">
-        <a href="{{ route('health.index', array_merge(request()->except(['satdik_id', 'page']))) }}" class="satdik-tab {{ empty($selectedSatdikId) ? 'active' : '' }}">
-            <span class="ms">domain</span> Semua Satdik
-            <span class="tab-badge" title="Siswa Aktif Terhitung">{{ $stats['overall_counted'] }} Aktif</span>
-        </a>
-
         @foreach($satdiks as $satdik)
             @php
                 $satdikCounted = $satdik->students()->whereIn('status', ['Aktif', 'Sakit', 'Dinas Luar'])->count();
+                $isActive = ($selectedSatdikId == $satdik->id);
             @endphp
-            <a href="{{ route('health.index', array_merge(request()->except(['page']), ['satdik_id' => $satdik->id])) }}" class="satdik-tab {{ $selectedSatdikId == $satdik->id ? 'active' : '' }}">
-                <span class="ms">military_tech</span> {{ $satdik->code }}
-                <span class="tab-badge" title="Siswa Aktif Terhitung">{{ $satdikCounted }} Aktif</span>
+            <a href="{{ route('health.index', array_merge(request()->except(['page']), ['satdik_id' => $satdik->id])) }}" 
+               class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors border {{ $isActive ? 'bg-slate-100 text-slate-900 border-slate-300 shadow-sm font-semibold' : 'bg-white text-slate-500 border-slate-200 hover:bg-slate-50' }}">
+                <span class="ms text-[18px]">filter_list</span>
+                {{ $satdik->code }}
+                <span class="px-2 py-0.5 rounded text-xs {{ $isActive ? 'bg-slate-200 text-slate-800' : 'bg-slate-100 text-slate-600' }}">{{ $satdikCounted }} Aktif</span>
             </a>
         @endforeach
     </div>
-@endif
 
-<!-- SECTION REKAPITULASI PROGRAM PENDIDIKAN -->
-<div style="background:#fff; border:1px solid var(--line); border-radius:12px; padding:18px 20px; margin-bottom:20px; box-shadow:var(--shadow-sm);">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
-        <div style="display:flex; align-items:center; gap:10px;">
-            <div style="width:36px; height:36px; border-radius:8px; background:var(--o100); color:var(--o800); display:grid; place-items:center;">
-                <span class="ms" style="font-size:20px;">layers</span>
+    <!-- 4 STAT CARDS (Clean Minimalist Dashboard Style) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
+        <!-- Siswa Aktif Terhitung -->
+        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex flex-col justify-between">
+            <div class="text-sm font-medium text-slate-500 mb-4 flex items-center justify-between">
+                <span>Siswa Aktif Terhitung</span>
+                <span class="ms text-sm text-slate-400">how_to_reg</span>
             </div>
             <div>
-                <h4 style="margin:0; font-size:14.5px; font-weight:800; color:var(--o900); text-transform:uppercase; letter-spacing:0.04em;">
-                    Kesehatan per Program Pendidikan (TA 2026)
-                </h4>
-                <div style="color:var(--muted); font-size:12px; margin-top:2px;">
-                    Klik salah satu program untuk menyaring rekam medis serdik pada program tersebut
+                <div class="text-3xl font-bold text-slate-900 mb-2">{{ number_format($stats['overall_counted']) }}</div>
+                <div class="flex items-center gap-2 text-xs text-slate-500">
+                    <span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded font-semibold">{{ $stats['siap_latih'] }} siap latih</span>
+                    <span>&bull; {{ $stats['berobat_jalan'] }} dispen/jalan</span>
                 </div>
             </div>
         </div>
-        @if($selectedProgramId)
-            <a href="{{ route('health.index', array_merge(request()->except(['program_id', 'page']))) }}" class="btn btn-outline btn-sm" style="font-size:12px; padding:6px 12px; border-color:var(--line); color:var(--muted);">
-                <span class="ms" style="font-size:15px;">close</span> Tampilkan Semua Program
+
+        <!-- Arsip Siswa Selesai -->
+        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex flex-col justify-between">
+            <div class="text-sm font-medium text-slate-500 mb-4 flex items-center justify-between">
+                <span>Arsip Siswa Selesai</span>
+                <span class="ms text-sm text-slate-400">archive</span>
+            </div>
+            <div>
+                <div class="text-3xl font-bold text-slate-900 mb-2">{{ number_format($stats['overall_archived']) }}</div>
+                <div class="flex items-center gap-2 text-xs text-slate-500">
+                    <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-semibold">{{ $stats['overall_finished'] }} data historis</span>
+                    <span>&bull; tidak terhitung</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Program Pendidikan -->
+        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex flex-col justify-between">
+            <div class="text-sm font-medium text-slate-500 mb-4 flex items-center justify-between">
+                <span>Program Diklat</span>
+                <span class="ms text-sm text-slate-400">school</span>
+            </div>
+            <div>
+                <div class="text-3xl font-bold text-slate-900 mb-2">{{ count($stats['program_list'] ?? []) }}</div>
+                <div class="flex items-center gap-2 text-xs text-slate-500">
+                    <span class="bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded font-semibold">Tahun Anggaran 2026</span>
+                    <span>DIKMABA &bull; DIKMATA</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Perawatan Medis & Rujukan -->
+        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex flex-col justify-between">
+            <div class="text-sm font-medium text-slate-500 mb-4 flex items-center justify-between">
+                <span>Perawatan & Rujuk Rumkit</span>
+                <span class="ms text-sm text-slate-400">local_hospital</span>
+            </div>
+            <div>
+                <div class="text-3xl font-bold text-slate-900 mb-2">{{ number_format($stats['perawatan_khusus']) }}</div>
+                <div class="flex items-center gap-2 text-xs text-slate-500">
+                    <span class="bg-rose-100 text-rose-700 px-2 py-0.5 rounded font-semibold">{{ $stats['rawat_inap'] }} rawat inap</span>
+                    <span>&bull; {{ $stats['rujuk_rumkit'] }} rujuk rumkit</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION REKAPITULASI PROGRAM PENDIDIKAN -->
+    <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm mb-8">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center shrink-0">
+                    <span class="ms text-[20px]">layers</span>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wide">
+                        Kesehatan per Program Pendidikan (TA 2026)
+                    </h3>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        Klik salah satu program untuk menyaring rekam medis serdik pada program tersebut
+                    </p>
+                </div>
+            </div>
+            @if($selectedProgramId)
+                <a href="{{ route('health.index', array_merge(request()->except(['program_id', 'page']))) }}" 
+                   class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors">
+                    <span class="ms text-[16px]">close</span> Tampilkan Semua Program
+                </a>
+            @endif
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+            @foreach($stats['program_list'] as $prog)
+                @php
+                    $isProgActive = ($selectedProgramId == $prog['id']);
+                @endphp
+                <a href="{{ route('health.index', array_merge(request()->except(['page']), ['program_id' => $isProgActive ? null : $prog['id']])) }}"
+                   class="group block p-3.5 rounded-xl border transition-all {{ $isProgActive ? 'border-slate-900 bg-slate-50 ring-2 ring-slate-900 shadow-sm' : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50/50' }}">
+                    <div class="flex items-start justify-between gap-2 mb-2">
+                        <span class="font-bold text-xs {{ $isProgActive ? 'text-slate-900' : 'text-slate-800 group-hover:text-slate-900' }} leading-snug line-clamp-2">
+                            {{ $prog['name'] }}
+                        </span>
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-700 shrink-0">
+                            {{ $prog['satdik_code'] }}
+                        </span>
+                    </div>
+                    <div class="flex items-center justify-between pt-2 border-t border-slate-100 text-xs">
+                        <span class="inline-flex items-center gap-1 text-emerald-700 font-semibold text-[11px]" title="Terhitung dalam kekuatan pendidikan">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                            <b>{{ $prog['counted_students'] }}</b> Terhitung
+                        </span>
+                        <span class="inline-flex items-center gap-1 text-slate-500 font-medium text-[11px]" title="Selesai Pendidikan (Arsip)">
+                            <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+                            <b>{{ $prog['archived_students'] }}</b> Arsip
+                        </span>
+                    </div>
+                </a>
+            @endforeach
+        </div>
+    </div>
+
+    <!-- SEGMENTED TABS: SEMUA vs SISWA AKTIF vs ARSIP SELESAI -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <div class="inline-flex p-1 bg-slate-100 border border-slate-200 rounded-xl gap-1">
+            <a href="{{ route('health.index', array_merge(request()->except(['page', 'tab']), ['tab' => 'all'])) }}"
+               class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all {{ $tab == 'all' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-900' }}">
+                <span class="ms text-[16px]">people</span> Semua Serdik
+                <span class="px-2 py-0.5 rounded text-[11px] {{ $tab == 'all' ? 'bg-slate-100 text-slate-800' : 'bg-slate-200 text-slate-600' }}">{{ $stats['overall_total'] }}</span>
             </a>
+            <a href="{{ route('health.index', array_merge(request()->except(['page', 'tab']), ['tab' => 'aktif'])) }}"
+               class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all {{ $tab == 'aktif' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-900' }}">
+                <span class="ms text-[16px] text-emerald-600">how_to_reg</span> Siswa Aktif Terhitung
+                <span class="px-2 py-0.5 rounded text-[11px] {{ $tab == 'aktif' ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-200 text-slate-600' }}">{{ $stats['overall_counted'] }}</span>
+            </a>
+            <a href="{{ route('health.index', array_merge(request()->except(['page', 'tab']), ['tab' => 'arsip'])) }}"
+               class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all {{ $tab == 'arsip' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-900' }}">
+                <span class="ms text-[16px] text-slate-500">archive</span> Arsip Siswa Selesai
+                <span class="px-2 py-0.5 rounded text-[11px] {{ $tab == 'arsip' ? 'bg-slate-200 text-slate-800' : 'bg-slate-200 text-slate-600' }}">{{ $stats['overall_archived'] }}</span>
+            </a>
+        </div>
+
+        @if($selectedProgram)
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 bg-amber-50 border border-amber-200 text-amber-900 rounded-xl text-xs font-medium">
+                <span class="ms text-[16px] text-amber-600">filter_alt</span>
+                <span>Menyaring Program: <b>{{ $selectedProgram->name }} ({{ $selectedProgram->satdik->code }})</b></span>
+                <a href="{{ route('health.index', array_merge(request()->except(['program_id', 'page']))) }}" class="ml-1 text-amber-700 hover:text-red-600 font-bold" title="Hapus filter">✕</a>
+            </div>
         @endif
     </div>
 
-    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:12px;">
-        @foreach($stats['program_list'] as $prog)
-            @php
-                $isProgActive = ($selectedProgramId == $prog['id']);
-            @endphp
-            <a href="{{ route('health.index', array_merge(request()->except(['page']), ['program_id' => $isProgActive ? null : $prog['id']])) }}"
-               style="text-decoration:none; display:block; padding:12px 14px; border-radius:10px; border:2px solid {{ $isProgActive ? 'var(--gold)' : 'var(--line)' }}; background:{{ $isProgActive ? '#FFFDF5' : '#FAFAFA' }}; transition:all 0.15s ease; box-shadow:{{ $isProgActive ? '0 4px 12px rgba(201,162,39,0.18)' : 'none' }};">
-                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px;">
-                    <span style="font-weight:800; font-size:13px; color:{{ $isProgActive ? 'var(--o800)' : 'var(--text)' }};">
-                        {{ $prog['name'] }}
-                    </span>
-                    <span class="badge" style="font-size:10px; background:#ECEEE9; color:var(--o800); font-weight:700;">
-                        {{ $prog['satdik_code'] }}
-                    </span>
-                </div>
-                <div style="display:flex; justify-content:space-between; align-items:center; font-size:11.5px; margin-top:8px; padding-top:8px; border-top:1px dashed var(--line);">
-                    <span style="color:var(--green); font-weight:700; display:flex; align-items:center; gap:4px;" title="Terhitung dalam kekuatan pendidikan">
-                        <span class="ms" style="font-size:15px;">check_circle</span>
-                        <b>{{ $prog['counted_students'] }}</b> Terhitung
-                    </span>
-                    <span style="color:#64748B; font-weight:600; display:flex; align-items:center; gap:4px;" title="Selesai Pendidikan (Arsip - Tidak Terhitung)">
-                        <span class="ms" style="font-size:15px;">archive</span>
-                        <b>{{ $prog['archived_students'] }}</b> Arsip
-                    </span>
-                </div>
-            </a>
-        @endforeach
-    </div>
-</div>
-
-<!-- SEGMENTED TABS: SEMUA vs SISWA AKTIF (TERHITUNG) vs ARSIP SELESAI -->
-<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; gap:12px; flex-wrap:wrap;">
-    <div style="display:flex; background:#EAECE7; padding:4px; border-radius:10px; gap:4px;">
-        <a href="{{ route('health.index', array_merge(request()->except(['page', 'tab']), ['tab' => 'all'])) }}"
-           style="padding:7px 16px; border-radius:7px; font-size:12.5px; font-weight:700; text-decoration:none; display:flex; align-items:center; gap:6px; transition:all 0.15s; {{ $tab == 'all' ? 'background:#fff; color:var(--o900); box-shadow:0 1px 3px rgba(0,0,0,0.1);' : 'color:var(--muted);' }}">
-            <span class="ms" style="font-size:16px;">people</span> Semua Serdik
-            <span class="badge" style="background:#E2E8F0; color:#334155; font-size:11px; padding:2px 7px;">{{ $stats['overall_total'] }}</span>
-        </a>
-        <a href="{{ route('health.index', array_merge(request()->except(['page', 'tab']), ['tab' => 'aktif'])) }}"
-           style="padding:7px 16px; border-radius:7px; font-size:12.5px; font-weight:700; text-decoration:none; display:flex; align-items:center; gap:6px; transition:all 0.15s; {{ $tab == 'aktif' ? 'background:var(--green); color:#fff; box-shadow:0 2px 6px rgba(46,125,50,0.3);' : 'color:var(--muted);' }}">
-            <span class="ms" style="font-size:16px;">how_to_reg</span> Siswa Aktif Terhitung
-            <span class="badge" style="background:{{ $tab == 'aktif' ? '#fff' : '#E8F5E9' }}; color:{{ $tab == 'aktif' ? 'var(--green)' : 'var(--green)' }}; font-size:11px; padding:2px 7px;">{{ $stats['overall_counted'] }}</span>
-        </a>
-        <a href="{{ route('health.index', array_merge(request()->except(['page', 'tab']), ['tab' => 'arsip'])) }}"
-           style="padding:7px 16px; border-radius:7px; font-size:12.5px; font-weight:700; text-decoration:none; display:flex; align-items:center; gap:6px; transition:all 0.15s; {{ $tab == 'arsip' ? 'background:#334155; color:#fff; box-shadow:0 2px 6px rgba(51,65,85,0.3);' : 'color:var(--muted);' }}">
-            <span class="ms" style="font-size:16px;">archive</span> Arsip Siswa Selesai
-            <span class="badge" style="background:{{ $tab == 'arsip' ? '#fff' : '#E2E8F0' }}; color:{{ $tab == 'arsip' ? '#334155' : '#475569' }}; font-size:11px; padding:2px 7px;">{{ $stats['overall_archived'] }}</span>
-        </a>
-    </div>
-
-    @if($selectedProgram)
-        <div style="font-size:13px; color:var(--o800); font-weight:700; background:#FFF8E1; padding:6px 14px; border-radius:8px; border:1px solid #FFE082;">
-            <span class="ms" style="font-size:16px; color:var(--gold); vertical-align:middle;">filter_alt</span>
-            Menyaring Program: <u>{{ $selectedProgram->name }}</u> ({{ $selectedProgram->satdik->code }})
-        </div>
-    @endif
-</div>
-
-<!-- MAIN HEALTH DATA CARD -->
-<div class="card">
-    <div class="card-header" style="flex-wrap:wrap; gap:12px;">
-        <h3 class="card-title">
-            <span class="ms" style="color:var(--green);">monitor_heart</span>
-            Daftar Rekam Medis & Kesehatan Serdik {{ $selectedSatdik ? '— ' . $selectedSatdik->name : 'Seluruh Satdik Rindam III/Slw' }}
-        </h3>
-
-        <!-- SEARCH & FILTER FORM -->
-        <form method="GET" action="{{ route('health.index') }}" style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-            @if($selectedSatdikId)
-                <input type="hidden" name="satdik_id" value="{{ $selectedSatdikId }}">
-            @endif
-            @if($tab)
-                <input type="hidden" name="tab" value="{{ $tab }}">
-            @endif
-
-            <!-- Filter Program Pendidikan -->
-            <select name="program_id" class="form-control" style="width:200px;" onchange="this.form.submit()">
-                <option value="">Semua Program Pendidikan</option>
-                @foreach($availablePrograms as $prog)
-                    <option value="{{ $prog->id }}" {{ $selectedProgramId == $prog->id ? 'selected' : '' }}>
-                        {{ $prog->name }}
-                    </option>
-                @endforeach
-            </select>
-
-            <!-- Filter Kondisi Fisik -->
-            <select name="health_status" class="form-control" style="width:180px;" onchange="this.form.submit()">
-                <option value="">Semua Kondisi Fisik</option>
-                <option value="Siap Latih" {{ $healthStatus == 'Siap Latih' ? 'selected' : '' }}>Siap Latih</option>
-                <option value="Berobat Jalan" {{ $healthStatus == 'Berobat Jalan' ? 'selected' : '' }}>Berobat Jalan</option>
-                <option value="Rawat Inap Poliklinik" {{ $healthStatus == 'Rawat Inap Poliklinik' ? 'selected' : '' }}>Rawat Inap</option>
-                <option value="Rujuk Rumkit" {{ $healthStatus == 'Rujuk Rumkit' ? 'selected' : '' }}>Rujuk Rumkit</option>
-            </select>
-
-            <div style="position:relative;">
-                <input type="text" name="q" value="{{ $keyword }}" placeholder="Cari Siswa, NOSIK, Kodam/Kodim..." class="form-control" style="width:240px; padding-left:32px;">
-                <span class="ms" style="position:absolute; left:8px; top:10px; color:var(--muted); font-size:18px;">search</span>
+    <!-- MAIN HEALTH DATA CARD -->
+    <div class="bg-white border border-slate-200 rounded-xl shadow-sm mb-8 overflow-hidden">
+        <!-- Table Header & Actions/Filter -->
+        <div class="px-5 py-4 border-b border-slate-200 flex flex-col xl:flex-row xl:items-center justify-between gap-4">
+            <div class="min-w-0">
+                <h2 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2 truncate">
+                    <span class="ms text-emerald-600 text-[22px] shrink-0">monitor_heart</span>
+                    <span>Daftar Rekam Medis & Kesehatan Serdik {{ $selectedSatdik ? '— ' . $selectedSatdik->name : '' }}</span>
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5 truncate">Catatan riwayat tanda vital, rekam medis harian, dan kesiapan fisik prajurit siswa</p>
             </div>
 
-            <button type="submit" class="btn btn-outline btn-sm">Filter</button>
-            @if($keyword || $healthStatus || $selectedProgramId || $tab !== 'all')
-                <a href="{{ route('health.index', ['satdik_id' => $selectedSatdikId]) }}" class="btn btn-sm" style="color:var(--muted);text-decoration:none;">Reset</a>
-            @endif
-        </form>
-    </div>
+            <!-- SEARCH & FILTER FORM -->
+            <form method="GET" action="{{ route('health.index') }}" class="flex items-center gap-2 flex-nowrap shrink-0">
+                @if($tab)
+                    <input type="hidden" name="tab" value="{{ $tab }}">
+                @endif
 
-    <div class="card-body" style="padding:0;">
-        <div class="table-wrap">
-            <table class="data-table" style="width:100%;">
-                <thead>
+                <!-- PILIH SATUAN PENDIDIKAN (SATDIK) -->
+                <select name="satdik_id" class="w-32 sm:w-36 h-9 bg-white border border-slate-200 text-slate-700 text-xs font-medium rounded-lg px-2.5 focus:ring-2 focus:ring-slate-900 focus:outline-none shrink-0" onchange="if(this.form.program_id) this.form.program_id.value=''; this.form.submit()">
+                    <option value="">Semua Satdik</option>
+                    @foreach($satdiks as $s)
+                        <option value="{{ $s->id }}" {{ $selectedSatdikId == $s->id ? 'selected' : '' }}>
+                            {{ $s->code }}
+                        </option>
+                    @endforeach
+                </select>
+
+                <!-- Filter Program Pendidikan -->
+                <select name="program_id" class="w-32 sm:w-36 h-9 bg-white border border-slate-200 text-slate-700 text-xs font-medium rounded-lg px-2.5 focus:ring-2 focus:ring-slate-900 focus:outline-none truncate shrink-0" onchange="this.form.submit()">
+                    <option value="">Semua Program</option>
+                    @foreach($availablePrograms as $prog)
+                        <option value="{{ $prog->id }}" {{ $selectedProgramId == $prog->id ? 'selected' : '' }}>
+                            {{ $prog->name }}
+                        </option>
+                    @endforeach
+                </select>
+
+                <!-- Filter Kondisi Fisik -->
+                <select name="health_status" class="w-32 sm:w-36 h-9 bg-white border border-slate-200 text-slate-700 text-xs font-medium rounded-lg px-2.5 focus:ring-2 focus:ring-slate-900 focus:outline-none shrink-0" onchange="this.form.submit()">
+                    <option value="">Semua Kondisi</option>
+                    <option value="Siap Latih" {{ $healthStatus == 'Siap Latih' ? 'selected' : '' }}>Siap Latih</option>
+                    <option value="Berobat Jalan" {{ $healthStatus == 'Berobat Jalan' ? 'selected' : '' }}>Berobat Jalan</option>
+                    <option value="Rawat Inap Poliklinik" {{ $healthStatus == 'Rawat Inap Poliklinik' ? 'selected' : '' }}>Rawat Inap</option>
+                    <option value="Rujuk Rumkit" {{ $healthStatus == 'Rujuk Rumkit' ? 'selected' : '' }}>Rujuk Rumkit</option>
+                </select>
+
+                <div class="relative w-32 sm:w-36 shrink-0">
+                    <span class="ms text-slate-400 text-[18px] absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none">search</span>
+                    <input type="text" name="q" value="{{ $keyword }}" placeholder="Cari Siswa..." class="w-full h-9 pl-8 pr-2.5 border border-slate-200 rounded-lg text-xs text-slate-700 placeholder-slate-400 focus:ring-2 focus:ring-slate-900 focus:outline-none">
+                </div>
+
+                <button type="submit" class="h-9 bg-slate-900 hover:bg-slate-800 text-white px-3.5 rounded-lg text-xs font-semibold transition-colors shrink-0 flex items-center justify-center">
+                    Filter
+                </button>
+                @if($keyword || $healthStatus || $selectedProgramId || $selectedSatdikId || $tab !== 'all')
+                    <a href="{{ route('health.index') }}" class="h-9 text-xs font-medium text-slate-500 hover:text-slate-800 px-2 rounded-lg flex items-center justify-center shrink-0">
+                        Reset
+                    </a>
+                @endif
+            </form>
+        </div>
+
+        <!-- Desktop Table View (Hidden on mobile < md) -->
+        <div class="overflow-x-auto hidden md:block">
+            <table class="w-full text-left text-sm text-slate-600">
+                <thead class="bg-slate-50 text-slate-500 uppercase text-[11px] font-semibold tracking-wider">
                     <tr>
-                        <th style="width:45px; text-align:center;">No</th>
-                        <th style="min-width:210px;">Siswa / Serdik</th>
-                        <th style="white-space:nowrap;">Satuan (Satdik & Peleton)</th>
-                        <th style="min-width:170px;">Program Pendidikan</th>
-                        <th style="min-width:160px;">Kodam / Kodim Asal</th>
-                        <th style="white-space:nowrap;">Status Serdik</th>
-                        <th style="white-space:nowrap; min-width:160px;">Kondisi Fisik / Kesiapan</th>
-                        <th style="white-space:nowrap; min-width:120px;">Tanda Vital</th>
-                        <th style="min-width:180px;">Catatan Medis & Alergi</th>
-                        <th style="white-space:nowrap; text-align:right; min-width:120px;">Aksi Rekam Medis</th>
+                        <th class="px-4 py-3 border-b border-slate-200 w-12 text-center">No</th>
+                        <th class="px-5 py-3 border-b border-slate-200">Siswa / Serdik</th>
+                        <th class="px-4 py-3 border-b border-slate-200">Satuan & Peleton</th>
+                        <th class="px-4 py-3 border-b border-slate-200">Program Diklat</th>
+                        <th class="px-4 py-3 border-b border-slate-200">Kodam / Kodim Asal</th>
+                        <th class="px-4 py-3 border-b border-slate-200">Status Serdik</th>
+                        <th class="px-4 py-3 border-b border-slate-200">Kondisi Fisik / Kesiapan</th>
+                        <th class="px-4 py-3 border-b border-slate-200">Tanda Vital</th>
+                        <th class="px-4 py-3 border-b border-slate-200">Catatan Medis & Alergi</th>
+                        <th class="px-4 py-3 border-b border-slate-200 text-center">Aksi Rekam Medis</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="divide-y divide-slate-100">
                     @forelse($students as $index => $student)
-                        @php $hr = $student->healthRecord; @endphp
-                        <tr>
-                            <td>{{ $students->firstItem() + $index }}</td>
-                            <td>
-                                <div style="display:flex; align-items:center; gap:10px;">
-                                    <div style="width:36px; height:36px; border-radius:50%; background:var(--o100); color:var(--o800); display:grid; place-items:center; font-weight:800; font-size:13px; border:1px solid var(--o200);">
+                        @php
+                            $hr = $student->healthRecord;
+                            $isSakit = ($student->status === 'Sakit' || str_contains($student->status, 'Sakit') || in_array($hr?->daily_health_status, ['Berobat Jalan', 'Rawat Inap Poliklinik', 'Rujuk Rumkit']));
+                        @endphp
+                        <tr class="transition-colors {{ $isSakit ? 'bg-red-50/80 border-l-4 border-l-red-500 hover:bg-red-100/80' : 'border-l-4 border-l-transparent hover:bg-slate-50' }}">
+                            <td class="px-4 py-3.5 text-center align-middle text-xs font-medium text-slate-500">
+                                {{ $students->firstItem() + $index }}
+                            </td>
+                            <td class="px-5 py-3.5 align-middle">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center border border-slate-200 shrink-0">
                                         {{ substr($student->full_name, 0, 2) }}
                                     </div>
                                     <div>
-                                        <b style="color:var(--o800); display:block; font-size:13.5px;">{{ $student->full_name }}</b>
-                                        <span class="badge badge-satdik" style="font-family:'Fira Code',monospace; font-size:11px; margin-top:2px;">
-                                            {{ $student->nosik }}
-                                        </span>
+                                        <b class="text-slate-900 block text-xs font-semibold leading-tight">{{ $student->full_name }}</b>
+                                        <div class="font-mono text-xs text-slate-500 mt-0.5">{{ $student->nosik }}</div>
                                     </div>
                                 </div>
                             </td>
-                            <td>
-                                <span class="badge badge-satdik" style="background:#EFEFEA; font-weight:800;">
-                                    <span class="ms" style="font-size:13px;">account_balance</span>
+                            <td class="px-4 py-3.5 align-middle">
+                                <span class="px-2 py-0.5 rounded text-xs font-semibold bg-slate-100 text-slate-700">
                                     {{ $student->satdik->code }}
                                 </span>
-                                <div style="font-size:11.5px; color:var(--muted); margin-top:2px;">
-                                    {{ $student->classroom->name ?? 'Belum Ada Peleton' }}
-                                </div>
+                                <div class="text-[11px] text-slate-400 mt-0.5">{{ $student->classroom->name ?? ($student->company ? $student->company . ' ' . $student->platoon : 'Belum Ada Peleton') }}</div>
                             </td>
-                            <td>
-                                <b style="font-size:13px; color:var(--text);">{{ $student->educationProgram->name ?? '-' }}</b>
-                                <small style="display:block; color:var(--muted); font-size:11px;">
-                                    TA {{ $student->educationProgram->fiscal_year ?? '2026' }}
-                                </small>
+                            <td class="px-4 py-3.5 align-middle">
+                                <div class="font-medium text-slate-800 text-xs truncate max-w-[170px]">{{ $student->educationProgram->name ?? '-' }}</div>
+                                <div class="text-[11px] text-slate-400 mt-0.5">TA {{ $student->educationProgram->fiscal_year ?? '2026' }}</div>
                             </td>
-                            <td>
-                                <span style="font-size:13px; font-weight:600; color:var(--o900);">
-                                    {{ $student->origin_military_unit ?? '-' }}
+                            <td class="px-4 py-3.5 align-middle text-xs font-medium text-slate-700">
+                                {{ $student->origin_military_unit ?? '-' }}
+                            </td>
+                            <td class="px-4 py-3.5 align-middle whitespace-nowrap">
+                                @php
+                                    $bgClass = 'bg-slate-100 text-slate-700';
+                                    if($student->status === 'Aktif') $bgClass = 'bg-indigo-50 text-indigo-700';
+                                    if($student->status === 'Sakit') $bgClass = 'bg-rose-100 text-rose-700 font-bold';
+                                    if($student->status === 'Dinas Luar') $bgClass = 'bg-blue-50 text-blue-700';
+                                    if(in_array($student->status, ['Lulus', 'Selesai'])) $bgClass = 'bg-emerald-50 text-emerald-700';
+                                    if(str_contains($student->status, 'DO')) $bgClass = 'bg-amber-50 text-amber-700';
+                                @endphp
+                                <span class="px-2.5 py-1 rounded-md text-xs font-semibold {{ $bgClass }}">
+                                    {{ $student->status }}
                                 </span>
                             </td>
-                            <td>
-                                @php $u = $student->unified_status; @endphp
-                                <span class="badge {{ $u['badge'] }}" title="{{ $student->is_counted ? 'Terhitung dalam Kuota Aktif' : 'Arsip (Tidak Terhitung)' }}">
-                                    <span class="ms" style="font-size:13px;">{{ $u['icon'] }}</span> {{ $u['label'] }}
-                                </span>
-                                @if($student->is_counted)
-                                    <small style="display:block; color:var(--green); font-size:10.5px; font-weight:700; margin-top:2px;">
-                                        <span class="ms" style="font-size:11px;">check</span> Terhitung Aktif
-                                    </small>
-                                @else
-                                    <small style="display:block; color:#64748B; font-size:10.5px; font-weight:600; margin-top:2px;">
-                                        <span class="ms" style="font-size:11px;">archive</span> Arsip (Tidak Terhitung)
-                                    </small>
-                                @endif
-                            </td>
-                            <td>
+                            <td class="px-4 py-3.5 align-middle whitespace-nowrap">
                                 @php
                                     $b = $hr ? $hr->status_badge : ['class' => 'badge-green', 'icon' => 'check_circle', 'label' => 'Siap Latih'];
                                 @endphp
-                                <span class="badge {{ $b['class'] }}" style="font-size:12px; font-weight:700;">
-                                    <span class="ms" style="font-size:13px;">{{ $b['icon'] }}</span> {{ $b['label'] }}
+                                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-xs font-semibold {{ $b['class'] }}">
+                                    <span class="ms text-[13px]">{{ $b['icon'] }}</span> {{ $b['label'] }}
                                 </span>
-                                <div style="font-size:11px; color:var(--muted); margin-top:3px;">
-                                    Gol. Darah: <b style="color:var(--red);">{{ $student->blood_type ?? '-' }}</b>
+                                <div class="text-[11px] text-slate-400 mt-1">
+                                    Gol. Darah: <b class="text-rose-600">{{ $student->blood_type ?? '-' }}</b>
                                 </div>
                             </td>
-                            <td>
-                                <div style="font-size:12px;">
-                                    <span>Tensi: <b>{{ $hr->blood_pressure ?? '120/80' }}</b></span><br>
-                                    <span style="color:var(--muted); font-size:11px;">TB: {{ $hr->height_cm ?? '-' }}cm | BB: {{ $hr->weight_kg ?? '-' }}kg</span>
-                                </div>
+                            <td class="px-4 py-3.5 align-middle text-xs">
+                                <div class="font-bold text-slate-800">{{ $hr->blood_pressure ?? '120/80' }}</div>
+                                <div class="text-[11px] text-slate-400 mt-0.5">{{ $hr->height_cm ?? '-' }}cm • {{ $hr->weight_kg ?? '-' }}kg</div>
                             </td>
-                            <td style="max-width:240px;">
-                                <div style="font-size:12px; color:var(--o800); line-height:1.3;">
+                            <td class="px-4 py-3.5 align-middle text-xs text-slate-600 max-w-[220px]">
+                                <div class="truncate">
                                     {{ $hr && $hr->allergies && $hr->allergies != 'Tidak ada riwayat alergi' ? '⚠️ ' . $hr->allergies : ($hr->doctor_notes ?? 'Kondisi fisik prima') }}
                                 </div>
                             </td>
-                            <td style="text-align:right; white-space:nowrap;">
-                                <a href="{{ route('health.show', $student) }}" class="btn btn-outline btn-sm" title="Lihat Rekam Medis" style="color:var(--green); padding:5px 8px;">
-                                    <span class="ms">visibility</span> Medis
-                                </a>
-                                @if(auth()->user()?->canModifyData())
-                                    <a href="{{ route('health.edit', $student) }}" class="btn btn-gold btn-sm" title="Perbarui Status Kesehatan" style="padding:5px 8px;">
-                                        <span class="ms">edit_note</span> Update
+                            <td class="px-4 py-3.5 align-middle text-center whitespace-nowrap">
+                                <div class="flex items-center justify-center gap-1">
+                                    <a href="{{ route('health.show', $student) }}" class="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition-colors" title="Lihat Rekam Medis">
+                                        <span class="ms text-[15px]">visibility</span> Medis
                                     </a>
-                                @endif
-                                <a href="{{ route('students.show', $student) }}" class="btn btn-outline btn-sm" title="Dossier Lengkap Siswa" style="padding:5px 8px;">
-                                    <span class="ms">badge</span>
-                                </a>
+                                    <a href="{{ route('health.edit', $student) }}" class="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-semibold bg-slate-900 text-white hover:bg-slate-800 transition-colors" title="Perbarui Status Kesehatan">
+                                        <span class="ms text-[15px]">edit_note</span> Update
+                                    </a>
+                                    <a href="{{ route('students.show', $student) }}" class="p-1.5 text-slate-400 hover:text-slate-800 rounded-lg hover:bg-slate-100 transition-colors" title="Dossier Lengkap">
+                                        <span class="ms text-[18px]">badge</span>
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="10" style="text-align:center; padding:45px 20px; color:var(--muted);">
-                                <span class="ms" style="font-size:48px; color:var(--o200); display:block; margin-bottom:8px;">folder_off</span>
-                                <b>Tidak ada data rekam medis serdik yang sesuai filter ini.</b>
-                                <div style="font-size:12.5px; margin-top:4px;">Coba ubah filter Satdik, Program Pendidikan, atau kategori tab Aktif/Arsip di atas.</div>
+                            <td colspan="10" class="px-5 py-16 text-center text-slate-500">
+                                <span class="ms text-[44px] text-slate-300 block mb-2">folder_off</span>
+                                <div class="font-bold text-slate-800 text-base">Tidak ada data rekam medis serdik yang sesuai filter ini.</div>
+                                <p class="text-xs text-slate-400 mt-1">Coba ubah filter Satdik, Program Pendidikan, atau kategori tab Aktif/Arsip di atas.</p>
                             </td>
                         </tr>
                     @endforelse
@@ -363,16 +373,107 @@
             </table>
         </div>
 
-        <div class="table-pagination-footer">
-            <div class="table-pagination-info">
-                Menampilkan <b>{{ $students->firstItem() ?? 0 }}</b> - <b>{{ $students->lastItem() ?? 0 }}</b> dari <b>{{ $students->total() }}</b> serdik
+        <!-- Mobile Card View (Visible on mobile < md) -->
+        <div class="block md:hidden divide-y divide-slate-100">
+            @forelse($students as $index => $student)
+                @php
+                    $hr = $student->healthRecord;
+                    $isSakit = ($student->status === 'Sakit' || str_contains($student->status, 'Sakit') || in_array($hr?->daily_health_status, ['Berobat Jalan', 'Rawat Inap Poliklinik', 'Rujuk Rumkit']));
+                    $bgClass = 'bg-slate-100 text-slate-700';
+                    if($student->status === 'Aktif') $bgClass = 'bg-indigo-50 text-indigo-700';
+                    if($student->status === 'Sakit') $bgClass = 'bg-rose-100 text-rose-700 font-bold';
+                    if($student->status === 'Dinas Luar') $bgClass = 'bg-blue-50 text-blue-700';
+                    if(in_array($student->status, ['Lulus', 'Selesai'])) $bgClass = 'bg-emerald-50 text-emerald-700';
+                    if(str_contains($student->status, 'DO')) $bgClass = 'bg-amber-50 text-amber-700';
+
+                    $b = $hr ? $hr->status_badge : ['class' => 'badge-green', 'icon' => 'check_circle', 'label' => 'Siap Latih'];
+                @endphp
+                <div class="p-4 transition-colors {{ $isSakit ? 'bg-red-50/80 border-l-4 border-l-red-500' : 'border-l-4 border-l-transparent bg-white hover:bg-slate-50' }}">
+                    <!-- Card Top: Avatar, Name, No/Nosik, Status -->
+                    <div class="flex items-start justify-between gap-3 mb-3">
+                        <div class="flex items-center gap-2.5 min-w-0">
+                            <div class="w-10 h-10 rounded-full bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center border border-slate-200 shrink-0">
+                                {{ substr($student->full_name, 0, 2) }}
+                            </div>
+                            <div class="min-w-0">
+                                <b class="text-slate-900 block text-sm font-bold leading-tight truncate">{{ $student->full_name }}</b>
+                                <div class="flex items-center gap-1.5 font-mono text-[11px] text-slate-500 mt-1">
+                                    <span class="text-slate-400">#{{ $students->firstItem() + $index }}</span>
+                                    <span>&bull;</span>
+                                    <span>{{ $student->nosik }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-end gap-1 shrink-0">
+                            <span class="px-2.5 py-0.5 rounded-md text-xs font-semibold {{ $bgClass }}">
+                                {{ $student->status }}
+                            </span>
+                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold {{ $b['class'] }}">
+                                <span class="ms text-[12px]">{{ $b['icon'] }}</span> {{ $b['label'] }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Health Details Grid -->
+                    <div class="grid grid-cols-2 gap-2 text-xs mb-3 bg-slate-50 p-2.5 rounded-lg border border-slate-100">
+                        <div>
+                            <span class="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">Satdik & Ton</span>
+                            <span class="font-semibold text-slate-800">{{ $student->satdik->code }}</span>
+                            <span class="text-[10px] text-slate-400 block truncate">{{ $student->classroom->name ?? ($student->company ? $student->company . ' ' . $student->platoon : 'Belum Ada Peleton') }}</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">Program</span>
+                            <span class="font-semibold text-slate-800 truncate block">{{ $student->educationProgram->name ?? '-' }}</span>
+                            <span class="text-[10px] text-slate-400 block">TA {{ $student->educationProgram->fiscal_year ?? '2026' }}</span>
+                        </div>
+                        <div class="pt-1.5 border-t border-slate-200/60">
+                            <span class="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">Tanda Vital & Gol. Darah</span>
+                            <span class="font-bold text-slate-800">{{ $hr->blood_pressure ?? '120/80' }}</span>
+                            <span class="text-[10px] text-slate-500">Gol: <b class="text-rose-600">{{ $student->blood_type ?? '-' }}</b> &bull; {{ $hr->height_cm ?? '-' }}cm/{{ $hr->weight_kg ?? '-' }}kg</span>
+                        </div>
+                        <div class="pt-1.5 border-t border-slate-200/60">
+                            <span class="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">Catatan Medis</span>
+                            <span class="text-[11px] text-slate-600 truncate block">
+                                {{ $hr && $hr->allergies && $hr->allergies != 'Tidak ada riwayat alergi' ? '⚠️ ' . $hr->allergies : ($hr->doctor_notes ?? 'Kondisi prima') }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Action buttons -->
+                    <div class="flex items-center justify-between gap-2 pt-2 border-t border-slate-100">
+                        <a href="{{ route('students.show', $student) }}" class="inline-flex items-center gap-1 px-3 py-1.5 text-xs text-slate-600 hover:text-slate-900 border border-slate-200 rounded-lg transition-colors">
+                            <span class="ms text-[15px]">badge</span> Dossier
+                        </a>
+                        <div class="flex items-center gap-1.5">
+                            <a href="{{ route('health.show', $student) }}" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 text-emerald-700 hover:bg-emerald-100 transition-colors">
+                                <span class="ms text-[15px]">visibility</span> Medis
+                            </a>
+                            <a href="{{ route('health.edit', $student) }}" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-900 text-white hover:bg-slate-800 transition-colors">
+                                <span class="ms text-[15px]">edit_note</span> Update
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <div class="p-8 text-center text-slate-500">
+                    <span class="ms text-[44px] text-slate-300 block mb-2">folder_off</span>
+                    <div class="font-bold text-slate-800 text-base">Tidak ada data rekam medis serdik yang sesuai filter ini.</div>
+                    <p class="text-xs text-slate-400 mt-1">Coba ubah filter Satdik, Program Pendidikan, atau kategori tab Aktif/Arsip di atas.</p>
+                </div>
+            @endforelse
+        </div>
+
+        <!-- Table Footer / Pagination Controls -->
+        <div class="px-5 py-4 border-t border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4 text-sm text-slate-500 bg-slate-50">
+            <div>
+                Menampilkan <span class="font-semibold text-slate-900">{{ $students->firstItem() ?? 0 }}</span> - <span class="font-semibold text-slate-900">{{ $students->lastItem() ?? 0 }}</span> dari <span class="font-semibold text-slate-900">{{ $students->total() }}</span> serdik
                 @if($tab === 'aktif')
-                    (Kategori: <b>Siswa Aktif Terhitung</b>)
+                    <span class="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded ml-1">Siswa Aktif Terhitung</span>
                 @elseif($tab === 'arsip')
-                    (Kategori: <b>Arsip Siswa Selesai</b>)
+                    <span class="text-xs font-semibold text-slate-700 bg-slate-200 px-2 py-0.5 rounded ml-1">Arsip Siswa Selesai</span>
                 @endif
                 @if($selectedProgram)
-                    • Program: <b>{{ $selectedProgram->name }}</b>
+                    <span class="text-xs text-slate-500 ml-1">• Program: <b>{{ $selectedProgram->name }}</b></span>
                 @endif
             </div>
             <div>
@@ -380,6 +481,6 @@
             </div>
         </div>
     </div>
-</div>
 
+</div>
 @endsection

@@ -3,457 +3,469 @@
 @section('title', 'Program Pendidikan per Satdik — SIPANDU-WBK')
 
 @section('content')
+<div class="px-2 py-4">
 
-<!-- HEADER BANNER -->
-<div class="header-banner">
-    <div>
-        <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
-            <span class="pdp-badge" style="background:var(--gold-bg); color:#7A5C07;">
-                <span class="ms" style="font-size:16px;">school</span> PROGRAM PENDIDIKAN RESMI RINDAM III/SILIWANGI
-            </span>
-            <span class="pdp-badge" style="background:rgba(255,255,255,0.15);color:#fff;border-color:rgba(255,255,255,0.25);">
-                <span class="ms" style="font-size:16px;">calendar_today</span> TAHUN ANGGARAN 2026
-            </span>
+    <!-- HEADER TITLE & ACTIONS -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+        <div>
+            <div class="flex flex-wrap items-center gap-2 mb-1.5">
+                <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Pengelolaan Program Pendidikan per Satdik</h1>
+                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    <span class="ms text-[13px]">school</span> RINDAM III/SILIWANGI
+                </span>
+                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-slate-100 text-slate-700 border border-slate-200">
+                    <span class="ms text-[13px]">calendar_today</span> TA 2026
+                </span>
+            </div>
+            <p class="text-sm text-slate-500">
+                Menu tersendiri untuk pembinaan dan monitoring kurikulum program pendidikan di seluruh Satdik Rindam III/Siliwangi (Secaba, Secata, Dodikjur, Dodiklatpur, Dodik Bela Negara).
+                Hanya prajurit siswa berstatus <b>Aktif</b> yang terhitung dalam kekuatan program, sedangkan status <b>Selesai</b> otomatis masuk ke <b>Arsip</b>.
+            </p>
         </div>
-        <h1>Pengelolaan Program Pendidikan per Satdik</h1>
-        <p>
-            Menu tersendiri untuk pembinaan dan monitoring kurikulum program pendidikan di seluruh Satdik Rindam III/Siliwangi (Secaba, Secata, Dodikjur, Dodiklatpur, Dodik Bela Negara).
-            Hanya prajurit siswa berstatus <b>Aktif</b> yang terhitung dalam kekuatan program, sedangkan status <b>Selesai</b> otomatis masuk ke <b>Arsip</b>.
-        </p>
-    </div>
-    <div style="display:flex; gap:10px; flex-wrap:wrap;">
-        @if(auth()->user()?->canModifyData())
-            <button type="button" class="btn btn-gold" onclick="openCreateProgramModal()">
-                <span class="ms">add_circle</span> Tambah Program Pendidikan
+        
+        <!-- Action Buttons -->
+        <div class="flex items-center gap-2.5 shrink-0">
+            <button type="button" onclick="openCreateProgramModal()" class="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm">
+                <span class="ms text-[18px]">add_circle</span> Tambah Program Pendidikan
             </button>
-        @endif
-        <a href="{{ route('students.index') }}" class="btn btn-outline" style="background:rgba(255,255,255,0.12); color:#fff; border-color:rgba(255,255,255,0.3);">
-            <span class="ms">groups</span> Buka Buku Induk Serdik
+            <a href="{{ route('students.index') }}" class="inline-flex items-center gap-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 px-4 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm">
+                <span class="ms text-[18px]">groups</span> Buka Buku Induk Serdik
+            </a>
+        </div>
+    </div>
+
+    <!-- NOTIFIKASI SUKSES -->
+    @if(session('success'))
+        <div class="mb-6 flex items-start gap-3 p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 text-sm">
+            <span class="ms text-[22px] text-emerald-600 shrink-0">check_circle</span>
+            <div class="font-medium">{{ session('success') }}</div>
+        </div>
+    @endif
+
+    <!-- NOTIFIKASI ERROR -->
+    @if($errors->any())
+        <div class="mb-6 flex items-start gap-3 p-4 bg-rose-50 border border-rose-200 rounded-xl text-rose-800 text-sm">
+            <span class="ms text-[22px] text-rose-500 shrink-0">error</span>
+            <div>
+                <b class="font-semibold text-rose-900">Terjadi Kesalahan:</b>
+                <ul class="list-disc list-inside mt-1 space-y-0.5 text-xs text-rose-700">
+                    @foreach ($errors->all() as $err)
+                        <li>{{ $err }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
+    @endif
+
+    <!-- 4 STAT CARDS (Clean Minimalist Dashboard Style) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
+        <!-- Total Program Terdaftar -->
+        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex flex-col justify-between">
+            <div class="text-sm font-medium text-slate-500 mb-4 flex items-center justify-between">
+                <span>Total Program Terdaftar</span>
+                <span class="ms text-sm text-slate-400">layers</span>
+            </div>
+            <div>
+                <div class="text-3xl font-bold text-slate-900 mb-2">{{ $totalPrograms }}</div>
+                <div class="flex items-center gap-2 text-xs text-slate-500">
+                    <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-semibold">{{ $activePrograms }} Berjalan Aktif</span>
+                    <span>&bull; TA 2026</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Siswa Aktif Terhitung -->
+        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex flex-col justify-between">
+            <div class="text-sm font-medium text-slate-500 mb-4 flex items-center justify-between">
+                <span>Siswa Aktif Terhitung</span>
+                <span class="ms text-sm text-slate-400">how_to_reg</span>
+            </div>
+            <div>
+                <div class="text-3xl font-bold text-slate-900 mb-2">{{ number_format($totalCountedStudents) }}</div>
+                <div class="flex items-center gap-2 text-xs text-slate-500">
+                    <span class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded font-semibold">Kekuatan Operasional</span>
+                    <span>Pendidikan</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Arsip Siswa Selesai -->
+        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex flex-col justify-between">
+            <div class="text-sm font-medium text-slate-500 mb-4 flex items-center justify-between">
+                <span>Arsip Siswa Selesai</span>
+                <span class="ms text-sm text-slate-400">archive</span>
+            </div>
+            <div>
+                <div class="text-3xl font-bold text-slate-900 mb-2">{{ number_format($totalArchivedStudents) }}</div>
+                <div class="flex items-center gap-2 text-xs text-slate-500">
+                    <span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-semibold">Selesai Pendidikan</span>
+                    <span>&bull; Tidak Terhitung</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Satdik Penyelenggara -->
+        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm flex flex-col justify-between">
+            <div class="text-sm font-medium text-slate-500 mb-4 flex items-center justify-between">
+                <span>Satdik Penyelenggara</span>
+                <span class="ms text-sm text-slate-400">domain</span>
+            </div>
+            <div>
+                <div class="text-3xl font-bold text-slate-900 mb-2">5</div>
+                <div class="flex items-center gap-2 text-xs text-slate-500">
+                    <span class="bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-semibold">Secaba, Secata, Dodikjur</span>
+                    <span>Latpur, Belneg</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TABS FILTER SATDIK -->
+    <div class="flex flex-wrap items-center gap-3 mb-6">
+        <a href="{{ route('programs.index', array_merge(request()->except(['satdik_id', 'page']))) }}" 
+           class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors border {{ empty($selectedSatdikId) ? 'bg-slate-100 text-slate-900 border-slate-300 shadow-sm font-semibold' : 'bg-white text-slate-500 border-slate-200 hover:bg-slate-50' }}">
+            <span class="ms text-[18px]">domain</span>
+            Semua Satdik
+            <span class="px-2 py-0.5 rounded text-xs {{ empty($selectedSatdikId) ? 'bg-slate-200 text-slate-800' : 'bg-slate-100 text-slate-600' }}">{{ $totalPrograms }} Program</span>
         </a>
-    </div>
-</div>
-
-@if(session('success'))
-    <div class="alert alert-success" style="background:#E8F5E9; border-color:#C8E6C9; color:#2E7D32; margin-bottom:20px;">
-        <span class="ms" style="font-size:24px;">check_circle</span>
-        <div>{{ session('success') }}</div>
-    </div>
-@endif
-
-@if($errors->any())
-    <div class="alert alert-warning" style="background:#FFEBEE; border-color:#FFCDD2; color:#C62828; margin-bottom:20px;">
-        <span class="ms" style="font-size:24px;">error</span>
-        <div>
-            <b>Terjadi Kesalahan:</b>
-            <ul style="margin:4px 0 0 16px; padding:0; font-size:13px;">
-                @foreach ($errors->all() as $err)
-                    <li>{{ $err }}</li>
-                @endforeach
-            </ul>
-        </div>
-    </div>
-@endif
-
-<!-- STATS STRATEGIS MAKRO PROGRAM -->
-<div class="stats-grid">
-    <div class="stat-card">
-        <div class="stat-icon" style="background:linear-gradient(135deg, var(--o800), var(--o600));">
-            <span class="ms">layers</span>
-        </div>
-        <div>
-            <div class="stat-val">{{ $totalPrograms }}</div>
-            <div class="stat-lbl">Total Program Terdaftar</div>
-            <small style="color:var(--muted); font-size:11px; display:block; margin-top:2px;">
-                <b>{{ $activePrograms }}</b> Berjalan Aktif · TA 2026
-            </small>
-        </div>
-    </div>
-
-    <div class="stat-card">
-        <div class="stat-icon" style="background:linear-gradient(135deg, var(--green), #2E7D32);">
-            <span class="ms">how_to_reg</span>
-        </div>
-        <div>
-            <div class="stat-val" style="color:var(--green);">{{ $totalCountedStudents }}</div>
-            <div class="stat-lbl">Siswa Aktif Terhitung</div>
-            <small style="color:var(--muted); font-size:11px; display:block; margin-top:2px;">
-                Kekuatan Operasional Pendidikan
-            </small>
-        </div>
-    </div>
-
-    <div class="stat-card">
-        <div class="stat-icon" style="background:linear-gradient(135deg, #475569, #1E293B);">
-            <span class="ms">archive</span>
-        </div>
-        <div>
-            <div class="stat-val" style="color:#475569;">{{ $totalArchivedStudents }}</div>
-            <div class="stat-lbl">Arsip Siswa Selesai</div>
-            <small style="color:var(--muted); font-size:11px; display:block; margin-top:2px;">
-                Selesai Pendidikan (Tidak Terhitung Lagi)
-            </small>
-        </div>
-    </div>
-
-    <div class="stat-card">
-        <div class="stat-icon" style="background:linear-gradient(135deg, #1565C0, #1E88E5);">
-            <span class="ms">domain</span>
-        </div>
-        <div>
-            <div class="stat-val">{{ auth()->check() && !auth()->user()->isPimpinan() && auth()->user()->satdik_id ? 1 : count($satdiks) }}</div>
-            <div class="stat-lbl">Satdik Penyelenggara</div>
-            <small style="color:var(--muted); font-size:11px; display:block; margin-top:2px;">
-                {{ auth()->check() && !auth()->user()->isPimpinan() && auth()->user()->satdik_id ? (auth()->user()->satdik?->code ?? 'Satuan Anda') : 'Secaba, Secata, Dodikjur, Latpur, Belneg' }}
-            </small>
-        </div>
-    </div>
-</div>
-
-<!-- SATDIK NAVIGATION TABS -->
-@if(auth()->check() && !auth()->user()->isPimpinan() && auth()->user()->satdik_id)
-    <div class="satdik-nav" style="margin-bottom:20px;">
-        <div class="satdik-tab active" style="cursor:default; background:var(--o800); color:var(--gold2); border-color:var(--gold); box-shadow:0 4px 12px rgba(29,42,22,0.15);">
-            <span class="ms" style="color:var(--gold);">lock</span> 
-            <span>SATDIK ANDA: <b>{{ auth()->user()->satdik?->code }}</b> &mdash; {{ auth()->user()->satdik?->name }}</span>
-            <span class="tab-badge" style="background:var(--gold); color:var(--o900); font-weight:800;">
-                🔒 Terkunci Sesuai Wewenang Akun
-            </span>
-        </div>
-    </div>
-@else
-    <div class="satdik-nav">
-        <a href="{{ route('programs.index', array_merge(request()->except(['satdik_id']))) }}" class="satdik-tab {{ empty($selectedSatdikId) ? 'active' : '' }}">
-            <span class="ms">domain</span> Semua Satdik
-            <span class="tab-badge">{{ $totalPrograms }} Program</span>
-        </a>
-
         @foreach($satdiks as $satdik)
             @php
                 $pCount = $satdik->educationPrograms()->count();
+                $isActive = ($selectedSatdikId == $satdik->id);
             @endphp
-            <a href="{{ route('programs.index', array_merge(request()->except(['page']), ['satdik_id' => $satdik->id])) }}" class="satdik-tab {{ $selectedSatdikId == $satdik->id ? 'active' : '' }}">
-                <span class="ms">military_tech</span> {{ $satdik->code }}
-                <span class="tab-badge">{{ $pCount }} Program</span>
+            <a href="{{ route('programs.index', array_merge(request()->except(['page']), ['satdik_id' => $satdik->id])) }}" 
+               class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors border {{ $isActive ? 'bg-slate-100 text-slate-900 border-slate-300 shadow-sm font-semibold' : 'bg-white text-slate-500 border-slate-200 hover:bg-slate-50' }}">
+                <span class="ms text-[18px]">military_tech</span>
+                {{ $satdik->code }}
+                <span class="px-2 py-0.5 rounded text-xs {{ $isActive ? 'bg-slate-200 text-slate-800' : 'bg-slate-100 text-slate-600' }}">{{ $pCount }} Program</span>
             </a>
         @endforeach
     </div>
-@endif
 
-<!-- FILTER & SEARCH BAR -->
-<div class="card" style="margin-bottom:20px; padding:16px 20px;">
-    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
-        <div style="display:flex; align-items:center; gap:8px;">
-            <span class="ms" style="color:var(--o800); font-size:22px;">school</span>
-            <b style="font-size:15px; color:var(--o900);">
-                Daftar Program Pendidikan {{ $selectedSatdik ? '— ' . $selectedSatdik->name : 'Seluruh Satdik Rindam III/Siliwangi' }}
-            </b>
-            <span class="badge badge-satdik">{{ count($programs) }} Program</span>
-        </div>
-
-        <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
-            <!-- VIEW SWITCHER: TABEL vs KARTU -->
-            <div style="display:flex; background:#EAECE7; padding:3px; border-radius:8px; gap:2px;">
-                <button type="button" id="btnViewTable" onclick="switchProgramView('table')" style="border:none; background:#fff; color:var(--o900); padding:5px 12px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:5px; box-shadow:0 1px 3px rgba(0,0,0,0.1); transition:all 0.15s;">
-                    <span class="ms" style="font-size:16px;">table_rows</span> Tabel
-                </button>
-                <button type="button" id="btnViewCard" onclick="switchProgramView('card')" style="border:none; background:transparent; color:var(--muted); padding:5px 12px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:5px; transition:all 0.15s;">
-                    <span class="ms" style="font-size:16px;">grid_view</span> Kartu
-                </button>
+    <!-- MAIN PROGRAM DATA CARD -->
+    <div class="bg-white border border-slate-200 rounded-xl shadow-sm mb-8 overflow-hidden">
+        <!-- Table Header & Actions/Filter -->
+        <div class="px-5 py-4 border-b border-slate-200 flex flex-col xl:flex-row xl:items-center justify-between gap-4">
+            <div class="min-w-0">
+                <h2 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2 truncate">
+                    <span class="ms text-slate-700 text-[22px] shrink-0">school</span>
+                    <span>Daftar Program Pendidikan {{ $selectedSatdik ? '— ' . $selectedSatdik->name : 'Seluruh Satdik Rindam III/Siliwangi' }}</span>
+                </h2>
+                <p class="text-xs text-slate-500 mt-0.5 truncate">Monitoring program, kurikulum diklat, dan alokasi rombel peleton</p>
             </div>
 
-            <form method="GET" action="{{ route('programs.index') }}" style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-                @if($selectedSatdikId)
-                    <input type="hidden" name="satdik_id" value="{{ $selectedSatdikId }}">
-                @endif
-
-                <select name="status" class="form-control" style="width:150px; font-size:12.5px;" onchange="this.form.submit()">
-                    <option value="">Semua Status</option>
-                    <option value="Berjalan" {{ $statusFilter == 'Berjalan' ? 'selected' : '' }}>Berjalan (Aktif)</option>
-                    <option value="Perencanaan" {{ $statusFilter == 'Perencanaan' ? 'selected' : '' }}>Perencanaan</option>
-                    <option value="Selesai" {{ $statusFilter == 'Selesai' ? 'selected' : '' }}>Selesai</option>
-                    <option value="Ditutup" {{ $statusFilter == 'Ditutup' ? 'selected' : '' }}>Ditutup</option>
-                </select>
-
-                <div style="position:relative;">
-                    <input type="text" name="q" value="{{ $keyword }}" placeholder="Cari Nama Program, Kode, TA..." class="form-control" style="width:220px; font-size:12.5px; padding-left:30px;">
-                    <span class="ms" style="position:absolute; left:7px; top:8px; color:var(--muted); font-size:18px;">search</span>
+            <div class="flex items-center gap-3 flex-wrap sm:flex-nowrap shrink-0">
+                <!-- VIEW SWITCHER: TABEL vs KARTU -->
+                <div class="inline-flex p-1 bg-slate-100 border border-slate-200 rounded-lg gap-1 shrink-0">
+                    <button type="button" id="btnViewTable" onclick="switchProgramView('table')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold bg-white text-slate-900 shadow-sm transition-all">
+                        <span class="ms text-[16px]">table_rows</span> Tabel
+                    </button>
+                    <button type="button" id="btnViewCard" onclick="switchProgramView('card')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold text-slate-500 hover:text-slate-900 transition-all">
+                        <span class="ms text-[16px]">grid_view</span> Kartu
+                    </button>
                 </div>
 
-                <button type="submit" class="btn btn-outline btn-sm">Filter</button>
-                @if($keyword || $statusFilter)
-                    <a href="{{ route('programs.index', ['satdik_id' => $selectedSatdikId]) }}" class="btn btn-sm" style="color:var(--muted); text-decoration:none;">Reset</a>
-                @endif
-            </form>
-        </div>
-    </div>
-</div>
+                <!-- SEARCH & FILTER FORM -->
+                <form method="GET" action="{{ route('programs.index') }}" class="flex items-center gap-2 flex-nowrap shrink-0">
+                    @if($selectedSatdikId)
+                        <input type="hidden" name="satdik_id" value="{{ $selectedSatdikId }}">
+                    @endif
 
-<!-- =====================================================================
-     1. TAMPILAN TABEL RESMI PROGRAM (DENGAN LEBAR KOLOM FIX & SESUAI)
-     ===================================================================== -->
-<div class="card" id="programTableView" style="margin-bottom:32px;">
-    <div class="card-body" style="padding:0;">
-        <div class="table-wrap">
-            <table class="data-table" style="table-layout:fixed; width:100%; min-width:1150px;">
-                <thead>
-                    <tr>
-                        <th style="width:50px; text-align:center;">No</th>
-                        <th style="width:110px;">Satdik</th>
-                        <th style="width:250px;">Nama Program Pendidikan</th>
-                        <th style="width:130px;">Kode Program</th>
-                        <th style="width:130px;">TA & Gelombang</th>
-                        <th style="width:140px; text-align:center;">Siswa Aktif</th>
-                        <th style="width:130px; text-align:center;">Arsip Selesai</th>
-                        <th style="width:130px;">Peleton</th>
-                        <th style="width:120px; text-align:center;">Status</th>
-                        <th style="width:130px; text-align:right;">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($programs as $idx => $p)
+                    <select name="status" class="w-32 sm:w-36 h-9 bg-white border border-slate-200 text-slate-700 text-xs font-medium rounded-lg px-2.5 focus:ring-2 focus:ring-slate-900 focus:outline-none shrink-0" onchange="this.form.submit()">
+                        <option value="">Semua Status</option>
+                        <option value="Berjalan" {{ $statusFilter == 'Berjalan' ? 'selected' : '' }}>Berjalan</option>
+                        <option value="Perencanaan" {{ $statusFilter == 'Perencanaan' ? 'selected' : '' }}>Perencanaan</option>
+                        <option value="Selesai" {{ $statusFilter == 'Selesai' ? 'selected' : '' }}>Selesai</option>
+                        <option value="Ditutup" {{ $statusFilter == 'Ditutup' ? 'selected' : '' }}>Ditutup</option>
+                    </select>
+
+                    <div class="relative w-36 sm:w-44 shrink-0">
+                        <span class="ms text-slate-400 text-[18px] absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none">search</span>
+                        <input type="text" name="q" value="{{ $keyword }}" placeholder="Cari Program, Kode..." class="w-full h-9 pl-8 pr-2.5 border border-slate-200 rounded-lg text-xs text-slate-700 placeholder-slate-400 focus:ring-2 focus:ring-slate-900 focus:outline-none">
+                    </div>
+
+                    <button type="submit" class="h-9 bg-slate-900 hover:bg-slate-800 text-white px-3.5 rounded-lg text-xs font-semibold transition-colors shrink-0 flex items-center justify-center">
+                        Filter
+                    </button>
+                    @if($keyword || $statusFilter)
+                        <a href="{{ route('programs.index', ['satdik_id' => $selectedSatdikId]) }}" class="h-9 text-xs font-medium text-slate-500 hover:text-slate-800 px-2 rounded-lg flex items-center justify-center shrink-0">
+                            Reset
+                        </a>
+                    @endif
+                </form>
+            </div>
+        </div>
+
+        <!-- =====================================================================
+             1. TAMPILAN TABEL RESMI PROGRAM
+             ===================================================================== -->
+        <div id="programTableView">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm text-slate-600">
+                    <thead class="bg-slate-50 text-slate-500 uppercase text-[11px] font-semibold tracking-wider">
                         <tr>
-                            <td style="text-align:center; font-weight:700;">{{ $idx + 1 }}</td>
-                            <td>
-                                <span class="badge badge-satdik" style="background:var(--o800); color:var(--gold2); font-weight:800; font-size:11.5px;">
-                                    {{ $p['satdik_code'] }}
-                                </span>
-                            </td>
-                            <td>
-                                <a href="{{ route('programs.show', $p['id']) }}" style="text-decoration:none; color:var(--o900); font-weight:800; font-size:13.5px; display:block;">
+                            <th class="px-4 py-3 border-b border-slate-200 w-12 text-center">No</th>
+                            <th class="px-4 py-3 border-b border-slate-200">Satdik</th>
+                            <th class="px-5 py-3 border-b border-slate-200">Nama Program Pendidikan</th>
+                            <th class="px-4 py-3 border-b border-slate-200">Kode Program</th>
+                            <th class="px-4 py-3 border-b border-slate-200">TA & Gelombang</th>
+                            <th class="px-4 py-3 border-b border-slate-200 text-center">Siswa Aktif</th>
+                            <th class="px-4 py-3 border-b border-slate-200 text-center">Arsip Selesai</th>
+                            <th class="px-4 py-3 border-b border-slate-200">Peleton</th>
+                            <th class="px-4 py-3 border-b border-slate-200 text-center">Status</th>
+                            <th class="px-4 py-3 border-b border-slate-200 text-right">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        @forelse($programs as $idx => $p)
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="px-4 py-3.5 text-center text-xs font-semibold text-slate-500 align-middle">
+                                    {{ $idx + 1 }}
+                                </td>
+                                <td class="px-4 py-3.5 align-middle">
+                                    <span class="px-2 py-0.5 rounded text-xs font-bold bg-slate-900 text-white">
+                                        {{ $p['satdik_code'] }}
+                                    </span>
+                                </td>
+                                <td class="px-5 py-3.5 align-middle">
+                                    <a href="{{ route('programs.show', $p['id']) }}" class="font-bold text-sm text-slate-900 hover:text-blue-600 transition-colors block leading-snug">
+                                        {{ $p['name'] }}
+                                    </a>
+                                    <div class="flex items-center gap-1 text-[11px] text-slate-500 mt-1">
+                                        <span class="ms text-[13px] text-slate-400">location_on</span>
+                                        <span>{{ $p['location'] }}</span>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-3.5 align-middle">
+                                    <span class="px-2 py-0.5 rounded text-[11px] font-mono font-semibold bg-slate-100 text-slate-700 border border-slate-200">
+                                        {{ $p['code'] }}
+                                    </span>
+                                </td>
+                                <td class="px-4 py-3.5 align-middle">
+                                    <span class="font-bold text-xs text-slate-800">TA {{ $p['academic_year'] }}</span>
+                                    <span class="block text-[11px] text-slate-500">Gel. {{ $p['batch_number'] }}</span>
+                                </td>
+                                <td class="px-4 py-3.5 text-center align-middle">
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200" title="Terhitung dalam kekuatan aktif">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                        {{ $p['counted_students'] }} Serdik
+                                    </span>
+                                    <div class="text-[11px] text-slate-400 mt-0.5">
+                                        {{ $p['ready_students'] }} Siap &bull; {{ $p['sick_students'] }} Sakit
+                                    </div>
+                                </td>
+                                <td class="px-4 py-3.5 text-center align-middle">
+                                    <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded text-xs font-bold bg-slate-100 text-slate-700 border border-slate-200" title="Alumni selesai pendidikan (tidak terhitung)">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+                                        {{ $p['archived_students'] }} Serdik
+                                    </span>
+                                    <div class="text-[11px] text-slate-400 mt-0.5">
+                                        Lulus / Tamat
+                                    </div>
+                                </td>
+                                <td class="px-4 py-3.5 align-middle">
+                                    <span class="font-bold text-xs text-slate-800">{{ $p['classrooms']->count() }} Peleton</span>
+                                    <div class="text-[11px] text-slate-500 mt-0.5">
+                                        Kapasitas: {{ $p['classrooms']->sum('capacity') }}
+                                    </div>
+                                </td>
+                                <td class="px-4 py-3.5 text-center align-middle">
+                                    @if($p['status'] == 'Berjalan')
+                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Berjalan
+                                        </span>
+                                    @elseif($p['status'] == 'Perencanaan')
+                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Perencanaan
+                                        </span>
+                                    @elseif($p['status'] == 'Selesai')
+                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span> Selesai
+                                        </span>
+                                    @else
+                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> {{ $p['status'] }}
+                                        </span>
+                                    @endif
+                                </td>
+                                <td class="px-4 py-3.5 text-right whitespace-nowrap align-middle">
+                                    <div class="inline-flex items-center gap-1">
+                                        <a href="{{ route('students.index', ['program_id' => $p['id']]) }}" class="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors" title="Lihat Siswa Program">
+                                            <span class="ms text-[18px]">groups</span>
+                                        </a>
+                                        <a href="{{ route('programs.show', $p['id']) }}" class="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors" title="Detail & Peleton">
+                                            <span class="ms text-[18px]">visibility</span>
+                                        </a>
+                                        <button type="button" onclick="openEditProgramModal({{ json_encode($p['model']) }})" class="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors" title="Edit Data Program">
+                                            <span class="ms text-[18px]">edit</span>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="10" class="px-5 py-12 text-center text-slate-500">
+                                    <span class="ms text-slate-300 text-[48px] block mb-2">school</span>
+                                    <b class="text-sm text-slate-700">Tidak Ada Program Pendidikan Ditemukan</b>
+                                    <div class="text-xs text-slate-400 mt-1">Coba ganti filter Satdik atau kata kunci pencarian.</div>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- =====================================================================
+             2. TAMPILAN KARTU GRID PROGRAM (OPSIONAL DAPAT DIBUKA LEWAT TOGGLE)
+             ===================================================================== -->
+        <div id="programCardView" class="hidden p-5">
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+                @forelse($programs as $p)
+                    <div class="bg-white border border-slate-200 rounded-xl shadow-sm hover:shadow-md transition-all flex flex-col justify-between overflow-hidden p-5">
+                        <div>
+                            <!-- CARD TOP -->
+                            <div class="flex items-center justify-between gap-2 mb-3">
+                                <div class="flex items-center gap-2">
+                                    <span class="px-2 py-0.5 rounded text-xs font-bold bg-slate-900 text-white">
+                                        {{ $p['satdik_code'] }}
+                                    </span>
+                                    <span class="px-2 py-0.5 rounded text-[11px] font-mono font-semibold bg-slate-100 text-slate-700 border border-slate-200">
+                                        {{ $p['code'] }}
+                                    </span>
+                                </div>
+                                <div>
+                                    @if($p['status'] == 'Berjalan')
+                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Berjalan
+                                        </span>
+                                    @elseif($p['status'] == 'Perencanaan')
+                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> Rencana
+                                        </span>
+                                    @elseif($p['status'] == 'Selesai')
+                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span> Selesai
+                                        </span>
+                                    @else
+                                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> {{ $p['status'] }}
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <!-- CARD TITLE & LOCATION -->
+                            <h3 class="text-base font-bold text-slate-900 mb-1 leading-snug">
+                                <a href="{{ route('programs.show', $p['id']) }}" class="hover:text-blue-600 transition-colors">
                                     {{ $p['name'] }}
                                 </a>
-                                <small style="color:var(--muted); font-size:11.5px; display:flex; align-items:center; gap:4px; margin-top:2px;">
-                                    <span class="ms" style="font-size:13px; color:var(--gold);">location_on</span> {{ $p['location'] }}
-                                </small>
-                            </td>
-                            <td>
-                                <span class="badge" style="font-family:'Fira Code',monospace; font-size:11px; background:#ECEEE9; color:var(--o800);">
-                                    {{ $p['code'] }}
+                            </h3>
+                            <div class="flex items-center gap-2 text-xs text-slate-500 mb-4 flex-wrap">
+                                <span class="flex items-center gap-1">
+                                    <span class="ms text-[14px] text-slate-400">location_on</span>
+                                    {{ $p['location'] }}
                                 </span>
-                            </td>
-                            <td>
-                                <b style="font-size:13px;">TA {{ $p['academic_year'] }}</b>
-                                <small style="display:block; color:var(--muted); font-size:11px;">Gel. {{ $p['batch_number'] }}</small>
-                            </td>
-                            <td style="text-align:center;">
-                                <span class="badge badge-green" style="font-size:12px; font-weight:800; padding:4px 10px;" title="Terhitung dalam kekuatan aktif">
-                                    {{ $p['counted_students'] }} Serdik
-                                </span>
-                                <small style="display:block; color:var(--muted); font-size:10.5px; margin-top:2px;">
-                                    {{ $p['ready_students'] }} Siap · {{ $p['sick_students'] }} Sakit
-                                </small>
-                            </td>
-                            <td style="text-align:center;">
-                                <span class="badge" style="background:#E2E8F0; color:#334155; font-size:12px; font-weight:800; padding:4px 10px;" title="Alumni selesai pendidikan (tidak terhitung)">
-                                    {{ $p['archived_students'] }} Serdik
-                                </span>
-                                <small style="display:block; color:var(--muted); font-size:10.5px; margin-top:2px;">
-                                    Lulus / Tamat
-                                </small>
-                            </td>
-                            <td>
-                                <span style="font-weight:700; font-size:12.5px;">{{ $p['classrooms']->count() }} Peleton</span>
-                                <small style="display:block; color:var(--muted); font-size:11px;">
-                                    Kap: {{ $p['classrooms']->sum('capacity') }}
-                                </small>
-                            </td>
-                            <td style="text-align:center;">
-                                @if($p['status'] == 'Berjalan')
-                                    <span class="badge badge-green" style="font-size:11px;">
-                                        <span class="ms" style="font-size:12px;">play_arrow</span> Berjalan
-                                    </span>
-                                @elseif($p['status'] == 'Perencanaan')
-                                    <span class="badge badge-amber" style="font-size:11px;">
-                                        <span class="ms" style="font-size:12px;">schedule</span> Rencana
-                                    </span>
-                                @elseif($p['status'] == 'Selesai')
-                                    <span class="badge" style="background:#E2E8F0; color:#334155; font-size:11px;">
-                                        <span class="ms" style="font-size:12px;">check</span> Selesai
-                                    </span>
+                                <span>&bull;</span>
+                                <span>TA {{ $p['academic_year'] }}</span>
+                                <span>&bull;</span>
+                                <span>Gel. {{ $p['batch_number'] }}</span>
+                            </div>
+
+                            <!-- BOX KEKUATAN SISWA -->
+                            <div class="grid grid-cols-2 gap-3 p-3 bg-slate-50 border border-slate-200 rounded-xl mb-4">
+                                <div class="bg-white p-2.5 rounded-lg border border-slate-200">
+                                    <div class="text-[11px] font-semibold text-slate-500">Siswa Aktif</div>
+                                    <div class="text-xl font-bold text-emerald-600 mt-0.5">
+                                        {{ $p['counted_students'] }}
+                                    </div>
+                                    <div class="text-[10px] text-slate-400 mt-0.5">
+                                        {{ $p['ready_students'] }} Siap &bull; {{ $p['sick_students'] }} Sakit
+                                    </div>
+                                </div>
+                                <div class="bg-white p-2.5 rounded-lg border border-slate-200">
+                                    <div class="text-[11px] font-semibold text-slate-500">Arsip Selesai</div>
+                                    <div class="text-xl font-bold text-slate-700 mt-0.5">
+                                        {{ $p['archived_students'] }}
+                                    </div>
+                                    <div class="text-[10px] text-slate-400 mt-0.5">
+                                        {{ $p['finished_students'] }} Tamat Diklat
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- PELETON & ROMBEL -->
+                            <div class="mb-4">
+                                <div class="text-xs font-semibold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                                    <span class="ms text-[15px] text-slate-400">groups_2</span>
+                                    <span>Peleton ({{ $p['classrooms']->count() }} Kelas):</span>
+                                </div>
+                                @if($p['classrooms']->count() > 0)
+                                    <div class="flex flex-wrap gap-1.5">
+                                        @foreach($p['classrooms'] as $cls)
+                                            <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-white text-slate-700 border border-slate-200">
+                                                {{ $cls->name }}
+                                            </span>
+                                        @endforeach
+                                    </div>
                                 @else
-                                    <span class="badge badge-red" style="font-size:11px;">{{ $p['status'] }}</span>
+                                    <div class="text-xs text-slate-400 italic">
+                                        Belum ada peleton yang dialokasikan.
+                                    </div>
                                 @endif
-                            </td>
-                            <td style="text-align:right; white-space:nowrap;">
-                                <a href="{{ route('students.index', ['program_id' => $p['id']]) }}" class="btn btn-gold btn-sm" style="padding:4px 8px;" title="Lihat Siswa Program">
-                                    <span class="ms" style="font-size:16px;">groups</span>
-                                </a>
-                                <a href="{{ route('programs.show', $p['id']) }}" class="btn btn-outline btn-sm" style="padding:4px 8px;" title="Detail & Peleton">
-                                    <span class="ms" style="font-size:16px;">visibility</span>
-                                </a>
-                                @if(auth()->user()?->canModifyData())
-                                    <button type="button" class="btn btn-outline btn-sm" onclick="openEditProgramModal({{ json_encode($p['model']) }})" style="padding:4px 8px;" title="Edit Data Program">
-                                        <span class="ms" style="font-size:16px;">edit</span>
-                                    </button>
-                                @endif
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="10" style="text-align:center; padding:45px 20px; color:var(--muted);">
-                                <span class="ms" style="font-size:42px; color:var(--o200); display:block; margin-bottom:8px;">school</span>
-                                <b>Tidak Ada Program Pendidikan Ditemukan</b>
-                                <div style="font-size:12.5px; margin-top:4px;">Coba ganti filter Satdik atau kata kunci pencarian.</div>
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+                            </div>
+                        </div>
+
+                        <!-- ACTION BUTTONS -->
+                        <div class="pt-3 border-t border-slate-100 flex items-center justify-between gap-2 mt-auto">
+                            <a href="{{ route('students.index', ['program_id' => $p['id']]) }}" class="inline-flex items-center justify-center gap-1.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold px-3 py-2 rounded-lg transition-colors flex-1 shadow-sm">
+                                <span class="ms text-[16px]">groups</span> Lihat Siswa
+                            </a>
+                            <a href="{{ route('programs.show', $p['id']) }}" class="inline-flex items-center justify-center gap-1 border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-semibold px-3 py-2 rounded-lg transition-colors" title="Detail & Kelola Program">
+                                <span class="ms text-[16px]">visibility</span> Detail
+                            </a>
+                            <button type="button" onclick="openEditProgramModal({{ json_encode($p['model']) }})" class="p-2 border border-slate-300 hover:bg-slate-50 text-slate-600 rounded-lg transition-colors" title="Edit Data Program">
+                                <span class="ms text-[16px]">edit</span>
+                            </button>
+                        </div>
+                    </div>
+                @empty
+                    <div class="col-span-full bg-white border border-slate-200 rounded-xl p-12 text-center text-slate-500">
+                        <span class="ms text-slate-300 text-[52px] block mb-2">school</span>
+                        <b class="text-base text-slate-700">Tidak Ada Program Pendidikan Ditemukan</b>
+                        <p class="text-xs text-slate-400 mt-1 max-w-md mx-auto mb-4">
+                            Belum ada program pendidikan yang terdaftar untuk filter Satdik atau kata kunci pencarian ini.
+                        </p>
+                        <button type="button" onclick="openCreateProgramModal()" class="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-lg text-xs font-semibold transition-colors">
+                            <span class="ms text-[16px]">add_circle</span> Tambah Program Baru
+                        </button>
+                    </div>
+                @endforelse
+            </div>
         </div>
     </div>
-</div>
 
-<!-- =====================================================================
-     2. TAMPILAN KARTU GRID PROGRAM (OPSIONAL DAPAT DIBUKA LEWAT TOGGLE)
-     ===================================================================== -->
-<div id="programCardView" style="display:none; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap:22px; margin-bottom:32px;">
-    @forelse($programs as $p)
-        <div class="card" style="margin-bottom:0; display:flex; flex-direction:column; border-top:4px solid {{ $p['status'] == 'Berjalan' ? 'var(--gold)' : '#94A3B8' }}; box-shadow:var(--shadow-sm); transition:all 0.2s ease;">
-            <!-- CARD HEADER -->
-            <div class="card-header" style="background:#FAFBF9; border-bottom:1px solid var(--line); padding:16px 20px;">
-                <div style="display:flex; align-items:center; gap:8px;">
-                    <span class="badge badge-satdik" style="background:var(--o800); color:var(--gold2); font-weight:800; font-size:12px;">
-                        {{ $p['satdik_code'] }}
-                    </span>
-                    <span class="badge" style="font-family:'Fira Code',monospace; font-size:11px; background:#ECEEE9; color:var(--o800);">
-                        {{ $p['code'] }}
-                    </span>
-                </div>
-                <div>
-                    @if($p['status'] == 'Berjalan')
-                        <span class="badge badge-green" style="font-size:11.5px;">
-                            <span class="ms" style="font-size:13px;">play_arrow</span> Berjalan
-                        </span>
-                    @elseif($p['status'] == 'Perencanaan')
-                        <span class="badge badge-amber" style="font-size:11.5px;">
-                            <span class="ms" style="font-size:13px;">schedule</span> Perencanaan
-                        </span>
-                    @elseif($p['status'] == 'Selesai')
-                        <span class="badge" style="background:#E2E8F0; color:#334155; font-size:11.5px;">
-                            <span class="ms" style="font-size:13px;">check</span> Selesai
-                        </span>
-                    @else
-                        <span class="badge badge-red" style="font-size:11.5px;">
-                            <span class="ms" style="font-size:13px;">block</span> Ditutup
-                        </span>
-                    @endif
-                </div>
-            </div>
-
-            <!-- CARD BODY -->
-            <div class="card-body" style="padding:20px; flex:1; display:flex; flex-direction:column;">
-                <h3 style="margin:0 0 6px; font-family:'Montserrat',sans-serif; font-size:18px; font-weight:800; color:var(--o900);">
-                    {{ $p['name'] }}
-                </h3>
-                
-                <div style="font-size:12.5px; color:var(--muted); margin-bottom:16px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
-                    <span><span class="ms" style="font-size:14px; vertical-align:text-top;">location_on</span> {{ $p['location'] }}</span>
-                    <span>•</span>
-                    <span>Tahun Anggaran: <b>TA {{ $p['academic_year'] }}</b></span>
-                    <span>•</span>
-                    <span>Gelombang: <b>{{ $p['batch_number'] }}</b></span>
-                </div>
-
-                <!-- BOX KEKUATAN SISWA -->
-                <div style="background:#F7F9F5; border:1px solid #E2E8DC; border-radius:10px; padding:14px 16px; margin-bottom:16px;">
-                    <div style="font-size:11px; font-weight:800; color:var(--o700); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:10px; display:flex; justify-content:space-between;">
-                        <span>Status Kekuatan Peserta Didik</span>
-                        <span style="color:var(--muted);">Total: {{ $p['total_students'] }} Serdik</span>
-                    </div>
-
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-                        <div style="background:#fff; border:1px solid #C8E6C9; border-radius:8px; padding:10px; border-left:4px solid var(--green);">
-                            <div style="font-size:11px; color:var(--muted); font-weight:600;">Siswa Aktif Terhitung</div>
-                            <div style="font-size:20px; font-weight:900; color:var(--green); margin-top:2px;">
-                                {{ $p['counted_students'] }}
-                            </div>
-                            <small style="color:var(--muted); font-size:10.5px; display:block; margin-top:2px;">
-                                {{ $p['ready_students'] }} Siap · {{ $p['sick_students'] }} Sakit
-                            </small>
-                        </div>
-
-                        <div style="background:#fff; border:1px solid #CBD5E1; border-radius:8px; padding:10px; border-left:4px solid #475569;">
-                            <div style="font-size:11px; color:var(--muted); font-weight:600;">Arsip Selesai (Alumni)</div>
-                            <div style="font-size:20px; font-weight:900; color:#475569; margin-top:2px;">
-                                {{ $p['archived_students'] }}
-                            </div>
-                            <small style="color:var(--muted); font-size:10.5px; display:block; margin-top:2px;">
-                                {{ $p['finished_students'] }} Tamat Pendidikan
-                            </small>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- DAFTAR ROMBONGAN BELAJAR / PELETON -->
-                <div style="margin-bottom:18px; flex:1;">
-                    <div style="font-size:12px; font-weight:700; color:var(--o800); margin-bottom:6px; display:flex; align-items:center; gap:6px;">
-                        <span class="ms" style="font-size:16px;">groups_2</span>
-                        Peleton & Rombel ({{ $p['classrooms']->count() }} Kelas):
-                    </div>
-                    @if($p['classrooms']->count() > 0)
-                        <div style="display:flex; flex-wrap:wrap; gap:6px;">
-                            @foreach($p['classrooms'] as $cls)
-                                <span class="badge" style="background:#fff; border:1px solid var(--line); color:var(--text); font-size:11.5px; padding:4px 8px;">
-                                    {{ $cls->name }}
-                                </span>
-                            @endforeach
-                        </div>
-                    @else
-                        <div style="font-size:12px; color:var(--muted); font-style:italic;">
-                            Belum ada peleton yang dialokasikan.
-                        </div>
-                    @endif
-                </div>
-
-                <!-- ACTION BUTTONS -->
-                <div style="display:flex; gap:8px; padding-top:14px; border-top:1px solid var(--line); margin-top:auto;">
-                    <a href="{{ route('students.index', ['program_id' => $p['id']]) }}" class="btn btn-gold btn-sm" style="flex:1; justify-content:center; font-size:12.5px;">
-                        <span class="ms">groups</span> Lihat Siswa
-                    </a>
-                    <a href="{{ route('programs.show', $p['id']) }}" class="btn btn-outline btn-sm" style="padding:6px 12px; font-size:12.5px;" title="Detail & Kelola Program">
-                        <span class="ms">visibility</span> Detail
-                    </a>
-                    @if(auth()->user()?->canModifyData())
-                        <button type="button" class="btn btn-outline btn-sm" onclick="openEditProgramModal({{ json_encode($p['model']) }})" style="padding:6px 10px;" title="Edit Data Program">
-                            <span class="ms">edit</span>
-                        </button>
-                    @endif
-                </div>
-            </div>
-        </div>
-    @empty
-        <div style="grid-column: 1 / -1; background:#fff; border:1px solid var(--line); border-radius:12px; padding:50px 20px; text-align:center;">
-            <span class="ms" style="font-size:52px; color:var(--o200); display:block; margin-bottom:10px;">school</span>
-            <b style="font-size:16px; color:var(--o800);">Tidak Ada Program Pendidikan Ditemukan</b>
-            <p style="color:var(--muted); font-size:13px; max-width:480px; margin:6px auto 16px;">
-                Belum ada program pendidikan yang terdaftar untuk filter Satdik atau kata kunci pencarian ini.
-            </p>
-            <button type="button" class="btn btn-gold" onclick="openCreateProgramModal()">
-                <span class="ms">add_circle</span> Tambah Program Baru
-            </button>
-        </div>
-    @endforelse
 </div>
 
 <!-- =====================================================================
      MODAL TAMBAH PROGRAM PENDIDIKAN BARU
      ===================================================================== -->
 <div class="modal-overlay" id="createProgramModal">
-    <div class="modal-card" style="max-width:540px;">
-        <div class="modal-header">
-            <div style="display:flex; align-items:center; gap:8px;">
-                <span class="ms" style="color:var(--gold2); font-size:22px;">add_circle</span>
-                <b style="font-family:'Montserrat',sans-serif; font-size:15px;">Tambah Program Pendidikan Satdik Baru</b>
+    <div class="modal-card bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col" style="max-width:540px; width:95%;">
+        <div class="px-6 py-4 bg-slate-900 text-white flex items-center justify-between shrink-0">
+            <div class="flex items-center gap-2.5">
+                <span class="ms text-amber-400 text-[22px]">add_circle</span>
+                <b class="text-sm font-bold tracking-wide">Tambah Program Pendidikan Baru</b>
             </div>
-            <button type="button" onclick="closeCreateProgramModal()" style="background:none; border:none; color:#fff; cursor:pointer; font-size:20px;">&times;</button>
+            <button type="button" onclick="closeCreateProgramModal()" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
         </div>
 
         <form method="POST" action="{{ route('programs.store') }}">
             @csrf
-            <div class="modal-body" style="padding:22px;">
-                <div class="form-group">
-                    <label class="form-label">Satuan Pendidikan (Satdik): <span style="color:var(--red);">*</span></label>
-                    <select name="satdik_id" class="form-control" required>
+            <div class="p-6 space-y-4 max-h-[75vh] overflow-y-auto">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Satuan Pendidikan (Satdik): <span class="text-red-500">*</span></label>
+                    <select name="satdik_id" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-800 focus:ring-2 focus:ring-slate-900 focus:outline-none" required>
                         @foreach($satdiks as $s)
                             <option value="{{ $s->id }}" {{ $selectedSatdikId == $s->id ? 'selected' : '' }}>
                                 {{ $s->code }} — {{ $s->name }}
@@ -462,30 +474,30 @@
                     </select>
                 </div>
 
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-                    <div class="form-group">
-                        <label class="form-label">Kode Program: <span style="color:var(--red);">*</span></label>
-                        <input type="text" name="code" class="form-control" placeholder="Contoh: DIKMABA-2026-II" required>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Kode Program: <span class="text-red-500">*</span></label>
+                        <input type="text" name="code" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-800 focus:ring-2 focus:ring-slate-900 focus:outline-none" placeholder="Contoh: DIKMABA-2026-II" required>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Tahun Anggaran (TA): <span style="color:var(--red);">*</span></label>
-                        <input type="text" name="academic_year" class="form-control" value="2026" required>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Tahun Anggaran (TA): <span class="text-red-500">*</span></label>
+                        <input type="text" name="academic_year" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-800 focus:ring-2 focus:ring-slate-900 focus:outline-none" value="2026" required>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label">Nama Resmi Program Pendidikan: <span style="color:var(--red);">*</span></label>
-                    <input type="text" name="name" class="form-control" placeholder="Contoh: DIKMABA TA 2026 Gel II" required>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Resmi Program Pendidikan: <span class="text-red-500">*</span></label>
+                    <input type="text" name="name" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-800 focus:ring-2 focus:ring-slate-900 focus:outline-none" placeholder="Contoh: DIKMABA TA 2026 Gel II" required>
                 </div>
 
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-                    <div class="form-group">
-                        <label class="form-label">Gelombang / Batch:</label>
-                        <input type="number" name="batch_number" class="form-control" value="1" min="1">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Gelombang / Batch:</label>
+                        <input type="number" name="batch_number" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-800 focus:ring-2 focus:ring-slate-900 focus:outline-none" value="1" min="1">
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Status Program: <span style="color:var(--red);">*</span></label>
-                        <select name="status" class="form-control" required>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Status Program: <span class="text-red-500">*</span></label>
+                        <select name="status" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-800 focus:ring-2 focus:ring-slate-900 focus:outline-none" required>
                             <option value="Berjalan" selected>Berjalan (Aktif)</option>
                             <option value="Perencanaan">Perencanaan</option>
                             <option value="Selesai">Selesai</option>
@@ -494,28 +506,30 @@
                     </div>
                 </div>
 
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-                    <div class="form-group">
-                        <label class="form-label">Tanggal Mulai:</label>
-                        <input type="date" name="start_date" class="form-control">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Tanggal Mulai:</label>
+                        <input type="date" name="start_date" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-800 focus:ring-2 focus:ring-slate-900 focus:outline-none">
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Tanggal Selesai:</label>
-                        <input type="date" name="end_date" class="form-control">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Tanggal Selesai:</label>
+                        <input type="date" name="end_date" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-800 focus:ring-2 focus:ring-slate-900 focus:outline-none">
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label">Peleton / Rombongan Belajar Awal (Opsional):</label>
-                    <input type="text" name="initial_classrooms" class="form-control" placeholder="Contoh: Kompi A Peleton 1, Kompi A Peleton 2">
-                    <small style="color:var(--muted); font-size:11px;">Pisahkan dengan tanda koma untuk membuat beberapa peleton sekaligus.</small>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Peleton / Rombel Awal (Opsional):</label>
+                    <input type="text" name="initial_classrooms" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-800 focus:ring-2 focus:ring-slate-900 focus:outline-none" placeholder="Contoh: Kompi A Peleton 1, Kompi A Peleton 2">
+                    <small class="text-slate-400 text-[11px] mt-0.5 block">Pisahkan dengan tanda koma untuk membuat beberapa peleton sekaligus.</small>
                 </div>
             </div>
 
-            <div style="padding:14px 22px; background:#FAFBF9; border-top:1px solid var(--line); display:flex; justify-content:flex-end; gap:10px;">
-                <button type="button" class="btn btn-outline" onclick="closeCreateProgramModal()">Batal</button>
-                <button type="submit" class="btn btn-gold">
-                    <span class="ms">save</span> Simpan Program Baru
+            <div class="px-6 py-3.5 bg-slate-50 border-t border-slate-200 flex justify-end gap-2.5 shrink-0">
+                <button type="button" class="px-4 py-2 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 hover:bg-slate-100 transition-colors" onclick="closeCreateProgramModal()">
+                    Batal
+                </button>
+                <button type="submit" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 shadow-sm">
+                    <span class="ms text-[16px]">save</span> Simpan Program Baru
                 </button>
             </div>
         </form>
@@ -526,52 +540,52 @@
      MODAL EDIT PROGRAM PENDIDIKAN
      ===================================================================== -->
 <div class="modal-overlay" id="editProgramModal">
-    <div class="modal-card" style="max-width:540px;">
-        <div class="modal-header">
-            <div style="display:flex; align-items:center; gap:8px;">
-                <span class="ms" style="color:var(--gold2); font-size:22px;">edit</span>
-                <b style="font-family:'Montserrat',sans-serif; font-size:15px;">Edit Program Pendidikan Satdik</b>
+    <div class="modal-card bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col" style="max-width:540px; width:95%;">
+        <div class="px-6 py-4 bg-slate-900 text-white flex items-center justify-between shrink-0">
+            <div class="flex items-center gap-2.5">
+                <span class="ms text-amber-400 text-[22px]">edit</span>
+                <b class="text-sm font-bold tracking-wide">Edit Program Pendidikan Satdik</b>
             </div>
-            <button type="button" onclick="closeEditProgramModal()" style="background:none; border:none; color:#fff; cursor:pointer; font-size:20px;">&times;</button>
+            <button type="button" onclick="closeEditProgramModal()" class="text-slate-400 hover:text-white text-2xl leading-none">&times;</button>
         </div>
 
         <form id="editProgramForm" method="POST" action="">
             @csrf
             @method('PUT')
-            <div class="modal-body" style="padding:22px;">
-                <div class="form-group">
-                    <label class="form-label">Satuan Pendidikan (Satdik): <span style="color:var(--red);">*</span></label>
-                    <select name="satdik_id" id="editSatdikId" class="form-control" required>
+            <div class="p-6 space-y-4 max-h-[75vh] overflow-y-auto">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Satuan Pendidikan (Satdik): <span class="text-red-500">*</span></label>
+                    <select name="satdik_id" id="editSatdikId" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-800 focus:ring-2 focus:ring-slate-900 focus:outline-none" required>
                         @foreach($satdiks as $s)
                             <option value="{{ $s->id }}">{{ $s->code }} — {{ $s->name }}</option>
                         @endforeach
                     </select>
                 </div>
 
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-                    <div class="form-group">
-                        <label class="form-label">Kode Program: <span style="color:var(--red);">*</span></label>
-                        <input type="text" name="code" id="editCode" class="form-control" required>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Kode Program: <span class="text-red-500">*</span></label>
+                        <input type="text" name="code" id="editCode" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-800 focus:ring-2 focus:ring-slate-900 focus:outline-none" required>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Tahun Anggaran (TA): <span style="color:var(--red);">*</span></label>
-                        <input type="text" name="academic_year" id="editYear" class="form-control" required>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Tahun Anggaran (TA): <span class="text-red-500">*</span></label>
+                        <input type="text" name="academic_year" id="editYear" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-800 focus:ring-2 focus:ring-slate-900 focus:outline-none" required>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label">Nama Resmi Program: <span style="color:var(--red);">*</span></label>
-                    <input type="text" name="name" id="editName" class="form-control" required>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Resmi Program: <span class="text-red-500">*</span></label>
+                    <input type="text" name="name" id="editName" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-800 focus:ring-2 focus:ring-slate-900 focus:outline-none" required>
                 </div>
 
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-                    <div class="form-group">
-                        <label class="form-label">Gelombang / Batch:</label>
-                        <input type="number" name="batch_number" id="editBatch" class="form-control" min="1">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Gelombang / Batch:</label>
+                        <input type="number" name="batch_number" id="editBatch" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-800 focus:ring-2 focus:ring-slate-900 focus:outline-none" min="1">
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Status Program: <span style="color:var(--red);">*</span></label>
-                        <select name="status" id="editStatus" class="form-control" required>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Status Program: <span class="text-red-500">*</span></label>
+                        <select name="status" id="editStatus" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-800 focus:ring-2 focus:ring-slate-900 focus:outline-none" required>
                             <option value="Berjalan">Berjalan (Aktif)</option>
                             <option value="Perencanaan">Perencanaan</option>
                             <option value="Selesai">Selesai</option>
@@ -580,22 +594,24 @@
                     </div>
                 </div>
 
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-                    <div class="form-group">
-                        <label class="form-label">Tanggal Mulai:</label>
-                        <input type="date" name="start_date" id="editStartDate" class="form-control">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Tanggal Mulai:</label>
+                        <input type="date" name="start_date" id="editStartDate" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-800 focus:ring-2 focus:ring-slate-900 focus:outline-none">
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">Tanggal Selesai:</label>
-                        <input type="date" name="end_date" id="editEndDate" class="form-control">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Tanggal Selesai:</label>
+                        <input type="date" name="end_date" id="editEndDate" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-800 focus:ring-2 focus:ring-slate-900 focus:outline-none">
                     </div>
                 </div>
             </div>
 
-            <div style="padding:14px 22px; background:#FAFBF9; border-top:1px solid var(--line); display:flex; justify-content:flex-end; gap:10px;">
-                <button type="button" class="btn btn-outline" onclick="closeEditProgramModal()">Batal</button>
-                <button type="submit" class="btn btn-gold">
-                    <span class="ms">save</span> Simpan Perubahan
+            <div class="px-6 py-3.5 bg-slate-50 border-t border-slate-200 flex justify-end gap-2.5 shrink-0">
+                <button type="button" class="px-4 py-2 border border-slate-300 rounded-lg text-xs font-semibold text-slate-700 hover:bg-slate-100 transition-colors" onclick="closeEditProgramModal()">
+                    Batal
+                </button>
+                <button type="submit" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 shadow-sm">
+                    <span class="ms text-[16px]">save</span> Simpan Perubahan
                 </button>
             </div>
         </form>
@@ -617,31 +633,23 @@ function switchProgramView(mode) {
     if (!tblView || !crdView) return;
 
     if (mode === 'card') {
-        tblView.style.display = 'none';
-        crdView.style.display = 'grid';
+        tblView.classList.add('hidden');
+        crdView.classList.remove('hidden');
         if (btnTbl) {
-            btnTbl.style.background = 'transparent';
-            btnTbl.style.color = 'var(--muted)';
-            btnTbl.style.boxShadow = 'none';
+            btnTbl.className = 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold text-slate-500 hover:text-slate-900 transition-all';
         }
         if (btnCrd) {
-            btnCrd.style.background = '#fff';
-            btnCrd.style.color = 'var(--o900)';
-            btnCrd.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+            btnCrd.className = 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold bg-white text-slate-900 shadow-sm transition-all';
         }
         localStorage.setItem(PROGRAM_VIEW_KEY, 'card');
     } else {
-        tblView.style.display = 'block';
-        crdView.style.display = 'none';
+        tblView.classList.remove('hidden');
+        crdView.classList.add('hidden');
         if (btnTbl) {
-            btnTbl.style.background = '#fff';
-            btnTbl.style.color = 'var(--o900)';
-            btnTbl.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+            btnTbl.className = 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold bg-white text-slate-900 shadow-sm transition-all';
         }
         if (btnCrd) {
-            btnCrd.style.background = 'transparent';
-            btnCrd.style.color = 'var(--muted)';
-            btnCrd.style.boxShadow = 'none';
+            btnCrd.className = 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold text-slate-500 hover:text-slate-900 transition-all';
         }
         localStorage.setItem(PROGRAM_VIEW_KEY, 'table');
     }
@@ -676,5 +684,18 @@ function openEditProgramModal(prog) {
 function closeEditProgramModal() {
     document.getElementById('editProgramModal').classList.remove('active');
 }
+
+// Global modal triggers (ESC and Backdrop Click)
+window.addEventListener('click', function(e) {
+    if (e.target.classList.contains('modal-overlay')) {
+        e.target.classList.remove('active');
+    }
+});
+
+window.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
+    }
+});
 </script>
 @endsection
