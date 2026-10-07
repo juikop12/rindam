@@ -66,7 +66,7 @@
             <a href="{{ route('dashboard') }}" class="flex items-center gap-3 overflow-hidden whitespace-nowrap outline-none w-full">
                 <div class="flex items-center justify-center w-12 h-12 shrink-0 transition-transform duration-300" :class="!(isSidebarExpanded || mobileSidebarOpen) ? 'mx-auto' : ''">
                     <!-- USING THE NEW LOGO -->
-                    <img src="{{ asset('img/rindam-logo.png') }}" alt="Logo" class="w-11 h-11 object-contain drop-shadow-sm" onerror="this.outerHTML='<span class=\'ms text-[28px] text-slate-800\'>shield_person</span>'">
+                    <img src="{{ asset('img/rindam-logo.png') }}" alt="Logo" class="w-11 h-11 object-contain drop-shadow-sm" style="max-width:44px; max-height:44px; width:44px; height:44px; object-fit:contain;" onerror="this.outerHTML='<span class=\'ms text-[28px] text-slate-800\'>shield_person</span>'">
                 </div>
                 <div class="flex flex-col transition-opacity duration-300" :class="isSidebarExpanded ? 'opacity-100 w-auto' : 'opacity-0 w-0'">
                     <div class="font-black text-lg text-slate-900 tracking-tight leading-tight font-['Montserrat']">
