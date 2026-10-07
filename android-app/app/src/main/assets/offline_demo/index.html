@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIPANDU Demo Offline</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background: #0F172A; color: #F8FAFC; padding: 16px; min-height: 100vh; }
+        .header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #334155; padding-bottom: 12px; margin-bottom: 16px; }
+        .brand { display: flex; align-items: center; gap: 10px; }
+        .brand img { width: 40px; height: 40px; }
+        .badge { background: #F59E0B; color: #0F172A; font-size: 10px; font-weight: 800; padding: 4px 8px; border-radius: 99px; text-transform: uppercase; }
+        .card { background: #1E293B; border: 1px solid #334155; border-radius: 14px; padding: 16px; margin-bottom: 14px; }
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+        .stat-card { background: #1E293B; border: 1px solid #334155; border-radius: 12px; padding: 12px; }
+        .stat-title { font-size: 11px; color: #94A3B8; text-transform: uppercase; font-weight: 700; }
+        .stat-num { font-size: 22px; font-weight: 800; color: #F8FAFC; margin-top: 4px; }
+        .satdik-list { display: flex; flex-direction: column; gap: 8px; }
+        .satdik-item { display: flex; justify-content: space-between; align-items: center; background: #0F172A; padding: 12px; border-radius: 10px; border: 1px solid #334155; }
+        .btn-connect { display: block; width: 100%; text-align: center; background: #F59E0B; color: #0F172A; font-weight: 800; font-size: 13px; padding: 12px; border-radius: 10px; text-decoration: none; border: none; margin-top: 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="brand">
+            <img src="../../res/mipmap-hdpi/ic_launcher.png" onerror="this.style.display='none'">
+            <div>
+                <b style="font-size:14px;">SIPANDU-WBK</b>
+                <div style="font-size:11px; color:#94A3B8;">Rindam III/Siliwangi</div>
+            </div>
+        </div>
+        <span class="badge">Mode Demo Offline</span>
+    </div>
+
+    <div class="card" style="background:rgba(245,158,11,0.1); border-color:#F59E0B;">
+        <div style="font-size:13px; font-weight:bold; color:#F59E0B; margin-bottom:4px;">🎖️ Contoh Aplikasi Standalone Offline</div>
+        <div style="font-size:11.5px; color:#CBD5E1; line-height:1.4;">
+            Ini adalah contoh aplikasi Android SIPANDU yang telah ter-bundling di dalam APK. Jika terhubung ke jaringan Wi-Fi lokal server, aplikasi akan otomatis memuat data live.
+        </div>
+    </div>
+
+    <div class="stat-grid">
+        <div class="stat-card">
+            <div class="stat-title">Total Serdik</div>
+            <div class="stat-num">500</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-title">Siap Latih</div>
+            <div class="stat-num" style="color:#10B981;">488</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-title">Dispen Medis</div>
+            <div class="stat-num" style="color:#F59E0B;">12</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-title">5 Satdik Aktif</div>
+            <div class="stat-num" style="color:#60A5FA;">100%</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div style="font-size:12px; font-weight:bold; color:#94A3B8; margin-bottom:10px; text-transform:uppercase;">Satuan Pendidikan (Satdik):</div>
+        <div class="satdik-list">
+            <div class="satdik-item">
+                <div><b>SECABA</b><div style="font-size:11px; color:#94A3B8;">Bihbul, Bandung</div></div>
+                <span class="badge" style="background:#10B981; color:#fff;">120 Serdik</span>
+            </div>
+            <div class="satdik-item">
+                <div><b>SECATA</b><div style="font-size:11px; color:#94A3B8;">Pangalengan, Bandung</div></div>
+                <span class="badge" style="background:#10B981; color:#fff;">150 Serdik</span>
+            </div>
+            <div class="satdik-item">
+                <div><b>DODIKJUR</b><div style="font-size:11px; color:#94A3B8;">Lembang, Bandung Barat</div></div>
+                <span class="badge" style="background:#10B981; color:#fff;">80 Serdik</span>
+            </div>
+            <div class="satdik-item">
+                <div><b>DODIKLATPUR</b><div style="font-size:11px; color:#94A3B8;">Ciuyah, Lebak</div></div>
+                <span class="badge" style="background:#10B981; color:#fff;">90 Serdik</span>
+            </div>
+            <div class="satdik-item">
+                <div><b>BELA NEGARA</b><div style="font-size:11px; color:#94A3B8;">Lembang, Bandung Barat</div></div>
+                <span class="badge" style="background:#10B981; color:#fff;">60 Serdik</span>
+            </div>
+        </div>
+    </div>
+
+    <button class="btn-connect" onclick="window.location.reload()">Muat Ulang / Hubungkan ke Server Live</button>
+</body>
+</html>
