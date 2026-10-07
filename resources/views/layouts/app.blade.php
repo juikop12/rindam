@@ -164,14 +164,25 @@
 
             @if(auth()->user()?->isSuperAdmin())
             <a href="{{ route('settings.index') }}" 
-               class="group relative flex items-center p-3 rounded-xl transition-all duration-200 {{ request()->routeIs('settings.*') ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'text-slate-600 font-medium hover:bg-blue-50 hover:text-blue-700' }}"
+               class="group relative flex items-center p-3 rounded-xl transition-all duration-200 {{ request()->routeIs('settings.index') ? 'bg-blue-600 text-white shadow-md shadow-blue-200' : 'text-slate-600 font-medium hover:bg-blue-50 hover:text-blue-700' }}"
                :class="!(isSidebarExpanded || mobileSidebarOpen) ? 'justify-center' : 'justify-between'">
                 <div class="flex items-center gap-3">
-                    <span class="ms text-[24px] transition-transform duration-200 group-hover:scale-110 {{ request()->routeIs('settings.*') ? 'text-white' : 'text-slate-400 group-hover:text-blue-600' }}">settings</span>
+                    <span class="ms text-[24px] transition-transform duration-200 group-hover:scale-110 {{ request()->routeIs('settings.index') ? 'text-white' : 'text-slate-400 group-hover:text-blue-600' }}">settings</span>
                     <span x-show="isSidebarExpanded || mobileSidebarOpen" class="font-semibold text-[13.5px] whitespace-nowrap">Pengaturan</span>
                 </div>
                 <span x-show="isSidebarExpanded || mobileSidebarOpen" class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-rose-100 text-rose-800">Admin</span>
                 <div x-show="!isSidebarExpanded" class="absolute left-full ml-3 px-3 py-2 bg-slate-800 text-white text-xs font-semibold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50">Pengaturan</div>
+            </a>
+
+            <a href="{{ route('settings.cleanup') }}" 
+               class="group relative flex items-center p-3 rounded-xl transition-all duration-200 {{ request()->routeIs('settings.cleanup*') ? 'bg-rose-600 text-white shadow-md shadow-rose-200' : 'text-slate-600 font-medium hover:bg-rose-50 hover:text-rose-700' }}"
+               :class="!(isSidebarExpanded || mobileSidebarOpen) ? 'justify-center' : 'justify-between'">
+                <div class="flex items-center gap-3">
+                    <span class="ms text-[24px] transition-transform duration-200 group-hover:scale-110 {{ request()->routeIs('settings.cleanup*') ? 'text-white' : 'text-rose-500 group-hover:text-rose-600' }}">delete_sweep</span>
+                    <span x-show="isSidebarExpanded || mobileSidebarOpen" class="font-semibold text-[13.5px] whitespace-nowrap">Pengosongan Data</span>
+                </div>
+                <span x-show="isSidebarExpanded || mobileSidebarOpen" class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-rose-100 text-rose-800">Admin</span>
+                <div x-show="!isSidebarExpanded" class="absolute left-full ml-3 px-3 py-2 bg-slate-800 text-white text-xs font-semibold rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap z-50">Pengosongan Data</div>
             </a>
 
             <a href="{{ route('users.index') }}" 

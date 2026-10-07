@@ -298,4 +298,30 @@
 
 </form>
 
+<!-- =====================================================================
+     BAGIAN 4: ZONA PEMELIHARAAN SISTEM & PENGOSONGAN DATA
+     ===================================================================== -->
+<div class="card" style="margin-top:28px; border:1px solid #FECDD3; background:#FFF1F2; border-radius:16px; overflow:hidden;">
+    <div class="card-body" style="padding:24px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;">
+        <div style="display:flex; align-items:flex-start; gap:16px; max-width:720px;">
+            <div style="width:48px; height:48px; border-radius:12px; background:#FFE4E6; color:#E11D48; display:grid; place-items:center; flex-shrink:0;">
+                <span class="ms" style="font-size:28px;">delete_sweep</span>
+            </div>
+            <div>
+                <div style="font-size:15px; font-weight:800; color:#9F1239; margin-bottom:4px;">
+                    Zona Pemeliharaan: Pengosongan Data Sistem (Data Wipe)
+                </div>
+                <div style="font-size:12.5px; color:#BE123C; line-height:1.5;">
+                    Pengosongan basis data operasional secara aman oleh sistem (Siswa, Rekam Medis, Kompi/Peleton, Program Diklat, atau Log Audit) untuk persiapan tahun ajaran baru atau pembersihan data simulasi tanpa perlu mengakses database secara manual.
+                </div>
+            </div>
+        </div>
+        <div>
+            <a href="{{ route('settings.cleanup') }}" class="btn" style="background:#E11D48; color:#fff; border:none; padding:10px 22px; font-size:13px; font-weight:700; border-radius:10px; display:inline-flex; align-items:center; gap:8px; text-decoration:none; box-shadow:0 4px 12px rgba(225,29,72,0.25);">
+                <span class="ms" style="font-size:18px;">delete_forever</span> Buka Pengosongan Data
+            </a>
+        </div>
+    </div>
+</div>
+
 @endsection

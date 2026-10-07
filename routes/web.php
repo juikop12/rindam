@@ -7,6 +7,7 @@ use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\StudentHealthController;
+use App\Http\Controllers\SystemCleanupController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -86,6 +87,8 @@ Route::middleware('auth')->group(function () {
     Route::prefix('settings')->name('settings.')->group(function () {
         Route::get('/', [SettingController::class, 'index'])->name('index');
         Route::put('/', [SettingController::class, 'update'])->name('update');
+        Route::get('/cleanup', [SystemCleanupController::class, 'index'])->name('cleanup');
+        Route::post('/cleanup', [SystemCleanupController::class, 'destroy'])->name('cleanup.process');
     });
 
     // Cascading API dropdown for AJAX Satdik -> Diklat Programs
