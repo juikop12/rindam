@@ -36,9 +36,9 @@
         </p>
     </div>
     <div>
-        <button onclick="window.print()" class="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white border border-slate-700 rounded-lg text-xs font-semibold transition-colors w-full md:w-auto shrink-0 shadow-sm">
-            <span class="ms text-[18px]">print</span> Cetak Laporan Audit
-        </button>
+        <a href="{{ route('students.audit-logs.export-pdf', request()->query()) }}" target="_blank" class="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold border border-amber-600 rounded-lg text-xs transition-colors w-full md:w-auto shrink-0 shadow-sm">
+            <span class="ms text-[18px]">print</span> Cetak Laporan Audit (PDF)
+        </a>
     </div>
 </div>
 

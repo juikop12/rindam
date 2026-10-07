@@ -250,4 +250,122 @@ class StudentHealthController extends Controller
         return redirect()->route('health.show', $student)
             ->with('success', "Rekam medis dan status kesehatan Serdik {$student->full_name} berhasil diperbarui.");
     }
+
+    /**
+     * Ekspor Format Cetak / PDF Lembar Rekam Medis Individual Serdik
+     */
+    public function exportStudentPdf(Student $student)
+    {
+        $currentUser = Auth::user();
+        if ($currentUser && !$currentUser->isPimpinan() && $currentUser->satdik_id) {
+            if ($student->satdik_id !== $currentUser->satdik_id) {
+                abort(403, 'Akses Ditolak: Anda hanya berwenang mencetak lembar rekam medis serdik di Satuan Pendidikan Anda.');
+            }
+        }
+
+        $student->load(['satdik', 'educationProgram', 'classroom', 'healthRecord']);
+        
+        $healthRecord = $student->healthRecord ?? $student->healthRecord()->create([
+            'daily_health_status' => 'Siap Latih',
+            'stakes_grade' => 'Stakes I (Sangat Baik)',
+            'last_examined_at' => now(),
+        ]);
+
+        return view('health.pdf_student', compact('student', 'healthRecord'));
+    }
+
+    /**
+     * Ekspor Format Cetak / PDF Rekapitulasi Kesiapan Kesehatan Serdik per Satdik
+     */
+    public function exportPdf(Request $request)
+    {
+        $currentUser = Auth::user();
+        if ($currentUser && !$currentUser->isPimpinan() && $currentUser->satdik_id) {
+            $selectedSatdikId = $currentUser->satdik_id;
+            $satdiks = Satdik::where('id', $selectedSatdikId)->get();
+        } else {
+            $satdiks = Satdik::active()->get();
+            $selectedSatdikId = $request->query('satdik_id');
+            $selectedSatdikCode = $request->query('satdik');
+
+            if ($selectedSatdikCode && !$selectedSatdikId) {
+                $matched = $satdiks->firstWhere('code', strtoupper($selectedSatdikCode));
+                if ($matched) {
+                    $selectedSatdikId = $matched->id;
+                }
+            }
+        }
+
+        $selectedProgramId = $request->query('program_id') ? (int)$request->query('program_id') : null;
+        $healthStatus = $request->query('health_status');
+        $keyword = $request->query('q');
+        $tab = $request->query('tab', 'all');
+
+        $query = Student::with(['satdik', 'educationProgram', 'classroom', 'healthRecord'])
+            ->when($selectedSatdikId, function ($q, $satdikId) {
+                $q->where('satdik_id', $satdikId);
+            })
+            ->when($selectedProgramId, function ($q, $progId) {
+                $q->where('education_program_id', $progId);
+            })
+            ->when($healthStatus, function ($q, $status) {
+                $q->whereHas('healthRecord', function ($hq) use ($status) {
+                    $hq->where('daily_health_status', $status);
+                });
+            })
+            ->when($keyword, function ($q, $kw) {
+                $q->search($kw);
+            });
+
+        if ($tab === 'aktif') {
+            $query->whereIn('status', ['Aktif', 'Sakit', 'Dinas Luar']);
+        } elseif ($tab === 'arsip') {
+            $query->whereIn('status', ['Selesai', 'Lulus', 'DO / Dikeluarkan']);
+        }
+
+        $students = $query->latest()->get();
+
+        $stats = $this->studentService->getSatdikSummaryStats(
+            satdikId: $selectedSatdikId ? (int)$selectedSatdikId : null,
+            programId: $selectedProgramId
+        );
+
+        $baseHealthQuery = StudentHealthRecord::whereHas('student', function ($sq) use ($selectedSatdikId, $selectedProgramId) {
+            if ($selectedSatdikId) {
+                $sq->where('satdik_id', $selectedSatdikId);
+            }
+            if ($selectedProgramId) {
+                $sq->where('education_program_id', $selectedProgramId);
+            }
+        });
+
+        $activeHealthQuery = (clone $baseHealthQuery)->whereHas('student', function ($sq) {
+            $sq->whereIn('status', ['Aktif', 'Sakit', 'Dinas Luar']);
+        });
+
+        $activeHealthAgg = (clone $activeHealthQuery)->selectRaw("
+            SUM(CASE WHEN daily_health_status = 'Siap Latih' THEN 1 ELSE 0 END) as siap_latih,
+            SUM(CASE WHEN daily_health_status = 'Berobat Jalan' THEN 1 ELSE 0 END) as berobat_jalan,
+            SUM(CASE WHEN daily_health_status = 'Rawat Inap Poliklinik' THEN 1 ELSE 0 END) as rawat_inap,
+            SUM(CASE WHEN daily_health_status = 'Rujuk Rumkit' THEN 1 ELSE 0 END) as rujuk_rumkit
+        ")->first();
+
+        $stats['siap_latih'] = (int)($activeHealthAgg->siap_latih ?? 0);
+        $stats['berobat_jalan'] = (int)($activeHealthAgg->berobat_jalan ?? 0);
+        $stats['rawat_inap'] = (int)($activeHealthAgg->rawat_inap ?? 0);
+        $stats['rujuk_rumkit'] = (int)($activeHealthAgg->rujuk_rumkit ?? 0);
+        $stats['perawatan_khusus'] = $stats['rawat_inap'] + $stats['rujuk_rumkit'];
+
+        $selectedSatdik = $selectedSatdikId ? Satdik::find($selectedSatdikId) : null;
+        $selectedProgram = $selectedProgramId ? EducationProgram::find($selectedProgramId) : null;
+
+        return view('health.pdf_rekap', compact(
+            'students',
+            'stats',
+            'selectedSatdik',
+            'selectedProgram',
+            'healthStatus',
+            'tab'
+        ));
+    }
 }

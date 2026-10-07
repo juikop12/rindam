@@ -16,9 +16,9 @@
         </div>
         
         <div class="flex items-center gap-2.5">
-            <button onclick="window.print()" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 rounded-lg text-xs font-semibold shadow-sm transition-colors">
-                <span class="ms text-[18px]">print</span> Cetak Lembar Medis
-            </button>
+            <a href="{{ route('health.export-student-pdf', $student) }}" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 rounded-lg text-xs font-semibold shadow-sm transition-colors">
+                <span class="ms text-[18px]">print</span> Cetak Lembar Medis (PDF)
+            </a>
             <a href="{{ route('students.show', $student) }}" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 rounded-lg text-xs font-semibold shadow-sm transition-colors">
                 <span class="ms text-[18px]">badge</span> Lihat Data Pribadi
             </a>

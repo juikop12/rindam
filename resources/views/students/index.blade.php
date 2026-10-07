@@ -21,16 +21,19 @@
         </div>
         
         <!-- Action Buttons -->
-        @if(auth()->user()?->canModifyData())
         <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 w-full md:w-auto">
+            <a href="{{ route('students.export-pdf', request()->query()) }}" target="_blank" class="inline-flex justify-center items-center gap-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 px-4 py-2.5 sm:py-2 rounded-xl text-sm font-semibold transition-colors shadow-sm w-full sm:w-auto">
+                <span class="ms text-[18px]">print</span> Cetak Nominatif (PDF)
+            </a>
+            @if(auth()->user()?->canModifyData())
             <a href="{{ route('students.import', ['satdik_id' => $selectedSatdikId]) }}" class="inline-flex justify-center items-center gap-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 px-4 py-2.5 sm:py-2 rounded-xl text-sm font-semibold transition-colors shadow-sm w-full sm:w-auto">
                 <span class="ms text-[18px]">upload_file</span> Impor Format Excel
             </a>
             <button type="button" onclick="openCreateStudentModal()" class="inline-flex justify-center items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 sm:py-2 rounded-xl text-sm font-semibold transition-colors shadow-sm shadow-blue-200 w-full sm:w-auto">
                 <span class="ms text-[18px]">person_add</span> Tambah Siswa Baru
             </button>
+            @endif
         </div>
-        @endif
     </div>
 
     <!-- NOTIFIKASI ERROR VALIDASI -->

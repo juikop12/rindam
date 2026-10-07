@@ -14,6 +14,9 @@
         <span class="text-slate-900 font-bold">NOSIK: {{ $student->nosik }}</span>
     </div>
     <div class="flex flex-wrap items-center gap-2.5">
+        <a href="{{ route('students.export-student-pdf', $student) }}" target="_blank" class="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 rounded-lg text-xs font-semibold shadow-sm transition-colors w-full sm:w-auto">
+            <span class="ms text-[18px]">print</span> Cetak Dossier (PDF)
+        </a>
         <a href="{{ route('students.index', ['satdik_id' => $student->satdik_id]) }}" class="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 rounded-lg text-xs font-semibold shadow-sm transition-colors w-full sm:w-auto">
             <span class="ms text-[18px]">arrow_back</span> Kembali ke Daftar
         </a>

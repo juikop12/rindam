@@ -22,9 +22,9 @@
         
         <!-- Action Buttons -->
         <div class="flex items-center gap-2.5">
-            <button type="button" onclick="window.print()" class="inline-flex items-center gap-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 px-4 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm">
-                <span class="ms text-[18px]">print</span> Cetak Rekap Medis
-            </button>
+            <a href="{{ route('health.export-pdf', request()->query()) }}" target="_blank" class="inline-flex items-center gap-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 px-4 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm">
+                <span class="ms text-[18px]">print</span> Cetak Rekap Medis (PDF)
+            </a>
             <a href="{{ route('students.index') }}" class="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm">
                 <span class="ms text-[18px]">groups</span> Buku Induk Siswa
             </a>

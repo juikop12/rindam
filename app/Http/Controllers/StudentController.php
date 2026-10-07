@@ -715,4 +715,91 @@ class StudentController extends Controller
 
         return back()->with('success', $message);
     }
+
+    /**
+     * Ekspor Format Cetak / PDF Lembar Dossier Pribadi & Buku Induk Prajurit Siswa
+     */
+    public function exportStudentPdf(Student $student)
+    {
+        $currentUser = Auth::user();
+        if ($currentUser && !$currentUser->isPimpinan() && $currentUser->satdik_id) {
+            if ($student->satdik_id !== $currentUser->satdik_id) {
+                abort(403, 'Akses Ditolak: Anda hanya berwenang mencetak dossier prajurit siswa di ' . ($currentUser->satdik->name ?? 'Satuan Pendidikan Anda') . '.');
+            }
+        }
+
+        $student->load(['satdik', 'educationProgram', 'classroom', 'personalProfile', 'healthRecord']);
+        
+        return view('students.pdf_student', compact('student'));
+    }
+
+    /**
+     * Ekspor Format Cetak / PDF Buku Induk & Daftar Nominatif Prajurit Siswa
+     */
+    public function exportPdf(Request $request)
+    {
+        $currentUser = Auth::user();
+        if ($currentUser && !$currentUser->isPimpinan() && $currentUser->satdik_id) {
+            $selectedSatdikId = $currentUser->satdik_id;
+            $satdiks = Satdik::where('id', $selectedSatdikId)->get();
+        } else {
+            $satdiks = Satdik::active()->get();
+            $selectedSatdikId = $request->query('satdik_id');
+            $selectedSatdikCode = $request->query('satdik');
+
+            if ($selectedSatdikCode && !$selectedSatdikId) {
+                $matched = $satdiks->firstWhere('code', strtoupper($selectedSatdikCode));
+                if ($matched) {
+                    $selectedSatdikId = $matched->id;
+                }
+            }
+        }
+
+        $selectedProgramId = $request->query('program_id') ? (int)$request->query('program_id') : null;
+        $keyword = $request->query('q');
+        $status = $request->query('status');
+        $tab = $request->query('tab', 'all');
+
+        $query = $this->studentService->getStudentsQuery(
+            satdikId: $selectedSatdikId ? (int)$selectedSatdikId : null,
+            programId: $selectedProgramId,
+            keyword: $keyword,
+            status: $status,
+            tab: $tab
+        );
+
+        $students = $query->get();
+        $stats = $this->studentService->getSatdikSummaryStats(
+            satdikId: $selectedSatdikId ? (int)$selectedSatdikId : null,
+            programId: $selectedProgramId
+        );
+        $selectedSatdik = $selectedSatdikId ? Satdik::find($selectedSatdikId) : null;
+        $selectedProgram = $selectedProgramId ? EducationProgram::find($selectedProgramId) : null;
+
+        return view('students.pdf_nominatif', compact(
+            'students',
+            'stats',
+            'selectedSatdik',
+            'selectedProgram',
+            'tab'
+        ));
+    }
+
+    /**
+     * Ekspor Format Cetak / PDF Rekaman Forensik Digital Audit Trail Data Sensitif (Super Admin)
+     */
+    public function exportAuditLogsPdf(Request $request)
+    {
+        $currentUser = Auth::user();
+        if (!$currentUser || !$currentUser->isSuperAdmin()) {
+            abort(403, 'Akses Ditolak: Laporan Audit Trail Forensik hanya dapat dicetak oleh Super Administrator.');
+        }
+
+        $logs = StudentPersonalDataAccessLog::with(['student.satdik', 'accessedByUser'])
+            ->latest('accessed_at')
+            ->limit(100)
+            ->get();
+
+        return view('students.pdf_audit_logs', compact('logs'));
+    }
 }

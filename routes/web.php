@@ -31,11 +31,13 @@ Route::middleware('auth')->group(function () {
     // MODUL 1: PENGELOLAAN DATA SISWA PER SATDIK
     Route::prefix('students')->name('students.')->group(function () {
         Route::get('/', [StudentController::class, 'index'])->name('index');
+        Route::get('/export-pdf', [StudentController::class, 'exportPdf'])->name('export-pdf');
         Route::get('/create', [StudentController::class, 'create'])->name('create');
         Route::post('/', [StudentController::class, 'store'])->name('store');
         Route::get('/import', [StudentController::class, 'importForm'])->name('import');
         Route::get('/import/template', [StudentController::class, 'downloadTemplate'])->name('import.template');
         Route::post('/import', [StudentController::class, 'processImport'])->name('import.process');
+        Route::get('/{student}/export-pdf', [StudentController::class, 'exportStudentPdf'])->name('export-student-pdf');
         Route::get('/{student}', [StudentController::class, 'show'])->name('show');
         Route::put('/{student}', [StudentController::class, 'update'])->name('update');
         Route::delete('/{student}', [StudentController::class, 'destroy'])->name('destroy');
@@ -67,12 +69,15 @@ Route::middleware('auth')->group(function () {
     // MODUL 3: KESEHATAN & REKAM MEDIS SERDIK (MENU TERPISAH)
     Route::prefix('health')->name('health.')->group(function () {
         Route::get('/', [StudentHealthController::class, 'index'])->name('index');
+        Route::get('/export-pdf', [StudentHealthController::class, 'exportPdf'])->name('export-pdf');
+        Route::get('/{student}/export-pdf', [StudentHealthController::class, 'exportStudentPdf'])->name('export-student-pdf');
         Route::get('/{student}', [StudentHealthController::class, 'show'])->name('show');
         Route::get('/{student}/edit', [StudentHealthController::class, 'edit'])->name('edit');
         Route::put('/{student}', [StudentHealthController::class, 'update'])->name('update');
     });
 
     Route::get('/audit-logs', [StudentController::class, 'auditLogs'])->name('students.audit-logs');
+    Route::get('/audit-logs/export-pdf', [StudentController::class, 'exportAuditLogsPdf'])->name('students.audit-logs.export-pdf');
 
     // MODUL 4: MANAJEMEN AKUN PENGGUNA & OTORITAS SATDIK (PIMPINAN / SUPER ADMIN)
     Route::resource('users', UserController::class)->only(['index', 'store', 'update', 'destroy']);
