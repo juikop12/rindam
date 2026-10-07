@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Perbarui Kesehatan Serdik: ' . $student->full_name . ' — SIPANDU-WBK')
+@section('title', 'Perbarui Kesehatan Serdik: ' . $student->full_name . ' — SIPANDU')
 
 @section('content')
 <div class="px-2 py-4">
@@ -28,7 +28,7 @@
                         {{ $student->satdik->code }}
                     </span>
                     <span class="font-mono text-xs text-slate-500">
-                        NOSIK: {{ $student->nosik }}
+                        NOSIS: {{ $student->nosik }}
                     </span>
                     <span class="px-2.5 py-0.5 rounded-md text-xs font-semibold bg-slate-100 text-slate-700">
                         {{ $student->educationProgram->name ?? 'Program Pendidikan' }}

@@ -134,7 +134,7 @@
                                         {{ $log->student->full_name }}
                                     </a>
                                     <div class="text-[11px] font-mono text-slate-400 mt-0.5">
-                                        NOSIK: {{ $log->student->nosik }}
+                                        NOSIS: {{ $log->student->nosik }}
                                     </div>
                                 @else
                                     <span class="text-xs text-slate-400">ID Siswa #{{ $log->student_id }}</span>
@@ -194,7 +194,7 @@
                                 {{ $log->student->full_name }}
                             </a>
                             <div class="text-xs font-mono text-slate-500 mt-0.5">
-                                NOSIK: {{ $log->student->nosik }}
+                                NOSIS: {{ $log->student->nosik }}
                                 @if($log->student->satdik)
                                     <span class="ml-2 px-1.5 py-0.5 rounded text-[9px] font-bold bg-blue-100 text-blue-700">{{ $log->student->satdik->code }}</span>
                                 @endif

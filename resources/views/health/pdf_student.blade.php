@@ -25,7 +25,7 @@ KESEHATAN
         <td style="width:70%;"><b>{{ strtoupper($student->full_name) }}</b></td>
     </tr>
     <tr>
-        <td>2. Nomor Siswa (NOSIK)</td>
+        <td>2. Nomor Siswa (NOSIS)</td>
         <td>:</td>
         <td><span style="font-family:'Courier New', monospace; font-weight:bold;">{{ $student->nosik }}</span></td>
     </tr>

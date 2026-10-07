@@ -394,7 +394,7 @@
 
     <!-- HALAMAN KERTAS DOKUMEN -->
     <div class="screen-container">
-        <div class="watermark-bg">SIPANDU-WBK</div>
+        <div class="watermark-bg">SIPANDU</div>
 
         <!-- KOP SURAT RESMI MILITER -->
         <div class="kop-wrapper">
@@ -415,7 +415,7 @@
         <!-- FOOTER DOKUMEN -->
         <div class="doc-footer">
             <div>
-                Sistem SIPANDU-WBK Rindam III/Siliwangi &bull; Dicetak: {{ now()->translatedFormat('d F Y, H:i') }} WIB
+                Sistem SIPANDU Rindam III/Siliwangi &bull; Dicetak: {{ now()->translatedFormat('d F Y, H:i') }} WIB
             </div>
             <div>
                 Otentikasi: User ID #{{ auth()->id() ?? 'SYS' }} ({{ auth()->user()->role_code ?? 'SYSTEM' }})

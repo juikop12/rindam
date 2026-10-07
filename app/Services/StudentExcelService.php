@@ -27,7 +27,7 @@ class StudentExcelService
     public const COLUMNS = [
         'A' => ['key' => 'no', 'label' => 'NO', 'width' => 6],
         'B' => ['key' => 'nik', 'label' => 'NIK_KTP', 'width' => 22],
-        'C' => ['key' => 'nosik', 'label' => 'NOSIK', 'width' => 20],
+        'C' => ['key' => 'nosik', 'label' => 'NOSIS', 'width' => 20],
         'D' => ['key' => 'full_name', 'label' => 'NAMA_LENGKAP', 'width' => 28],
         'E' => ['key' => 'satdik_code', 'label' => 'KODE_SATDIK', 'width' => 16],
         'F' => ['key' => 'program_name', 'label' => 'PROGRAM_PENDIDIKAN', 'width' => 26],
@@ -279,7 +279,7 @@ class StudentExcelService
 
         foreach ($rows as $idx => $row) {
             $normalizedRow = array_map(fn($v) => strtoupper(trim((string)$v)), $row);
-            if (in_array('NAMA_LENGKAP', $normalizedRow) || in_array('NAMA LENGKAP', $normalizedRow) || in_array('NOSIK', $normalizedRow) || in_array('NIK_KTP', $normalizedRow) || in_array('NIK', $normalizedRow)) {
+            if (in_array('NAMA_LENGKAP', $normalizedRow) || in_array('NAMA LENGKAP', $normalizedRow) || in_array('NOSIS', $normalizedRow) || in_array('NOSIK', $normalizedRow) || in_array('NIK_KTP', $normalizedRow) || in_array('NIK', $normalizedRow)) {
                 $headerIndex = $idx;
                 foreach ($normalizedRow as $colIdx => $colName) {
                     $cleanName = strtolower(str_replace([' ', '-', '/'], '_', $colName));
@@ -297,6 +297,7 @@ class StudentExcelService
                 'nik_ktp' => 1,
                 'nik' => 1,
                 'nosik' => 2,
+                'nosis' => 2,
                 'nama_lengkap' => 3,
                 'kode_satdik' => 4,
                 'program_pendidikan' => 5,
@@ -357,7 +358,7 @@ class StudentExcelService
                     continue;
                 }
 
-                $nosik = trim((string)($row[$this->getColIdx($columnMap, ['nosik', 'nomor_siswa', 'no_serdik'])] ?? ''));
+                $nosik = trim((string)($row[$this->getColIdx($columnMap, ['nosis', 'nosik', 'nomor_siswa', 'no_serdik'])] ?? ''));
                 $satdikCode = strtoupper(trim((string)($row[$this->getColIdx($columnMap, ['kode_satdik', 'satdik', 'satuan'])] ?? '')));
                 $programName = trim((string)($row[$this->getColIdx($columnMap, ['program_pendidikan', 'program_diklat', 'prodi', 'program', 'pendidikan'])] ?? ''));
                 $studentRank = trim((string)($row[$this->getColIdx($columnMap, ['pangkat_siswa', 'pangkat'])] ?? 'Siswa'));

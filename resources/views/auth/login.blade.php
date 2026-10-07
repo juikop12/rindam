@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masuk — SIPANDU-WBK Rindam III/Siliwangi</title>
+    <title>Masuk — SIPANDU Rindam III/Siliwangi</title>
 
     <!-- PWA / Android Mobile Meta Tags -->
     <link rel="manifest" href="/manifest.json">
@@ -318,7 +318,7 @@
         <div class="brand-logo-wrap">
             <img src="{{ asset('img/rindam-logo.png') }}" alt="Logo Rindam" onerror="this.outerHTML='<span class=\'ms text-white\' style=\'font-size:28px;\'>military_tech</span>'">
         </div>
-        <h1 class="brand-title">SIPANDU<span>-WBK</span></h1>
+        <h1 class="brand-title">SIPANDU</h1>
         <p class="brand-sub">Rindam III/Siliwangi</p>
     </div>
 

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $program->name . ' — SIPANDU-WBK')
+@section('title', $program->name . ' — SIPANDU')
 
 @section('content')
 
@@ -343,7 +343,7 @@
         </select>
         <div class="relative w-1/2 md:w-44">
             <span class="ms text-[16px] text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none">search</span>
-            <input type="text" name="q" value="{{ $keyword }}" placeholder="Cari Nosik/Nama" class="w-full h-9 pl-8 pr-2.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-slate-400">
+            <input type="text" name="q" value="{{ $keyword }}" placeholder="Cari Nosis/Nama" class="w-full h-9 pl-8 pr-2.5 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-slate-400">
         </div>
         @if($classroomId || $keyword)
             <a href="{{ route('programs.show', ['program' => $program->id, 'tab' => $tab]) }}" class="h-9 px-2 flex items-center justify-center text-[10px] font-bold text-slate-500 hover:text-slate-700 transition-colors">Reset</a>

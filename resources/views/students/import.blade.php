@@ -231,7 +231,7 @@
                 </tr>
                 <tr class="border-b border-slate-100 hover:bg-slate-50/50 transition-colors">
                     <td class="py-3 px-4 text-center font-bold text-slate-400">C</td>
-                    <td class="py-3 px-4 font-mono font-bold text-slate-800">NOSIK</td>
+                    <td class="py-3 px-4 font-mono font-bold text-slate-800">NOSIS</td>
                     <td class="py-3 px-4"><span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-500">Auto Generate</span></td>
                     <td class="py-3 px-4 text-slate-600">Nomor Pokok Siswa Pendidikan (Bila kosong, dibuat otomatis)</td>
                     <td class="py-3 px-4 font-mono">2026-SECABA-011</td>

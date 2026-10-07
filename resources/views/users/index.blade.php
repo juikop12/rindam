@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Manajemen Akun Pengguna & Otoritas Satdik — SIPANDU-WBK')
+@section('title', 'Manajemen Akun Pengguna & Otoritas Satdik — SIPANDU')
 
 @section('content')
 
@@ -454,7 +454,7 @@
             @method('DELETE')
             <div class="modal-body" style="padding:22px;">
                 <p style="font-size:13.5px; color:#334155; line-height:1.5; margin-bottom:14px;">
-                    Apakah Anda yakin ingin menghapus akun pengguna militer berikut dari sistem SIPANDU-WBK?
+                    Apakah Anda yakin ingin menghapus akun pengguna militer berikut dari sistem SIPANDU?
                 </p>
 
                 <div style="background:#FEF2F2; border:1px solid #FCA5A5; border-radius:10px; padding:12px 16px;">

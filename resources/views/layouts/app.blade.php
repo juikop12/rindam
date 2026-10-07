@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Pengolahan Data Siswa per Satdik') — SIPANDU-WBK</title>
+    <title>@yield('title', 'Pengolahan Data Siswa per Satdik') — SIPANDU</title>
 
     <!-- PWA / Android Mobile Meta Tags -->
     <link rel="manifest" href="/manifest.json">
@@ -70,7 +70,7 @@
                 </div>
                 <div class="flex flex-col transition-opacity duration-300" :class="isSidebarExpanded ? 'opacity-100 w-auto' : 'opacity-0 w-0'">
                     <div class="font-black text-lg text-slate-900 tracking-tight leading-tight font-['Montserrat']">
-                        SIPANDU<span class="text-blue-600">-WBK</span>
+                        SIPANDU
                     </div>
                     <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mt-0.5">
                         Rindam III/Slw
@@ -247,7 +247,7 @@
                 <!-- TITLE & BREADCRUMB -->
                 <div class="flex items-center gap-2">
                     <div class="hidden sm:flex items-center gap-2 text-sm font-medium">
-                        <span class="text-slate-400">SIPANDU-WBK</span>
+                        <span class="text-slate-400">SIPANDU</span>
                         <span class="ms text-slate-300 text-[18px]">chevron_right</span>
                     </div>
                     <h1 class="text-slate-800 font-bold text-lg sm:text-sm">

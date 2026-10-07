@@ -41,7 +41,7 @@ RESIMEN INDUK<br>
                 <td style="width:68%;"><b style="font-size:11.5pt;">{{ strtoupper($student->full_name) }}</b></td>
             </tr>
             <tr>
-                <td>Nomor Siswa (NOSIK)</td>
+                <td>Nomor Siswa (NOSIS)</td>
                 <td>:</td>
                 <td><span class="font-mono font-bold" style="font-size:11pt;">{{ $student->nosik }}</span></td>
             </tr>

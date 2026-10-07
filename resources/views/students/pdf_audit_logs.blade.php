@@ -99,7 +99,7 @@ TIM KERJA ZONA INTEGRITAS (ZI-WBK) &bull; BIDANG PENGAWASAN
                     @if($log->student)
                         <b>{{ strtoupper($log->student->full_name) }}</b>
                         <div style="font-size:7.5pt; color:#475569;">
-                            NOSIK: <span class="font-mono font-bold">{{ $log->student->nosik }}</span> ({{ $log->student->satdik->code ?? '-' }})
+                            NOSIS: <span class="font-mono font-bold">{{ $log->student->nosik }}</span> ({{ $log->student->satdik->code ?? '-' }})
                         </div>
                     @else
                         <span style="color:#94A3B8;">Serdik ID #{{ $log->student_id }} (Terhapus)</span>

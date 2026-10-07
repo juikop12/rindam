@@ -24,7 +24,7 @@
                 <span class="ms" style="font-size:16px;">lock</span> SIPANDU-WBK SECURITY
             </span>
             <span class="pdp-badge" style="background:rgba(255,255,255,0.15);color:#fff;border-color:rgba(255,255,255,0.25);">
-                <span class="ms" style="font-size:16px;">auto_awesome</span> AUTO-GENERATE NOSIK
+                <span class="ms" style="font-size:16px;">auto_awesome</span> AUTO-GENERATE NOSIS
             </span>
         </div>
         <h1>Registrasi Peserta Didik Baru per Satdik</h1>
@@ -75,7 +75,7 @@
                             </option>
                         @endforeach
                     </select>
-                    <div class="form-hint">Pilih Satdik tempat siswa mengikuti pendidikan. NOSIK otomatis berawalan kode Satdik ini.</div>
+                    <div class="form-hint">Pilih Satdik tempat siswa mengikuti pendidikan. NOSIS otomatis berawalan kode Satdik ini.</div>
                 </div>
 
                 <!-- PROGRAM PENDIDIKAN (CASCADING) -->
@@ -405,7 +405,7 @@
         <div class="card-body" style="display:flex; align-items:center; justify-content:space-between; padding:18px 24px;">
             <div style="font-size:12.5px; color:var(--muted); display:flex; align-items:center; gap:8px;">
                 <span class="ms" style="color:var(--green); font-size:20px;">verified</span>
-                <span>Dengan menyimpan formulir ini, NOSIK otomatis dibuat dan integritas data pribadi diproteksi AES-256.</span>
+                <span>Dengan menyimpan formulir ini, NOSIS otomatis dibuat dan integritas data pribadi diproteksi AES-256.</span>
             </div>
             <div style="display:flex; gap:12px;">
                 <a href="{{ route('students.index') }}" class="btn btn-outline">Batal</a>

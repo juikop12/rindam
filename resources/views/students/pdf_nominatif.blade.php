@@ -68,7 +68,7 @@ RESIMEN INDUK<br>
     <thead>
         <tr>
             <th style="width:28px;">No</th>
-            <th style="width:75px;">NOSIK</th>
+            <th style="width:75px;">NOSIS</th>
             <th style="width:160px;">Nama Prajurit Siswa</th>
             <th style="width:75px;">Pangkat</th>
             <th style="width:95px;">Satdik / Kompi</th>

@@ -332,7 +332,7 @@
 
                 <div class="relative col-span-2 sm:col-span-1 w-full sm:w-40">
                     <span class="ms text-slate-400 text-[18px] absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none">search</span>
-                    <input type="text" name="q" value="{{ $keyword }}" placeholder="Cari Nosik, Nama..." class="w-full h-10 sm:h-9 pl-8 pr-2.5 border border-slate-200 rounded-lg text-xs text-slate-700 placeholder-slate-400 focus:ring-2 focus:ring-slate-900 focus:outline-none">
+                    <input type="text" name="q" value="{{ $keyword }}" placeholder="Cari Nosis, Nama..." class="w-full h-10 sm:h-9 pl-8 pr-2.5 border border-slate-200 rounded-lg text-xs text-slate-700 placeholder-slate-400 focus:ring-2 focus:ring-slate-900 focus:outline-none">
                 </div>
 
                 <div class="col-span-2 flex items-center gap-2">
@@ -774,7 +774,7 @@
                 <div class="flex items-center gap-3 p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700">
                     <span class="ms text-amber-500 text-[22px] shrink-0">shield</span>
                     <div>
-                        <b>Keamanan Sistem SIPANDU & Anti-Duplikasi:</b> NOSIK dibentuk otomatis. Validasi NIK KTP (16 Digit) mencegah data ganda. Data pribadi tersimpan terenkripsi <b>AES-256-CBC</b>.
+                        <b>Keamanan Sistem SIPANDU & Anti-Duplikasi:</b> NOSIS dibentuk otomatis. Validasi NIK KTP (16 Digit) mencegah data ganda. Data pribadi tersimpan terenkripsi <b>AES-256-CBC</b>.
                     </div>
                 </div>
 
@@ -1008,7 +1008,7 @@
                 <div>
                     <b class="text-sm font-bold tracking-wide">Edit Data Prajurit Siswa</b>
                     <div class="flex items-center gap-2 mt-0.5">
-                        <span id="edit_nosik_badge" class="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-800 text-slate-300">NOSIK: -</span>
+                        <span id="edit_nosik_badge" class="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-800 text-slate-300">NOSIS: -</span>
                         <span id="edit_student_title" class="text-xs text-slate-300 font-semibold">-</span>
                     </div>
                 </div>
@@ -1449,7 +1449,7 @@ function openEditStudentModal(btnOrData) {
     }
     
     document.getElementById('editStudentForm').action = `/students/${s.id}`;
-    document.getElementById('edit_nosik_badge').textContent = 'NOSIK: ' + (s.nosik || '-');
+    document.getElementById('edit_nosik_badge').textContent = 'NOSIS: ' + (s.nosik || '-');
     document.getElementById('edit_student_title').textContent = s.full_name;
     
     const operatorSatdikId = '{{ (!auth()->user()?->isPimpinan() && auth()->user()?->satdik_id) ? auth()->user()->satdik_id : '' }}';
@@ -1496,7 +1496,7 @@ function openDeleteStudentModal(id, name, nosik, satdikName) {
     if (!document.getElementById('deleteStudentModal')) return;
     document.getElementById('deleteStudentForm').action = `/students/${id}`;
     document.getElementById('deleteModalStudentName').textContent = name;
-    document.getElementById('deleteModalStudentNosik').textContent = 'NOSIK: ' + nosik;
+    document.getElementById('deleteModalStudentNosik').textContent = 'NOSIS: ' + nosik;
     document.getElementById('deleteModalStudentSatdik').textContent = satdikName || 'Satdik Rindam III/Slw';
     document.getElementById('deleteStudentModal').classList.add('active');
 }
@@ -1596,7 +1596,7 @@ function openRevealModal(studentId, fullName, nosik) {
     currentStudentId = studentId;
     document.getElementById('modalStudentId').value = studentId;
     document.getElementById('modalStudentName').textContent = fullName;
-    document.getElementById('modalStudentNosik').textContent = 'NOSIK: ' + nosik;
+    document.getElementById('modalStudentNosik').textContent = 'NOSIS: ' + nosik;
 
     document.getElementById('modalFormSection').style.display = 'block';
     document.getElementById('modalResultSection').style.display = 'none';

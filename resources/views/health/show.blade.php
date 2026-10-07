@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Rekam Medis: ' . $student->full_name . ' — SIPANDU-WBK')
+@section('title', 'Rekam Medis: ' . $student->full_name . ' — SIPANDU')
 
 @section('content')
 <div class="px-2 py-4">
@@ -46,7 +46,7 @@
                             {{ $student->satdik->code }}
                         </span>
                         <span class="font-mono text-xs text-slate-500">
-                            NOSIK: {{ $student->nosik }}
+                            NOSIS: {{ $student->nosik }}
                         </span>
                         
                         @php $u = $student->unified_status; @endphp

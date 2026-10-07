@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Pengaturan Sistem & Informasi Pejabat Pimpinan — SIPANDU-WBK')
+@section('title', 'Pengaturan Sistem & Informasi Pejabat Pimpinan — SIPANDU')
 
 @section('content')
 
@@ -29,7 +29,7 @@
                 <span class="ms" style="font-size:16px;">military_tech</span> RINDAM III / SILIWANGI
             </span>
             <span class="pdp-badge" style="background:rgba(255,255,255,0.12); color:#fff; border-color:rgba(255,255,255,0.25);">
-                <span class="ms" style="font-size:16px;">verified_user</span> ZONA INTEGRITAS WBK
+                <span class="ms" style="font-size:16px;">verified_user</span> SISTEM TERINTEGRASI
             </span>
         </div>
         <h1 style="font-size:26px; margin:0 0 8px; letter-spacing:-0.02em;">
