@@ -48,18 +48,30 @@ apt-get install -y --no-install-recommends \
     curl git unzip zip ca-certificates gnupg software-properties-common \
     lsb-release ufw sqlite3 htop fail2ban tar
 
-# 4. Instalasi Repositori PHP 8.3 Resmi (Ondřej Surý PPA)
-echo ">> [3/12] Menambahkan PPA PHP 8.3 & memasang dependensi PHP..."
-add-apt-repository -y ppa:ondrej/php
+# 4. Instalasi Repositori PHP & Ekstensi (Mendukung semua rilis Ubuntu)
+echo ">> [3/12] Memasang dependensi PHP & ekstensi..."
+# Bersihkan repository PPA rusak jika ada
+rm -f /etc/apt/sources.list.d/*ondrej* /etc/apt/sources.list.d/*php* 2>/dev/null || true
 apt-get update -y
-apt-get install -y \
-    php8.3-fpm php8.3-cli php8.3-common php8.3-sqlite3 php8.3-mysql \
-    php8.3-mbstring php8.3-xml php8.3-curl php8.3-gd php8.3-zip \
-    php8.3-bcmath php8.3-intl php8.3-readline
+
+# Coba pasang paket PHP bawaan resmi Ubuntu terlebih dahulu (sangat stabil & kompatibel)
+if ! apt-get install -y php-fpm php-cli php-common php-sqlite3 php-mysql php-mbstring php-xml php-curl php-gd php-zip php-bcmath php-intl php-readline; then
+    echo ">> Mengunduh repositori Sury PHP resmi..."
+    apt-get install -y apt-transport-https lsb-release
+    curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb || true
+    dpkg -i /tmp/debsuryorg-archive-keyring.deb 2>/dev/null || true
+    echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
+    apt-get update -y
+    apt-get install -y php-fpm php-cli php-common php-sqlite3 php-mysql php-mbstring php-xml php-curl php-gd php-zip php-bcmath php-intl php-readline
+fi
+
+# Deteksi versi PHP yang berhasil terpasang
+PHP_VER=$(php -r 'echo PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;' 2>/dev/null || echo "8.3")
+echo ">> Berhasil memasang PHP versi: ${PHP_VER}"
 
 # 5. Konfigurasi Batas Ukuran File di PHP.ini (FPM & CLI)
 echo ">> [4/12] Mengonfigurasi batas upload PHP (50MB) untuk impor Dapokdikma..."
-for php_ini in /etc/php/8.3/fpm/php.ini /etc/php/8.3/cli/php.ini; do
+for php_ini in /etc/php/${PHP_VER}/fpm/php.ini /etc/php/${PHP_VER}/cli/php.ini; do
     if [ -f "$php_ini" ]; then
         sed -i 's/^upload_max_filesize =.*/upload_max_filesize = 50M/' "$php_ini"
         sed -i 's/^post_max_size =.*/post_max_size = 50M/' "$php_ini"
@@ -67,7 +79,7 @@ for php_ini in /etc/php/8.3/fpm/php.ini /etc/php/8.3/cli/php.ini; do
         sed -i 's/^max_execution_time =.*/max_execution_time = 300/' "$php_ini"
     fi
 done
-systemctl restart php8.3-fpm
+systemctl restart php${PHP_VER}-fpm 2>/dev/null || systemctl restart php-fpm 2>/dev/null || true
 
 # 6. Pasang Composer (PHP Package Manager)
 echo ">> [5/12] Memasang Composer versi terbaru..."
@@ -94,7 +106,12 @@ NGINX_TEMPLATE="${PROJECT_DIR}/deploy/nginx/sipandu.conf"
 NGINX_TARGET="/etc/nginx/sites-available/sipandu"
 
 if [ -f "${NGINX_TEMPLATE}" ]; then
-    sed "s/{{DOMAIN_OR_IP}}/${DOMAIN_NAME}/g" "${NGINX_TEMPLATE}" > "${NGINX_TARGET}"
+    sed -e "s/{{DOMAIN_OR_IP}}/${DOMAIN_NAME}/g" \
+        -e "s/php8.3-fpm.sock/php${PHP_VER}-fpm.sock/g" \
+        "${NGINX_TEMPLATE}" > "${NGINX_TARGET}"
+    if [ ! -S "/run/php/php${PHP_VER}-fpm.sock" ] && [ -S "/run/php/php-fpm.sock" ]; then
+        sed -i "s/php${PHP_VER}-fpm.sock/php-fpm.sock/g" "${NGINX_TARGET}"
+    fi
 else
     echo "❌ Berkas template ${NGINX_TEMPLATE} tidak ditemukan!"
     exit 1
