@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Masuk — SIPANDU-WBK Rindam III/Siliwangi</title>
 
+    <!-- PWA / Android Mobile Meta Tags -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#0F172A">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SIPANDU">
+    <link rel="icon" type="image/png" sizes="192x192" href="/img/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="/img/icons/icon-192x192.png">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Montserrat:wght@700;800;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
@@ -439,6 +449,16 @@
             emailInput.style.backgroundColor = '';
             pwdInput.style.backgroundColor = '';
         }, 300);
+    }
+</script>
+
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then((reg) => console.log('SIPANDU PWA Service Worker aktif:', reg.scope))
+                .catch((err) => console.error('SIPANDU PWA gagal:', err));
+        });
     }
 </script>
 

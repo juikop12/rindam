@@ -6,6 +6,16 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Pengolahan Data Siswa per Satdik') — SIPANDU-WBK</title>
 
+    <!-- PWA / Android Mobile Meta Tags -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#0F172A">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SIPANDU">
+    <link rel="icon" type="image/png" sizes="192x192" href="/img/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="/img/icons/icon-192x192.png">
+
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @endif
@@ -1352,6 +1362,13 @@
             </div>
 
             <div class="flex items-center gap-2 sm:gap-4">
+                <!-- PWA Install Button (Android) -->
+                <button type="button" id="pwa-install-btn" onclick="installPwaApp()" style="display:none;" 
+                        class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-600 text-slate-900 transition-colors shadow-sm">
+                    <span class="ms text-[18px]">install_mobile</span>
+                    <span class="hidden sm:inline">Pasang Aplikasi</span>
+                </button>
+
                 <!-- User Scope Badge -->
                 @if(auth()->check())
                     <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl border text-xs font-bold {{ auth()->user()->isSuperAdmin() ? 'bg-rose-50 border-rose-200 text-rose-800' : (auth()->user()->isDanrindam() ? 'bg-amber-50 border-amber-200 text-amber-800' : (auth()->user()->isOperatorDanrindam() ? 'bg-indigo-50 border-indigo-200 text-indigo-800' : (auth()->user()->isOperatorSatdik() ? 'bg-emerald-50 border-emerald-200 text-emerald-800' : 'bg-slate-100 border-slate-200 text-slate-700'))) }}">
@@ -1406,6 +1423,42 @@
 
 <script src="{{ asset('js/chart.umd.min.js') }}"></script>
 @yield('scripts')
+
+<!-- PWA Service Worker & Install Prompt Handler -->
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then((reg) => console.log('SIPANDU PWA Service Worker aktif:', reg.scope))
+                .catch((err) => console.error('SIPANDU PWA gagal:', err));
+        });
+    }
+
+    // Tangani event install PWA di browser Android
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        const installBtn = document.getElementById('pwa-install-btn');
+        if (installBtn) {
+            installBtn.style.display = 'inline-flex';
+        }
+    });
+
+    function installPwaApp() {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('Pengguna menginstal SIPANDU PWA');
+                }
+                deferredPrompt = null;
+                const installBtn = document.getElementById('pwa-install-btn');
+                if (installBtn) installBtn.style.display = 'none';
+            });
+        }
+    }
+</script>
 
 </body>
 </html>
