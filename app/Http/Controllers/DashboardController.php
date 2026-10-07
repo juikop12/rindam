@@ -7,6 +7,7 @@ use App\Models\Student;
 use App\Models\StudentHealthRecord;
 use App\Models\StudentPersonalDataAccessLog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class DashboardController extends Controller
 {
@@ -26,77 +27,146 @@ class DashboardController extends Controller
             $selectedSatdik = $satdikId ? Satdik::find($satdikId) : null;
         }
 
-        // Query dasar serdik
+        // Cache statistik agregasi makro selama 60 detik untuk akses super cepat
+        $cacheKey = "dashboard_macro_" . ($satdikId ?? 'all');
+        $macroData = Cache::remember($cacheKey, 60, function () use ($satdikId, $satdiks) {
+            // Query agregasi serdik tunggal
+            $studentQuery = Student::query();
+            if ($satdikId) {
+                $studentQuery->where('satdik_id', $satdikId);
+            }
+
+            $sStats = (clone $studentQuery)->selectRaw("
+                COUNT(*) as total,
+                SUM(CASE WHEN status = 'Aktif' THEN 1 ELSE 0 END) as active,
+                SUM(CASE WHEN status = 'Sakit' THEN 1 ELSE 0 END) as sick,
+                SUM(CASE WHEN status IN ('Aktif', 'Sakit', 'Dinas Luar') THEN 1 ELSE 0 END) as counted,
+                SUM(CASE WHEN status IN ('Selesai', 'Lulus', 'DO / Dikeluarkan') THEN 1 ELSE 0 END) as archived,
+                SUM(CASE WHEN status IN ('Lulus', 'Selesai') THEN 1 ELSE 0 END) as graduated,
+                SUM(CASE WHEN status = 'DO / Dikeluarkan' THEN 1 ELSE 0 END) as dropped
+            ")->first();
+
+            // Query agregasi rekam medis tunggal
+            $healthQuery = StudentHealthRecord::query();
+            if ($satdikId) {
+                $healthQuery->whereHas('student', function ($q) use ($satdikId) {
+                    $q->where('satdik_id', $satdikId);
+                });
+            }
+
+            $hStats = (clone $healthQuery)->selectRaw("
+                COUNT(*) as total,
+                SUM(CASE WHEN daily_health_status = 'Siap Latih' THEN 1 ELSE 0 END) as siap_latih,
+                SUM(CASE WHEN daily_health_status = 'Berobat Jalan' THEN 1 ELSE 0 END) as berobat_jalan,
+                SUM(CASE WHEN daily_health_status = 'Rawat Inap Poliklinik' THEN 1 ELSE 0 END) as rawat_poliklinik,
+                SUM(CASE WHEN daily_health_status = 'Rujuk Rumkit' THEN 1 ELSE 0 END) as rujuk_rumkit,
+                SUM(CASE WHEN stakes_grade LIKE '%Stakes I (%' THEN 1 ELSE 0 END) as stakes_i,
+                SUM(CASE WHEN stakes_grade LIKE '%Stakes II (%' THEN 1 ELSE 0 END) as stakes_ii,
+                SUM(CASE WHEN stakes_grade LIKE '%Stakes III (%' THEN 1 ELSE 0 END) as stakes_iii,
+                SUM(CASE WHEN stakes_grade LIKE '%Stakes IV (%' THEN 1 ELSE 0 END) as stakes_iv
+            ")->first();
+
+            // Distribusi Serdik per Satdik via agregasi GROUP BY
+            $satdikStudentAgg = Student::selectRaw("
+                satdik_id,
+                COUNT(*) as total_all,
+                SUM(CASE WHEN status IN ('Aktif', 'Sakit', 'Dinas Luar') THEN 1 ELSE 0 END) as active_count,
+                SUM(CASE WHEN status IN ('Selesai', 'Lulus', 'DO / Dikeluarkan') THEN 1 ELSE 0 END) as archived_count,
+                SUM(CASE WHEN status = 'Aktif' THEN 1 ELSE 0 END) as ready_count,
+                SUM(CASE WHEN status = 'Sakit' THEN 1 ELSE 0 END) as sick_count
+            ")->groupBy('satdik_id')->get()->keyBy('satdik_id');
+
+            $satdikBreakdown = $satdiks->map(function ($satdik) use ($satdikStudentAgg) {
+                $agg = $satdikStudentAgg->get($satdik->id);
+                $activeCount = (int)($agg->active_count ?? 0);
+                $archivedCount = (int)($agg->archived_count ?? 0);
+                $readyCount = (int)($agg->ready_count ?? 0);
+                $sickCount = (int)($agg->sick_count ?? 0);
+                $totalAll = (int)($agg->total_all ?? 0);
+                $readyPercent = $activeCount > 0 ? round(($readyCount / $activeCount) * 100) : 100;
+
+                return [
+                    'satdik' => $satdik,
+                    'total' => $activeCount,
+                    'total_all' => $totalAll,
+                    'archived_count' => $archivedCount,
+                    'ready_count' => $readyCount,
+                    'sick_count' => $sickCount,
+                    'ready_percent' => $readyPercent,
+                ];
+            });
+
+            // Rekapitulasi per Program Pendidikan via agregasi GROUP BY (Bebas N+1)
+            $progStudentAgg = Student::selectRaw("
+                education_program_id,
+                COUNT(*) as total,
+                SUM(CASE WHEN status IN ('Aktif', 'Sakit', 'Dinas Luar') THEN 1 ELSE 0 END) as counted,
+                SUM(CASE WHEN status IN ('Selesai', 'Lulus', 'DO / Dikeluarkan') THEN 1 ELSE 0 END) as archived
+            ")->groupBy('education_program_id')->get()->keyBy('education_program_id');
+
+            $programsBreakdown = \App\Models\EducationProgram::with('satdik')
+                ->when($satdikId, fn($q) => $q->where('satdik_id', $satdikId))
+                ->get()
+                ->map(function($p) use ($progStudentAgg) {
+                    $agg = $progStudentAgg->get($p->id);
+                    return [
+                        'program' => $p,
+                        'counted' => (int)($agg->counted ?? 0),
+                        'archived' => (int)($agg->archived ?? 0),
+                        'total' => (int)($agg->total ?? 0),
+                    ];
+                });
+
+            return [
+                'totalStudents' => (int)($sStats->total ?? 0),
+                'activeStudents' => (int)($sStats->active ?? 0),
+                'sickStudents' => (int)($sStats->sick ?? 0),
+                'countedActiveStudents' => (int)($sStats->counted ?? 0),
+                'archivedStudents' => (int)($sStats->archived ?? 0),
+                'graduatedStudents' => (int)($sStats->graduated ?? 0),
+                'droppedStudents' => (int)($sStats->dropped ?? 0),
+                'totalHealth' => (int)($hStats->total ?? 0),
+                'siapLatih' => (int)($hStats->siap_latih ?? 0),
+                'berobatJalan' => (int)($hStats->berobat_jalan ?? 0),
+                'rawatPoliklinik' => (int)($hStats->rawat_poliklinik ?? 0),
+                'rujukRumkit' => (int)($hStats->rujuk_rumkit ?? 0),
+                'stakesI' => (int)($hStats->stakes_i ?? 0),
+                'stakesII' => (int)($hStats->stakes_ii ?? 0),
+                'stakesIII' => (int)($hStats->stakes_iii ?? 0),
+                'stakesIV' => (int)($hStats->stakes_iv ?? 0),
+                'satdikBreakdown' => $satdikBreakdown,
+                'programsBreakdown' => $programsBreakdown,
+            ];
+        });
+
+        $totalStudents = $macroData['totalStudents'];
+        $activeStudents = $macroData['activeStudents'];
+        $sickStudents = $macroData['sickStudents'];
+        $countedActiveStudents = $macroData['countedActiveStudents'];
+        $archivedStudents = $macroData['archivedStudents'];
+        $graduatedStudents = $macroData['graduatedStudents'];
+        $droppedStudents = $macroData['droppedStudents'];
+
+        $totalHealth = $macroData['totalHealth'];
+        $siapLatih = $macroData['siapLatih'];
+        $berobatJalan = $macroData['berobatJalan'];
+        $rawatPoliklinik = $macroData['rawatPoliklinik'];
+        $rujukRumkit = $macroData['rujukRumkit'];
+        $siapLatihPercent = $totalHealth > 0 ? round(($siapLatih / $totalHealth) * 100, 1) : 100;
+        $perawatanCount = $berobatJalan + $rawatPoliklinik + $rujukRumkit;
+
+        $stakesI = $macroData['stakesI'];
+        $stakesII = $macroData['stakesII'];
+        $stakesIII = $macroData['stakesIII'];
+        $stakesIV = $macroData['stakesIV'];
+
+        $satdikBreakdown = $macroData['satdikBreakdown'];
+        $programsBreakdown = $macroData['programsBreakdown'];
+
         $studentQuery = Student::query();
         if ($satdikId) {
             $studentQuery->where('satdik_id', $satdikId);
         }
-
-        // Statistik Makro Siswa: Hanya Aktif yang terhitung dalam kekuatan pendidikan berjalan
-        $totalStudents = (clone $studentQuery)->count();
-        $countedActiveStudents = (clone $studentQuery)->whereIn('status', ['Aktif', 'Sakit', 'Dinas Luar'])->count();
-        $activeStudents = (clone $studentQuery)->where('status', 'Aktif')->count();
-        $sickStudents = (clone $studentQuery)->where('status', 'Sakit')->count();
-        $archivedStudents = (clone $studentQuery)->whereIn('status', ['Selesai', 'Lulus', 'DO / Dikeluarkan'])->count();
-        $graduatedStudents = (clone $studentQuery)->whereIn('status', ['Lulus', 'Selesai'])->count();
-        $droppedStudents = (clone $studentQuery)->where('status', 'DO / Dikeluarkan')->count();
-
-        // Query Rekam Medis Terkait
-        $healthQuery = StudentHealthRecord::query();
-        if ($satdikId) {
-            $healthQuery->whereHas('student', function ($q) use ($satdikId) {
-                $q->where('satdik_id', $satdikId);
-            });
-        }
-
-        $totalHealth = (clone $healthQuery)->count();
-        $siapLatih = (clone $healthQuery)->where('daily_health_status', 'Siap Latih')->count();
-        $berobatJalan = (clone $healthQuery)->where('daily_health_status', 'Berobat Jalan')->count();
-        $rawatPoliklinik = (clone $healthQuery)->where('daily_health_status', 'Rawat Inap Poliklinik')->count();
-        $rujukRumkit = (clone $healthQuery)->where('daily_health_status', 'Rujuk Rumkit')->count();
-
-        $siapLatihPercent = $totalHealth > 0 ? round(($siapLatih / $totalHealth) * 100, 1) : 100;
-        $perawatanCount = $berobatJalan + $rawatPoliklinik + $rujukRumkit;
-
-        // Distribusi Stakes Militer
-        $stakesI = (clone $healthQuery)->where('stakes_grade', 'like', '%Stakes I (%')->count();
-        $stakesII = (clone $healthQuery)->where('stakes_grade', 'like', '%Stakes II (%')->count();
-        $stakesIII = (clone $healthQuery)->where('stakes_grade', 'like', '%Stakes III (%')->count();
-        $stakesIV = (clone $healthQuery)->where('stakes_grade', 'like', '%Stakes IV (%')->count();
-
-        // Distribusi Serdik per Satdik: Yang terhitung adalah siswa aktif berjalan
-        $satdikBreakdown = $satdiks->map(function ($satdik) {
-            $students = $satdik->students;
-            $activeCount = $students->whereIn('status', ['Aktif', 'Sakit', 'Dinas Luar'])->count();
-            $archivedCount = $students->whereIn('status', ['Selesai', 'Lulus', 'DO / Dikeluarkan'])->count();
-            $readyCount = $students->where('status', 'Aktif')->count();
-            $sickCount = $students->where('status', 'Sakit')->count();
-
-            $readyPercent = $activeCount > 0 ? round(($readyCount / $activeCount) * 100) : 100;
-
-            return [
-                'satdik' => $satdik,
-                'total' => $activeCount, // Yang terhitung aktif!
-                'total_all' => $students->count(),
-                'archived_count' => $archivedCount,
-                'ready_count' => $readyCount,
-                'sick_count' => $sickCount,
-                'ready_percent' => $readyPercent,
-            ];
-        });
-
-        // Rekapitulasi per Program Pendidikan (DIKMABA, DIKJURBA, DIKMATA, dll.)
-        $programsBreakdown = \App\Models\EducationProgram::with('satdik')
-            ->when($satdikId, fn($q) => $q->where('satdik_id', $satdikId))
-            ->get()
-            ->map(function($p) {
-                return [
-                    'program' => $p,
-                    'counted' => $p->students()->whereIn('status', ['Aktif', 'Sakit', 'Dinas Luar'])->count(),
-                    'archived' => $p->students()->whereIn('status', ['Selesai', 'Lulus', 'DO / Dikeluarkan'])->count(),
-                    'total' => $p->students()->count(),
-                ];
-            });
 
         // Serdik Terkini (Feed Aktivitas)
         $recentStudents = (clone $studentQuery)

@@ -46,6 +46,36 @@ class StudentExcelService
         'S' => ['key' => 'stakes_grade', 'label' => 'STAKES_MILITER', 'width' => 20],
         'T' => ['key' => 'doctor_notes', 'label' => 'CATATAN_MEDIS', 'width' => 30],
         'U' => ['key' => 'status', 'label' => 'STATUS_SISWA', 'width' => 20],
+        'V' => ['key' => 'iq_score', 'label' => 'IQ', 'width' => 10],
+        'W' => ['key' => 'psychology_score', 'label' => 'NILAI_PSI', 'width' => 12],
+        'X' => ['key' => 'psychology_grade', 'label' => 'KLASIFIKASI_PSI', 'width' => 16],
+        'Y' => ['key' => 'branch_recommendations', 'label' => 'SARAN_KECABANGAN', 'width' => 20],
+        'Z' => ['key' => 'physical_fitness_score', 'label' => 'NILAI_JASMANI', 'width' => 14],
+        'AA' => ['key' => 'physical_fitness_grade', 'label' => 'KLASIFIKASI_JAS', 'width' => 16],
+        'AB' => ['key' => 'run_12m_distance', 'label' => 'LARI_JARAK_M', 'width' => 14],
+        'AC' => ['key' => 'run_12m_score', 'label' => 'LARI_NILAI', 'width' => 12],
+        'AD' => ['key' => 'pull_ups_count', 'label' => 'PULL_UP_JML', 'width' => 12],
+        'AE' => ['key' => 'pull_ups_score', 'label' => 'PULL_UP_NILAI', 'width' => 14],
+        'AF' => ['key' => 'sit_ups_count', 'label' => 'SIT_UP_JML', 'width' => 12],
+        'AG' => ['key' => 'sit_ups_score', 'label' => 'SIT_UP_NILAI', 'width' => 12],
+        'AH' => ['key' => 'push_ups_count', 'label' => 'PUSH_UP_JML', 'width' => 12],
+        'AI' => ['key' => 'push_ups_score', 'label' => 'PUSH_UP_NILAI', 'width' => 14],
+        'AJ' => ['key' => 'shuttle_run_seconds', 'label' => 'SHUTTLE_DETIK', 'width' => 14],
+        'AK' => ['key' => 'shuttle_run_score', 'label' => 'SHUTTLE_NILAI', 'width' => 14],
+        'AL' => ['key' => 'swimming_score', 'label' => 'RENANG_NILAI', 'width' => 14],
+        'AM' => ['key' => 'swimming_style', 'label' => 'RENANG_GAYA', 'width' => 14],
+        'AN' => ['key' => 'litpers_grade', 'label' => 'KLASIFIKASI_LITPERS', 'width' => 18],
+        'AO' => ['key' => 'litpers_written_score', 'label' => 'LITPERS_TERTULIS', 'width' => 16],
+        'AP' => ['key' => 'litpers_interview_score', 'label' => 'LITPERS_WAWANCARA', 'width' => 18],
+        'AQ' => ['key' => 'final_selection_score', 'label' => 'NILAI_AKHIR_SELEKSI', 'width' => 18],
+        'AR' => ['key' => 'selection_test_number', 'label' => 'NOMOR_TES_PANPUS', 'width' => 24],
+        'AS' => ['key' => 'candidate_phone', 'label' => 'NO_HP_SISWA', 'width' => 16],
+        'AT' => ['key' => 'candidate_email', 'label' => 'EMAIL_SISWA', 'width' => 24],
+        'AU' => ['key' => 'origin_school', 'label' => 'ASAL_SEKOLAH', 'width' => 24],
+        'AV' => ['key' => 'father_name', 'label' => 'NAMA_ORTU', 'width' => 20],
+        'AW' => ['key' => 'parent_occupation', 'label' => 'PEKERJAAN_ORTU', 'width' => 20],
+        'AX' => ['key' => 'emergency_contact_phone', 'label' => 'NO_HP_ORTU', 'width' => 16],
+        'AY' => ['key' => 'home_address', 'label' => 'ALAMAT_DOMISILI', 'width' => 30],
     ];
 
     /**
@@ -64,14 +94,14 @@ class StudentExcelService
             : "FORMAT PENGINPUTAN DATA SERDIK PER SATDIK — RINDAM III / SILIWANGI";
 
         $sheet->setCellValue('A1', $title);
-        $sheet->mergeCells('A1:U1');
+        $sheet->mergeCells('A1:AY1');
         $sheet->getStyle('A1')->getFont()->setBold(true)->setSize(13)->getColor()->setRGB('10170C');
         $sheet->getStyle('A1')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
         $sheet->getRowDimension(1)->setRowHeight(28);
 
         // 2. Baris Petunjuk
-        $sheet->setCellValue('A2', 'PETUNJUK: Kolom NIK_KTP (16 digit) adalah ID unik utama pengecekan data serdik (mencegah duplikasi). Kolom wajib: NAMA_LENGKAP, NIK_KTP, & KODE_SATDIK. Nilai STATUS_SISWA: Aktif (Terhitung), Sakit (Terhitung), Selesai (Arsip Pendidikan), Lulus. Nilai STATUS_KESEHATAN: Siap Latih, Berobat Jalan, Rawat Inap Poliklinik, Rujuk Rumkit.');
-        $sheet->mergeCells('A2:U2');
+        $sheet->setCellValue('A2', 'PETUNJUK: Format komprehensif memuat data serdik, IQ, Nilai Psikologi, Kesamaptaan Jasmani (Garjas A & B), Litpers, dan Kontak Keluarga. NIK KTP (16 digit) adalah ID unik utama pencegah duplikasi. Kolom wajib: NAMA_LENGKAP, NIK_KTP, & KODE_SATDIK.');
+        $sheet->mergeCells('A2:AY2');
         $sheet->getStyle('A2')->getFont()->setItalic(true)->setSize(9)->getColor()->setRGB('5B6A52');
         $sheet->getStyle('A2')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
         $sheet->getRowDimension(2)->setRowHeight(18);
@@ -298,6 +328,11 @@ class StudentExcelService
         $updatedCount = 0;
         $errors = [];
 
+        // In-memory cache untuk mencegah query repetitif di dalam loop
+        $programsCache = [];
+        $classroomsCache = [];
+        $satdikStudentCounts = [];
+
         DB::beginTransaction();
         try {
             for ($i = $headerIndex + 1; $i < count($rows); $i++) {
@@ -357,31 +392,36 @@ class StudentExcelService
                     continue;
                 }
 
-                // Cari atau buat Program Pendidikan
-                $educationProgram = null;
-                if (!empty($programName)) {
-                    $educationProgram = EducationProgram::where('satdik_id', $satdik->id)
-                        ->where(function($q) use ($programName) {
-                            $q->where('name', 'like', "%{$programName}%")
-                              ->orWhere('code', 'like', "%{$programName}%");
-                        })
-                        ->first();
+                // Cari atau buat Program Pendidikan (dengan memory cache)
+                $progKey = "{$satdik->id}_" . Str::slug($programName);
+                if (!isset($programsCache[$progKey])) {
+                    $educationProgram = null;
+                    if (!empty($programName)) {
+                        $educationProgram = EducationProgram::where('satdik_id', $satdik->id)
+                            ->where(function($q) use ($programName) {
+                                $q->where('name', 'like', "%{$programName}%")
+                                  ->orWhere('code', 'like', "%{$programName}%");
+                            })
+                            ->first();
+                    }
+                    if (!$educationProgram) {
+                        $educationProgram = EducationProgram::where('satdik_id', $satdik->id)->first();
+                    }
+                    if (!$educationProgram) {
+                        $educationProgram = EducationProgram::create([
+                            'satdik_id' => $satdik->id,
+                            'name' => !empty($programName) ? $programName : "Pendidikan {$satdik->code}",
+                            'code' => strtoupper(substr($satdik->code, 0, 4)) . '-' . date('Y'),
+                            'academic_year' => date('Y'),
+                            'batch_number' => 1,
+                            'status' => 'Berjalan',
+                        ]);
+                    }
+                    $programsCache[$progKey] = $educationProgram;
                 }
-                if (!$educationProgram) {
-                    $educationProgram = EducationProgram::where('satdik_id', $satdik->id)->first();
-                }
-                if (!$educationProgram) {
-                    $educationProgram = EducationProgram::create([
-                        'satdik_id' => $satdik->id,
-                        'name' => !empty($programName) ? $programName : "Pendidikan {$satdik->code}",
-                        'code' => strtoupper(substr($satdik->code, 0, 4)) . '-' . date('Y'),
-                        'academic_year' => date('Y'),
-                        'batch_number' => 1,
-                        'status' => 'Berjalan',
-                    ]);
-                }
+                $educationProgram = $programsCache[$progKey];
 
-                // Cari atau buat Ruang Kelas / Peleton
+                // Cari atau buat Ruang Kelas / Peleton (dengan memory cache)
                 $classroomId = null;
                 if (!empty($company) || !empty($platoon)) {
                     $className = trim("{$company} {$platoon}");
@@ -389,16 +429,20 @@ class StudentExcelService
                     if (empty($classCode)) {
                         $classCode = 'CLS-' . mt_rand(1000, 9999);
                     }
-                    $classroom = Classroom::firstOrCreate([
-                        'education_program_id' => $educationProgram->id,
-                        'code' => $classCode,
-                    ], [
-                        'name' => $className,
-                        'company' => !empty($company) ? $company : null,
-                        'platoon' => !empty($platoon) ? $platoon : null,
-                        'capacity' => 40,
-                    ]);
-                    $classroomId = $classroom->id;
+                    $classKey = "{$educationProgram->id}_{$classCode}";
+                    if (!isset($classroomsCache[$classKey])) {
+                        $classroom = Classroom::firstOrCreate([
+                            'education_program_id' => $educationProgram->id,
+                            'code' => $classCode,
+                        ], [
+                            'name' => $className,
+                            'company' => !empty($company) ? $company : null,
+                            'platoon' => !empty($platoon) ? $platoon : null,
+                            'capacity' => 40,
+                        ]);
+                        $classroomsCache[$classKey] = $classroom;
+                    }
+                    $classroomId = $classroomsCache[$classKey]->id;
                 }
 
                 // Normalisasi Tanggal Lahir
@@ -476,8 +520,11 @@ class StudentExcelService
                 } else {
                     // Serdik Baru (NIK belum pernah terdaftar)
                     if (empty($nosik)) {
-                        $count = Student::where('satdik_id', $satdik->id)->count() + 1;
-                        $nosik = sprintf("%s-%s-%03d", date('Y'), $satdik->code, $count);
+                        if (!isset($satdikStudentCounts[$satdik->id])) {
+                            $satdikStudentCounts[$satdik->id] = Student::where('satdik_id', $satdik->id)->count();
+                        }
+                        $satdikStudentCounts[$satdik->id]++;
+                        $nosik = sprintf("%s-%s-%03d", date('Y'), $satdik->code, $satdikStudentCounts[$satdik->id]);
                     }
 
                     $student = Student::create([
@@ -506,15 +553,83 @@ class StudentExcelService
                         } while (StudentPersonalProfile::isNikRegistered($nik));
                     }
 
-                    // Buat Profil Pribadi Terenkripsi AES-256
-                    StudentPersonalProfile::create([
-                        'student_id' => $student->id,
-                        'nik' => $nik,
-                        'mother_name' => 'Ibu ' . Str::words($fullName, 1, ''),
-                        'emergency_contact_phone' => '0812' . mt_rand(10000000, 99999999),
-                    ]);
-
                     $importedCount++;
+                }
+
+                // Data Tambahan Komprehensif (IQ, Jasmani, Psikologi, Litpers, Kontak)
+                $iqVal = (int)preg_replace('/[^0-9]/', '', (string)($row[$this->getColIdx($columnMap, ['iq_score', 'iq', 'nilai_iq'])] ?? '')) ?: null;
+                $psiScoreVal = floatval(str_replace(',', '.', (string)($row[$this->getColIdx($columnMap, ['psychology_score', 'nilai_psi', 'nilai_psikologi'])] ?? ''))) ?: null;
+                $psiGradeVal = trim((string)($row[$this->getColIdx($columnMap, ['psychology_grade', 'klasifikasi_psi', 'klasifikasi_psikologi'])] ?? '')) ?: null;
+                $branchRecsVal = trim((string)($row[$this->getColIdx($columnMap, ['branch_recommendations', 'saran_kecabangan', 'kecabangan'])] ?? '')) ?: null;
+
+                $jasScoreVal = floatval(str_replace(',', '.', (string)($row[$this->getColIdx($columnMap, ['physical_fitness_score', 'nilai_jasmani', 'nilai_jas_akhir'])] ?? ''))) ?: null;
+                $jasGradeVal = trim((string)($row[$this->getColIdx($columnMap, ['physical_fitness_grade', 'klasifikasi_jas', 'klasifikasi_jasmani'])] ?? '')) ?: null;
+                $runDistVal = (int)preg_replace('/[^0-9]/', '', (string)($row[$this->getColIdx($columnMap, ['run_12m_distance', 'lari_jarak_m', 'jarak_lari'])] ?? '')) ?: null;
+                $runScoreVal = floatval(str_replace(',', '.', (string)($row[$this->getColIdx($columnMap, ['run_12m_score', 'lari_nilai', 'nilai_lari'])] ?? ''))) ?: null;
+                $pullCountVal = (int)preg_replace('/[^0-9]/', '', (string)($row[$this->getColIdx($columnMap, ['pull_ups_count', 'pull_up_jml', 'pullup_jml'])] ?? '')) ?: null;
+                $pullScoreVal = floatval(str_replace(',', '.', (string)($row[$this->getColIdx($columnMap, ['pull_ups_score', 'pull_up_nilai', 'pullup_nilai'])] ?? ''))) ?: null;
+                $sitCountVal = (int)preg_replace('/[^0-9]/', '', (string)($row[$this->getColIdx($columnMap, ['sit_ups_count', 'sit_up_jml', 'situp_jml'])] ?? '')) ?: null;
+                $sitScoreVal = floatval(str_replace(',', '.', (string)($row[$this->getColIdx($columnMap, ['sit_ups_score', 'sit_up_nilai', 'situp_nilai'])] ?? ''))) ?: null;
+                $pushCountVal = (int)preg_replace('/[^0-9]/', '', (string)($row[$this->getColIdx($columnMap, ['push_ups_count', 'push_up_jml', 'pushup_jml'])] ?? '')) ?: null;
+                $pushScoreVal = floatval(str_replace(',', '.', (string)($row[$this->getColIdx($columnMap, ['push_ups_score', 'push_up_nilai', 'pushup_nilai'])] ?? ''))) ?: null;
+                $shuttleSecVal = floatval(str_replace(',', '.', (string)($row[$this->getColIdx($columnMap, ['shuttle_run_seconds', 'shuttle_detik'])] ?? ''))) ?: null;
+                $shuttleScoreVal = floatval(str_replace(',', '.', (string)($row[$this->getColIdx($columnMap, ['shuttle_run_score', 'shuttle_nilai'])] ?? ''))) ?: null;
+                $swimScoreVal = floatval(str_replace(',', '.', (string)($row[$this->getColIdx($columnMap, ['swimming_score', 'renang_nilai'])] ?? ''))) ?: null;
+                $swimStyleVal = trim((string)($row[$this->getColIdx($columnMap, ['swimming_style', 'renang_gaya'])] ?? '')) ?: null;
+
+                $litGradeVal = trim((string)($row[$this->getColIdx($columnMap, ['litpers_grade', 'klasifikasi_litpers'])] ?? '')) ?: null;
+                $litWrittenVal = floatval(str_replace(',', '.', (string)($row[$this->getColIdx($columnMap, ['litpers_written_score', 'litpers_tertulis'])] ?? ''))) ?: null;
+                $litInterviewVal = floatval(str_replace(',', '.', (string)($row[$this->getColIdx($columnMap, ['litpers_interview_score', 'litpers_wawancara'])] ?? ''))) ?: null;
+                $finalSelScoreVal = floatval(str_replace(',', '.', (string)($row[$this->getColIdx($columnMap, ['final_selection_score', 'nilai_akhir_seleksi', 'nilai_akhir'])] ?? ''))) ?: null;
+                $selTestNoVal = trim((string)($row[$this->getColIdx($columnMap, ['selection_test_number', 'nomor_tes_panpus', 'nomor_tes'])] ?? '')) ?: null;
+
+                $candPhoneVal = trim((string)($row[$this->getColIdx($columnMap, ['candidate_phone', 'no_hp_siswa', 'nomor_hp_calon'])] ?? '')) ?: null;
+                $candEmailVal = trim((string)($row[$this->getColIdx($columnMap, ['candidate_email', 'email_siswa', 'email'])] ?? '')) ?: null;
+                $origSchoolVal = trim((string)($row[$this->getColIdx($columnMap, ['origin_school', 'asal_sekolah'])] ?? '')) ?: null;
+                $fatherNameVal = trim((string)($row[$this->getColIdx($columnMap, ['father_name', 'nama_ortu', 'nama_ortu_wali'])] ?? '')) ?: null;
+                $parentOccVal = trim((string)($row[$this->getColIdx($columnMap, ['parent_occupation', 'pekerjaan_ortu', 'pekerjaan_ortu_wali'])] ?? '')) ?: null;
+                $emgPhoneVal = trim((string)($row[$this->getColIdx($columnMap, ['emergency_contact_phone', 'no_hp_ortu', 'nomor_hp_ortu_wali'])] ?? '')) ?: null;
+                $homeAddrVal = trim((string)($row[$this->getColIdx($columnMap, ['home_address', 'alamat_domisili', 'alamat_calon'])] ?? '')) ?: null;
+
+                $profilePayload = array_filter([
+                    'nik' => $nik,
+                    'iq_score' => $iqVal,
+                    'psychology_score' => $psiScoreVal,
+                    'psychology_grade' => $psiGradeVal,
+                    'branch_recommendations' => $branchRecsVal,
+                    'physical_fitness_score' => $jasScoreVal,
+                    'physical_fitness_grade' => $jasGradeVal,
+                    'run_12m_distance' => $runDistVal,
+                    'run_12m_score' => $runScoreVal,
+                    'pull_ups_count' => $pullCountVal,
+                    'pull_ups_score' => $pullScoreVal,
+                    'sit_ups_count' => $sitCountVal,
+                    'sit_ups_score' => $sitScoreVal,
+                    'push_ups_count' => $pushCountVal,
+                    'push_ups_score' => $pushScoreVal,
+                    'shuttle_run_seconds' => $shuttleSecVal,
+                    'shuttle_run_score' => $shuttleScoreVal,
+                    'swimming_score' => $swimScoreVal,
+                    'swimming_style' => $swimStyleVal,
+                    'litpers_grade' => $litGradeVal,
+                    'litpers_written_score' => $litWrittenVal,
+                    'litpers_interview_score' => $litInterviewVal,
+                    'final_selection_score' => $finalSelScoreVal,
+                    'selection_test_number' => $selTestNoVal,
+                    'candidate_phone' => $candPhoneVal,
+                    'candidate_email' => $candEmailVal,
+                    'origin_school' => $origSchoolVal,
+                    'father_name' => $fatherNameVal,
+                    'parent_occupation' => $parentOccVal,
+                    'emergency_contact_phone' => $emgPhoneVal ?: ('0812' . mt_rand(10000000, 99999999)),
+                    'home_address' => $homeAddrVal,
+                ], fn($v) => !is_null($v));
+
+                if (!empty($profilePayload)) {
+                    StudentPersonalProfile::updateOrCreate(
+                        ['student_id' => $student->id],
+                        $profilePayload
+                    );
                 }
 
                 // Hitung BMI jika TB dan BB tersedia

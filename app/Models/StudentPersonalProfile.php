@@ -26,6 +26,8 @@ class StudentPersonalProfile extends Model
             'emergency_contact_name' => 'encrypted',
             'emergency_contact_phone' => 'encrypted',
             'home_address' => 'encrypted',
+            'candidate_phone' => 'encrypted',
+            'dapokdikma_raw_json' => 'array',
         ];
     }
 

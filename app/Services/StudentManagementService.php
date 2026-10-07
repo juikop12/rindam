@@ -91,13 +91,23 @@ class StudentManagementService
             $baseQuery->where('education_program_id', $programId);
         }
 
-        $overallTotal = (clone $baseQuery)->count();
-        $overallActive = (clone $baseQuery)->where('status', 'Aktif')->count();
-        $overallCounted = (clone $baseQuery)->whereIn('status', ['Aktif', 'Sakit', 'Dinas Luar'])->count();
-        $overallSick = (clone $baseQuery)->where('status', 'Sakit')->count();
-        $overallArchived = (clone $baseQuery)->whereIn('status', ['Selesai', 'Lulus', 'DO / Dikeluarkan'])->count();
-        $overallFinished = (clone $baseQuery)->whereIn('status', ['Selesai', 'Lulus'])->count();
-        $overallDo = (clone $baseQuery)->where('status', 'DO / Dikeluarkan')->count();
+        $statsRaw = (clone $baseQuery)->selectRaw("
+            COUNT(*) as total,
+            SUM(CASE WHEN status = 'Aktif' THEN 1 ELSE 0 END) as active,
+            SUM(CASE WHEN status IN ('Aktif', 'Sakit', 'Dinas Luar') THEN 1 ELSE 0 END) as counted,
+            SUM(CASE WHEN status = 'Sakit' THEN 1 ELSE 0 END) as sick,
+            SUM(CASE WHEN status IN ('Selesai', 'Lulus', 'DO / Dikeluarkan') THEN 1 ELSE 0 END) as archived,
+            SUM(CASE WHEN status IN ('Selesai', 'Lulus') THEN 1 ELSE 0 END) as finished,
+            SUM(CASE WHEN status = 'DO / Dikeluarkan' THEN 1 ELSE 0 END) as dropped
+        ")->first();
+
+        $overallTotal = (int)($statsRaw->total ?? 0);
+        $overallActive = (int)($statsRaw->active ?? 0);
+        $overallCounted = (int)($statsRaw->counted ?? 0);
+        $overallSick = (int)($statsRaw->sick ?? 0);
+        $overallArchived = (int)($statsRaw->archived ?? 0);
+        $overallFinished = (int)($statsRaw->finished ?? 0);
+        $overallDo = (int)($statsRaw->dropped ?? 0);
         $overallProtectedProfiles = StudentPersonalProfile::count();
 
         // Rekapitulasi per Program Pendidikan (Aktif Terhitung vs Selesai Arsip)
@@ -105,18 +115,19 @@ class StudentManagementService
         if (!empty($satdikId)) {
             $progQuery->where('satdik_id', $satdikId);
         }
-        $programStats = $progQuery->orderBy('name')->get()->map(function ($p) {
-            $counted = Student::where('education_program_id', $p->id)
-                ->whereIn('status', ['Aktif', 'Sakit', 'Dinas Luar'])->count();
-            $activeOnly = Student::where('education_program_id', $p->id)
-                ->where('status', 'Aktif')->count();
-            $sickOnly = Student::where('education_program_id', $p->id)
-                ->where('status', 'Sakit')->count();
-            $archived = Student::where('education_program_id', $p->id)
-                ->whereIn('status', ['Selesai', 'Lulus', 'DO / Dikeluarkan'])->count();
-            $finished = Student::where('education_program_id', $p->id)
-                ->whereIn('status', ['Selesai', 'Lulus'])->count();
-            $total = Student::where('education_program_id', $p->id)->count();
+
+        $programAgg = Student::selectRaw("
+            education_program_id,
+            COUNT(*) as total,
+            SUM(CASE WHEN status IN ('Aktif', 'Sakit', 'Dinas Luar') THEN 1 ELSE 0 END) as counted,
+            SUM(CASE WHEN status = 'Aktif' THEN 1 ELSE 0 END) as active_only,
+            SUM(CASE WHEN status = 'Sakit' THEN 1 ELSE 0 END) as sick_only,
+            SUM(CASE WHEN status IN ('Selesai', 'Lulus', 'DO / Dikeluarkan') THEN 1 ELSE 0 END) as archived,
+            SUM(CASE WHEN status IN ('Selesai', 'Lulus') THEN 1 ELSE 0 END) as finished
+        ")->groupBy('education_program_id')->get()->keyBy('education_program_id');
+
+        $programStats = $progQuery->orderBy('name')->get()->map(function ($p) use ($programAgg) {
+            $agg = $programAgg->get($p->id);
 
             return [
                 'id' => $p->id,
@@ -128,12 +139,12 @@ class StudentManagementService
                 'academic_year' => $p->academic_year,
                 'batch_number' => $p->batch_number,
                 'status' => $p->status,
-                'counted_students' => $counted,     // TERHITUNG (Aktif & Sakit)
-                'active_students' => $activeOnly,   // Siap Latih
-                'sick_students' => $sickOnly,       // Dispen Medis
-                'archived_students' => $archived,   // ARSIP (Tidak terhitung)
-                'finished_students' => $finished,   // Selesai/Lulus
-                'total_students' => $total,
+                'counted_students' => (int)($agg->counted ?? 0),
+                'active_students' => (int)($agg->active_only ?? 0),
+                'sick_students' => (int)($agg->sick_only ?? 0),
+                'archived_students' => (int)($agg->archived ?? 0),
+                'finished_students' => (int)($agg->finished ?? 0),
+                'total_students' => (int)($agg->total ?? 0),
             ];
         });
 

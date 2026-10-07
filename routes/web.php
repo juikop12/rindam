@@ -41,7 +41,9 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{student}', [StudentController::class, 'destroy'])->name('destroy');
         Route::patch('/{student}/status', [StudentController::class, 'updateStatus'])->name('update-status');
         Route::put('/{student}/status', [StudentController::class, 'updateStatus'])->name('update-status.put');
-        Route::post('/{student}/reveal-sensitive', [StudentController::class, 'revealSensitive'])->name('reveal-sensitive');
+        Route::post('/{student}/reveal-sensitive', [StudentController::class, 'revealSensitive'])
+            ->middleware('throttle:10,1')
+            ->name('reveal-sensitive');
     });
 
     // MODUL 2: PROGRAM PENDIDIKAN PER SATDIK (MENU MANDIRI)

@@ -35,6 +35,8 @@ echo ======================================================================
 echo   Menjalankan server di port 8000... Tekan Ctrl + C untuk berhenti.
 echo ======================================================================
 echo.
+set "PHP_PATH=D:\laragon\bin\php\php-8.3.26-Win32-vs16-x64\php.exe"
+if not exist "%PHP_PATH%" set "PHP_PATH=php"
 
-"D:\laragon\bin\php\php-8.3.26-Win32-vs16-x64\php.exe" artisan serve --host=0.0.0.0 --port=8000
+"%PHP_PATH%" artisan serve --host=0.0.0.0 --port=8000
 pause

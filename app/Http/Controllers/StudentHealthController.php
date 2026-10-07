@@ -93,10 +93,17 @@ class StudentHealthController extends Controller
             $sq->whereIn('status', ['Aktif', 'Sakit', 'Dinas Luar']);
         });
 
-        $stats['siap_latih'] = (clone $activeHealthQuery)->where('daily_health_status', 'Siap Latih')->count();
-        $stats['berobat_jalan'] = (clone $activeHealthQuery)->where('daily_health_status', 'Berobat Jalan')->count();
-        $stats['rawat_inap'] = (clone $activeHealthQuery)->where('daily_health_status', 'Rawat Inap Poliklinik')->count();
-        $stats['rujuk_rumkit'] = (clone $activeHealthQuery)->where('daily_health_status', 'Rujuk Rumkit')->count();
+        $activeHealthAgg = (clone $activeHealthQuery)->selectRaw("
+            SUM(CASE WHEN daily_health_status = 'Siap Latih' THEN 1 ELSE 0 END) as siap_latih,
+            SUM(CASE WHEN daily_health_status = 'Berobat Jalan' THEN 1 ELSE 0 END) as berobat_jalan,
+            SUM(CASE WHEN daily_health_status = 'Rawat Inap Poliklinik' THEN 1 ELSE 0 END) as rawat_inap,
+            SUM(CASE WHEN daily_health_status = 'Rujuk Rumkit' THEN 1 ELSE 0 END) as rujuk_rumkit
+        ")->first();
+
+        $stats['siap_latih'] = (int)($activeHealthAgg->siap_latih ?? 0);
+        $stats['berobat_jalan'] = (int)($activeHealthAgg->berobat_jalan ?? 0);
+        $stats['rawat_inap'] = (int)($activeHealthAgg->rawat_inap ?? 0);
+        $stats['rujuk_rumkit'] = (int)($activeHealthAgg->rujuk_rumkit ?? 0);
         $stats['perawatan_khusus'] = $stats['rawat_inap'] + $stats['rujuk_rumkit'];
 
         $selectedSatdik = $selectedSatdikId ? Satdik::find($selectedSatdikId) : null;

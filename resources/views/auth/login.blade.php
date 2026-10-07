@@ -355,7 +355,7 @@
                        id="email" 
                        class="form-input" 
                        placeholder="nama@rindam.mil.id"
-                       value="{{ old('email', 'danrindam@rindam.mil.id') }}" 
+                       value="{{ old('email', (!empty($showDemoAccounts) ? 'danrindam@rindam.mil.id' : '')) }}" 
                        required 
                        autofocus>
             </div>
@@ -371,7 +371,7 @@
                        id="password" 
                        class="form-input" 
                        placeholder="••••••••" 
-                       value="password"
+                       value="{{ !empty($showDemoAccounts) ? 'password' : '' }}"
                        required>
                 <button type="button" class="toggle-btn" onclick="togglePasswordVisibility()" title="Lihat kata sandi">
                     <span class="ms" id="togglePasswordIcon">visibility</span>
@@ -398,6 +398,7 @@
         </button>
     </form>
 
+    @if(!empty($showDemoAccounts) && !empty($demoAccounts))
     <!-- MINIMALIST DEMO ACCOUNTS SELECTOR -->
     <div class="demo-divider">Akun Demo Simulasi</div>
 
@@ -412,6 +413,7 @@
             @endforeach
         </select>
     </div>
+    @endif
 
     <!-- FOOTER -->
     <div class="card-footer">

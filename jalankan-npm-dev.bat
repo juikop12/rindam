@@ -6,11 +6,10 @@ echo   SIPANDU-WBK: VITE DEV SERVER (npm run dev)
 echo ========================================================
 echo.
 
-set PATH=D:\laragon\bin\nodejs\node-v22;%PATH%
-
-echo Menjalankan Vite Dev Server pada http://localhost:5173 ...
-echo Tekan Ctrl+C jika ingin menghentikan server dev.
-echo.
-
-call "D:\laragon\bin\nodejs\node-v22\npm.cmd" run dev
+if exist "D:\laragon\bin\nodejs\node-v22\npm.cmd" (
+    set PATH=D:\laragon\bin\nodejs\node-v22;%PATH%
+    call "D:\laragon\bin\nodejs\node-v22\npm.cmd" run dev
+) else (
+    call npm run dev
+)
 pause

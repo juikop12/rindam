@@ -20,8 +20,10 @@ class AuthController extends Controller
             return redirect()->route('dashboard');
         }
 
-        // Akun-akun percontohan untuk mempermudah pengujian & simulasi role
-        $demoAccounts = [
+        $showDemoAccounts = app()->environment('local') || (bool) config('app.debug');
+
+        // Akun-akun percontohan untuk mempermudah pengujian & simulasi role (Hanya di local/debug)
+        $demoAccounts = $showDemoAccounts ? [
             [
                 'role' => 'Super Administrator',
                 'badge' => 'Sistem & Pengaturan',
@@ -103,9 +105,9 @@ class AuthController extends Controller
                 'password' => 'password',
                 'scope' => 'Audit Trail & Pengawasan ZI',
             ],
-        ];
+        ] : [];
 
-        return view('auth.login', compact('demoAccounts'));
+        return view('auth.login', compact('demoAccounts', 'showDemoAccounts'));
     }
 
     /**

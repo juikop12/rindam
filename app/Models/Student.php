@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Facades\Cache;
 
 #[ScopedBy([SatdikScope::class])]
 class Student extends Model
@@ -46,6 +47,12 @@ class Student extends Model
         });
 
         static::saved(function (Student $student) {
+            // Invalidate cache makro dashboard
+            Cache::forget("dashboard_macro_all");
+            if ($student->satdik_id) {
+                Cache::forget("dashboard_macro_{$student->satdik_id}");
+            }
+
             // Sinkronisasi status kesehatan ke StudentHealthRecord jika ada
             $healthRecord = $student->healthRecord()->first();
             if (!$healthRecord) return;
@@ -65,6 +72,13 @@ class Student extends Model
                         'last_examined_at' => now(),
                     ]);
                 });
+            }
+        });
+
+        static::deleted(function (Student $student) {
+            Cache::forget("dashboard_macro_all");
+            if ($student->satdik_id) {
+                Cache::forget("dashboard_macro_{$student->satdik_id}");
             }
         });
     }

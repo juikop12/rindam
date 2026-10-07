@@ -292,9 +292,212 @@
                 </a>
             </div>
 
+    </div>
+</div>
+
+@if($profile && ($profile->iq_score || $profile->physical_fitness_score || $profile->litpers_grade || !empty($profile->dapokdikma_raw_json)))
+<!-- DOSSIER KEMAMPUAN PRAJURIT: PSIKOLOGI, IQ, GARJAS & LITPERS (DAPOKDIKMA) -->
+<div class="mb-6">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+        <div>
+            <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                <span class="ms text-emerald-700 text-[22px]">psychology</span>
+                Dossier Potensi, Kesamaptaan & Seleksi Masuk
+            </h2>
+            <p class="text-xs text-slate-500 mt-0.5">Data resmi werving seleksi Panpus / Dapokdikma Mabesad TA 2026</p>
+        </div>
+        @if(!empty($profile->dapokdikma_raw_json))
+        <button type="button" onclick="document.getElementById('modalRawDapok').classList.remove('hidden')" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-bold transition-all shadow-sm">
+            <span class="ms text-[16px]">dataset</span> Lihat 101 Atribut Asli Dapokdikma
+        </button>
+        @endif
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- KARTU 1: PSIKOLOGI & IQ -->
+        <div class="bg-white border border-slate-200 rounded-xl shadow-sm p-5 flex flex-col justify-between">
+            <div>
+                <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+                    <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                        <span class="ms text-indigo-600 text-[18px]">neurology</span> Tes Psikologi & IQ
+                    </span>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-indigo-50 text-indigo-700 border border-indigo-200">
+                        {{ $profile->psychology_grade ?? 'PSI' }}
+                    </span>
+                </div>
+
+                <div class="flex items-center gap-4 mb-4 bg-indigo-50/50 p-3 rounded-xl border border-indigo-100">
+                    <div class="w-14 h-14 rounded-xl bg-indigo-600 text-white flex flex-col items-center justify-center shrink-0 shadow-sm">
+                        <span class="text-[10px] font-bold uppercase tracking-wider">IQ</span>
+                        <span class="text-xl font-black leading-none">{{ $profile->iq_score ?? '-' }}</span>
+                    </div>
+                    <div>
+                        <div class="text-xs font-bold text-slate-800">
+                            @if(($profile->iq_score ?? 0) >= 120)
+                                Sangat Cerdas (Superior)
+                            @elseif(($profile->iq_score ?? 0) >= 110)
+                                Di Atas Rata-Rata (High Average)
+                            @elseif(($profile->iq_score ?? 0) >= 90)
+                                Rata-Rata (Average)
+                            @else
+                                Standar Militer
+                            @endif
+                        </div>
+                        <div class="text-[11px] text-slate-500 mt-0.5">Nilai Psikologi: <b class="text-indigo-700">{{ $profile->psychology_score ?? '-' }}</b></div>
+                    </div>
+                </div>
+
+                <div class="space-y-2 text-xs">
+                    <div class="flex justify-between py-1.5 border-b border-slate-50">
+                        <span class="text-slate-500">Rekomendasi Kecabangan</span>
+                        <span class="font-bold text-slate-800 font-mono">{{ $profile->branch_recommendations ?? 'Umum' }}</span>
+                    </div>
+                    <div class="flex justify-between py-1.5 border-b border-slate-50">
+                        <span class="text-slate-500">Klasifikasi Keswa</span>
+                        <span class="font-semibold text-slate-800">{{ $profile->keswa_grade ?? '-' }}</span>
+                    </div>
+                    <div class="flex justify-between py-1.5">
+                        <span class="text-slate-500">Nomor Tes Seleksi</span>
+                        <span class="font-mono text-slate-700 text-[11px]">{{ $profile->selection_test_number ?? '-' }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- KARTU 2: KESAMAPTAAN JASMANI (GARJAS) -->
+        <div class="bg-white border border-slate-200 rounded-xl shadow-sm p-5 flex flex-col justify-between">
+            <div>
+                <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+                    <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                        <span class="ms text-emerald-600 text-[18px]">fitness_center</span> Kesamaptaan Jasmani
+                    </span>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                        {{ $profile->physical_fitness_grade ?? 'MS' }}
+                    </span>
+                </div>
+
+                <div class="flex items-center justify-between mb-4 bg-emerald-50/50 p-3 rounded-xl border border-emerald-100">
+                    <div>
+                        <div class="text-[10px] font-bold text-emerald-800 uppercase tracking-wider">Nilai Akhir Garjas</div>
+                        <div class="text-2xl font-black text-emerald-900 leading-tight">{{ $profile->physical_fitness_score ?? '-' }}</div>
+                    </div>
+                    <span class="px-3 py-1 bg-emerald-600 text-white rounded-lg text-xs font-bold shadow-sm">
+                        {{ $profile->physical_fitness_grade == 'MS' ? 'MEMENUHI SYARAT' : ($profile->physical_fitness_grade ?? 'MS') }}
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                    <div class="p-2 bg-slate-50 rounded-lg border border-slate-100">
+                        <div class="text-[10px] text-slate-500">Lari 12 Menit (Garjas A)</div>
+                        <div class="font-bold text-slate-800">{{ number_format($profile->run_12m_distance ?? 0) }} m <span class="text-[10px] text-emerald-600 font-semibold">(Skor: {{ $profile->run_12m_score ?? '-' }})</span></div>
+                    </div>
+                    <div class="p-2 bg-slate-50 rounded-lg border border-slate-100">
+                        <div class="text-[10px] text-slate-500">Pull-Up (B1)</div>
+                        <div class="font-bold text-slate-800">{{ $profile->pull_ups_count ?? 0 }}x <span class="text-[10px] text-emerald-600 font-semibold">(Skor: {{ $profile->pull_ups_score ?? '-' }})</span></div>
+                    </div>
+                    <div class="p-2 bg-slate-50 rounded-lg border border-slate-100">
+                        <div class="text-[10px] text-slate-500">Sit-Up (B2)</div>
+                        <div class="font-bold text-slate-800">{{ $profile->sit_ups_count ?? 0 }}x <span class="text-[10px] text-emerald-600 font-semibold">(Skor: {{ $profile->sit_ups_score ?? '-' }})</span></div>
+                    </div>
+                    <div class="p-2 bg-slate-50 rounded-lg border border-slate-100">
+                        <div class="text-[10px] text-slate-500">Push-Up (B3)</div>
+                        <div class="font-bold text-slate-800">{{ $profile->push_ups_count ?? 0 }}x <span class="text-[10px] text-emerald-600 font-semibold">(Skor: {{ $profile->push_ups_score ?? '-' }})</span></div>
+                    </div>
+                    <div class="p-2 bg-slate-50 rounded-lg border border-slate-100">
+                        <div class="text-[10px] text-slate-500">Shuttle Run (B4)</div>
+                        <div class="font-bold text-slate-800">{{ $profile->shuttle_run_seconds ?? 0 }}s <span class="text-[10px] text-emerald-600 font-semibold">(Skor: {{ $profile->shuttle_run_score ?? '-' }})</span></div>
+                    </div>
+                    <div class="p-2 bg-slate-50 rounded-lg border border-slate-100">
+                        <div class="text-[10px] text-slate-500">Ketangkasan Renang</div>
+                        <div class="font-bold text-slate-800">Skor: {{ $profile->swimming_score ?? '-' }} <span class="text-[10px] text-slate-500">({{ $profile->swimming_style ?? 'GD' }})</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- KARTU 3: LITPERS (MENTAL IDEOLOGI) & PENDIDIKAN ASAL -->
+        <div class="bg-white border border-slate-200 rounded-xl shadow-sm p-5 flex flex-col justify-between">
+            <div>
+                <div class="flex items-center justify-between pb-3 border-b border-slate-100 mb-4">
+                    <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                        <span class="ms text-amber-600 text-[18px]">verified_user</span> Litpers & Seleksi Akhir
+                    </span>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                        {{ $profile->litpers_grade ?? 'MS' }}
+                    </span>
+                </div>
+
+                <div class="flex items-center justify-between mb-4 bg-amber-50/50 p-3 rounded-xl border border-amber-100">
+                    <div>
+                        <div class="text-[10px] font-bold text-amber-800 uppercase tracking-wider">Nilai Akhir Seleksi Panpus</div>
+                        <div class="text-2xl font-black text-amber-900 leading-tight">{{ $profile->final_selection_score ?? '-' }}</div>
+                    </div>
+                    <div class="text-right text-[11px] text-slate-600">
+                        <div>Wawancara: <b class="text-slate-800">{{ $profile->litpers_interview_score ?? '-' }}%</b></div>
+                        <div>Tertulis: <b class="text-slate-800">{{ $profile->litpers_written_score ?? '-' }}%</b></div>
+                    </div>
+                </div>
+
+                <div class="space-y-2 text-xs">
+                    <div class="flex justify-between py-1.5 border-b border-slate-50">
+                        <span class="text-slate-500">Asal Sekolah</span>
+                        <span class="font-semibold text-slate-800 text-right">{{ $profile->origin_school ?? '-' }}</span>
+                    </div>
+                    <div class="flex justify-between py-1.5 border-b border-slate-50">
+                        <span class="text-slate-500">Jurusan / Nilai Raport</span>
+                        <span class="font-semibold text-slate-800">{{ $profile->academic_major ?? '-' }} &bull; {{ $profile->academic_score ?? '-' }} (Lulus {{ $profile->graduation_year ?? '-' }})</span>
+                    </div>
+                    <div class="flex justify-between py-1.5 border-b border-slate-50">
+                        <span class="text-slate-500">Nama Ortu / Wali</span>
+                        <span class="font-semibold text-slate-800">{{ $profile->father_name ?? '-' }} ({{ $profile->parent_occupation ?? '-' }})</span>
+                    </div>
+                    <div class="flex justify-between py-1.5">
+                        <span class="text-slate-500">Suku Bangsa</span>
+                        <span class="font-semibold text-slate-800">{{ $profile->ethnicity ?? '-' }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@if(!empty($profile->dapokdikma_raw_json))
+<!-- MODAL VIEWER 101 ATRIBUT ASLI DAPOKDIKMA -->
+<div id="modalRawDapok" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-4xl w-full max-h-[85vh] flex flex-col shadow-2xl border border-slate-200">
+        <div class="p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50 rounded-t-2xl">
+            <div>
+                <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                    <span class="ms text-emerald-700">dataset</span> Data Lengkap Dapokdikma — {{ $student->full_name }}
+                </h3>
+                <p class="text-xs text-slate-500 mt-0.5">Seluruh 101 atribut data werving tersimpan utuh tanpa reduksi.</p>
+            </div>
+            <button type="button" onclick="document.getElementById('modalRawDapok').classList.add('hidden')" class="w-8 h-8 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 text-slate-600 flex items-center justify-center transition-colors">
+                <span class="ms text-[20px]">close</span>
+            </button>
+        </div>
+        <div class="p-5 overflow-y-auto flex-1">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                @foreach($profile->dapokdikma_raw_json as $key => $val)
+                <div class="p-2.5 rounded-lg border border-slate-100 bg-slate-50/50 flex flex-col justify-between">
+                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wide">{{ $key }}</span>
+                    <span class="font-semibold text-slate-900 mt-1 break-words">{{ $val }}</span>
+                </div>
+                @endforeach
+            </div>
+        </div>
+        <div class="p-4 border-t border-slate-200 bg-slate-50 flex justify-end rounded-b-2xl">
+            <button type="button" onclick="document.getElementById('modalRawDapok').classList.add('hidden')" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-bold transition-colors">
+                Tutup Jendela
+            </button>
         </div>
     </div>
 </div>
+@endif
+
+@endif
 
 <!-- AUDIT TRAIL CARD -->
 <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
