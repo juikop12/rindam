@@ -144,7 +144,7 @@ RESIMEN INDUK<br>
         <td style="background:#F8FAFC;"><b>Kontak Darurat / No. HP</b></td>
         <td class="font-mono">{{ $displayPhone }}</td>
         <td style="background:#F8FAFC;"><b>Hubungan / Wali</b></td>
-        <td>{{ $profile->emergency_contact_name ?? 'Orang Tua Kandung' }}</td>
+        <td>{{ $profile?->emergency_contact_name ?? 'Orang Tua Kandung' }}</td>
     </tr>
 </table>
 
@@ -161,19 +161,19 @@ RESIMEN INDUK<br>
             @endif
         </td>
         <td style="width:25%; background:#F8FAFC;"><b>No. BPJS Kesehatan</b></td>
-        <td style="width:25%;" class="font-mono">{{ $profile->bpjs_number ?: ($health->bpjs_number ?? '-') }}</td>
+        <td style="width:25%;" class="font-mono">{{ $profile?->bpjs_number ?: ($health?->bpjs_number ?? '-') }}</td>
     </tr>
     <tr>
         <td style="background:#F8FAFC;"><b>Postur Fisik & Gol Darah</b></td>
         <td>
-            Tinggi: {{ $student->height_cm ?: ($health->height_cm ?? '-') }} cm &bull; 
-            Berat: {{ $student->weight_kg ?: ($health->weight_kg ?? '-') }} kg &bull; 
+            Tinggi: {{ $student->height_cm ?: ($health?->height_cm ?? '-') }} cm &bull; 
+            Berat: {{ $student->weight_kg ?: ($health?->weight_kg ?? '-') }} kg &bull; 
             Darah: <b>{{ $student->blood_type ?? '-' }}</b>
         </td>
         <td style="background:#F8FAFC;"><b>Status Stakes & Medis</b></td>
         <td>
-            <b>{{ $health->stakes_grade ?? 'Stakes I' }}</b> / 
-            <span class="badge-print">{{ strtoupper($health->daily_health_status ?? 'SIAP LATIH') }}</span>
+            <b>{{ $health?->stakes_grade ?? 'Stakes I' }}</b> / 
+            <span class="badge-print">{{ strtoupper($health?->daily_health_status ?? 'SIAP LATIH') }}</span>
         </td>
     </tr>
 </table>

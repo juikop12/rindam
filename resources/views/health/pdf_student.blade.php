@@ -75,16 +75,16 @@ KESEHATAN
         <tr>
             <td><b>Status Harian Latihan</b></td>
             <td style="text-align:center;">
-                <b style="font-size:11pt;">{{ strtoupper($healthRecord->daily_health_status ?? 'SIAP LATIH') }}</b>
+                <b style="font-size:11pt;">{{ strtoupper($healthRecord?->daily_health_status ?? 'SIAP LATIH') }}</b>
             </td>
             <td>
-                @if(($healthRecord->daily_health_status ?? '') === 'Siap Latih')
+                @if(($healthRecord?->daily_health_status ?? '') === 'Siap Latih')
                     Memenuhi syarat fisik untuk mengikuti materi latihan fisik, taktik, dan pertempuran lapangan.
-                @elseif(($healthRecord->daily_health_status ?? '') === 'Berobat Jalan')
+                @elseif(($healthRecord?->daily_health_status ?? '') === 'Berobat Jalan')
                     Diberikan dispensasi latihan berat / istirahat terbatas dengan pemantauan obat poliklinik.
-                @elseif(($healthRecord->daily_health_status ?? '') === 'Rawat Inap Poliklinik')
+                @elseif(($healthRecord?->daily_health_status ?? '') === 'Rawat Inap Poliklinik')
                     Dirawat intensif di Poliklinik Satdik Rindam III/Siliwangi (Bebas dinas sementara).
-                @elseif(($healthRecord->daily_health_status ?? '') === 'Rujuk Rumkit')
+                @elseif(($healthRecord?->daily_health_status ?? '') === 'Rujuk Rumkit')
                     Dirujuk ke Rumah Sakit Tk. II/Tk. IV TNI AD untuk penanganan spesialis lanjutan.
                 @else
                     Tercatat dalam pemantauan medis dinas.
@@ -94,14 +94,14 @@ KESEHATAN
         <tr>
             <td><b>Klasifikasi Stakes (Standar Kesehatan)</b></td>
             <td style="text-align:center;">
-                <b>{{ $healthRecord->stakes_grade ?? 'Stakes I (Sangat Baik)' }}</b>
+                <b>{{ $healthRecord?->stakes_grade ?? 'Stakes I (Sangat Baik)' }}</b>
             </td>
             <td>
-                @if(str_contains($healthRecord->stakes_grade ?? '', 'Stakes I'))
+                @if(str_contains($healthRecord?->stakes_grade ?? '', 'Stakes I'))
                     Kondisi fisik dan organ prima, tanpa kelainan medis.
-                @elseif(str_contains($healthRecord->stakes_grade ?? '', 'Stakes II'))
+                @elseif(str_contains($healthRecord?->stakes_grade ?? '', 'Stakes II'))
                     Kelainan ringan tanpa mengganggu fungsi kedinasan militer.
-                @elseif(str_contains($healthRecord->stakes_grade ?? '', 'Stakes III'))
+                @elseif(str_contains($healthRecord?->stakes_grade ?? '', 'Stakes III'))
                     Pembatasan aktivitas jasmani tertentu di bawah pengawasan dokter.
                 @else
                     Tidak Memenuhi Syarat Sementara (TMS) untuk latihan berat.
@@ -111,7 +111,7 @@ KESEHATAN
         <tr>
             <td><b>Pemeriksaan Terakhir</b></td>
             <td style="text-align:center;">
-                {{ $healthRecord->last_examined_at ? \Carbon\Carbon::parse($healthRecord->last_examined_at)->translatedFormat('d F Y') : '-' }}
+                {{ $healthRecord?->last_examined_at ? \Carbon\Carbon::parse($healthRecord->last_examined_at)->translatedFormat('d F Y') : '-' }}
             </td>
             <td>Pemeriksaan fisik berkala Poliklinik Satdik</td>
         </tr>
@@ -123,15 +123,15 @@ KESEHATAN
 <table class="mil-table">
     <tr>
         <td style="width:30%; background:#FAFBF9;"><b>Riwayat Alergi Obat / Makanan</b></td>
-        <td>{{ $healthRecord->allergies ?: 'Tidak ada riwayat alergi yang dilaporkan (Aman).' }}</td>
+        <td>{{ $healthRecord?->allergies ?: 'Tidak ada riwayat alergi yang dilaporkan (Aman).' }}</td>
     </tr>
     <tr>
         <td style="background:#FAFBF9;"><b>Riwayat Penyakit Kronis / Dahulu</b></td>
-        <td>{{ $healthRecord->chronic_diseases ?: 'Tidak ada riwayat penyakit kronis atau bawaan.' }}</td>
+        <td>{{ ($healthRecord?->medical_history ?? $healthRecord?->chronic_diseases) ?: 'Tidak ada riwayat penyakit kronis atau bawaan.' }}</td>
     </tr>
     <tr>
         <td style="background:#FAFBF9;"><b>Catatan Rekomendasi Dokter</b></td>
-        <td style="min-height:40px;">{{ $healthRecord->doctor_notes ?: 'Kondisi kesehatan serdik dalam batas normal. Lanjutkan pembinaan jasmani terjadwal.' }}</td>
+        <td style="min-height:40px;">{{ $healthRecord?->doctor_notes ?: 'Kondisi kesehatan serdik dalam batas normal. Lanjutkan pembinaan jasmani terjadwal.' }}</td>
     </tr>
 </table>
 

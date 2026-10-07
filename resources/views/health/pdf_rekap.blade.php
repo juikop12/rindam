@@ -105,25 +105,25 @@ KESEHATAN
                 </td>
                 <td class="text-center">
                     <span class="badge-print">
-                        {{ strtoupper($hr->daily_health_status ?? 'SIAP LATIH') }}
+                        {{ strtoupper($hr?->daily_health_status ?? 'SIAP LATIH') }}
                     </span>
                 </td>
                 <td class="text-center">
-                    {{ $hr->stakes_grade ?? 'Stakes I' }}
+                    {{ $hr?->stakes_grade ?? 'Stakes I' }}
                 </td>
                 <td style="font-size:8.5pt;">
-                    @if(!empty($hr->allergies))
+                    @if(!empty($hr?->allergies))
                         <div><b>Alergi:</b> {{ $hr->allergies }}</div>
                     @endif
-                    @if(!empty($hr->medical_history))
+                    @if(!empty($hr?->medical_history))
                         <div><b>Riw:</b> {{ $hr->medical_history }}</div>
                     @endif
-                    @if(empty($hr->allergies) && empty($hr->medical_history))
+                    @if(empty($hr?->allergies) && empty($hr?->medical_history))
                         <span style="color:#64748B;">Nihil</span>
                     @endif
                 </td>
                 <td style="font-size:8.5pt;">
-                    {{ $hr->doctor_notes ?: 'Kondisi stabil, mengikuti rutinitas pendidikan.' }}
+                    {{ $hr?->doctor_notes ?: 'Kondisi stabil, mengikuti rutinitas pendidikan.' }}
                 </td>
             </tr>
         @empty
